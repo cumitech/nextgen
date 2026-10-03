@@ -1010,6 +1010,8 @@ function theme_nextgen_install_commercial_fields(): void {
         ['shortname' => 'ngeffort', 'name' => 'fieldeffort', 'description' => 'fieldeffortdesc', 'type' => 'text'],
         ['shortname' => 'ngcertificate', 'name' => 'fieldcertificate', 'description' => 'fieldcertificatedesc', 'type' => 'text'],
         ['shortname' => 'nglanguage', 'name' => 'fieldlanguage', 'description' => 'fieldlanguagedesc', 'type' => 'text'],
+        ['shortname' => 'ngratingdist', 'name' => 'fieldratingdist', 'description' => 'fieldratingdistdesc', 'type' => 'text'],
+        ['shortname' => 'ngreviewlist', 'name' => 'fieldreviewlist', 'description' => 'fieldreviewlistdesc', 'type' => 'text'],
     ];
     $sort = 0;
     foreach ($fields as $spec) {
@@ -1063,6 +1065,8 @@ function theme_nextgen_install_fact_fields(): void {
         ['shortname' => 'ngeffort', 'name' => 'fieldeffort', 'description' => 'fieldeffortdesc', 'type' => 'text'],
         ['shortname' => 'ngcertificate', 'name' => 'fieldcertificate', 'description' => 'fieldcertificatedesc', 'type' => 'text'],
         ['shortname' => 'nglanguage', 'name' => 'fieldlanguage', 'description' => 'fieldlanguagedesc', 'type' => 'text'],
+        ['shortname' => 'ngratingdist', 'name' => 'fieldratingdist', 'description' => 'fieldratingdistdesc', 'type' => 'text'],
+        ['shortname' => 'ngreviewlist', 'name' => 'fieldreviewlist', 'description' => 'fieldreviewlistdesc', 'type' => 'text'],
     ];
     $sort = count($present);
     foreach ($fields as $spec) {
@@ -1277,11 +1281,30 @@ function theme_nextgen_course_detail_context(): ?array {
         if (!$user || !empty($user->deleted)) {
             continue;
         }
+        $credential = trim((string) $user->department);
+        if ($credential === '') {
+            $credential = trim((string) $user->institution);
+        }
+        if ($credential === '') {
+            $credential = $contact['rolename'];
+        }
+        $bio = '';
+        if (trim(strip_tags((string) $user->description)) !== '') {
+            $bio = format_text($user->description, (int) $user->descriptionformat, [
+                'context' => \context_user::instance($user->id),
+            ]);
+        }
+        $reach = theme_nextgen_teacher_reach((int) $user->id);
         $instructors[] = [
             'name' => $contact['username'],
             'role' => $contact['rolename'],
+            'credential' => $credential,
+            'hasbio' => $bio !== '',
+            'bio' => $bio,
+            'courseslabel' => get_string('instructorcourses', 'theme_nextgen', $reach['courses']),
+            'studentslabel' => get_string('instructorstudents', 'theme_nextgen', $reach['students']),
             'picture' => $OUTPUT->user_picture($user, [
-                'size' => 80,
+                'size' => 160,
                 'link' => false,
                 'class' => 'ng-course-teacher-photo',
             ]),
@@ -1418,6 +1441,8 @@ function theme_nextgen_course_detail_context(): ?array {
     ];
 
     $price = $card['price'];
+    $distribution = theme_nextgen_rating_distribution($extra['ngratingdist']);
+    $reviewlist = theme_nextgen_review_lines($extra['ngreviewlist']);
 
     return [
         'fullname' => $card['fullname'],
@@ -1435,10 +1460,15 @@ function theme_nextgen_course_detail_context(): ?array {
         'certificates' => $certificates,
         'hasreviews' => !empty($card['hasreviews']),
         'reviewcount' => $card['reviews'] ?? 0,
+        'ratingslabel' => get_string('ratingscount', 'theme_nextgen', (int) ($card['reviews'] ?? 0)),
         'hasrating' => $card['hasrating'],
         'rating' => $card['rating'],
         'ratinglabel' => $card['ratinglabel'],
         'stars' => $card['stars'],
+        'hasdistribution' => !empty($distribution),
+        'distribution' => $distribution,
+        'hasreviewlist' => !empty($reviewlist),
+        'reviewlist' => $reviewlist,
         'hasprice' => $price !== '',
         'price' => $price,
         'hasfacts' => !empty($facts),
@@ -1569,6 +1599,149 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
 }
 
 /**
+ * Courses and students reached by one teacher.
+ *
+ * Courses are those where the person is a teacher. Students are the distinct
+ * learners enrolled in those courses.
+ *
+ * @param int $userid
+ * @return array{courses: int, students: int}
+ */
+function theme_nextgen_teacher_reach(int $userid): array {
+    global $DB;
+
+    $roleids = $DB->get_fieldset_select('role', 'id', 'shortname IN (?, ?)', ['editingteacher', 'teacher']);
+    if (!$roleids) {
+        return ['courses' => 0, 'students' => 0];
+    }
+
+    [$insql, $params] = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED);
+    $params['userid'] = $userid;
+    $params['level'] = CONTEXT_COURSE;
+    $courseids = $DB->get_fieldset_sql(
+        "SELECT DISTINCT ctx.instanceid
+           FROM {role_assignments} ra
+           JOIN {context} ctx ON ctx.id = ra.contextid
+          WHERE ra.userid = :userid
+            AND ra.roleid {$insql}
+            AND ctx.contextlevel = :level",
+        $params
+    );
+    $courseids = array_values(array_filter(array_map('intval', $courseids), function (int $id): bool {
+        return $id !== (int) SITEID;
+    }));
+
+    $students = 0;
+    $studentrole = $DB->get_field('role', 'id', ['shortname' => 'student']);
+    if ($courseids && $studentrole) {
+        [$csql, $cparams] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED);
+        $cparams['roleid'] = $studentrole;
+        $cparams['level'] = CONTEXT_COURSE;
+        $students = (int) $DB->count_records_sql(
+            "SELECT COUNT(DISTINCT ra.userid)
+               FROM {role_assignments} ra
+               JOIN {context} ctx ON ctx.id = ra.contextid
+              WHERE ra.roleid = :roleid
+                AND ctx.contextlevel = :level
+                AND ctx.instanceid {$csql}",
+            $cparams
+        );
+    }
+
+    return [
+        'courses' => count($courseids),
+        'students' => $students,
+    ];
+}
+
+/**
+ * Percentages for 5, 4, 3, 2 and 1 stars.
+ *
+ * The stored value is five numbers separated by commas.
+ *
+ * @param string $raw
+ * @return array
+ */
+function theme_nextgen_rating_distribution(string $raw): array {
+    $parts = array_map('trim', explode(',', $raw));
+    if (count($parts) !== 5) {
+        return [];
+    }
+    $rows = [];
+    foreach ([5, 4, 3, 2, 1] as $index => $level) {
+        if (!is_numeric($parts[$index])) {
+            return [];
+        }
+        $percent = (int) round(max(0, min(100, (float) $parts[$index])));
+        $rows[] = [
+            'level' => $level,
+            'percent' => $percent,
+        ];
+    }
+    return $rows;
+}
+
+/**
+ * Written reviews stored as one line each: Name|date|stars|text.
+ *
+ * @param string $raw
+ * @return array
+ */
+function theme_nextgen_review_lines(string $raw): array {
+    $reviews = [];
+    $lines = preg_split("/\r\n|\n|\r/", trim($raw));
+    if (!$lines) {
+        return [];
+    }
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line === '') {
+            continue;
+        }
+        $bits = array_map('trim', explode('|', $line, 4));
+        if (count($bits) < 4 || $bits[0] === '' || $bits[3] === '') {
+            continue;
+        }
+        $score = (int) $bits[2];
+        if ($score < 1 || $score > 5) {
+            $score = 0;
+        }
+        $stars = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $stars[] = ['state' => ($score >= $i) ? 'full' : 'empty'];
+        }
+        $reviews[] = [
+            'name' => $bits[0],
+            'date' => $bits[1],
+            'initials' => theme_nextgen_initials($bits[0]),
+            'text' => $bits[3],
+            'stars' => $stars,
+        ];
+    }
+    return $reviews;
+}
+
+/**
+ * Up to two initials from a person's name.
+ *
+ * @param string $name
+ * @return string
+ */
+function theme_nextgen_initials(string $name): string {
+    $letters = '';
+    foreach (preg_split('/\s+/', trim($name)) as $part) {
+        if ($part === '') {
+            continue;
+        }
+        $letters .= \core_text::strtoupper(\core_text::substr($part, 0, 1));
+        if (\core_text::strlen($letters) >= 2) {
+            break;
+        }
+    }
+    return $letters;
+}
+
+/**
  * Optional course custom fields. Missing fields stay empty.
  *
  * @param int $courseid
@@ -1583,6 +1756,8 @@ function theme_nextgen_course_extra_fields(int $courseid): array {
         'nglanguage' => '',
         'ngrequirements' => '',
         'ngoutcomes' => '',
+        'ngratingdist' => '',
+        'ngreviewlist' => '',
     ];
     $handler = \core_course\customfield\course_handler::create();
     foreach ($handler->get_instance_data($courseid, true) as $data) {

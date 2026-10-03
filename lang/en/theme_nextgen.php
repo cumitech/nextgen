@@ -215,6 +215,14 @@ $string['tabreviews'] = 'Reviews';
 $string['certificateempty'] = 'This course does not list a certificate.';
 $string['reviewempty'] = 'No reviews have been added for this course.';
 $string['reviewcount'] = '{$a} reviews';
+$string['courserating'] = 'Course rating';
+$string['ratingscount'] = '{$a} ratings';
+$string['instructorcourses'] = '{$a} courses';
+$string['instructorstudents'] = '{$a} students';
+$string['fieldratingdist'] = 'Star split';
+$string['fieldratingdistdesc'] = 'Percentages for 5, 4, 3, 2 and 1 stars, separated by commas. For example: 67, 22, 0, 11, 0.';
+$string['fieldreviewlist'] = 'Written reviews';
+$string['fieldreviewlistdesc'] = 'One review per line, written as Name|date|stars|text. Stars is a number from 1 to 5.';
 $string['courseinstructorsempty'] = 'No teachers are listed on this course.';
 
 $string['aboutnav'] = 'About';

@@ -55,5 +55,10 @@ function xmldb_theme_nextgen_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026100114, 'theme', 'nextgen');
     }
 
+    if ($oldversion < 2026100115) {
+        theme_nextgen_install_fact_fields();
+        upgrade_plugin_savepoint(true, 2026100115, 'theme', 'nextgen');
+    }
+
     return true;
 }

@@ -57,6 +57,15 @@ require(['jquery'], function($) {
         if (hash === '#ng-course-content' || hash === '#ng-enrolment') {
             return 'content';
         }
+        if (hash === '#ng-panel-instructors') {
+            return 'instructors';
+        }
+        if (hash === '#ng-panel-reviews') {
+            return 'reviews';
+        }
+        if (hash === '#ng-panel-certificate') {
+            return 'certificate';
+        }
         return 'overview';
     };
 
