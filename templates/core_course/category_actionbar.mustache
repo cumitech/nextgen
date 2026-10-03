@@ -1,0 +1,40 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template core_course/category_actionbar
+
+    Catalogue category filter. The select and search forms stay Moodle's.
+}}
+<div class="tertiary-navigation tw:relative tw:z-10 tw:mx-auto tw:mt-6 tw:w-full tw:max-w-[70rem] tw:px-6" id="action_bar">
+    <div class="tw:flex tw:flex-col tw:gap-2 tw:rounded-2xl tw:!border tw:!border-border tw:!bg-surface tw:p-2 tw:shadow-sm tw:md:flex-row tw:md:items-center">
+        {{#categoryselect}}
+            <div class="navitem tw:w-full tw:min-w-0 tw:!mb-0 tw:!mr-0 tw:md:w-80 tw:md:shrink-0 tw:[&_form]:!mb-0 tw:[&_form]:!w-full tw:[&_select]:!h-11 tw:[&_select]:!w-full tw:[&_select]:cursor-pointer tw:[&_select]:!rounded-xl tw:[&_select]:!border tw:[&_select]:!border-border tw:[&_select]:!bg-background tw:[&_select]:px-3 tw:[&_select]:!text-sm tw:[&_select]:!font-medium tw:[&_select]:!text-text tw:[&_select]:!shadow-none tw:[&_select]:outline-none tw:[&_select]:focus:!border-primary tw:[&_select]:focus:!ring-2 tw:[&_select]:focus:!ring-primary/15">
+                {{> core/url_select }}
+            </div>
+        {{/categoryselect}}
+        {{#search}}
+            <div class="navitem tw:w-full tw:min-w-0 tw:!mb-0 tw:!mr-0 tw:md:flex-1 tw:[&_.simplesearchform]:!w-full tw:[&_form]:!mb-0 tw:[&_form]:!w-full tw:[&_form]:!p-0 tw:[&_form]:!flex-nowrap tw:[&_.input-group]:!flex tw:[&_.input-group]:!h-11 tw:[&_.input-group]:!w-full tw:[&_.input-group]:items-stretch tw:[&_.input-group]:!overflow-hidden tw:[&_.input-group]:!rounded-xl tw:[&_.input-group]:!border tw:[&_.input-group]:!border-border tw:[&_.input-group]:!bg-background tw:[&_.input-group]:focus-within:!border-primary tw:[&_.input-group]:focus-within:!ring-2 tw:[&_.input-group]:focus-within:!ring-primary/15 tw:[&_input]:!h-11 tw:[&_input]:min-w-0 tw:[&_input]:!flex-1 tw:[&_input]:!border-0 tw:[&_input]:!bg-transparent tw:[&_input]:px-3 tw:[&_input]:!text-sm tw:[&_input]:!text-text tw:[&_input]:!shadow-none tw:[&_input]:outline-none tw:[&_input]:focus:!ring-0 tw:[&_button]:!inline-flex tw:[&_button]:!h-11 tw:[&_button]:!w-11 tw:[&_button]:!shrink-0 tw:[&_button]:items-center tw:[&_button]:justify-center tw:[&_button]:!rounded-none tw:[&_button]:!border-0 tw:[&_button]:!bg-primary tw:[&_button]:!p-0 tw:[&_button]:!text-white tw:[&_button]:!shadow-none tw:[&_button]:hover:!bg-primary-hover">
+                {{> core/search_input }}
+            </div>
+        {{/search}}
+        {{#additionaloptions}}
+            <div class="tw:flex tw:shrink-0 tw:justify-end">
+                {{{additionaloptions}}}
+            </div>
+        {{/additionaloptions}}
+    </div>
+</div>

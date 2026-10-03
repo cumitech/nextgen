@@ -15,19 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Install steps for the NextGen LMS theme.
+ * Former Terms address. The public page is /terms.php.
  *
  * @package   theme_nextgen
  * @copyright 2026 NextGen LMS
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+require(__DIR__ . '/bootstrap.php');
+
 defined('MOODLE_INTERNAL') || die();
 
-/**
- * Create the commercial course fields on a fresh install.
- */
-function xmldb_theme_nextgen_install() {
-    theme_nextgen_install_commercial_fields();
-    theme_nextgen_publish_public_paths();
-}
+redirect(\theme_nextgen\local\public_page::url('terms'));

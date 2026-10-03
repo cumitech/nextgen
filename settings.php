@@ -88,7 +88,7 @@ if ($ADMIN->fulltree) {
         'theme_nextgen/customnav',
         get_string('customnav', 'theme_nextgen'),
         get_string('customnavdesc', 'theme_nextgen'),
-        "Courses|/course/index.php\nCategories|/course/index.php?browse=categories\nContact|/user/contactsitesupport.php",
+        "Courses|/course/index.php",
         PARAM_RAW,
         60,
         6
@@ -120,7 +120,7 @@ if ($ADMIN->fulltree) {
         'theme_nextgen/quicklinks',
         get_string('quicklinks', 'theme_nextgen'),
         get_string('linklistdesc', 'theme_nextgen'),
-        "Home|/\nCourses|/course/index.php",
+        "Home|/\nCourses|/course/index.php\nCategories|/course/index.php?browse=categories",
         PARAM_RAW,
         60,
         5
@@ -142,7 +142,7 @@ if ($ADMIN->fulltree) {
         'theme_nextgen/supportlinks',
         get_string('supportlinks', 'theme_nextgen'),
         get_string('linklistdesc', 'theme_nextgen'),
-        "Contact support|/user/contactsitesupport.php",
+        "Frequently asked questions|/faq.php",
         PARAM_RAW,
         60,
         5
@@ -197,7 +197,7 @@ if ($ADMIN->fulltree) {
         'theme_nextgen/privacyurl',
         get_string('privacyurl', 'theme_nextgen'),
         get_string('policyurldesc', 'theme_nextgen'),
-        '',
+        '/privacy.php',
         PARAM_RAW
     );
     $page->add($setting);
@@ -206,7 +206,7 @@ if ($ADMIN->fulltree) {
         'theme_nextgen/termsurl',
         get_string('termsurl', 'theme_nextgen'),
         get_string('policyurldesc', 'theme_nextgen'),
-        '',
+        '/terms.php',
         PARAM_RAW
     );
     $page->add($setting);

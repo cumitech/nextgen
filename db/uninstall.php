@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Install steps for the NextGen LMS theme.
+ * Remove the site-root pages published by this theme.
  *
  * @package   theme_nextgen
  * @copyright 2026 NextGen LMS
@@ -25,9 +25,21 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Create the commercial course fields on a fresh install.
+ * Delete only the public scripts this theme published.
  */
-function xmldb_theme_nextgen_install() {
-    theme_nextgen_install_commercial_fields();
-    theme_nextgen_publish_public_paths();
+function xmldb_theme_nextgen_uninstall() {
+    global $CFG;
+
+    foreach (['about', 'contact', 'privacy', 'terms', 'faq'] as $key) {
+        $path = $CFG->dirroot . DIRECTORY_SEPARATOR . $key . '.php';
+        if (!is_file($path)) {
+            continue;
+        }
+        $head = (string) file_get_contents($path, false, null, 0, 900);
+        if (str_contains($head, 'theme_nextgen public page:')) {
+            unlink($path);
+        }
+    }
+
+    return true;
 }

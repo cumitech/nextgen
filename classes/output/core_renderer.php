@@ -33,6 +33,7 @@ class core_renderer extends \theme_boost\output\core_renderer {
      * @param int $maxheight
      * @return moodle_url|false
      */
+    #[\Override]
     public function get_logo_url($maxwidth = null, $maxheight = 200) {
         return $this->nextgen_logo_url();
     }
@@ -44,6 +45,7 @@ class core_renderer extends \theme_boost\output\core_renderer {
      * @param int $maxheight
      * @return moodle_url|false
      */
+    #[\Override]
     public function get_compact_logo_url($maxwidth = 300, $maxheight = 300) {
         return $this->nextgen_logo_url();
     }
@@ -64,6 +66,7 @@ class core_renderer extends \theme_boost\output\core_renderer {
      *
      * @return moodle_url
      */
+    #[\Override]
     public function favicon() {
         return $this->nextgen_logo_url();
     }

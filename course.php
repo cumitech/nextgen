@@ -15,19 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Install steps for the NextGen LMS theme.
+ * Old public course address. Sends the visitor to the course page.
  *
  * @package   theme_nextgen
  * @copyright 2026 NextGen LMS
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+require(__DIR__ . '/bootstrap.php');
+
 defined('MOODLE_INTERNAL') || die();
 
-/**
- * Create the commercial course fields on a fresh install.
- */
-function xmldb_theme_nextgen_install() {
-    theme_nextgen_install_commercial_fields();
-    theme_nextgen_publish_public_paths();
-}
+$courseid = required_param('id', PARAM_INT);
+redirect(new moodle_url('/course/view.php', ['id' => $courseid]));

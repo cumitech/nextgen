@@ -36,5 +36,24 @@ function xmldb_theme_nextgen_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026100106, 'theme', 'nextgen');
     }
 
+    if ($oldversion < 2026100111) {
+        theme_nextgen_upgrade_public_pages();
+        upgrade_plugin_savepoint(true, 2026100111, 'theme', 'nextgen');
+    }
+
+    if ($oldversion < 2026100112) {
+        upgrade_plugin_savepoint(true, 2026100112, 'theme', 'nextgen');
+    }
+
+    if ($oldversion < 2026100113) {
+        theme_nextgen_install_fact_fields();
+        upgrade_plugin_savepoint(true, 2026100113, 'theme', 'nextgen');
+    }
+
+    if ($oldversion < 2026100114) {
+        theme_nextgen_publish_public_paths();
+        upgrade_plugin_savepoint(true, 2026100114, 'theme', 'nextgen');
+    }
+
     return true;
 }

@@ -76,5 +76,59 @@ require(['jquery'], function($) {
     });
 
     show(fromHash());
+
+    var expand = root.querySelector('[data-ng-expand]');
+    if (expand) {
+        expand.addEventListener('click', function() {
+            var opening = expand.getAttribute('data-ng-expanded') !== '1';
+            root.querySelectorAll('.ng-outline-section').forEach(function(section) {
+                section.open = opening;
+            });
+            expand.setAttribute('data-ng-expanded', opening ? '1' : '0');
+            expand.textContent = opening ? expand.getAttribute('data-collapse-label') : expand.getAttribute('data-expand-label');
+        });
+    }
+
+    var search = root.querySelector('[data-ng-outline-search]');
+    if (search) {
+        search.addEventListener('input', function() {
+            var query = search.value.trim().toLowerCase();
+            root.querySelectorAll('.ng-outline-section').forEach(function(section) {
+                var sectionname = (section.getAttribute('data-ng-outline-name') || '').toLowerCase();
+                var named = query !== '' && sectionname.indexOf(query) !== -1;
+                var any = false;
+                section.querySelectorAll('.ng-outline-item').forEach(function(item) {
+                    var text = (item.getAttribute('data-ng-outline-text') || '').toLowerCase();
+                    var match = query === '' || named || text.indexOf(query) !== -1;
+                    item.hidden = !match;
+                    if (match) {
+                        any = true;
+                    }
+                });
+                section.hidden = query !== '' && !any && !named;
+                if (query !== '' && (any || named)) {
+                    section.open = true;
+                }
+            });
+        });
+    }
+
+    var copy = document.querySelector('[data-ng-copy]');
+    if (copy) {
+        copy.addEventListener('click', function() {
+            var url = copy.getAttribute('data-ng-copy') || '';
+            var label = copy.getAttribute('data-ng-copy-label') || '';
+            var copied = copy.getAttribute('data-ng-copied') || label;
+            var mark = function() {
+                copy.textContent = copied;
+                window.setTimeout(function() {
+                    copy.textContent = label;
+                }, 1600);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(mark);
+            }
+        });
+    }
 });
 {{/js}}

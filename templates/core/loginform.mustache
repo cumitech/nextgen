@@ -17,7 +17,8 @@
 {{!
     @template core/loginform
 
-    NextGen login form. Field names, tokens, and the core JS block match Boost.
+    NextGen login form. Field names and the login token match Boost.
+    The anchor field is filled by theme_nextgen/loadline.
 }}
 <div class="loginform ng-auth-form">
     {{#logourl}}
@@ -44,7 +45,6 @@
     {{#showloginform}}
         <form class="login-form" action="{{loginurl}}" method="post" id="login">
             <input id="anchor" type="hidden" name="anchor" value="">
-            <script>document.getElementById('anchor').value = location.hash;</script>
             <input type="hidden" name="logintoken" value="{{logintoken}}">
             <div class="login-form-username mb-3">
                 <label for="username" class="form-label">

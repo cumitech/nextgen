@@ -80,5 +80,8 @@ class hook_listener {
                 $node->isactive = false;
             }
         }
+        if (!during_initial_install()) {
+            \theme_nextgen\local\public_page::extend_primary($primary);
+        }
     }
 }

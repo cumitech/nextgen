@@ -41,39 +41,90 @@
         "breadcrumbs": [{"label": "Home", "url": "/"}]
     }
 }}
-<section class="ng-course-band">
+<section class="ng-course-band" {{#image}}style="--ng-course-image: url('{{image}}')"{{/image}}>
+    <div class="ng-course-band-media" aria-hidden="true"></div>
     <div class="ng-course-band-inner">
-        <nav class="ng-course-crumb" aria-label="{{#str}}breadcrumb, access{{/str}}">
-            {{#breadcrumbs}}
-                {{#url}}<a href="{{url}}">{{label}}</a>{{/url}}
-                {{^url}}<span aria-current="page">{{label}}</span>{{/url}}
-                {{^current}}<span class="ng-course-crumb-sep" aria-hidden="true">/</span>{{/current}}
-            {{/breadcrumbs}}
-        </nav>
-        <h1 class="ng-course-title">{{fullname}}</h1>
-        {{#hasexcerpt}}
-            <p class="ng-course-excerpt">{{excerpt}}</p>
-        {{/hasexcerpt}}
-        {{#hasteacher}}
-            <div class="ng-course-teacher">
-                <a class="ng-course-teacher-link" href="{{teacher.url}}">{{{teacher.picture}}}</a>
-                <div>
-                    <a class="ng-course-teacher-name" href="{{teacher.url}}">{{teacher.name}}</a>
-                    <p class="ng-course-teacher-role">{{teacher.role}}</p>
+        <div class="ng-course-hero-copy">
+            <nav class="ng-course-crumb" aria-label="{{#str}}breadcrumb, access{{/str}}">
+                {{#breadcrumbs}}
+                    {{#url}}<a href="{{url}}">{{label}}</a>{{/url}}
+                    {{^url}}<span aria-current="page">{{label}}</span>{{/url}}
+                    {{^current}}<span class="ng-course-crumb-sep" aria-hidden="true">/</span>{{/current}}
+                {{/breadcrumbs}}
+            </nav>
+            <h1 class="ng-course-title">{{fullname}}</h1>
+            {{#hasexcerpt}}
+                <p class="ng-course-excerpt">{{excerpt}}</p>
+            {{/hasexcerpt}}
+            {{#hasmeta}}
+                <div class="ng-course-meta">
+                    {{#bestseller}}
+                        <span class="ng-bestseller">{{#str}}bestseller, theme_nextgen{{/str}}</span>
+                    {{/bestseller}}
+                    {{#hasrating}}
+                        <div class="ng-course-stars" aria-label="{{ratinglabel}}">
+                            {{#stars}}
+                                <svg class="ng-star ng-star-{{state}}" viewBox="0 0 20 20" aria-hidden="true">
+                                    <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                    <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                </svg>
+                            {{/stars}}
+                            <span class="ng-course-rating-value">{{rating}}</span>
+                            {{#hasreviews}}
+                                <span class="ng-course-meta-note">({{reviewcount}})</span>
+                            {{/hasreviews}}
+                        </div>
+                    {{/hasrating}}
+                    {{#hasstudents}}
+                        <span class="ng-course-meta-note">{{students}}</span>
+                    {{/hasstudents}}
+                    {{#hasupdated}}
+                        <span class="ng-course-meta-note">{{updated}}</span>
+                    {{/hasupdated}}
                 </div>
-                {{#hasrating}}
-                    <div class="ng-course-stars" aria-label="{{ratinglabel}}">
-                        {{#stars}}
-                            <svg class="ng-star ng-star-{{state}}" viewBox="0 0 20 20" aria-hidden="true">
-                                <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
-                                <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
-                            </svg>
-                        {{/stars}}
-                        <span class="ng-course-rating-value">{{rating}}</span>
+            {{/hasmeta}}
+            {{#hasteacher}}
+                <div class="ng-course-teacher">
+                    <a class="ng-course-teacher-link" href="{{teacher.url}}">{{{teacher.picture}}}</a>
+                    <div>
+                        <a class="ng-course-teacher-name" href="{{teacher.url}}">{{teacher.name}}</a>
+                        <p class="ng-course-teacher-role">{{teacher.role}}</p>
                     </div>
-                {{/hasrating}}
-            </div>
-        {{/hasteacher}}
+                </div>
+            {{/hasteacher}}
+        </div>
+        {{#hasfacts}}
+            <dl class="ng-course-hero-facts">
+                {{#facts}}
+                    <div class="ng-course-hero-fact">
+                        <dt>
+                            <span class="ng-fact-glyph" aria-hidden="true">
+                                {{#level}}
+                                    <svg viewBox="0 0 24 24"><path d="M4 19V11M10 19V7M16 19V4M3 19h18"></path></svg>
+                                {{/level}}
+                                {{#length}}
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v5l3 2"></path></svg>
+                                {{/length}}
+                                {{#effort}}
+                                    <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M4 10h16"></path></svg>
+                                {{/effort}}
+                                {{#certificate}}
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"></circle><path d="M9.2 13.2L8 21l4-2 4 2-1.2-7.8"></path></svg>
+                                {{/certificate}}
+                                {{#language}}
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M4 12h16M12 4c2.4 2.6 2.4 13.4 0 16M12 4c-2.4 2.6-2.4 13.4 0 16"></path></svg>
+                                {{/language}}
+                                {{#starts}}
+                                    <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M4 10h16M12 14v3"></path></svg>
+                                {{/starts}}
+                            </span>
+                            {{label}}
+                        </dt>
+                        <dd>{{value}}</dd>
+                    </div>
+                {{/facts}}
+            </dl>
+        {{/hasfacts}}
     </div>
 </section>
 <div class="ng-course-columns">
@@ -88,17 +139,8 @@
         {{#hasprice}}
             <p class="ng-course-price">{{price}}</p>
         {{/hasprice}}
-        {{#hasfacts}}
-            <dl class="ng-course-facts">
-                {{#facts}}
-                    <div class="ng-course-fact">
-                        <dt>{{label}}</dt>
-                        <dd>{{value}}</dd>
-                    </div>
-                {{/facts}}
-            </dl>
-        {{/hasfacts}}
         <a class="btn btn-primary ng-course-enrol" href="{{enrolurl}}">{{enrollabel}}</a>
+        <a class="ng-course-quote" href="{{quoteurl}}">{{#str}}requestquote, theme_nextgen{{/str}}</a>
         {{#hasincludes}}
             <div class="ng-course-includes">
                 <h2>{{#str}}courseincludes, theme_nextgen{{/str}}</h2>
@@ -109,6 +151,10 @@
                 </ul>
             </div>
         {{/hasincludes}}
+        <div class="ng-course-share">
+            <h2>{{#str}}sharecourse, theme_nextgen{{/str}}</h2>
+            <button type="button" class="ng-copy-link" data-ng-copy="{{shareurl}}" data-ng-copied="{{#str}}linkcopied, theme_nextgen{{/str}}" data-ng-copy-label="{{#str}}copylink, theme_nextgen{{/str}}">{{#str}}copylink, theme_nextgen{{/str}}</button>
+        </div>
     </aside>
     <div class="ng-course-main" id="ng-panel-overview" data-ng-panel="overview" role="tabpanel" aria-labelledby="ng-tab-overview">
         <img class="ng-course-image" src="{{image}}" alt="{{fullname}}">
@@ -213,6 +259,41 @@
         </section>
     </div>
     <div class="ng-course-below" id="ng-course-content" data-ng-panel="content" role="tabpanel" aria-labelledby="ng-tab-content" hidden>
-        {{#showactivities}}
-            <h2 class="ng-course-content-title">{{#str}}coursecontent, theme_nextgen{{/str}}</h2>
-        {{/showactivities}}
+        {{#hasoutline}}
+            <div class="ng-outline">
+                <div class="ng-outline-head">
+                    <div>
+                        <h2>{{#str}}coursecontent, theme_nextgen{{/str}}</h2>
+                        <p class="ng-outline-meta">{{outlinecounts}}</p>
+                    </div>
+                    <button type="button" class="ng-outline-expand" data-ng-expand data-expand-label="{{#str}}expandall, theme_nextgen{{/str}}" data-collapse-label="{{#str}}collapseall, theme_nextgen{{/str}}">{{#str}}expandall, theme_nextgen{{/str}}</button>
+                </div>
+                <label class="ng-outline-search">
+                    <span class="visually-hidden">{{#str}}contentsearch, theme_nextgen{{/str}}</span>
+                    <input type="search" data-ng-outline-search placeholder="{{#str}}contentsearch, theme_nextgen{{/str}}">
+                </label>
+                {{#sections}}
+                    <details class="ng-outline-section" data-ng-outline-name="{{name}}" {{#open}}open{{/open}}>
+                        <summary>
+                            <span class="ng-outline-num">{{number}}</span>
+                            <span class="ng-outline-title">{{name}}</span>
+                        </summary>
+                        {{#hasactivities}}
+                            <ul class="ng-outline-list">
+                                {{#activities}}
+                                    <li class="ng-outline-item" data-ng-outline-text="{{name}}">
+                                        {{#url}}<a href="{{url}}">{{/url}}
+                                        {{#iconurl}}<img class="ng-outline-modicon" src="{{iconurl}}" alt="">{{/iconurl}}
+                                        <span>{{name}}</span>
+                                        {{#url}}</a>{{/url}}
+                                    </li>
+                                {{/activities}}
+                            </ul>
+                        {{/hasactivities}}
+                    </details>
+                {{/sections}}
+            </div>
+        {{/hasoutline}}
+        {{#outlineempty}}
+            <p class="ng-course-empty">{{#str}}contentempty, theme_nextgen{{/str}}</p>
+        {{/outlineempty}}

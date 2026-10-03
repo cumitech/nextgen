@@ -42,6 +42,10 @@ function theme_nextgen_page_init($page) {
     if (theme_nextgen_is_course_detail_page($page)) {
         $page->add_body_class('nextgen-course');
     }
+    if ((string) $page->pagetype === 'theme-nextgen-course') {
+        $page->add_body_class('nextgen-sales');
+    }
+    $page->requires->js_call_amd('theme_nextgen/loadline', 'init');
 }
 
 /**
@@ -400,7 +404,14 @@ function theme_nextgen_footer_context($theme): array {
     }
 
     $privacy = theme_nextgen_safe_url(theme_nextgen_setting($theme, 'privacyurl'));
+    if ($privacy === null) {
+        $privacy = \theme_nextgen\local\public_page::url('privacy')->out(false);
+    }
     $terms = theme_nextgen_safe_url(theme_nextgen_setting($theme, 'termsurl'));
+    if ($terms === null) {
+        $terms = \theme_nextgen\local\public_page::url('terms')->out(false);
+    }
+    $columns = theme_nextgen_with_faq_link($columns);
 
     return [
         'sitename' => format_string($SITE->fullname, true, ['context' => context_system::instance()]),
@@ -416,6 +427,219 @@ function theme_nextgen_footer_context($theme): array {
         'privacyurl' => $privacy,
         'termsurl' => $terms,
     ];
+}
+
+/**
+ * Add the FAQ link to the Support column when it is not already there.
+ *
+ * @param array $columns
+ * @return array
+ */
+function theme_nextgen_with_faq_link(array $columns): array {
+    $faqurl = \theme_nextgen\local\public_page::url('faq')->out(false);
+    foreach ($columns as $column) {
+        foreach ($column['links'] as $link) {
+            if ($link['url'] === $faqurl) {
+                return $columns;
+            }
+        }
+    }
+
+    $faqlink = [
+        'label' => get_string('faqnav', 'theme_nextgen'),
+        'url' => $faqurl,
+        'external' => false,
+    ];
+    $supporttitle = get_string('supportlinks', 'theme_nextgen');
+    foreach ($columns as $index => $column) {
+        if ($column['title'] === $supporttitle) {
+            $columns[$index]['links'][] = $faqlink;
+            return $columns;
+        }
+    }
+    $columns[] = [
+        'title' => $supporttitle,
+        'links' => [$faqlink],
+    ];
+    return $columns;
+}
+
+/**
+ * Point shipped navigation at the public pages when a site still has the original defaults.
+ */
+function theme_nextgen_upgrade_public_pages(): void {
+    $customnav = get_config('theme_nextgen', 'customnav');
+    if (is_string($customnav)) {
+        $legacyheaders = [
+            "Courses|/course/index.php\nCategories|/course/index.php\nContact|/user/contactsitesupport.php",
+            "Courses|/course/index.php\nCategories|/course/index.php?browse=categories\nContact|/user/contactsitesupport.php",
+        ];
+        if (in_array(theme_nextgen_normalise_lines($customnav), $legacyheaders, true)) {
+            set_config('customnav', "Courses|/course/index.php", 'theme_nextgen');
+        }
+    }
+
+    $quicklinks = get_config('theme_nextgen', 'quicklinks');
+    if (is_string($quicklinks) && theme_nextgen_normalise_lines($quicklinks) === "Home|/\nCourses|/course/index.php") {
+        set_config(
+            'quicklinks',
+            "Home|/\nCourses|/course/index.php\nCategories|/course/index.php?browse=categories",
+            'theme_nextgen'
+        );
+    }
+
+    $supportlinks = get_config('theme_nextgen', 'supportlinks');
+    if (is_string($supportlinks) && theme_nextgen_normalise_lines($supportlinks) === 'Contact support|/user/contactsitesupport.php') {
+        set_config('supportlinks', "Frequently asked questions|/faq.php", 'theme_nextgen');
+    }
+
+    if (!get_config('theme_nextgen', 'privacyurl')) {
+        set_config('privacyurl', '/privacy.php', 'theme_nextgen');
+    }
+    if (!get_config('theme_nextgen', 'termsurl')) {
+        set_config('termsurl', '/terms.php', 'theme_nextgen');
+    }
+}
+
+/**
+ * Move stored links off /theme/nextgen and publish the public pages at the site root.
+ *
+ * The pages stay implemented by this theme. The site-root scripts only hand the
+ * request to that code, so the address bar does not show the theme directory.
+ */
+function theme_nextgen_publish_public_paths(): void {
+    global $CFG;
+
+    if (during_initial_install() || empty($CFG->dirroot)) {
+        return;
+    }
+    if (get_config('theme_nextgen', 'publicpathrev') === '2026100114') {
+        return;
+    }
+
+    $ready = theme_nextgen_ensure_public_scripts();
+    theme_nextgen_rewrite_public_urls();
+    if ($ready) {
+        set_config('publicpathrev', '2026100114', 'theme_nextgen');
+    }
+}
+
+/**
+ * Write the site-root scripts for About, Contact, Privacy, Terms, and FAQ.
+ *
+ * A file that is already there and was not created for this theme is left alone.
+ *
+ * @return bool True when every page is either published or intentionally left as a foreign file
+ */
+function theme_nextgen_ensure_public_scripts(): bool {
+    global $CFG;
+
+    $ready = true;
+    foreach (\theme_nextgen\local\public_page::keys() as $key) {
+        $path = $CFG->dirroot . DIRECTORY_SEPARATOR . $key . '.php';
+        if (is_file($path)) {
+            $head = (string) file_get_contents($path, false, null, 0, 900);
+            if (!str_contains($head, 'theme_nextgen public page:')) {
+                continue;
+            }
+            if (str_contains($head, "public_page::render('{$key}')")) {
+                continue;
+            }
+        }
+        $written = file_put_contents($path, theme_nextgen_public_script_source($key));
+        if ($written === false) {
+            $ready = false;
+        }
+    }
+    return $ready;
+}
+
+/**
+ * PHP source for one site-root public page.
+ *
+ * @param string $key
+ * @return string
+ */
+function theme_nextgen_public_script_source(string $key): string {
+    $source = <<<'PHP'
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * theme_nextgen public page: KEY
+ *
+ * Published at the site root so the address does not include the theme directory.
+ * The page itself is rendered by theme_nextgen.
+ *
+ * @package    core
+ * @copyright  2026 NextGen LMS
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+require(__DIR__ . '/config.php');
+
+defined('MOODLE_INTERNAL') || die();
+
+\theme_nextgen\local\public_page::render('KEY');
+
+PHP;
+    return str_replace('KEY', $key, $source);
+}
+
+/**
+ * Replace theme-directory addresses already saved in theme settings.
+ */
+function theme_nextgen_rewrite_public_urls(): void {
+    $map = [
+        '/theme/nextgen/about.php' => '/about.php',
+        '/theme/nextgen/contact.php' => '/contact.php',
+        '/theme/nextgen/privacy.php' => '/privacy.php',
+        '/theme/nextgen/terms.php' => '/terms.php',
+        '/theme/nextgen/faq.php' => '/faq.php',
+        '/theme/nextgen/course.php' => '/course/view.php',
+    ];
+    $settings = ['customnav', 'quicklinks', 'learninglinks', 'supportlinks', 'privacyurl', 'termsurl'];
+    foreach ($settings as $name) {
+        $value = get_config('theme_nextgen', $name);
+        if (!is_string($value) || !str_contains($value, '/theme/nextgen/')) {
+            continue;
+        }
+        $updated = str_replace(array_keys($map), array_values($map), $value);
+        if ($updated !== $value) {
+            set_config($name, $updated, 'theme_nextgen');
+        }
+    }
+}
+
+/**
+ * Compare link settings without empty or mixed line endings.
+ *
+ * @param string $raw
+ * @return string
+ */
+function theme_nextgen_normalise_lines(string $raw): string {
+    $lines = preg_split("/\r\n|\n|\r/", trim($raw));
+    $kept = [];
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line !== '') {
+            $kept[] = $line;
+        }
+    }
+    return implode("\n", $kept);
 }
 
 /**
@@ -624,13 +848,15 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
         $price = $commercial['price'];
     }
 
-    $enrolled = is_enrolled($context, $USER, '', true);
+    $enrolled = isloggedin() && !isguestuser() && is_enrolled($context, $USER, '', true);
     if ($enrolled) {
-        $actionurl = (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false) . '#ng-course-content';
+        $entry = new moodle_url('/course/view.php', ['id' => $course->id]);
+        $actionurl = $entry->out(false) . '#ng-course-content';
         $actionlabel = get_string('coursecontinue', 'theme_nextgen');
     } else {
-        $actionurl = (new moodle_url('/enrol/index.php', ['id' => $course->id]))->out(false);
-        $actionlabel = get_string('courseenrol', 'theme_nextgen');
+        $entry = theme_nextgen_course_public_url((int) $course->id);
+        $actionurl = $entry->out(false);
+        $actionlabel = get_string('viewcourse', 'theme_nextgen');
     }
 
     return [
@@ -639,7 +865,7 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
             'escape' => false,
         ]),
         'image' => $image,
-        'url' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false),
+        'url' => $entry->out(false),
         'bestseller' => $commercial['bestseller'],
         'hasteachers' => $teacherlabel !== '',
         'teachers' => $teacherlabel,
@@ -779,6 +1005,11 @@ function theme_nextgen_install_commercial_fields(): void {
         ['shortname' => 'ngrating', 'name' => 'fieldrating', 'description' => 'fieldratingdesc', 'type' => 'text'],
         ['shortname' => 'ngreviews', 'name' => 'fieldreviews', 'description' => 'fieldreviewsdesc', 'type' => 'text'],
         ['shortname' => 'ngbestseller', 'name' => 'fieldbestseller', 'description' => 'fieldbestsellerdesc', 'type' => 'checkbox'],
+        ['shortname' => 'nglevel', 'name' => 'fieldlevel', 'description' => 'fieldleveldesc', 'type' => 'text'],
+        ['shortname' => 'ngduration', 'name' => 'fieldlength', 'description' => 'fieldlengthdesc', 'type' => 'text'],
+        ['shortname' => 'ngeffort', 'name' => 'fieldeffort', 'description' => 'fieldeffortdesc', 'type' => 'text'],
+        ['shortname' => 'ngcertificate', 'name' => 'fieldcertificate', 'description' => 'fieldcertificatedesc', 'type' => 'text'],
+        ['shortname' => 'nglanguage', 'name' => 'fieldlanguage', 'description' => 'fieldlanguagedesc', 'type' => 'text'],
     ];
     $sort = 0;
     foreach ($fields as $spec) {
@@ -798,6 +1029,62 @@ function theme_nextgen_install_commercial_fields(): void {
                 'defaultvalue' => '',
                 'displaysize' => 30,
                 'maxlength' => 30,
+                'checkbydefault' => 0,
+            ],
+        ];
+        $field = \core_customfield\field_controller::create(0, (object) ['type' => $spec['type']], $category);
+        $handler->save_field_configuration($field, $record);
+    }
+}
+
+/**
+ * Add course-page fact fields when an older install only has the price fields.
+ */
+function theme_nextgen_install_fact_fields(): void {
+    $handler = \core_course\customfield\course_handler::create();
+    $present = [];
+    $category = null;
+    foreach ($handler->get_categories_with_fields() as $existing) {
+        foreach ($existing->get_fields() as $field) {
+            $present[$field->get('shortname')] = true;
+            if ($field->get('shortname') === 'ngprice') {
+                $category = $existing;
+            }
+        }
+    }
+    if ($category === null) {
+        theme_nextgen_install_commercial_fields();
+        return;
+    }
+
+    $fields = [
+        ['shortname' => 'nglevel', 'name' => 'fieldlevel', 'description' => 'fieldleveldesc', 'type' => 'text'],
+        ['shortname' => 'ngduration', 'name' => 'fieldlength', 'description' => 'fieldlengthdesc', 'type' => 'text'],
+        ['shortname' => 'ngeffort', 'name' => 'fieldeffort', 'description' => 'fieldeffortdesc', 'type' => 'text'],
+        ['shortname' => 'ngcertificate', 'name' => 'fieldcertificate', 'description' => 'fieldcertificatedesc', 'type' => 'text'],
+        ['shortname' => 'nglanguage', 'name' => 'fieldlanguage', 'description' => 'fieldlanguagedesc', 'type' => 'text'],
+    ];
+    $sort = count($present);
+    foreach ($fields as $spec) {
+        if (!empty($present[$spec['shortname']])) {
+            continue;
+        }
+        $sort++;
+        $record = (object) [
+            'name' => get_string($spec['name'], 'theme_nextgen'),
+            'shortname' => $spec['shortname'],
+            'type' => $spec['type'],
+            'description' => get_string($spec['description'], 'theme_nextgen'),
+            'descriptionformat' => FORMAT_HTML,
+            'sortorder' => $sort,
+            'configdata' => [
+                'required' => 0,
+                'uniquevalues' => 0,
+                'locked' => 0,
+                'visibility' => \core_course\customfield\course_handler::VISIBLETOALL,
+                'defaultvalue' => '',
+                'displaysize' => 30,
+                'maxlength' => 1333,
                 'checkbydefault' => 0,
             ],
         ];
@@ -900,6 +1187,50 @@ function theme_nextgen_landing_instructors(): array {
 }
 
 /**
+ * Public address for a course. This is Moodle's course page, not a theme script.
+ *
+ * Visitors who are not enrolled see the sales layout at this same address.
+ *
+ * @param int $courseid
+ * @return moodle_url
+ */
+function theme_nextgen_course_public_url(int $courseid): moodle_url {
+    return new moodle_url('/course/view.php', ['id' => $courseid]);
+}
+
+/**
+ * Serve the public course page before course/view.php requires a login.
+ */
+function theme_nextgen_after_config(): void {
+    global $CFG;
+
+    if (during_initial_install() || !empty($CFG->upgraderunning)) {
+        return;
+    }
+    if (($CFG->theme ?? '') === 'nextgen') {
+        theme_nextgen_publish_public_paths();
+    }
+    \theme_nextgen\local\course_page::serve_public_course();
+}
+
+/**
+ * Where the enrol button goes. A signed-in user opens the enrol page.
+ * A visitor is sent through login first, then back to that enrol page.
+ *
+ * @param int $courseid
+ * @return moodle_url
+ */
+function theme_nextgen_course_enrol_url(int $courseid): moodle_url {
+    $enrol = new moodle_url('/enrol/index.php', ['id' => $courseid]);
+    if (isloggedin() && !isguestuser()) {
+        return $enrol;
+    }
+    return new moodle_url('/login/index.php', [
+        'wantsurl' => $enrol->out_as_local_url(false),
+    ]);
+}
+
+/**
  * Whether this request should use the course sales layout.
  *
  * Activity pages are unchanged. The course editor stays available under the sales layout.
@@ -915,7 +1246,8 @@ function theme_nextgen_is_course_detail_page(moodle_page $page): bool {
     if ($page->pagelayout === 'course') {
         return true;
     }
-    return (string) $page->pagetype === 'enrol-index';
+    $pagetype = (string) $page->pagetype;
+    return $pagetype === 'enrol-index' || $pagetype === 'theme-nextgen-course';
 }
 
 /**
@@ -969,42 +1301,11 @@ function theme_nextgen_course_detail_context(): ?array {
         ];
     }
 
-    $sectionnames = [];
-    $summaryoutcomes = [];
-    $activitycount = 0;
-    $certificates = [];
-    $modinfo = get_fast_modinfo($course->id);
-    foreach ($modinfo->get_cms() as $cm) {
-        if (!$cm->uservisible || !empty($cm->deletioninprogress)) {
-            continue;
-        }
-        $activitycount++;
-        if (in_array($cm->modname, ['customcert', 'certificate'], true)) {
-            $certificates[] = [
-                'name' => format_string($cm->name, true, ['context' => $context]),
-                'url' => $cm->url ? $cm->url->out(false) : '',
-            ];
-        }
-    }
-    foreach ($modinfo->get_section_info_all() as $section) {
-        if ((int) $section->sectionnum === 0 || empty($section->uservisible)) {
-            continue;
-        }
-        $customname = trim((string) $section->name);
-        if ($customname === '') {
-            continue;
-        }
-        $name = format_string($customname, true, ['context' => $context]);
-        $sectionnames[] = $name;
-        $learned = trim(html_to_text(format_text(
-            $section->summary,
-            $section->summaryformat,
-            ['context' => $context]
-        ), 0, false));
-        if ($learned !== '') {
-            $summaryoutcomes[] = ['text' => shorten_text($learned, 180)];
-        }
-    }
+    $outline = theme_nextgen_course_outline($course, $context);
+    $sectionnames = $outline['sectionnames'];
+    $summaryoutcomes = $outline['summaryoutcomes'];
+    $activitycount = $outline['activities'];
+    $certificates = $outline['certificates'];
     if (!$outcomes) {
         $outcomes = $summaryoutcomes;
     }
@@ -1026,41 +1327,48 @@ function theme_nextgen_course_detail_context(): ?array {
         $translations = get_string_manager()->get_list_of_translations();
         $language = $translations[$course->lang] ?? $course->lang;
     }
+    if ($language === '') {
+        $translations = get_string_manager()->get_list_of_translations();
+        $current = current_language();
+        $language = $translations[$current] ?? $current;
+    }
+
+    $certificatevalue = $extra['ngcertificate'];
+    if ($certificatevalue === '' && $certificates) {
+        $certificatevalue = get_string('yes');
+    }
 
     $facts = [];
-    $factmap = [
-        'ngduration' => ['courselength', $extra['ngduration']],
-        'nglevel' => ['courselevel', $extra['nglevel']],
-        'ngeffort' => ['courseeffort', $extra['ngeffort']],
-        'ngcertificate' => ['coursecertificate', $extra['ngcertificate']],
-    ];
-    foreach ($factmap as $spec) {
-        if ($spec[1] !== '') {
-            $facts[] = [
-                'label' => get_string($spec[0], 'theme_nextgen'),
-                'value' => $spec[1],
-            ];
+    $pushfact = static function (array &$facts, string $icon, string $stringkey, string $value): void {
+        if ($value === '') {
+            return;
         }
-    }
-    if ($language !== '') {
         $facts[] = [
-            'label' => get_string('courselanguage', 'theme_nextgen'),
-            'value' => $language,
+            'label' => get_string($stringkey, 'theme_nextgen'),
+            'value' => $value,
+            'level' => $icon === 'level',
+            'length' => $icon === 'length',
+            'effort' => $icon === 'effort',
+            'certificate' => $icon === 'certificate',
+            'language' => $icon === 'language',
+            'starts' => $icon === 'starts',
         ];
-    }
+    };
+    $pushfact($facts, 'level', 'courselevel', $extra['nglevel']);
+    $pushfact($facts, 'length', 'courselength', $extra['ngduration']);
+    $pushfact($facts, 'effort', 'courseeffort', $extra['ngeffort']);
+    $pushfact($facts, 'certificate', 'coursecertificate', $certificatevalue);
+    $pushfact($facts, 'language', 'courselanguage', $language);
     if (!empty($course->startdate)) {
-        $facts[] = [
-            'label' => get_string('coursestarts', 'theme_nextgen'),
-            'value' => userdate($course->startdate, get_string('strftimedatefullshort')),
-        ];
+        $pushfact($facts, 'starts', 'coursestarts', userdate($course->startdate, get_string('strftimedatefullshort')));
     }
 
     $includes = [];
     if ($activitycount > 0) {
         $includes[] = ['label' => get_string('courseactivities', 'theme_nextgen', $activitycount)];
     }
-    if ($sectionnames) {
-        $includes[] = ['label' => get_string('coursesections', 'theme_nextgen', count($sectionnames))];
+    if (!empty($outline['sections'])) {
+        $includes[] = ['label' => get_string('coursesections', 'theme_nextgen', count($outline['sections']))];
     }
     if ($language !== '') {
         $includes[] = ['label' => $language];
@@ -1075,6 +1383,9 @@ function theme_nextgen_course_detail_context(): ?array {
         $enrollabel = get_string('coursecontinue', 'theme_nextgen');
     } else if ((string) $PAGE->pagetype === 'enrol-index') {
         $enrolurl = '#ng-enrolment';
+        $enrollabel = get_string('courseenrol', 'theme_nextgen');
+    } else if ((string) $PAGE->pagetype === 'theme-nextgen-course') {
+        $enrolurl = theme_nextgen_course_enrol_url((int) $course->id)->out(false);
         $enrollabel = get_string('courseenrol', 'theme_nextgen');
     } else {
         $enrolurl = (new moodle_url('/enrol/index.php', ['id' => $course->id]))->out(false);
@@ -1143,7 +1454,117 @@ function theme_nextgen_course_detail_context(): ?array {
         'breadcrumbs' => $breadcrumbs,
         'enrolurl' => $enrolurl,
         'enrollabel' => $enrollabel,
+        'quoteurl' => (new moodle_url('/user/contactsitesupport.php'))->out(false),
+        'shareurl' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false),
         'showactivities' => $PAGE->pagelayout === 'course',
+        'hasoutline' => !empty($outline['sections']),
+        'outlineempty' => empty($outline['sections']),
+        'outlinecounts' => $outline['counts'],
+        'sections' => $outline['sections'],
+        'bestseller' => !empty($card['bestseller']),
+        'hasstudents' => (int) ($card['enrolments'] ?? 0) > 0,
+        'students' => get_string('studentcount', 'theme_nextgen', (int) ($card['enrolments'] ?? 0)),
+        'hasupdated' => !empty($card['date']),
+        'updated' => get_string('lastupdated', 'theme_nextgen', $card['date'] ?? ''),
+        'hasmeta' => !empty($card['bestseller']) || $card['hasrating'] || (int) ($card['enrolments'] ?? 0) > 0 || !empty($card['date']),
+    ];
+}
+
+/**
+ * Visible sections and activities for the course content tab.
+ *
+ * Names of visible items are catalogue information. A link is included only
+ * when this user is allowed to open that activity.
+ *
+ * @param core_course_list_element $course
+ * @param context_course $context
+ * @return array
+ */
+function theme_nextgen_course_outline(core_course_list_element $course, context_course $context): array {
+    global $OUTPUT;
+
+    $sections = [];
+    $sectionnames = [];
+    $summaryoutcomes = [];
+    $certificates = [];
+    $activities = 0;
+    $resources = 0;
+
+    $modinfo = get_fast_modinfo($course->id);
+    $number = 0;
+    foreach ($modinfo->get_section_info_all() as $section) {
+        if (empty($section->visible)) {
+            continue;
+        }
+        $cmids = $modinfo->sections[(int) $section->sectionnum] ?? [];
+        $items = [];
+        foreach ($cmids as $cmid) {
+            $cm = $modinfo->get_cm($cmid);
+            if (empty($cm->visible) || !empty($cm->deletioninprogress) || $cm->modname === 'label') {
+                continue;
+            }
+            $archetype = plugin_supports('mod', $cm->modname, FEATURE_MOD_ARCHETYPE, MOD_ARCHETYPE_OTHER);
+            $isresource = $archetype === MOD_ARCHETYPE_RESOURCE;
+            if ($isresource) {
+                $resources++;
+            } else {
+                $activities++;
+            }
+            $name = format_string($cm->name, true, ['context' => $context]);
+            $icon = $cm->get_icon_url($OUTPUT);
+            $items[] = [
+                'name' => $name,
+                'iconurl' => $icon ? $icon->out(false) : '',
+                'url' => ($cm->uservisible && $cm->url) ? $cm->url->out(false) : '',
+            ];
+            if (in_array($cm->modname, ['customcert', 'certificate'], true)) {
+                $certificates[] = [
+                    'name' => $name,
+                    'url' => ($cm->uservisible && $cm->url) ? $cm->url->out(false) : '',
+                ];
+            }
+        }
+
+        if ((int) $section->sectionnum === 0 && !$items) {
+            continue;
+        }
+
+        $name = get_section_name((int) $course->id, $section);
+        $number++;
+        $sections[] = [
+            'number' => $number,
+            'name' => $name,
+            'open' => $number === 1,
+            'hasactivities' => !empty($items),
+            'activities' => $items,
+        ];
+        if ((int) $section->sectionnum !== 0) {
+            $sectionnames[] = $name;
+            $learned = trim(html_to_text(format_text(
+                (string) $section->summary,
+                (int) $section->summaryformat,
+                ['context' => $context]
+            ), 0, false));
+            if ($learned !== '') {
+                $summaryoutcomes[] = ['text' => shorten_text($learned, 180)];
+            }
+        }
+    }
+
+    $counts = get_string('contentcounts', 'theme_nextgen', (object) [
+        'sections' => count($sections),
+        'activities' => $activities,
+        'resources' => $resources,
+    ]);
+
+    return [
+        'sections' => $sections,
+        'sectionnames' => $sectionnames,
+        'summaryoutcomes' => $summaryoutcomes,
+        'certificates' => $certificates,
+        'activities' => $activities,
+        'resources' => $resources,
+        'counts' => $counts,
     ];
 }
 

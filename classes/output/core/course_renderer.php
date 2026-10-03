@@ -30,6 +30,7 @@ class course_renderer extends \core_course_renderer {
      * @param int|\stdClass|\core_course_category $category
      * @return string
      */
+    #[\Override]
     public function course_category($category) {
         $context = theme_nextgen_catalogue_context();
         $html = $this->render_from_template('theme_nextgen/catalogue_hero', $context);
@@ -47,6 +48,7 @@ class course_renderer extends \core_course_renderer {
      * @param string $additionalclasses
      * @return string
      */
+    #[\Override]
     protected function coursecat_coursebox(\coursecat_helper $chelper, $course, $additionalclasses = '') {
         if ($chelper->get_show_courses() <= self::COURSECAT_SHOW_COURSES_COUNT) {
             return '';
@@ -74,6 +76,7 @@ class course_renderer extends \core_course_renderer {
      * @param \core\url|null $returnurl
      * @return string
      */
+    #[\Override]
     public function enrolment_options(\stdClass $course, array $widgets, ?\core\url $returnurl = null): string {
         $message = '';
         $continuebutton = '';
