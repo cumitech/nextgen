@@ -551,7 +551,7 @@ function theme_nextgen_featured_courses(): array {
  * @return array
  */
 function theme_nextgen_course_card_data(core_course_list_element $course): array {
-    global $CFG, $DB, $OUTPUT;
+    global $CFG, $DB, $OUTPUT, $USER;
 
     $context = context_course::instance($course->id);
     $image = '';
@@ -614,9 +614,21 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
     $timestamp = !empty($course->startdate) ? (int) $course->startdate : (int) $course->timecreated;
     $date = preg_replace('/^0/', '', userdate($timestamp, '%d %B %Y'));
 
-    $price = $commercial['price'];
-    if ($price === '' && !empty($CFG->enrol_plugins_enabled) && str_contains($CFG->enrol_plugins_enabled, 'fee')) {
-        $price = theme_nextgen_enrol_fee_price($course->id);
+    $price = '';
+    if (!empty($CFG->enrol_plugins_enabled) && str_contains($CFG->enrol_plugins_enabled, 'fee')) {
+        $price = theme_nextgen_enrol_fee_price((int) $course->id);
+    }
+    if ($price === '') {
+        $price = $commercial['price'];
+    }
+
+    $enrolled = is_enrolled($context, $USER, '', true);
+    if ($enrolled) {
+        $actionurl = (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false) . '#ng-course-content';
+        $actionlabel = get_string('coursecontinue', 'theme_nextgen');
+    } else {
+        $actionurl = (new moodle_url('/enrol/index.php', ['id' => $course->id]))->out(false);
+        $actionlabel = get_string('courseenrol', 'theme_nextgen');
     }
 
     return [
@@ -637,6 +649,8 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
         'reviews' => $reviews ?? 0,
         'hasprice' => $price !== '',
         'price' => $price,
+        'actionurl' => $actionurl,
+        'actionlabel' => $actionlabel,
         'enrolments' => $enrolments,
         'date' => $date,
     ];
@@ -715,32 +729,28 @@ function theme_nextgen_format_price(string $raw): string {
         return $raw;
     }
     $number = (float) str_replace(',', '', $raw);
-    return '$' . number_format($number, 2);
+    return number_format($number, 2);
 }
 
 /**
- * Price from an enabled fee enrolment instance, when the course has no price field.
+ * Localised cost of the first enabled fee enrolment, including XAF.
+ *
+ * Uses Moodle's payment formatter so the currency's own fraction digits are kept.
+ * An empty string means this course has no fee to display.
  *
  * @param int $courseid
  * @return string
  */
 function theme_nextgen_enrol_fee_price(int $courseid): string {
-    $symbols = [
-        'USD' => '$',
-        'EUR' => '€',
-        'GBP' => '£',
-        'NGN' => '₦',
-        'GHS' => 'GH₵',
-        'ZAR' => 'R',
-        'CAD' => 'CA$',
-        'AUD' => 'A$',
-    ];
     foreach (enrol_get_instances($courseid, true) as $instance) {
         if ($instance->enrol !== 'fee' || $instance->cost === null || $instance->cost === '') {
             continue;
         }
-        $symbol = $symbols[$instance->currency] ?? ($instance->currency . ' ');
-        return $symbol . number_format((float) $instance->cost, 2);
+        $currency = (string) $instance->currency;
+        if ($currency === '') {
+            continue;
+        }
+        return \core_payment\helper::get_cost_as_string((float) $instance->cost, $currency);
     }
     return '';
 }

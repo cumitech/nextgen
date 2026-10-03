@@ -1674,6 +1674,21 @@ body.nextgen .ng-course-meta {
     padding: 0.85rem 1.1rem 1.1rem;
 }
 
+body.nextgen article.ng-course-card .ng-course-action {
+    padding: 0.85rem 0.3rem 0.15rem;
+}
+
+body.nextgen article.ng-course-card .ng-course-action .btn {
+    width: 100%;
+}
+
+@media (max-width: 767.98px) {
+    body.nextgen .ng-course-enrol,
+    body.nextgen .ng-enrol-card .btn {
+        width: 100%;
+    }
+}
+
 body.nextgen .ng-course-meta .card-footer {
     background: transparent;
     border: 0;

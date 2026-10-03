@@ -1,0 +1,18 @@
+---
+description: Moodle theme plugin architecture for theme_nextgen
+alwaysApply: true
+---
+
+# Theme plugin architecture
+
+This repository is the Moodle theme `theme_nextgen`. Follow [Theme plugins](https://moodledev.io/docs/5.3/apis/plugintypes/theme). Do not invent another plugin type or rename the component.
+
+- Frankenstyle component is `theme_nextgen`. The install directory is `theme/nextgen`. Folder and component use lowercase letters only.
+- Keep `version.php` a data file only. Set `$plugin->component`, `$plugin->version`, `$plugin->requires`, and `$plugin->dependencies`. Never `require`, `require_once`, or call functions in it. Bump `$plugin->version` (YYYYMMDDXX) when an upgrade step or install metadata changes.
+- `lang/en/theme_nextgen.php` must define `pluginname`, `choosereadme`, and `configtitle`. Add every user-facing string here. Load strings with `get_string('key', 'theme_nextgen')`.
+- Theme behaviour belongs in `config.php` on `$THEME`. `$THEME->name` is `nextgen`. This theme extends Boost: `$THEME->parents` must include `boost`. Set `$THEME->rendererfactory` to `theme_overridden_renderer_factory` when customising core output.
+- Stylesheets named in `$THEME->sheets` are bare names of files in `style/` (no path, no `.css`). SCSS compiled by Moodle lives in `scss/`.
+- Map every layout this theme changes in `$THEME->layouts`. Keep the same element ids Boost relies on, including `page-header`. The `maintenance` layout must not query the database or caches, and must not add blocks or links that do.
+- Override core templates only as `templates/{component}/{templatename}.mustache`. Override icons in `pix_core` or `pix_plugins/{plugintype}/{pluginname}`.
+- New JavaScript is an ES6 module in `amd/src/`, called with `$PAGE->requires->js_call_amd()`. Do not add `$THEME->javascripts` or `$THEME->javascripts_footer`; both are deprecated.
+- `db/access.php` is required only when this theme defines capabilities. Do not add it for appearance-only work.

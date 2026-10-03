@@ -1,0 +1,30 @@
+---
+description: Moodle PHP coding style (PSR-12 plus Moodle rules)
+alwaysApply: true
+---
+
+# Moodle coding style
+
+Follow [Moodle coding style](https://moodledev.io/general/development/policies/codingstyle). It defers to PSR-12, then PSR-1. Match the style of the surrounding file when editing it.
+
+- Indent with 4 spaces. No tabs. Unix LF only. No trailing whitespace. No closing `?>`.
+- Start PHP files with the GPL boilerplate and `@package theme_nextgen`. Unless the file is only a namespaced class, interface, or trait, the next line is `defined('MOODLE_INTERNAL') || die();`.
+- New classes live in a namespace under `theme_nextgen\` and in `classes/` using PSR-4 (`classes/output/course_card.php` → `theme_nextgen\output\course_card`). Add `#[\Override]` when overriding a parent method.
+- Global functions use lowercase words separated by underscores and start with `theme_nextgen_`. Class methods use the same lowercase underscore form.
+- Variables are short lowercase English words with no underscores (`$courselist`, not `$course_list` or `$courseList`). Name arrays of objects in the plural. Prefer positive names (`$enabled`). Do not invent new globals; only Moodle core globals (`$CFG`, `$DB`, `$PAGE`, `$OUTPUT`, `$USER`, `$COURSE`, `$SITE`, `$SESSION`, `$THEME`) are uppercase.
+- Constants are `UPPER_SNAKE` and start with `THEME_NEXTGEN_`. Use lowercase `true`, `false`, and `null`. Use `stdClass`, not `object`.
+- Literal strings use single quotes. Use `[]` for arrays. Concatenate with `.`, and put the dot at the end of the line when wrapping.
+- Always use braces. Opening brace stays on the same line. Write `else if`, never `elseif`. Put one space after control keywords: `if ($x == $y) {`.
+- Includes use `__DIR__` or `$CFG->dirroot` / `$CFG->libdir`. Do not include with a leading `../`.
+- Document functions and methods with PHPDoc (`@param`, `@return`, `@throws`). Throw `moodle_exception` or `coding_exception`, not a bare `\Exception`, for Moodle errors.
+
+```php
+// Correct.
+if ($enabled && $courseid) {
+    $card = new course_card();
+    $title = get_string('viewcourse', 'theme_nextgen');
+}
+
+// Wrong: tabs, elseif, camelCase, missing braces, hardcoded string.
+if($enabled) echo "View course";
+```

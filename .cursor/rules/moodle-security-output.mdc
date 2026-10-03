@@ -1,0 +1,22 @@
+---
+description: Moodle security, database, output, and JavaScript rules
+alwaysApply: true
+---
+
+# Security, data, and output
+
+Apply these on every change. A theme layout must not force login for guests; a script that shows private data must.
+
+- Read request data only with `optional_param()` or `required_param()` and a `PARAM_*` type (`PARAM_INT`, `PARAM_ALPHA`, `PARAM_TEXT`, `PARAM_RAW` only when HTML is intentional and then cleaned). Do not read `$_GET`, `$_POST`, or `$_REQUEST` directly.
+- A PHP script requested as its own page calls `require_login()` and, when an action is privileged, `require_capability()`. Pass the course or module when the page belongs to one. Layout files, `lib.php` callbacks, `settings.php`, and `version.php` must not call `require_login()`; that sends the whole site to the login page.
+- Escape output for the current context: `s()` or `format_string()` for plain text, `format_text()` for HTML. In Mustache, use `{{ }}` for escaped text and `{{{ }}}` only for HTML Moodle has already formatted.
+- Do not build HTML in PHP. Pass data to a Mustache template or a renderer in `classes/output/`.
+- Database access goes through `$DB` only (`get_record`, `get_records`, `insert_record`, and the rest). No raw `mysqli_*`, PDO, or string-built SQL. Table names use `{tablename}` braces. Values use named parameters, never concatenated SQL.
+
+```php
+$courseid = required_param('id', PARAM_INT);
+$course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
+```
+
+- Do not use `eval()`, `unserialize()` on user input, `preg_replace()` with the `/e` modifier, backticks, `shell_exec()`, or `goto`.
+- JavaScript in `amd/src/` uses Moodle's AMD pattern. Do not use inline `<script>` in templates, jQuery added by hand, or `YUI`. Purge caches after template, language, or JavaScript changes; do not tell the user a theme change is live until caches are purged.

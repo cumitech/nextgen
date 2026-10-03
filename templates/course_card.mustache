@@ -21,7 +21,7 @@
 }}
 <article class="ng-course-card">
     <a class="ng-course-media" href="{{url}}">
-        <img src="{{image}}" alt="">
+        <img src="{{image}}" alt="{{fullname}}">
         {{#bestseller}}
             <span class="ng-course-badge">{{#str}}bestseller, theme_nextgen{{/str}}</span>
         {{/bestseller}}
@@ -61,5 +61,8 @@
                 {{date}}
             </span>
         </p>
+    </div>
+    <div class="ng-course-action">
+        <a class="btn btn-primary" href="{{actionurl}}">{{actionlabel}}</a>
     </div>
 </article>
