@@ -1,0 +1,40 @@
+/*
+ * Tailwind entry for NextGen.
+ * Preflight is omitted so Bootstrap, which Boost already loads, keeps working.
+ * Utilities are prefixed with tw: so they do not collide with Bootstrap classes
+ * such as collapse, container, and hidden, or with the --ng-* brand tokens.
+ * Brand colours reference --ng-* variables emitted by the Moodle SCSS pipeline.
+ */
+
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@source "../templates/**/*.mustache";
+@source "../classes/**/*.php";
+@source "../layout/**/*.php";
+@source "../amd/src/**/*.js";
+
+@theme {
+    --font-sans: Manrope, "Segoe UI", sans-serif;
+
+    --color-primary: var(--ng-primary);
+    --color-primary-hover: var(--ng-primary-hover);
+    --color-primary-foreground: var(--ng-primary-foreground);
+    --color-secondary: var(--ng-secondary);
+    --color-accent: var(--ng-accent);
+    --color-gold: var(--ng-gold);
+    --color-clay: var(--ng-clay);
+    --color-ink: var(--ng-ink);
+    --color-background: var(--ng-background);
+    --color-surface: var(--ng-surface);
+    --color-muted: var(--ng-muted);
+    --color-border: var(--ng-border);
+    --color-text: var(--ng-text);
+    --color-text-muted: var(--ng-text-muted);
+    --color-success: var(--ng-success);
+    --color-warning: var(--ng-warning);
+    --color-error: var(--ng-error);
+    --color-info: var(--ng-info);
+}

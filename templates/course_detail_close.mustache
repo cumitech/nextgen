@@ -1,0 +1,80 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_nextgen/course_detail_close
+
+    Closes the course sales layout opened by course_detail_open.
+}}
+    </div>
+</div>
+{{#js}}
+require(['jquery'], function($) {
+    var root = document.querySelector('.ng-course-columns');
+    if (!root) {
+        return;
+    }
+    var tabs = root.querySelectorAll('[data-ng-tab]');
+    var panels = root.querySelectorAll('[data-ng-panel]');
+
+    var show = function(name) {
+        tabs.forEach(function(tab) {
+            var on = tab.getAttribute('data-ng-tab') === name;
+            tab.classList.toggle('is-active', on);
+            tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        panels.forEach(function(panel) {
+            if (panel.getAttribute('data-ng-panel') === name) {
+                panel.hidden = false;
+            } else {
+                panel.hidden = true;
+            }
+        });
+        window.dispatchEvent(new Event('resize'));
+    };
+
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            show(tab.getAttribute('data-ng-tab'));
+        });
+    });
+
+    var fromHash = function() {
+        var hash = window.location.hash;
+        if (hash === '#ng-course-content' || hash === '#ng-enrolment') {
+            return 'content';
+        }
+        return 'overview';
+    };
+
+    document.querySelectorAll('.ng-course-enrol').forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            var href = link.getAttribute('href') || '';
+            if (href.indexOf('#ng-course-content') === -1 && href.indexOf('#ng-enrolment') === -1) {
+                return;
+            }
+            event.preventDefault();
+            show('content');
+            var target = document.getElementById(href.slice(href.indexOf('#') + 1));
+            if (target) {
+                target.scrollIntoView({behavior: 'smooth', block: 'start'});
+            }
+        });
+    });
+
+    show(fromHash());
+});
+{{/js}}

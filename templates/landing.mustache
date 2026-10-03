@@ -1,0 +1,228 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_nextgen/landing
+
+    Site home marketing page. Course and category data is supplied by the theme.
+}}
+<div class="ng-landing">
+    <section class="ng-hero">
+        <div class="ng-hero-slides" aria-hidden="true">
+            <span class="ng-hero-slide"></span>
+            <span class="ng-hero-slide"></span>
+            <span class="ng-hero-slide"></span>
+            <span class="ng-hero-slide"></span>
+        </div>
+        <div class="ng-landing-inner ng-hero-grid">
+            <div>
+                <p class="ng-kicker">{{#str}}loginkicker, theme_nextgen{{/str}}</p>
+                <h1 class="ng-hero-title">{{herotitle}}</h1>
+                <p class="ng-hero-text">{{herotext}}</p>
+                <div class="ng-hero-actions">
+                    {{#hasprimary}}
+                        <a class="btn btn-primary btn-lg" href="{{primary.url}}">{{primary.label}}</a>
+                    {{/hasprimary}}
+                    {{#hassecondary}}
+                        <a class="btn btn-lg ng-btn-ghost" href="{{secondary.url}}">{{secondary.label}}</a>
+                    {{/hassecondary}}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ng-section ng-tiles" id="why-nextgen">
+        <div class="ng-landing-inner">
+            <div class="ng-tile-grid">
+                {{#reasons}}
+                    <article class="ng-tile ng-tile-{{tone}}">
+                        <span class="ng-tile-pattern" aria-hidden="true"></span>
+                        <h2>{{title}}</h2>
+                    </article>
+                {{/reasons}}
+            </div>
+        </div>
+    </section>
+
+    <section class="ng-section ng-forward">
+        <div class="ng-landing-inner ng-forward-grid">
+            <div>
+                <h2>{{#str}}whyheading, theme_nextgen{{/str}}</h2>
+                <p class="ng-forward-text">{{#str}}forwardtext, theme_nextgen{{/str}}</p>
+                <a class="btn btn-primary" href="{{coursesurl}}">{{#str}}browseall, theme_nextgen{{/str}}</a>
+            </div>
+            <ol class="ng-forward-list">
+                {{#steps}}
+                    <li>
+                        <span class="ng-step-number">{{number}}</span>
+                        <div>
+                            <h3>{{title}}</h3>
+                            <p>{{text}}</p>
+                        </div>
+                    </li>
+                {{/steps}}
+            </ol>
+        </div>
+    </section>
+
+    <section class="ng-section ng-section-muted" id="featured-courses">
+        <div class="ng-landing-inner">
+            <div class="ng-section-head">
+                <h2>{{#str}}featuredheading, theme_nextgen{{/str}}</h2>
+                <a href="{{coursesurl}}">{{#str}}browseall, theme_nextgen{{/str}}</a>
+            </div>
+            {{#hascourses}}
+                <div class="ng-card-grid">
+                    {{#courses}}
+                        {{> theme_nextgen/course_card }}
+                    {{/courses}}
+                </div>
+            {{/hascourses}}
+            {{^hascourses}}
+                <p class="ng-empty">{{#str}}nocoursesyet, theme_nextgen{{/str}}</p>
+            {{/hascourses}}
+        </div>
+    </section>
+
+    {{#hascategories}}
+        <section class="ng-section" id="categories">
+            <div class="ng-landing-inner">
+                <h2>{{#str}}categoriesheading, theme_nextgen{{/str}}</h2>
+                <div class="ng-category-grid">
+                    {{#categories}}
+                        <a class="ng-category-tile" href="{{url}}">
+                            <img class="ng-category-photo" src="{{image}}" alt="">
+                            <span class="ng-category-copy">{{name}}</span>
+                        </a>
+                    {{/categories}}
+                </div>
+            </div>
+        </section>
+    {{/hascategories}}
+
+    <section class="ng-partners" aria-labelledby="ng-partners-heading">
+        <div class="ng-landing-inner">
+            <h2 id="ng-partners-heading">{{#str}}partnersheading, theme_nextgen{{/str}}</h2>
+            <ul class="ng-partner-row">
+                <li>
+                    <span class="visually-hidden">Atos</span>
+                    <svg class="ng-partner-logo ng-partner-atos" viewBox="0 0 118 36" aria-hidden="true">
+                        <text x="0" y="29" fill="#0072CE" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700">Atos</text>
+                    </svg>
+                </li>
+                <li>
+                    <span class="visually-hidden">Cisco</span>
+                    <svg class="ng-partner-logo ng-partner-cisco" viewBox="0 0 168 52" aria-hidden="true">
+                        <g fill="#049FD9">
+                            <rect x="28" y="18" width="5" height="10" rx="1"/>
+                            <rect x="37" y="13" width="5" height="15" rx="1"/>
+                            <rect x="46" y="8" width="5" height="20" rx="1"/>
+                            <rect x="55" y="4" width="5" height="24" rx="1"/>
+                            <rect x="64" y="1" width="5" height="27" rx="1"/>
+                            <rect x="73" y="4" width="5" height="24" rx="1"/>
+                            <rect x="82" y="8" width="5" height="20" rx="1"/>
+                            <rect x="91" y="13" width="5" height="15" rx="1"/>
+                            <rect x="100" y="18" width="5" height="10" rx="1"/>
+                        </g>
+                        <text x="18" y="49" fill="#049FD9" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="0.5">cisco</text>
+                    </svg>
+                </li>
+                <li>
+                    <span class="visually-hidden">EMC</span>
+                    <svg class="ng-partner-logo ng-partner-emc" viewBox="0 0 108 40" aria-hidden="true">
+                        <text x="0" y="32" fill="#1A6BB5" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="700">EMC</text>
+                        <text x="86" y="14" fill="#1A6BB5" font-family="Georgia, 'Times New Roman', serif" font-size="16" font-weight="700">2</text>
+                    </svg>
+                </li>
+                <li>
+                    <span class="visually-hidden">Microsoft</span>
+                    <svg class="ng-partner-logo ng-partner-microsoft" viewBox="0 0 40 40" aria-hidden="true">
+                        <rect x="1" y="1" width="17" height="17" fill="#F25022"/>
+                        <rect x="22" y="1" width="17" height="17" fill="#7FBA00"/>
+                        <rect x="1" y="22" width="17" height="17" fill="#00A4EF"/>
+                        <rect x="22" y="22" width="17" height="17" fill="#FFB900"/>
+                    </svg>
+                </li>
+                <li>
+                    <span class="visually-hidden">IBM</span>
+                    <svg class="ng-partner-logo ng-partner-ibm" viewBox="0 0 96 36" aria-hidden="true">
+                        <defs>
+                            <pattern id="ng-ibm-stripes" width="5" height="5" patternUnits="userSpaceOnUse">
+                                <rect width="5" height="2.6" fill="#1A1A1A"/>
+                            </pattern>
+                        </defs>
+                        <text x="0" y="30" fill="url(#ng-ibm-stripes)" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="800" letter-spacing="1">IBM</text>
+                    </svg>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="ng-section" id="instructors">
+        <div class="ng-landing-inner ng-instructor-layout">
+            <div class="ng-instructor-intro">
+                <h2>{{#str}}instructorsheading, theme_nextgen{{/str}}</h2>
+                <p>{{#str}}instructorintro, theme_nextgen{{/str}}</p>
+            </div>
+            <div class="ng-instructor-grid">
+                {{#hasinstructors}}
+                    {{#instructors}}
+                        <a class="ng-instructor" href="{{url}}">
+                            {{{picture}}}
+                            <span>
+                                <strong>{{name}}</strong>
+                                <span>{{role}}</span>
+                            </span>
+                        </a>
+                    {{/instructors}}
+                {{/hasinstructors}}
+                {{^hasinstructors}}
+                    <p class="ng-empty">{{#str}}instructorsempty, theme_nextgen{{/str}}</p>
+                {{/hasinstructors}}
+            </div>
+        </div>
+    </section>
+
+    {{#hasquotes}}
+        <section class="ng-section">
+            <div class="ng-landing-inner">
+                <h2>{{#str}}quotesheading, theme_nextgen{{/str}}</h2>
+                <div class="ng-quote-grid">
+                    {{#quotes}}
+                        <blockquote class="ng-quote">
+                            <p>{{quote}}</p>
+                            <footer>{{attribution}}</footer>
+                        </blockquote>
+                    {{/quotes}}
+                </div>
+            </div>
+        </section>
+    {{/hasquotes}}
+
+    <section class="ng-cta">
+        <div class="ng-landing-inner ng-cta-grid">
+            <div class="ng-cta-copy">
+                <h2>{{#str}}ctaheading, theme_nextgen{{/str}}</h2>
+                <p>{{#str}}ctatext, theme_nextgen{{/str}}</p>
+                <a class="btn btn-primary btn-lg" href="{{#isloggedin}}{{coursesurl}}{{/isloggedin}}{{^isloggedin}}{{loginurl}}{{/isloggedin}}">
+                    {{#isloggedin}}{{#str}}browseall, theme_nextgen{{/str}}{{/isloggedin}}
+                    {{^isloggedin}}{{#str}}ctaguest, theme_nextgen{{/str}}{{/isloggedin}}
+                </a>
+            </div>
+            <img class="ng-cta-photo" src="{{ctaimage}}" alt="{{#str}}ctaimagealt, theme_nextgen{{/str}}">
+        </div>
+    </section>
+</div>

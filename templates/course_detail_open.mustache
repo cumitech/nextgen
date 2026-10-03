@@ -1,0 +1,218 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_nextgen/course_detail_open
+
+    Opening markup for the course sales layout. The page content is inserted
+    before course_detail_close.
+
+    Example context (json):
+    {
+        "fullname": "Transport and logistics",
+        "hasexcerpt": true,
+        "excerpt": "A short summary.",
+        "image": "https://example.com/course.jpg",
+        "hasteacher": false,
+        "hasrating": false,
+        "hasprice": false,
+        "hasfacts": false,
+        "hasincludes": false,
+        "hassummary": false,
+        "hasoutcomes": false,
+        "hassubjects": false,
+        "hasrequirements": false,
+        "showactivities": true,
+        "enrolurl": "#ng-enrolment",
+        "enrollabel": "Enrol",
+        "breadcrumbs": [{"label": "Home", "url": "/"}]
+    }
+}}
+<section class="ng-course-band">
+    <div class="ng-course-band-inner">
+        <nav class="ng-course-crumb" aria-label="{{#str}}breadcrumb, access{{/str}}">
+            {{#breadcrumbs}}
+                {{#url}}<a href="{{url}}">{{label}}</a>{{/url}}
+                {{^url}}<span aria-current="page">{{label}}</span>{{/url}}
+                {{^current}}<span class="ng-course-crumb-sep" aria-hidden="true">/</span>{{/current}}
+            {{/breadcrumbs}}
+        </nav>
+        <h1 class="ng-course-title">{{fullname}}</h1>
+        {{#hasexcerpt}}
+            <p class="ng-course-excerpt">{{excerpt}}</p>
+        {{/hasexcerpt}}
+        {{#hasteacher}}
+            <div class="ng-course-teacher">
+                <a class="ng-course-teacher-link" href="{{teacher.url}}">{{{teacher.picture}}}</a>
+                <div>
+                    <a class="ng-course-teacher-name" href="{{teacher.url}}">{{teacher.name}}</a>
+                    <p class="ng-course-teacher-role">{{teacher.role}}</p>
+                </div>
+                {{#hasrating}}
+                    <div class="ng-course-stars" aria-label="{{ratinglabel}}">
+                        {{#stars}}
+                            <svg class="ng-star ng-star-{{state}}" viewBox="0 0 20 20" aria-hidden="true">
+                                <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                            </svg>
+                        {{/stars}}
+                        <span class="ng-course-rating-value">{{rating}}</span>
+                    </div>
+                {{/hasrating}}
+            </div>
+        {{/hasteacher}}
+    </div>
+</section>
+<div class="ng-course-columns">
+    <div class="ng-course-tabs" role="tablist" aria-label="{{fullname}}">
+        <button type="button" class="is-active" role="tab" id="ng-tab-overview" data-ng-tab="overview" aria-selected="true" aria-controls="ng-panel-overview">{{#str}}taboverview, theme_nextgen{{/str}}</button>
+        <button type="button" role="tab" id="ng-tab-content" data-ng-tab="content" aria-selected="false" aria-controls="ng-course-content">{{#str}}coursecontent, theme_nextgen{{/str}}</button>
+        <button type="button" role="tab" id="ng-tab-certificate" data-ng-tab="certificate" aria-selected="false" aria-controls="ng-panel-certificate">{{#str}}tabcertificate, theme_nextgen{{/str}}</button>
+        <button type="button" role="tab" id="ng-tab-instructors" data-ng-tab="instructors" aria-selected="false" aria-controls="ng-panel-instructors">{{#str}}tabinstructors, theme_nextgen{{/str}}</button>
+        <button type="button" role="tab" id="ng-tab-reviews" data-ng-tab="reviews" aria-selected="false" aria-controls="ng-panel-reviews">{{#str}}tabreviews, theme_nextgen{{/str}}</button>
+    </div>
+    <aside class="ng-course-panel">
+        {{#hasprice}}
+            <p class="ng-course-price">{{price}}</p>
+        {{/hasprice}}
+        {{#hasfacts}}
+            <dl class="ng-course-facts">
+                {{#facts}}
+                    <div class="ng-course-fact">
+                        <dt>{{label}}</dt>
+                        <dd>{{value}}</dd>
+                    </div>
+                {{/facts}}
+            </dl>
+        {{/hasfacts}}
+        <a class="btn btn-primary ng-course-enrol" href="{{enrolurl}}">{{enrollabel}}</a>
+        {{#hasincludes}}
+            <div class="ng-course-includes">
+                <h2>{{#str}}courseincludes, theme_nextgen{{/str}}</h2>
+                <ul>
+                    {{#includes}}
+                        <li>{{label}}</li>
+                    {{/includes}}
+                </ul>
+            </div>
+        {{/hasincludes}}
+    </aside>
+    <div class="ng-course-main" id="ng-panel-overview" data-ng-panel="overview" role="tabpanel" aria-labelledby="ng-tab-overview">
+        <img class="ng-course-image" src="{{image}}" alt="{{fullname}}">
+        {{#hassummary}}
+            <section class="ng-course-section">
+                <h2>{{#str}}courseabout, theme_nextgen{{/str}}</h2>
+                <div class="ng-course-summary">{{{summary}}}</div>
+            </section>
+        {{/hassummary}}
+        {{#hasoutcomes}}
+            <section class="ng-course-section ng-course-card">
+                <h2>{{#str}}courseoutcomes, theme_nextgen{{/str}}</h2>
+                <ul class="ng-outcomes">
+                    {{#outcomes}}
+                        <li><span class="ng-tick" aria-hidden="true"></span><span>{{text}}</span></li>
+                    {{/outcomes}}
+                </ul>
+            </section>
+        {{/hasoutcomes}}
+        {{#hassubjects}}
+            <section class="ng-course-section">
+                <h2>{{#str}}coursesubjects, theme_nextgen{{/str}}</h2>
+                <ul class="ng-subjects">
+                    {{#subjects}}
+                        <li class="ng-subject ng-subject-{{tone}}">{{name}}</li>
+                    {{/subjects}}
+                </ul>
+            </section>
+        {{/hassubjects}}
+        {{#hasrequirements}}
+            <section class="ng-course-section">
+                <h2>{{#str}}courserequirements, theme_nextgen{{/str}}</h2>
+                <ol class="ng-requirements">
+                    {{#requirements}}
+                        <li>{{text}}</li>
+                    {{/requirements}}
+                </ol>
+            </section>
+        {{/hasrequirements}}
+    </div>
+    <div class="ng-course-main ng-course-panelpage" id="ng-panel-certificate" data-ng-panel="certificate" role="tabpanel" aria-labelledby="ng-tab-certificate" hidden>
+        <section class="ng-course-section ng-course-card">
+            <h2>{{#str}}tabcertificate, theme_nextgen{{/str}}</h2>
+            {{#hascertificate}}
+                {{#certificatenote}}
+                    <p>{{certificatenote}}</p>
+                {{/certificatenote}}
+                {{#certificates}}
+                    <p>{{#url}}<a href="{{url}}">{{name}}</a>{{/url}}{{^url}}{{name}}{{/url}}</p>
+                {{/certificates}}
+            {{/hascertificate}}
+            {{^hascertificate}}
+                <p class="ng-course-empty">{{#str}}certificateempty, theme_nextgen{{/str}}</p>
+            {{/hascertificate}}
+        </section>
+    </div>
+    <div class="ng-course-main ng-course-panelpage" id="ng-panel-instructors" data-ng-panel="instructors" role="tabpanel" aria-labelledby="ng-tab-instructors" hidden>
+        <section class="ng-course-section">
+            <h2>{{#str}}tabinstructors, theme_nextgen{{/str}}</h2>
+            {{#hasinstructors}}
+                <ul class="ng-instructor-list">
+                    {{#instructors}}
+                        <li class="ng-instructor-card">
+                            <a href="{{url}}">{{{picture}}}</a>
+                            <div>
+                                <a class="ng-instructor-name" href="{{url}}">{{name}}</a>
+                                <p>{{role}}</p>
+                            </div>
+                        </li>
+                    {{/instructors}}
+                </ul>
+            {{/hasinstructors}}
+            {{^hasinstructors}}
+                <p class="ng-course-empty">{{#str}}courseinstructorsempty, theme_nextgen{{/str}}</p>
+            {{/hasinstructors}}
+        </section>
+    </div>
+    <div class="ng-course-main ng-course-panelpage" id="ng-panel-reviews" data-ng-panel="reviews" role="tabpanel" aria-labelledby="ng-tab-reviews" hidden>
+        <section class="ng-course-section ng-course-card">
+            <h2>{{#str}}tabreviews, theme_nextgen{{/str}}</h2>
+            {{#hasrating}}
+                <div class="ng-review-summary">
+                    <p class="ng-review-score">{{rating}}</p>
+                    <div>
+                        <div class="ng-course-stars" aria-label="{{ratinglabel}}">
+                            {{#stars}}
+                                <svg class="ng-star ng-star-{{state}}" viewBox="0 0 20 20" aria-hidden="true">
+                                    <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                    <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                </svg>
+                            {{/stars}}
+                        </div>
+                        {{#hasreviews}}
+                            <p>{{#str}}reviewcount, theme_nextgen, {{reviewcount}}{{/str}}</p>
+                        {{/hasreviews}}
+                    </div>
+                </div>
+            {{/hasrating}}
+            {{^hasrating}}
+                <p class="ng-course-empty">{{#str}}reviewempty, theme_nextgen{{/str}}</p>
+            {{/hasrating}}
+        </section>
+    </div>
+    <div class="ng-course-below" id="ng-course-content" data-ng-panel="content" role="tabpanel" aria-labelledby="ng-tab-content" hidden>
+        {{#showactivities}}
+            <h2 class="ng-course-content-title">{{#str}}coursecontent, theme_nextgen{{/str}}</h2>
+        {{/showactivities}}

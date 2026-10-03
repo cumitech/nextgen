@@ -1,0 +1,13 @@
+{
+  "name": "theme-nextgen",
+  "private": true,
+  "description": "Tailwind build for the NextGen LMS Moodle theme.",
+  "scripts": {
+    "build": "tailwindcss -i ./tailwind/theme.css -o ./style/nextgen.css --minify",
+    "watch": "tailwindcss -i ./tailwind/theme.css -o ./style/nextgen.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "tailwindcss": "^4.1.13"
+  }
+}

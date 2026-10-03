@@ -1,0 +1,65 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_nextgen/course_card
+
+    Course card for marketing pages. My courses uses core_course/coursecard.
+}}
+<article class="ng-course-card">
+    <a class="ng-course-media" href="{{url}}">
+        <img src="{{image}}" alt="">
+        {{#bestseller}}
+            <span class="ng-course-badge">{{#str}}bestseller, theme_nextgen{{/str}}</span>
+        {{/bestseller}}
+    </a>
+    <div class="ng-course-body">
+        <h3 class="ng-course-title"><a href="{{url}}">{{fullname}}</a></h3>
+        {{#hasteachers}}
+            <p class="ng-course-teachers">{{teachers}}</p>
+        {{/hasteachers}}
+        {{#hasrating}}
+            <p class="ng-course-rating">
+                <span class="visually-hidden">{{ratinglabel}}</span>
+                <span class="ng-course-rating-value" aria-hidden="true">{{rating}}</span>
+                <span class="ng-course-stars" aria-hidden="true">
+                    {{#stars}}
+                        <svg class="ng-star ng-star-{{state}}" viewBox="0 0 20 20">
+                            <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"/>
+                            <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"/>
+                        </svg>
+                    {{/stars}}
+                </span>
+                {{#hasreviews}}
+                    <span class="ng-course-reviews" aria-hidden="true">({{reviews}})</span>
+                {{/hasreviews}}
+            </p>
+        {{/hasrating}}
+        <p class="ng-course-commerce">
+            {{#hasprice}}
+                <span class="ng-course-price">{{price}}</span>
+            {{/hasprice}}
+            <span class="ng-course-enrols">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 12a3.2 3.2 0 1 0-3.2-3.2A3.2 3.2 0 0 0 12 12zm-6.2 7.2a6.2 6.2 0 0 1 12.4 0"/></svg>
+                {{enrolments}}
+            </span>
+            <span class="ng-course-date">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7 4.5V3m10 1.5V3M4.5 8.5h15M6 5.5h12a1.5 1.5 0 0 1 1.5 1.5v11a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 18V7A1.5 1.5 0 0 1 6 5.5z"/></svg>
+                {{date}}
+            </span>
+        </p>
+    </div>
+</article>
