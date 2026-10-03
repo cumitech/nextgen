@@ -155,7 +155,7 @@ $string['benefit4text'] = 'Navigation, search, and your courses stay in the same
 $string['quotesheading'] = 'From the learning community';
 $string['ctaheading'] = 'Start with a course that fits';
 $string['ctatext'] = 'Browse what is available, or sign in to continue learning.';
-$string['ctaguest'] = 'Sign in to learn';
+$string['ctaguest'] = 'Start learning today';
 $string['ctaimagealt'] = 'Students learning together';
 
 $string['loginkicker'] = 'NextGen LMS';

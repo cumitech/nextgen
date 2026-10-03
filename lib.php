@@ -513,6 +513,8 @@ function theme_nextgen_landing_context(): array {
         'categories' => $categories,
         'hasinstructors' => !empty($instructors),
         'instructors' => $instructors,
+        'instructorcount' => count($instructors),
+        'facultypoints' => array_slice($reasons, 0, 3),
         'reasons' => $reasons,
         'steps' => $steps,
         'benefits' => $benefits,
@@ -883,7 +885,7 @@ function theme_nextgen_landing_instructors(): array {
                 'name' => fullname($user),
                 'role' => $contact['rolename'],
                 'picture' => $OUTPUT->user_picture($user, [
-                    'size' => 80,
+                    'size' => 320,
                     'link' => false,
                     'class' => 'ng-instructor-photo',
                 ]),

@@ -171,23 +171,37 @@
         </div>
     </section>
 
-    <section class="ng-section" id="instructors">
-        <div class="ng-landing-inner ng-instructor-layout">
-            <div class="ng-instructor-intro">
+    <section class="ng-section ng-faculty" id="instructors">
+        <div class="ng-landing-inner ng-faculty-grid">
+            <div class="ng-faculty-stage">
+                <span class="ng-faculty-shape ng-faculty-shape-gold" aria-hidden="true"></span>
+                <span class="ng-faculty-shape ng-faculty-shape-green" aria-hidden="true"></span>
+                <span class="ng-faculty-shape ng-faculty-shape-clay" aria-hidden="true"></span>
+                {{#hasinstructors}}
+                    <div class="ng-faculty-ring" data-count="{{instructorcount}}">
+                        {{#instructors}}
+                            <a class="ng-faculty-slide" href="{{url}}">
+                                {{{picture}}}
+                                <span class="visually-hidden">{{name}}</span>
+                            </a>
+                        {{/instructors}}
+                    </div>
+                {{/hasinstructors}}
+            </div>
+            <div class="ng-faculty-copy">
                 <h2>{{#str}}instructorsheading, theme_nextgen{{/str}}</h2>
                 <p>{{#str}}instructorintro, theme_nextgen{{/str}}</p>
-            </div>
-            <div class="ng-instructor-grid">
+                <ul class="ng-faculty-points">
+                    {{#facultypoints}}
+                        <li><span class="ng-faculty-check" aria-hidden="true"></span>{{title}}</li>
+                    {{/facultypoints}}
+                </ul>
                 {{#hasinstructors}}
-                    {{#instructors}}
-                        <a class="ng-instructor" href="{{url}}">
-                            {{{picture}}}
-                            <span>
-                                <strong>{{name}}</strong>
-                                <span>{{role}}</span>
-                            </span>
-                        </a>
-                    {{/instructors}}
+                    <div class="ng-faculty-names" data-count="{{instructorcount}}" aria-live="off">
+                        {{#instructors}}
+                            <p class="ng-faculty-name"><a href="{{url}}"><strong>{{name}}</strong><span>{{role}}</span></a></p>
+                        {{/instructors}}
+                    </div>
                 {{/hasinstructors}}
                 {{^hasinstructors}}
                     <p class="ng-empty">{{#str}}instructorsempty, theme_nextgen{{/str}}</p>
@@ -213,16 +227,18 @@
     {{/hasquotes}}
 
     <section class="ng-cta">
-        <div class="ng-landing-inner ng-cta-grid">
-            <div class="ng-cta-copy">
-                <h2>{{#str}}ctaheading, theme_nextgen{{/str}}</h2>
-                <p>{{#str}}ctatext, theme_nextgen{{/str}}</p>
-                <a class="btn btn-primary btn-lg" href="{{#isloggedin}}{{coursesurl}}{{/isloggedin}}{{^isloggedin}}{{loginurl}}{{/isloggedin}}">
-                    {{#isloggedin}}{{#str}}browseall, theme_nextgen{{/str}}{{/isloggedin}}
-                    {{^isloggedin}}{{#str}}ctaguest, theme_nextgen{{/str}}{{/isloggedin}}
-                </a>
+        <div class="ng-landing-inner">
+            <div class="ng-cta-banner">
+                <img class="ng-cta-photo" src="{{ctaimage}}" alt="" aria-hidden="true">
+                <div class="ng-cta-copy">
+                    <h2>{{#str}}ctaheading, theme_nextgen{{/str}}</h2>
+                    <p>{{#str}}ctatext, theme_nextgen{{/str}}</p>
+                    <a class="ng-cta-link" href="{{#isloggedin}}{{coursesurl}}{{/isloggedin}}{{^isloggedin}}{{loginurl}}{{/isloggedin}}">
+                        {{#isloggedin}}{{#str}}browseall, theme_nextgen{{/str}}{{/isloggedin}}
+                        {{^isloggedin}}{{#str}}ctaguest, theme_nextgen{{/str}}{{/isloggedin}}
+                    </a>
+                </div>
             </div>
-            <img class="ng-cta-photo" src="{{ctaimage}}" alt="{{#str}}ctaimagealt, theme_nextgen{{/str}}">
         </div>
     </section>
 </div>
