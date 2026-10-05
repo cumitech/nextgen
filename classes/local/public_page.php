@@ -16,7 +16,7 @@
 
 namespace theme_nextgen\local;
 
-use core_user\form\contactsitesupport_form;
+use theme_nextgen\form\contact;
 
 /**
  * Public information pages for the NextGen theme.
@@ -185,7 +185,7 @@ class public_page {
 
         $signedin = isloggedin() && !isguestuser();
         $user = $signedin ? $USER : null;
-        $form = new contactsitesupport_form($PAGE->url, $user);
+        $form = new contact($PAGE->url, $user);
         if ($form->is_cancelled()) {
             redirect(new \moodle_url('/'));
         }

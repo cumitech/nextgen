@@ -140,6 +140,9 @@
                 {{/hasblocks}}
             </div>
             {{{ output.full_header }}}
+            {{#dashboard}}
+                {{> theme_nextgen/dashboard }}
+            {{/dashboard}}
             {{#landing}}
                 {{{landing}}}
             {{/landing}}

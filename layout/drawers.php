@@ -124,6 +124,7 @@ $templatecontext = [
     'headercontent' => $headercontent,
     'addblockbutton' => $addblockbutton,
     'landing' => theme_nextgen_frontpage_landing(),
+    'dashboard' => theme_nextgen_dashboard_context(),
     'coursedetail' => $coursedetail,
 ];
 

@@ -28,8 +28,16 @@
             <span class="visually-hidden">{{fullname}}</span>
         </span>
     </a>
+    <div class="ng-course-menu">
+        {{$menu}}{{/menu}}
+    </div>
     <div class="card-body ng-course-body course-info-container" id="course-info-container-{{id}}-{{uniqid}}">
         <div class="ng-course-kicker">
+            <span class="ng-course-kicker-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                    <path d="M3.5 6.8A1.8 1.8 0 0 1 5.3 5h4.05c.4 0 .78.16 1.06.44l1.2 1.21h7.09A1.8 1.8 0 0 1 20.5 8.45v8.75a1.8 1.8 0 0 1-1.8 1.8H5.3a1.8 1.8 0 0 1-1.8-1.8V6.8Z"/>
+                </svg>
+            </span>
             {{$coursecategory}}{{/coursecategory}}
         </div>
         {{#showshortname}}
@@ -46,9 +54,11 @@
         {{^visible}}
             <span class="badge text-bg-secondary">{{#str}}hiddenfromstudents{{/str}}</span>
         {{/visible}}
+        {{#viewurl}}
+            <a class="btn btn-primary ng-course-cta" href="{{viewurl}}">{{#str}}coursecontinue, theme_nextgen{{/str}}</a>
+        {{/viewurl}}
     </div>
-    <div class="ng-course-meta">
+    <div class="ng-dashboard-foot">
         {{$progress}}{{/progress}}
-        {{$menu}}{{/menu}}
     </div>
 </div>

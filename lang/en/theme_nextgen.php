@@ -312,3 +312,14 @@ $string['faqsection4title'] = 'I forgot my password.';
 $string['faqsection4text'] = 'Use Forgot password on the sign-in page and enter the email address on the account. The reset link is sent by the site, not by this theme.';
 $string['faqsection5title'] = 'Who do I write to for help?';
 $string['faqsection5text'] = 'Use Contact in the header. Include the course name if the question is about one.';
+
+$string['dashboardhello'] = 'Hi, {$a}';
+$string['dashboardtoday'] = 'Today is {$a}.';
+$string['dashboardlastlogin'] = 'Your last login was {$a} ago.';
+$string['dashboardrecent'] = 'Recently accessed course:';
+$string['dashboardcontinue'] = 'Continue learning';
+$string['dashboardmycourses'] = 'My courses';
+$string['dashboardall'] = 'All courses';
+$string['dashboardinprogress'] = 'In progress';
+$string['dashboardpast'] = 'Past';
+$string['dashboardnoprogress'] = 'No completion criteria';

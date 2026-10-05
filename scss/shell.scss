@@ -2449,6 +2449,198 @@ body.nextgen .ng-course-meta .card-footer {
   padding: 0;
 }
 
+body.nextgen .card.course-card {
+  overflow: visible;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+
+body.nextgen .card.course-card:hover,
+body.nextgen .card.course-card:focus-within {
+  transform: none;
+  z-index: 4;
+}
+
+body.nextgen .card.course-card .ng-course-media {
+  border-radius: 16px 16px 0 0;
+  flex: 0 0 auto;
+}
+
+body.nextgen .card.course-card .card-img-top {
+  aspect-ratio: 16 / 10;
+  border-radius: 16px 16px 0 0;
+  height: auto;
+}
+
+body.nextgen .card.course-card .ng-course-body {
+  min-width: 0;
+  padding: 0.85rem 0.95rem 0.2rem;
+}
+
+body.nextgen .card.course-card .ng-course-kicker,
+body.nextgen .card.course-card a.ng-course-title {
+  max-width: 100%;
+  min-width: 0;
+}
+
+body.nextgen .card.course-card .ng-course-kicker {
+  align-items: flex-start;
+  color: var(--ng-accent);
+  display: flex;
+  gap: 0.35rem;
+}
+
+body.nextgen .card.course-card .ng-course-kicker .categoryname,
+body.nextgen .card.course-card .ng-course-kicker .text-truncate {
+  color: var(--ng-accent);
+}
+
+body.nextgen .card.course-card .ng-course-kicker:not(:has(.text-truncate)) {
+  display: none;
+}
+
+body.nextgen .card.course-card .ng-course-kicker-icon {
+  display: block;
+  flex: 0 0 0.85rem;
+  height: 0.85rem;
+  margin-top: 0.12rem;
+  max-width: 0.85rem;
+  min-width: 0.85rem;
+  overflow: hidden;
+  width: 0.85rem;
+}
+
+body.nextgen .card.course-card .ng-course-kicker-icon svg {
+  display: block;
+  height: 0.85rem;
+  width: 0.85rem;
+}
+
+body.nextgen .card.course-card .ng-course-kicker .categoryname,
+body.nextgen .card.course-card .ng-course-kicker .text-truncate {
+  display: -webkit-box;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+body.nextgen .card.course-card .text-truncate,
+body.nextgen .card.course-card .multiline {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: unset;
+  white-space: normal;
+}
+
+body.nextgen .card.course-card a.ng-course-title {
+  min-height: 2.7em;
+}
+
+body.nextgen .card.course-card .ng-course-cta {
+  margin-top: 0.9rem;
+  width: 100%;
+}
+
+body.nextgen .ng-course-menu {
+  position: absolute;
+  right: 0.65rem;
+  top: 0.65rem;
+  z-index: 2;
+}
+
+body.nextgen .ng-course-menu .card-footer,
+body.nextgen .ng-course-menu .dropdown {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  width: auto;
+}
+
+body.nextgen .ng-course-menu .coursemenubtn {
+  align-items: center;
+  background: #fff;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(16, 40, 51, 0.16);
+  color: var(--ng-text);
+  display: inline-flex;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+
+body.nextgen .ng-dash-progress {
+  width: 100%;
+}
+
+body.nextgen .ng-dash-progress .progress-text {
+  color: var(--ng-text-muted);
+  font-size: 0.75rem;
+  margin: 0 0 0.35rem;
+}
+
+body.nextgen .ng-dash-progress-track {
+  background: #d7e0e6;
+  border-radius: 999px;
+  height: 0.45rem;
+  margin-top: 0.15rem;
+  overflow: hidden;
+}
+
+body.nextgen .ng-dash-progress-track > span {
+  background: var(--ng-success);
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+body.nextgen .ng-dashboard-foot {
+  align-items: center;
+  color: var(--ng-text);
+  display: flex;
+  gap: 0.25rem;
+  margin-top: auto;
+  min-width: 0;
+  padding: 0.15rem 0.45rem 0.45rem;
+}
+
+body.nextgen .ng-dashboard-foot:not(:has(.card-footer)) {
+  display: none;
+}
+
+body.nextgen .ng-dashboard-foot > .card-footer {
+  background: transparent;
+  border: 0;
+  flex: 1 1 auto;
+  margin: 0;
+  min-width: 0;
+  padding: 0.35rem 0.4rem;
+  width: auto;
+}
+
+body.nextgen .ng-dashboard-foot > .card-footer.menu {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+body.nextgen .card.course-card .progress-text {
+  color: var(--ng-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+}
+
+body.nextgen .card.course-card .coursemenubtn {
+  color: var(--ng-text-muted);
+  margin: 0;
+}
+
+body.nextgen .block_myoverview .card-grid .col,
+body.nextgen .block_recentlyaccessedcourses .card-carousel .card {
+  min-width: 0;
+}
+
 body.nextgen .card-grid .col {
   margin-bottom: 1rem;
 }
@@ -4121,10 +4313,26 @@ body.nextgen .ng-public-faq p {
   padding-bottom: 0.9rem;
 }
 
+body.nextgen .ng-public-form .mform {
+  width: 100%;
+}
+
 body.nextgen .ng-public-form .fitem.row > .col-md-3,
 body.nextgen .ng-public-form .fitem.row > .col-md-9 {
   flex: 0 0 100%;
   max-width: 100%;
+}
+
+body.nextgen .ng-public-form .felement {
+  width: 100%;
+}
+
+body.nextgen .ng-public-form .felement.d-flex > .form-control,
+body.nextgen .ng-public-form .felement.d-flex > textarea.form-control {
+  box-sizing: border-box;
+  flex: 1 1 100%;
+  max-width: 100%;
+  width: 100%;
 }
 
 body.nextgen .ng-public-form .col-form-label {
@@ -4134,4 +4342,163 @@ body.nextgen .ng-public-form .col-form-label {
 
 body.nextgen .ng-public-form textarea {
   min-height: 8rem;
+}
+
+body.nextgen.nextgen-dashboard #page-header {
+  display: none;
+}
+
+body.nextgen.nextgen-dashboard #page.drawers div[role="main"] {
+  background: var(--ng-background);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.nextgen.nextgen-dashboard #region-main {
+  background: transparent;
+  border: 0;
+  padding-top: 0;
+}
+
+body.nextgen.nextgen-dashboard #page-content {
+  margin: 0 auto;
+  max-width: 76rem;
+  padding: 0.25rem 1.5rem 3rem;
+}
+
+body.nextgen .ng-dash-hero-tiles {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  inset: 0;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 30%, #000 100%);
+  position: absolute;
+}
+
+body.nextgen .ng-dash-hero-hills {
+  bottom: 0;
+  height: 100%;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  width: min(72%, 54rem);
+}
+
+body.nextgen .ng-dash-hero-hills path {
+  fill: rgba(255, 255, 255, 0.16);
+}
+
+body.nextgen .ng-dash-hero h1 {
+  color: #fff;
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+body.nextgen .ng-dash-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+body.nextgen .ng-dash-rings {
+  align-items: start;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+body.nextgen .ng-dash-rings > div {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+body.nextgen .ng-dash-ring-wrap {
+  height: 7rem;
+  margin: 0 auto;
+  position: relative;
+  width: 7rem;
+}
+
+body.nextgen .ng-dash-ring-wrap svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+body.nextgen .ng-dash-ring-value {
+  align-items: center;
+  color: var(--ng-text);
+  display: flex;
+  font-size: 1.6rem;
+  font-weight: 700;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+}
+
+@media (min-width: 768px) {
+  body.nextgen .ng-dash-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+}
+
+body.nextgen .ng-dash-hero-hills path.ng-dash-hill-back {
+  fill: rgba(255, 255, 255, 0.08);
+}
+
+body.nextgen .ng-dash-hero-hills path.ng-dash-hill-mid {
+  fill: rgba(255, 255, 255, 0.14);
+}
+
+body.nextgen .ng-dash-hero-hills path.ng-dash-hill-front {
+  fill: rgba(255, 255, 255, 0.22);
+}
+
+body.nextgen .ng-dash-ring-track,
+body.nextgen .ng-dash-ring {
+  fill: none;
+  stroke-width: 10;
+}
+
+body.nextgen .ng-dash-ring-track {
+  stroke: var(--ng-muted);
+}
+
+body.nextgen .ng-dash-ring {
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 60px 60px;
+}
+
+body.nextgen .ng-dash-ring-all {
+  stroke: var(--ng-success);
+}
+
+body.nextgen .ng-dash-ring-progress {
+  stroke: var(--ng-info);
+}
+
+body.nextgen .ng-dash-ring-past {
+  stroke: var(--ng-accent);
+}
+
+body.nextgen.nextgen-dashboard .block {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(16, 40, 51, 0.06);
+  margin-bottom: 1.25rem;
+}
+
+body.nextgen.nextgen-dashboard .block .card-body {
+  padding: 1.15rem 1.25rem 1.3rem;
+}
+
+body.nextgen.nextgen-dashboard .block .card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
 }

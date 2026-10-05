@@ -45,7 +45,104 @@ function theme_nextgen_page_init($page) {
     if ((string) $page->pagetype === 'theme-nextgen-course') {
         $page->add_body_class('nextgen-sales');
     }
+    if ($page->pagelayout === 'mydashboard') {
+        $page->add_body_class('nextgen-dashboard');
+    }
     $page->requires->js_call_amd('theme_nextgen/loadline', 'init');
+}
+
+/**
+ * Welcome row for the signed-in dashboard.
+ *
+ * Counts come from the user's enrolments and course completion. A course with
+ * no completion setup is counted only in the total.
+ *
+ * @return array|null
+ */
+function theme_nextgen_dashboard_context(): ?array {
+    global $DB, $PAGE, $USER;
+
+    if ($PAGE->pagelayout !== 'mydashboard' || !isloggedin() || isguestuser()) {
+        return null;
+    }
+
+    $name = trim((string) $USER->firstname);
+    if ($name === '') {
+        $name = fullname($USER);
+    }
+
+    $courses = enrol_get_my_courses(['enablecompletion']);
+    $all = count($courses);
+    $inprogress = 0;
+    $past = 0;
+    foreach ($courses as $course) {
+        $percent = \core_completion\progress::get_course_progress_percentage($course);
+        if ($percent === null) {
+            continue;
+        }
+        if ($percent >= 100) {
+            $past++;
+        } else if ($percent > 0) {
+            $inprogress++;
+        }
+    }
+
+    $radius = 46;
+    $circ = round(2 * pi() * $radius, 2);
+    $offset = function (int $count, bool $full = false) use ($all, $circ): string {
+        if ($all <= 0 || $count <= 0) {
+            return (string) $circ;
+        }
+        $portion = $full ? 1 : min(1, $count / $all);
+        return (string) round($circ * (1 - $portion), 2);
+    };
+
+    $recentname = '';
+    $recenturl = '';
+    $continueurl = (new moodle_url('/my/courses.php'))->out(false);
+    if ($DB->get_manager()->table_exists('block_recentlyaccessedcourses')) {
+        $recent = $DB->get_record_sql(
+            "SELECT c.id, c.fullname
+               FROM {block_recentlyaccessedcourses} r
+               JOIN {course} c ON c.id = r.courseid
+              WHERE r.userid = :userid
+           ORDER BY r.timeaccess DESC",
+            ['userid' => $USER->id],
+            IGNORE_MULTIPLE
+        );
+        if ($recent) {
+            $recentname = format_string($recent->fullname, true, [
+                'context' => context_course::instance($recent->id),
+                'escape' => false,
+            ]);
+            $recenturl = (new moodle_url('/course/view.php', ['id' => $recent->id]))->out(false);
+            $continueurl = $recenturl;
+        }
+    }
+
+    $lastlogin = '';
+    if (!empty($USER->lastlogin)) {
+        $lastlogin = format_time(max(1, time() - (int) $USER->lastlogin));
+    }
+
+    return [
+        'title' => get_string('myhome'),
+        'hello' => get_string('dashboardhello', 'theme_nextgen', $name),
+        'today' => get_string('dashboardtoday', 'theme_nextgen', userdate(time(), get_string('strftimedaydate', 'langconfig'))),
+        'haslastlogin' => $lastlogin !== '',
+        'lastlogin' => get_string('dashboardlastlogin', 'theme_nextgen', $lastlogin),
+        'hasrecent' => $recentname !== '',
+        'recentname' => $recentname,
+        'recenturl' => $recenturl,
+        'continueurl' => $continueurl,
+        'allcount' => $all,
+        'inprogresscount' => $inprogress,
+        'pastcount' => $past,
+        'circumference' => (string) $circ,
+        'alloffset' => $offset($all, true),
+        'inprogressoffset' => $offset($inprogress),
+        'pastoffset' => $offset($past),
+    ];
 }
 
 /**
