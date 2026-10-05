@@ -48,7 +48,7 @@
             <nav class="ng-course-crumb" aria-label="{{#str}}breadcrumb, access{{/str}}">
                 {{#breadcrumbs}}
                     {{#url}}<a href="{{url}}">{{label}}</a>{{/url}}
-                    {{^url}}<span aria-current="page">{{label}}</span>{{/url}}
+                    {{^url}}<span class="visually-hidden" aria-current="page">{{label}}</span>{{/url}}
                     {{^current}}<span class="ng-course-crumb-sep" aria-hidden="true">/</span>{{/current}}
                 {{/breadcrumbs}}
             </nav>
@@ -149,6 +149,7 @@
     </div>
     <aside class="ng-course-panel">
         {{#hasprice}}
+            <p class="ng-course-price-label">{{#str}}courseprice, theme_nextgen{{/str}}</p>
             <p class="ng-course-price">{{price}}</p>
         {{/hasprice}}
         <a class="btn btn-primary ng-course-enrol" href="{{enrolurl}}">{{enrollabel}}</a>
@@ -169,7 +170,6 @@
         </div>
     </aside>
     <div class="ng-course-main" id="ng-panel-overview" data-ng-panel="overview" role="tabpanel" aria-labelledby="ng-tab-overview">
-        <img class="ng-course-image" src="{{image}}" alt="{{fullname}}">
         {{#hassummary}}
             <section class="ng-course-section">
                 <h2>{{#str}}courseabout, theme_nextgen{{/str}}</h2>

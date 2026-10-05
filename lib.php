@@ -700,6 +700,12 @@ function theme_nextgen_landing_context(): array {
             'tone' => $tones[$offset],
         ];
     }
+    $facultypoints = [];
+    foreach ([1, 2, 3] as $index) {
+        $facultypoints[] = [
+            'title' => get_string('instructorpoint' . $index, 'theme_nextgen'),
+        ];
+    }
     $steps = [];
     foreach ([1, 2, 3] as $index) {
         $steps[] = [
@@ -738,7 +744,7 @@ function theme_nextgen_landing_context(): array {
         'hasinstructors' => !empty($instructors),
         'instructors' => $instructors,
         'instructorcount' => count($instructors),
-        'facultypoints' => array_slice($reasons, 0, 3),
+        'facultypoints' => $facultypoints,
         'reasons' => $reasons,
         'steps' => $steps,
         'benefits' => $benefits,
@@ -848,6 +854,18 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
         $price = $commercial['price'];
     }
 
+    $excerpt = '';
+    if ($course->has_summary()) {
+        $formatted = format_text($course->summary, (int) $course->summaryformat, [
+            'context' => $context,
+            'filter' => false,
+        ]);
+        $plain = trim((string) preg_replace('/\s+/', ' ', html_to_text($formatted, 0, false)));
+        if ($plain !== '') {
+            $excerpt = shorten_text($plain, 160, false);
+        }
+    }
+
     $enrolled = isloggedin() && !isguestuser() && is_enrolled($context, $USER, '', true);
     if ($enrolled) {
         $entry = new moodle_url('/course/view.php', ['id' => $course->id]);
@@ -864,6 +882,8 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
             'context' => $context,
             'escape' => false,
         ]),
+        'hasexcerpt' => $excerpt !== '',
+        'excerpt' => $excerpt,
         'image' => $image,
         'url' => $entry->out(false),
         'bestseller' => $commercial['bestseller'],
@@ -1175,11 +1195,7 @@ function theme_nextgen_landing_instructors(): array {
             $people[] = [
                 'name' => fullname($user),
                 'role' => $contact['rolename'],
-                'picture' => $OUTPUT->user_picture($user, [
-                    'size' => 320,
-                    'link' => false,
-                    'class' => 'ng-instructor-photo',
-                ]),
+                'picture' => theme_nextgen_instructor_picture($user),
                 'url' => (new moodle_url('/user/profile.php', ['id' => $user->id]))->out(false),
             ];
             if (count($people) >= 4) {
@@ -1188,6 +1204,32 @@ function theme_nextgen_landing_instructors(): array {
         }
     }
     return $people;
+}
+
+/**
+ * Portrait for a teacher. People without an uploaded photo get the theme default.
+ *
+ * @param stdClass $user
+ * @return string
+ */
+function theme_nextgen_instructor_picture(stdClass $user): string {
+    global $OUTPUT;
+
+    if (!empty($user->picture)) {
+        return $OUTPUT->user_picture($user, [
+            'size' => 320,
+            'link' => false,
+            'class' => 'ng-instructor-photo',
+        ]);
+    }
+
+    return html_writer::empty_tag('img', [
+        'src' => $OUTPUT->image_url('faculty-default', 'theme')->out(false),
+        'alt' => '',
+        'class' => 'ng-instructor-photo',
+        'width' => 320,
+        'height' => 320,
+    ]);
 }
 
 /**
@@ -1355,6 +1397,8 @@ function theme_nextgen_course_detail_context(): ?array {
         $current = current_language();
         $language = $translations[$current] ?? $current;
     }
+    $language = str_replace("\u{200E}", '', $language);
+    $language = trim((string) preg_replace('/\s*\([a-z]{2}(?:_[A-Za-z]{2})?\)\s*$/', '', $language));
 
     $certificatevalue = $extra['ngcertificate'];
     if ($certificatevalue === '' && $certificates) {
@@ -1383,15 +1427,21 @@ function theme_nextgen_course_detail_context(): ?array {
     $pushfact($facts, 'certificate', 'coursecertificate', $certificatevalue);
     $pushfact($facts, 'language', 'courselanguage', $language);
     if (!empty($course->startdate)) {
-        $pushfact($facts, 'starts', 'coursestarts', userdate($course->startdate, get_string('strftimedatefullshort')));
+        $starts = preg_replace('/^0/', '', userdate((int) $course->startdate, '%d %B %Y'));
+        $pushfact($facts, 'starts', 'coursestarts', $starts);
     }
 
     $includes = [];
-    if ($activitycount > 0) {
+    if ($activitycount === 1) {
+        $includes[] = ['label' => get_string('courseactivity', 'theme_nextgen')];
+    } else if ($activitycount > 1) {
         $includes[] = ['label' => get_string('courseactivities', 'theme_nextgen', $activitycount)];
     }
-    if (!empty($outline['sections'])) {
-        $includes[] = ['label' => get_string('coursesections', 'theme_nextgen', count($outline['sections']))];
+    $sectioncount = count($outline['sections']);
+    if ($sectioncount === 1) {
+        $includes[] = ['label' => get_string('coursesection', 'theme_nextgen')];
+    } else if ($sectioncount > 1) {
+        $includes[] = ['label' => get_string('coursesections', 'theme_nextgen', $sectioncount)];
     }
     if ($language !== '') {
         $includes[] = ['label' => $language];
@@ -1558,6 +1608,10 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
         if ((int) $section->sectionnum === 0 && !$items) {
             continue;
         }
+        $named = trim((string) ($section->name ?? '')) !== '';
+        if ((int) $section->sectionnum !== 0 && !$named && !$items) {
+            continue;
+        }
 
         $name = get_section_name((int) $course->id, $section);
         $number++;
@@ -1568,7 +1622,7 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
             'hasactivities' => !empty($items),
             'activities' => $items,
         ];
-        if ((int) $section->sectionnum !== 0) {
+        if ((int) $section->sectionnum !== 0 && $named) {
             $sectionnames[] = $name;
             $learned = trim(html_to_text(format_text(
                 (string) $section->summary,

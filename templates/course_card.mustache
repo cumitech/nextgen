@@ -28,6 +28,9 @@
     </a>
     <div class="ng-course-body">
         <h3 class="ng-course-title"><a href="{{url}}">{{fullname}}</a></h3>
+        {{#hasexcerpt}}
+            <p class="ng-course-blurb">{{excerpt}}</p>
+        {{/hasexcerpt}}
         {{#hasteachers}}
             <p class="ng-course-teachers">{{teachers}}</p>
         {{/hasteachers}}
@@ -52,13 +55,15 @@
             {{#hasprice}}
                 <span class="ng-course-price">{{price}}</span>
             {{/hasprice}}
-            <span class="ng-course-enrols">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 12a3.2 3.2 0 1 0-3.2-3.2A3.2 3.2 0 0 0 12 12zm-6.2 7.2a6.2 6.2 0 0 1 12.4 0"/></svg>
-                {{enrolments}}
-            </span>
-            <span class="ng-course-date">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7 4.5V3m10 1.5V3M4.5 8.5h15M6 5.5h12a1.5 1.5 0 0 1 1.5 1.5v11a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 18V7A1.5 1.5 0 0 1 6 5.5z"/></svg>
-                {{date}}
+            <span class="ng-course-stats">
+                <span class="ng-course-enrols">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 12a3.2 3.2 0 1 0-3.2-3.2A3.2 3.2 0 0 0 12 12zm-6.2 7.2a6.2 6.2 0 0 1 12.4 0"/></svg>
+                    {{enrolments}}
+                </span>
+                <span class="ng-course-date">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7 4.5V3m10 1.5V3M4.5 8.5h15M6 5.5h12a1.5 1.5 0 0 1 1.5 1.5v11a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 18V7A1.5 1.5 0 0 1 6 5.5z"/></svg>
+                    {{date}}
+                </span>
             </span>
         </p>
     </div>

@@ -1510,133 +1510,140 @@ body.nextgen .ng-faculty-names[data-count="1"] .ng-faculty-name {
   transform: none;
 }
 
+/* Each portrait holds, then slides left to reveal the next. Delays match that handoff. */
 @keyframes ng-faculty-4 {
-  0% {
-    opacity: 0;
-    transform: translateX(22%);
-  }
-  5% {
+  0%, 25% {
     opacity: 1;
     transform: translateX(0);
+    z-index: 1;
   }
-  20% {
+  28.9% {
+    opacity: 0;
+    transform: translateX(-46%);
+    z-index: 2;
+  }
+  29%, 100% {
+    opacity: 0;
+    transform: translateX(46%);
+    z-index: 0;
+  }
+}
+
+@keyframes ng-faculty-name-4 {
+  0%, 25% {
     opacity: 1;
-    transform: translateX(0);
   }
-  25% {
+  28.9%, 100% {
     opacity: 0;
-    transform: translateX(-22%);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-22%);
   }
 }
 
 @keyframes ng-faculty-3 {
-  0% {
-    opacity: 0;
-    transform: translateX(22%);
-  }
-  6% {
+  0%, 33.3% {
     opacity: 1;
     transform: translateX(0);
+    z-index: 1;
   }
-  27% {
+  38.5% {
+    opacity: 0;
+    transform: translateX(-46%);
+    z-index: 2;
+  }
+  39%, 100% {
+    opacity: 0;
+    transform: translateX(46%);
+    z-index: 0;
+  }
+}
+
+@keyframes ng-faculty-name-3 {
+  0%, 33.3% {
     opacity: 1;
-    transform: translateX(0);
   }
-  33% {
+  38.5%, 100% {
     opacity: 0;
-    transform: translateX(-22%);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-22%);
   }
 }
 
 @keyframes ng-faculty-2 {
-  0% {
-    opacity: 0;
-    transform: translateX(22%);
-  }
-  7% {
+  0%, 50% {
     opacity: 1;
     transform: translateX(0);
+    z-index: 1;
   }
-  43% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  50% {
+  57.8% {
     opacity: 0;
-    transform: translateX(-22%);
+    transform: translateX(-46%);
+    z-index: 2;
   }
-  100% {
+  58%, 100% {
     opacity: 0;
-    transform: translateX(-22%);
+    transform: translateX(46%);
+    z-index: 0;
   }
 }
 
-body.nextgen .ng-faculty-ring[data-count="4"] .ng-faculty-slide,
+@keyframes ng-faculty-name-2 {
+  0%, 50% {
+    opacity: 1;
+  }
+  57.8%, 100% {
+    opacity: 0;
+  }
+}
+
+body.nextgen .ng-faculty-ring[data-count="4"] .ng-faculty-slide {
+  animation: ng-faculty-4 18s linear infinite;
+}
+
 body.nextgen .ng-faculty-names[data-count="4"] .ng-faculty-name {
-  animation: ng-faculty-4 24s ease-in-out infinite;
-}
-
-body.nextgen .ng-faculty-ring[data-count="4"] .ng-faculty-slide:nth-child(1),
-body.nextgen .ng-faculty-names[data-count="4"] .ng-faculty-name:nth-child(1) {
-  animation-delay: -0.6s;
+  animation: ng-faculty-name-4 18s linear infinite;
 }
 
 body.nextgen .ng-faculty-ring[data-count="4"] .ng-faculty-slide:nth-child(2),
 body.nextgen .ng-faculty-names[data-count="4"] .ng-faculty-name:nth-child(2) {
-  animation-delay: -6.6s;
+  animation-delay: 4.5s;
 }
 
 body.nextgen .ng-faculty-ring[data-count="4"] .ng-faculty-slide:nth-child(3),
 body.nextgen .ng-faculty-names[data-count="4"] .ng-faculty-name:nth-child(3) {
-  animation-delay: -12.6s;
+  animation-delay: 9s;
 }
 
 body.nextgen .ng-faculty-ring[data-count="4"] .ng-faculty-slide:nth-child(4),
 body.nextgen .ng-faculty-names[data-count="4"] .ng-faculty-name:nth-child(4) {
-  animation-delay: -18.6s;
+  animation-delay: 13.5s;
 }
 
-body.nextgen .ng-faculty-ring[data-count="3"] .ng-faculty-slide,
+body.nextgen .ng-faculty-ring[data-count="3"] .ng-faculty-slide {
+  animation: ng-faculty-3 13.5s linear infinite;
+}
+
 body.nextgen .ng-faculty-names[data-count="3"] .ng-faculty-name {
-  animation: ng-faculty-3 18s ease-in-out infinite;
-}
-
-body.nextgen .ng-faculty-ring[data-count="3"] .ng-faculty-slide:nth-child(1),
-body.nextgen .ng-faculty-names[data-count="3"] .ng-faculty-name:nth-child(1) {
-  animation-delay: -0.5s;
+  animation: ng-faculty-name-3 13.5s linear infinite;
 }
 
 body.nextgen .ng-faculty-ring[data-count="3"] .ng-faculty-slide:nth-child(2),
 body.nextgen .ng-faculty-names[data-count="3"] .ng-faculty-name:nth-child(2) {
-  animation-delay: -6.5s;
+  animation-delay: 4.5s;
 }
 
 body.nextgen .ng-faculty-ring[data-count="3"] .ng-faculty-slide:nth-child(3),
 body.nextgen .ng-faculty-names[data-count="3"] .ng-faculty-name:nth-child(3) {
-  animation-delay: -12.5s;
+  animation-delay: 9s;
 }
 
-body.nextgen .ng-faculty-ring[data-count="2"] .ng-faculty-slide,
+body.nextgen .ng-faculty-ring[data-count="2"] .ng-faculty-slide {
+  animation: ng-faculty-2 9s linear infinite;
+}
+
 body.nextgen .ng-faculty-names[data-count="2"] .ng-faculty-name {
-  animation: ng-faculty-2 14s ease-in-out infinite;
-}
-
-body.nextgen .ng-faculty-ring[data-count="2"] .ng-faculty-slide:nth-child(1),
-body.nextgen .ng-faculty-names[data-count="2"] .ng-faculty-name:nth-child(1) {
-  animation-delay: -0.4s;
+  animation: ng-faculty-name-2 9s linear infinite;
 }
 
 body.nextgen .ng-faculty-ring[data-count="2"] .ng-faculty-slide:nth-child(2),
 body.nextgen .ng-faculty-names[data-count="2"] .ng-faculty-name:nth-child(2) {
-  animation-delay: -7.4s;
+  animation-delay: 4.5s;
 }
 
 @media (min-width: 768px) {
@@ -2146,10 +2153,17 @@ body.nextgen .card.ng-course-card {
 body.nextgen .ng-catalogue-course {
   background: transparent;
   border: 0;
+  display: flex;
   float: none;
-  margin: 0 0 1rem;
+  height: 100%;
+  margin: 0;
   padding: 0;
   width: auto;
+}
+
+body.nextgen .ng-catalogue-course > .ng-course-card {
+  flex: 1 1 auto;
+  width: 100%;
 }
 
 body.nextgen .ng-course-media {
@@ -2176,6 +2190,21 @@ body.nextgen .ng-course-badge {
   position: absolute;
   right: 0.7rem;
   top: 0.7rem;
+}
+
+body.nextgen article.ng-course-card .ng-course-teachers {
+  color: #6b7280;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  margin: 0.35rem 0 0;
+}
+
+body.nextgen article.ng-course-card .ng-course-rating {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.35rem 0 0;
 }
 
 body.nextgen .ng-course-teachers {
@@ -2230,6 +2259,24 @@ body.nextgen .ng-course-reviews {
   font-size: 0.92rem;
 }
 
+body.nextgen article.ng-course-card .ng-course-commerce {
+  align-items: flex-start;
+  border-top: 1px solid var(--ng-border);
+  color: #6b7280;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: auto;
+  padding-top: 0.8rem;
+}
+
+body.nextgen article.ng-course-card .ng-course-stats {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+}
+
 body.nextgen .ng-course-commerce {
   align-items: center;
   color: #6b7280;
@@ -2237,6 +2284,14 @@ body.nextgen .ng-course-commerce {
   flex-wrap: wrap;
   gap: 0.85rem;
   margin: 0.7rem 0 0;
+}
+
+body.nextgen article.ng-course-card .ng-course-price {
+  color: #1a2330;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
 }
 
 body.nextgen .ng-course-price {
@@ -2277,10 +2332,34 @@ body.nextgen .ng-course-body {
   padding: 0.85rem 0.3rem 0.15rem;
 }
 
-body.nextgen article.ng-course-card .ng-course-title,
-body.nextgen article.ng-course-card .ng-course-title a {
+body.nextgen article.ng-course-card .ng-course-title {
   font-size: 1.15rem;
   line-height: 1.3;
+  margin: 0;
+  min-height: 2.6em;
+}
+
+body.nextgen article.ng-course-card .ng-course-title a {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  font-size: 1.15rem;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  line-height: 1.3;
+  overflow: hidden;
+}
+
+body.nextgen article.ng-course-card .ng-course-blurb {
+  -webkit-box-orient: vertical;
+  color: #5c6570;
+  display: -webkit-box;
+  font-size: 0.9rem;
+  font-weight: 400;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  line-height: 1.45;
+  margin: 0.4rem 0 0.1rem;
+  overflow: hidden;
 }
 
 body.nextgen .ng-course-kicker,
@@ -2589,10 +2668,11 @@ body.nextgen.nextgen-catalogue .course_category_tree .category > .content {
   padding: 0.35rem 1rem 1rem 2.85rem;
 }
 
-body.nextgen.nextgen-catalogue .category-browse .content .courses {
+body.nextgen.nextgen-catalogue .courses.category-browse {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(16.5rem, 20.5rem));
+  justify-content: start;
 }
 
 body.nextgen.nextgen-catalogue .ng-catalogue-section {
@@ -3152,6 +3232,16 @@ body.nextgen .ng-course-panel {
   border-radius: 16px;
   box-shadow: 0 16px 40px rgba(22, 32, 22, 0.1);
   padding: 1.2rem 1.25rem 1.1rem;
+}
+
+body.nextgen .ng-course-price-label {
+  color: var(--ng-text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  margin: 0 0 0.35rem;
+  text-transform: uppercase;
 }
 
 body.nextgen .ng-course-price {
