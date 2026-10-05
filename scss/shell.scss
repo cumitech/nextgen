@@ -155,6 +155,41 @@ body.nextgen .ng-primary-nav .moremenu .nav-link.active {
   color: var(--ng-ink);
 }
 
+@media (min-width: 768px) {
+  body.nextgen .ng-primary-nav {
+    align-items: center;
+    display: flex;
+    min-width: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  body.nextgen .ng-primary-nav .moremenu .dropdown:hover > .dropdown-menu,
+  body.nextgen .ng-primary-nav .moremenu .dropdown:focus-within > .dropdown-menu {
+    display: block;
+  }
+}
+
+body.nextgen .ng-primary-nav .moremenu .dropdown-menu {
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(22, 32, 22, 0.12);
+  min-width: 16rem;
+  padding: 0.35rem;
+}
+
+body.nextgen .ng-primary-nav .moremenu .dropdown-item {
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+body.nextgen .ng-primary-nav .moremenu .dropdown-item:hover,
+body.nextgen .ng-primary-nav .moremenu .dropdown-item:focus,
+body.nextgen .ng-primary-nav .moremenu .dropdown-item.active {
+  background: var(--ng-primary);
+  color: #fff;
+}
+
 body.nextgen .ng-user-nav {
   align-items: center;
   gap: 0.25rem;
@@ -2531,15 +2566,101 @@ body.nextgen.nextgen-catalogue .ng-catalogue-hero::after {
     );
 }
 
+body.nextgen.nextgen-catalogue .ng-catalogue-hero {
+  padding-bottom: 2.75rem;
+}
+
 body.nextgen.nextgen-catalogue .ng-catalogue-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin: -1.25rem auto 0;
-  max-width: 1120px;
-  padding: 0 1.5rem;
+  margin: 1.35rem 0 0;
   position: relative;
   z-index: 2;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-heading {
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.25rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-search-wrap {
+  padding-bottom: 0;
+  padding-top: 1.75rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-search {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  padding: 0.85rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-search-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-search-row input[type="search"] {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 999px;
+  color: var(--ng-text);
+  flex: 1;
+  min-width: 0;
+  padding: 0.55rem 0.95rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-search-row .btn {
+  border-radius: 999px;
+  padding-left: 1.1rem;
+  padding-right: 1.1rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced {
+  margin-top: 0.75rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced summary {
+  cursor: pointer;
+  font-weight: 600;
+  width: fit-content;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  margin-top: 0.85rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced select {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 10px;
+  color: var(--ng-text);
+  padding: 0.45rem 0.65rem;
+  width: 100%;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 0.9rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced-actions a {
+  font-weight: 600;
 }
 
 body.nextgen .ng-chip {
@@ -2676,7 +2797,7 @@ body.nextgen.nextgen-catalogue .courses.category-browse {
 }
 
 body.nextgen.nextgen-catalogue .ng-catalogue-section {
-  padding-top: 2.5rem;
+  padding-top: 1.5rem;
 }
 
 body.nextgen.nextgen-catalogue .ng-catalogue-empty {
@@ -2705,7 +2826,7 @@ body.nextgen.nextgen-catalogue .coursebox .coursename a {
 body.nextgen.nextgen-course #page-header,
 body.nextgen.nextgen-course:not(.editing) .secondary-navigation,
 body.nextgen.nextgen-course:not(.editing) .drawer-left-toggle,
-body.nextgen.nextgen-course:not(.editing) .drawer.drawer-left {
+body.nextgen.nextgen-course:not(.editing) .drawer.drawer-left:not(.drawer-primary) {
   display: none;
 }
 
@@ -2999,6 +3120,150 @@ body.nextgen .ng-course-below {
 body.nextgen .ng-course-empty {
   color: var(--ng-text-muted);
   margin: 0;
+}
+
+body.nextgen .ng-certificate {
+  background-color: var(--ng-primary);
+  background-image:
+    radial-gradient(circle at 12px 0, var(--ng-surface) 10px, transparent 11px),
+    radial-gradient(circle at 12px 100%, var(--ng-surface) 10px, transparent 11px),
+    radial-gradient(circle at 0 12px, var(--ng-surface) 10px, transparent 11px),
+    radial-gradient(circle at 100% 12px, var(--ng-surface) 10px, transparent 11px);
+  background-position: top, bottom, left, right;
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: 24px 14px, 24px 14px, 14px 24px, 14px 24px;
+  margin: 0.35rem 0 0;
+  padding: 0.85rem;
+}
+
+body.nextgen .ng-certificate-sample {
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin: 0 0 0.55rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+body.nextgen .ng-certificate-sheet {
+  background:
+    linear-gradient(var(--ng-primary), var(--ng-primary)) top left / 2.2rem 2px no-repeat,
+    linear-gradient(var(--ng-primary), var(--ng-primary)) top left / 2px 2.2rem no-repeat,
+    linear-gradient(var(--ng-primary), var(--ng-primary)) top right / 2.2rem 2px no-repeat,
+    linear-gradient(var(--ng-primary), var(--ng-primary)) top right / 2px 2.2rem no-repeat,
+    linear-gradient(var(--ng-primary), var(--ng-primary)) bottom left / 2.2rem 2px no-repeat,
+    linear-gradient(var(--ng-primary), var(--ng-primary)) bottom left / 2px 2.2rem no-repeat,
+    linear-gradient(var(--ng-primary), var(--ng-primary)) bottom right / 2.2rem 2px no-repeat,
+    linear-gradient(var(--ng-primary), var(--ng-primary)) bottom right / 2px 2.2rem no-repeat,
+    #fff;
+  border: 1px solid var(--ng-accent);
+  box-shadow: inset 0 0 0 6px #fff, inset 0 0 0 7px var(--ng-primary);
+  color: var(--ng-ink);
+  font-family: Manrope, "Segoe UI", sans-serif;
+  padding: 2.2rem 1.4rem 1.6rem;
+  text-align: center;
+}
+
+body.nextgen .ng-certificate-title,
+body.nextgen .ng-certificate-subtitle,
+body.nextgen .ng-certificate-lead,
+body.nextgen .ng-certificate-name,
+body.nextgen .ng-certificate-completed,
+body.nextgen .ng-certificate-course {
+  margin: 0;
+}
+
+body.nextgen .ng-certificate-title {
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+body.nextgen .ng-certificate-subtitle {
+  color: var(--ng-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  margin-top: 0.45rem;
+  text-transform: uppercase;
+}
+
+body.nextgen .ng-certificate-lead,
+body.nextgen .ng-certificate-completed {
+  color: var(--ng-text-muted);
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+body.nextgen .ng-certificate-lead {
+  margin-top: 1.35rem;
+}
+
+body.nextgen .ng-certificate-name {
+  color: var(--ng-accent);
+  font-size: clamp(1.45rem, 3vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 0.35rem;
+}
+
+body.nextgen .ng-certificate-completed {
+  margin: 0.7rem auto 0;
+  max-width: 26rem;
+}
+
+body.nextgen .ng-certificate-course {
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  margin-top: 0.85rem;
+  text-transform: uppercase;
+}
+
+body.nextgen .ng-certificate-signs {
+  display: grid;
+  gap: 1.25rem 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 1.8rem auto 0;
+  max-width: 34rem;
+}
+
+body.nextgen .ng-certificate-sign-value {
+  border-bottom: 1px solid var(--ng-primary);
+  color: var(--ng-accent);
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding-bottom: 0.35rem;
+}
+
+body.nextgen .ng-certificate-sign-label {
+  color: var(--ng-text-muted);
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  margin-top: 0.4rem;
+  text-transform: uppercase;
+}
+
+@media (max-width: 575.98px) {
+  body.nextgen .ng-certificate-sheet {
+    padding: 1.5rem 0.9rem 1.2rem;
+  }
+
+  body.nextgen .ng-certificate-title {
+    letter-spacing: 0.16em;
+  }
+
+  body.nextgen .ng-certificate-signs {
+    gap: 1rem;
+  }
 }
 
 body.nextgen .ng-tab-stars {

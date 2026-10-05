@@ -17,10 +17,20 @@
 {{!
     @template theme_nextgen/catalogue_body
 }}
-{{^hascourses}}
 <section class="ng-section ng-catalogue-section">
     <div class="ng-landing-inner">
-        <p class="ng-empty ng-catalogue-empty">{{#str}}catalogueempty, theme_nextgen{{/str}}</p>
+        {{#hascategory}}
+            <h2 class="ng-catalogue-heading">{{categoryname}}</h2>
+        {{/hascategory}}
+        {{#hascourses}}
+            <div class="ng-card-grid">
+                {{#courses}}
+                    {{> theme_nextgen/course_card }}
+                {{/courses}}
+            </div>
+        {{/hascourses}}
+        {{^hascourses}}
+            <p class="ng-empty ng-catalogue-empty">{{emptytext}}</p>
+        {{/hascourses}}
     </div>
 </section>
-{{/hascourses}}

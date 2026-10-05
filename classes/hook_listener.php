@@ -57,7 +57,9 @@ class hook_listener {
         }
         if (str_starts_with((string) $PAGE->pagetype, 'course-index')) {
             $browse = optional_param('browse', '', PARAM_ALPHA);
-            $PAGE->set_primary_active_tab($browse === 'categories' ? 'nextgen-categories' : 'nextgen-courses');
+            $categoryid = optional_param('categoryid', 0, PARAM_INT);
+            $categories = ($browse === 'categories' || $categoryid > 0);
+            $PAGE->set_primary_active_tab($categories ? 'nextgen-categories' : 'nextgen-courses');
         }
         $primary = $hook->get_primaryview();
         if (!isloggedin() || isguestuser()) {
@@ -82,6 +84,7 @@ class hook_listener {
         }
         if (!during_initial_install()) {
             \theme_nextgen\local\public_page::extend_primary($primary);
+            theme_nextgen_add_category_menu($primary);
         }
     }
 }

@@ -1,0 +1,72 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_nextgen/catalogue_search
+}}
+<section class="ng-section ng-catalogue-search-wrap">
+    <div class="ng-landing-inner">
+        <form class="ng-catalogue-search" method="get" action="{{searchaction}}">
+            {{#browse}}
+                <input type="hidden" name="browse" value="categories">
+            {{/browse}}
+            {{#hascategoryid}}
+                <input type="hidden" name="categoryid" value="{{categoryid}}">
+            {{/hascategoryid}}
+            <div class="ng-catalogue-search-row">
+                <label class="visually-hidden" for="ng-catalogue-search">{{#str}}cataloguesearch, theme_nextgen{{/str}}</label>
+                <input id="ng-catalogue-search" type="search" name="search" value="{{search}}" placeholder="{{#str}}cataloguesearch, theme_nextgen{{/str}}">
+                <button class="btn btn-primary" type="submit">{{#str}}cataloguesearchbutton, theme_nextgen{{/str}}</button>
+            </div>
+            <details class="ng-catalogue-advanced" {{#advancedopen}}open{{/advancedopen}}>
+                <summary>{{#str}}catalogueadvanced, theme_nextgen{{/str}}</summary>
+                <div class="ng-catalogue-advanced-grid">
+                    <div>
+                        <label for="ng-catalogue-level">{{#str}}fieldlevel, theme_nextgen{{/str}}</label>
+                        <select id="ng-catalogue-level" name="level">
+                            <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
+                            {{#levels}}
+                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                            {{/levels}}
+                        </select>
+                    </div>
+                    <div>
+                        <label for="ng-catalogue-language">{{#str}}fieldlanguage, theme_nextgen{{/str}}</label>
+                        <select id="ng-catalogue-language" name="language">
+                            <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
+                            {{#languages}}
+                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                            {{/languages}}
+                        </select>
+                    </div>
+                    <div>
+                        <label for="ng-catalogue-certificate">{{#str}}fieldcertificate, theme_nextgen{{/str}}</label>
+                        <select id="ng-catalogue-certificate" name="certificate">
+                            <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
+                            {{#certificates}}
+                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                            {{/certificates}}
+                        </select>
+                    </div>
+                </div>
+                <div class="ng-catalogue-advanced-actions">
+                    <button class="btn btn-primary" type="submit">{{#str}}catalogueapply, theme_nextgen{{/str}}</button>
+                    <a href="{{clearurl}}">{{#str}}catalogueclear, theme_nextgen{{/str}}</a>
+                </div>
+            </details>
+        </form>
+    </div>
+</section>

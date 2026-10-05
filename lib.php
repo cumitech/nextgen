@@ -1123,28 +1123,307 @@ function theme_nextgen_install_fact_fields(): void {
  * @return array
  */
 function theme_nextgen_catalogue_context(): array {
-    $count = core_course_category::top()->get_courses_count(['recursive' => true]);
     $categoryid = optional_param('categoryid', 0, PARAM_INT);
+    $filters = theme_nextgen_catalogue_request_filters();
+    $kept = [];
+    if ($filters['search'] !== '') {
+        $kept['search'] = $filters['search'];
+    }
+    if ($filters['level'] !== '') {
+        $kept['level'] = $filters['level'];
+    }
+    if ($filters['language'] !== '') {
+        $kept['language'] = $filters['language'];
+    }
+    if ($filters['certificate'] !== '') {
+        $kept['certificate'] = $filters['certificate'];
+    }
+    $browse = optional_param('browse', '', PARAM_ALPHA) === 'categories';
+    $linkparams = $kept;
+    if ($browse) {
+        $linkparams['browse'] = 'categories';
+    }
+
     $categories = [];
-    foreach (theme_nextgen_landing_categories() as $category) {
+    $categoryname = '';
+    foreach (theme_nextgen_landing_categories(0) as $category) {
         $category['active'] = ((int) $category['id'] === $categoryid);
+        if ($category['active']) {
+            $categoryname = $category['name'];
+        }
+        $category['url'] = (new moodle_url('/course/index.php', $linkparams + [
+            'categoryid' => $category['id'],
+        ]))->out(false);
         $categories[] = $category;
     }
+
+    $loaded = theme_nextgen_catalogue_courses($categoryid, $kept === []);
+    $levels = theme_nextgen_catalogue_filter_options($loaded, 'filterlevel', $filters['level']);
+    $languages = theme_nextgen_catalogue_filter_options($loaded, 'filterlanguage', $filters['language']);
+    $certificates = theme_nextgen_catalogue_filter_options($loaded, 'filtercertificate', $filters['certificate']);
+    $courses = theme_nextgen_catalogue_apply_filters($loaded, $filters);
+
+    if ($courses) {
+        $empty = '';
+    } else if ($categoryid > 0 && !$loaded) {
+        $empty = get_string('catalogueemptycategory', 'theme_nextgen');
+    } else if ($kept) {
+        $empty = get_string('catalogueemptysearch', 'theme_nextgen');
+    } else if ($categoryid > 0) {
+        $empty = get_string('catalogueemptycategory', 'theme_nextgen');
+    } else {
+        $empty = get_string('catalogueempty', 'theme_nextgen');
+    }
+
+    $clear = ['browse' => 'categories'];
+    if ($categoryid > 0) {
+        $clear['categoryid'] = $categoryid;
+    }
+
     return [
-        'hascourses' => $count > 0,
+        'hascourses' => !empty($courses),
+        'courses' => $courses,
         'hascategories' => !empty($categories),
         'categories' => $categories,
-        'allcoursesurl' => (new moodle_url('/course/index.php'))->out(false),
+        'allcoursesurl' => (new moodle_url('/course/index.php', $linkparams))->out(false),
         'allactive' => $categoryid === 0,
+        'hascategory' => $categoryname !== '',
+        'categoryname' => $categoryname,
+        'categoryid' => $categoryid,
+        'hascategoryid' => $categoryid > 0,
+        'browse' => $browse,
+        'search' => $filters['search'],
+        'searchaction' => (new moodle_url('/course/index.php'))->out(false),
+        'levels' => $levels,
+        'languages' => $languages,
+        'certificates' => $certificates,
+        'advancedopen' => ($filters['level'] !== '' || $filters['language'] !== '' || $filters['certificate'] !== ''),
+        'clearurl' => (new moodle_url('/course/index.php', $clear))->out(false),
+        'emptytext' => $empty,
     ];
+}
+
+/**
+ * Search and advanced-filter values from the catalogue request.
+ *
+ * @return array{search: string, level: string, language: string, certificate: string}
+ */
+function theme_nextgen_catalogue_request_filters(): array {
+    return [
+        'search' => trim(optional_param('search', '', PARAM_TEXT)),
+        'level' => trim(optional_param('level', '', PARAM_TEXT)),
+        'language' => trim(optional_param('language', '', PARAM_TEXT)),
+        'certificate' => trim(optional_param('certificate', '', PARAM_TEXT)),
+    ];
+}
+
+/**
+ * Distinct values for one advanced filter, with the current choice marked.
+ *
+ * @param array $courses
+ * @param string $key
+ * @param string $current
+ * @return array
+ */
+function theme_nextgen_catalogue_filter_options(array $courses, string $key, string $current): array {
+    $found = [];
+    foreach ($courses as $course) {
+        $value = trim((string) ($course[$key] ?? ''));
+        if ($value === '') {
+            continue;
+        }
+        $found[$value] = $value;
+    }
+    natcasesort($found);
+    $options = [];
+    foreach ($found as $value) {
+        $options[] = [
+            'value' => $value,
+            'label' => $value,
+            'selected' => ($value === $current),
+        ];
+    }
+    return $options;
+}
+
+/**
+ * Keep cards that match the search text and the advanced filters.
+ *
+ * @param array $courses
+ * @param array $filters
+ * @return array
+ */
+function theme_nextgen_catalogue_apply_filters(array $courses, array $filters): array {
+    $search = \core_text::strtolower($filters['search']);
+    $kept = [];
+    foreach ($courses as $course) {
+        if ($search !== '' && !str_contains((string) $course['filtersearch'], $search)) {
+            continue;
+        }
+        if ($filters['level'] !== '' && (string) $course['filterlevel'] !== $filters['level']) {
+            continue;
+        }
+        if ($filters['language'] !== '' && (string) $course['filterlanguage'] !== $filters['language']) {
+            continue;
+        }
+        if ($filters['certificate'] !== '' && (string) $course['filtercertificate'] !== $filters['certificate']) {
+            continue;
+        }
+        unset($course['filtersearch'], $course['filterlevel'], $course['filterlanguage'], $course['filtercertificate']);
+        $kept[] = $course;
+    }
+    return $kept;
+}
+
+/**
+ * Courses for the catalogue. With no category and no filters, the order is shuffled.
+ *
+ * @param int $categoryid
+ * @param bool $shuffle
+ * @return array
+ */
+function theme_nextgen_catalogue_courses(int $categoryid, bool $shuffle = true): array {
+    if ($categoryid > 0) {
+        $source = core_course_category::get($categoryid, IGNORE_MISSING, true);
+        if (!$source || !$source->is_uservisible()) {
+            return [];
+        }
+    } else {
+        $source = core_course_category::top();
+    }
+
+    $courses = array_values($source->get_courses([
+        'recursive' => true,
+        'summary' => true,
+    ]));
+    if ($categoryid === 0 && $shuffle) {
+        shuffle($courses);
+    }
+
+    $cards = [];
+    foreach ($courses as $course) {
+        if ((int) $course->id === SITEID) {
+            continue;
+        }
+        $card = theme_nextgen_course_card_data($course);
+        $extra = theme_nextgen_course_extra_fields((int) $course->id);
+        $language = $extra['nglanguage'];
+        if ($language === '' && !empty($course->lang)) {
+            $language = (string) $course->lang;
+        }
+        $card['filterlevel'] = $extra['nglevel'];
+        $card['filterlanguage'] = $language;
+        $card['filtercertificate'] = $extra['ngcertificate'];
+        $plain = trim(html_entity_decode(strip_tags(
+            $course->fullname . ' ' . $course->summary
+        ), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $card['filtersearch'] = \core_text::strtolower($plain);
+        $cards[] = $card;
+    }
+    return $cards;
+}
+
+/**
+ * Categories shown from the header menu.
+ *
+ * @return array
+ */
+function theme_nextgen_header_categories(): array {
+    global $PAGE;
+
+    $empty = [
+        'hascategories' => false,
+        'categories' => [],
+        'active' => false,
+        'url' => '',
+    ];
+    if (during_initial_install()) {
+        return $empty;
+    }
+
+    $categoryid = 0;
+    $browse = '';
+    if (str_starts_with((string) $PAGE->pagetype, 'course-index')) {
+        $categoryid = optional_param('categoryid', 0, PARAM_INT);
+        $browse = optional_param('browse', '', PARAM_ALPHA);
+    }
+
+    $items = [];
+    foreach (theme_nextgen_landing_categories(0) as $category) {
+        $category['active'] = ((int) $category['id'] === $categoryid);
+        $items[] = $category;
+    }
+    if (!$items) {
+        return $empty;
+    }
+
+    return [
+        'hascategories' => true,
+        'categories' => $items,
+        'active' => ($browse === 'categories' || $categoryid > 0),
+        'url' => (new moodle_url('/course/index.php', ['browse' => 'categories']))->out(false),
+    ];
+}
+
+/**
+ * Place the category menu after Courses and before About.
+ *
+ * @param navigation_node $primary
+ */
+function theme_nextgen_add_category_menu(navigation_node $primary): void {
+    $menu = theme_nextgen_header_categories();
+    if (!$menu['hascategories']) {
+        return;
+    }
+
+    $node = navigation_node::create(
+        get_string('categoriesavailable', 'theme_nextgen'),
+        new moodle_url($menu['url']),
+        navigation_node::TYPE_CUSTOM,
+        null,
+        'nextgen-categories'
+    );
+    $node->showchildreninsubmenu = true;
+    $node->add(
+        get_string('allcourses', 'theme_nextgen'),
+        new moodle_url($menu['url']),
+        navigation_node::TYPE_CUSTOM,
+        null,
+        'nextgen-categories-all'
+    );
+    foreach ($menu['categories'] as $category) {
+        $child = $node->add(
+            $category['name'],
+            new moodle_url('/course/index.php', ['categoryid' => (int) $category['id']]),
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'nextgen-category-' . (int) $category['id']
+        );
+        if (!empty($category['active']) && $child) {
+            $child->make_active();
+        }
+    }
+
+    $before = 'nextgen-about';
+    foreach ($primary->children as $child) {
+        if ($child->action instanceof moodle_url && $child->action->compare(
+            \theme_nextgen\local\public_page::url('about'),
+            URL_MATCH_BASE
+        )) {
+            $before = $child->key;
+            break;
+        }
+    }
+    $primary->add_node($node, $before);
 }
 
 /**
  * Visible top-level categories.
  *
+ * @param int $limit Maximum categories to return. Zero returns every visible category.
  * @return array
  */
-function theme_nextgen_landing_categories(): array {
+function theme_nextgen_landing_categories(int $limit = 6): array {
     global $OUTPUT;
 
     $photos = ['category-architecture', 'category-business', 'category-data', 'category-social'];
@@ -1157,7 +1436,7 @@ function theme_nextgen_landing_categories(): array {
             'image' => $OUTPUT->image_url($photos[count($items) % 4], 'theme')->out(false),
             'url' => (new moodle_url('/course/index.php', ['categoryid' => $category->id]))->out(false),
         ];
-        if (count($items) >= 6) {
+        if ($limit > 0 && count($items) >= $limit) {
             break;
         }
     }

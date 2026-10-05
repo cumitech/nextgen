@@ -210,6 +210,27 @@
     <div class="ng-course-main ng-course-panelpage" id="ng-panel-certificate" data-ng-panel="certificate" role="tabpanel" aria-labelledby="ng-tab-certificate" hidden>
         <section class="ng-course-section ng-course-card">
             <h2>{{#str}}tabcertificate, theme_nextgen{{/str}}</h2>
+            <figure class="ng-certificate">
+                <figcaption class="ng-certificate-sample">{{#str}}certificatesample, theme_nextgen{{/str}}</figcaption>
+                <div class="ng-certificate-sheet">
+                    <p class="ng-certificate-title">{{#str}}certificatetitle, theme_nextgen{{/str}}</p>
+                    <p class="ng-certificate-subtitle">{{#str}}certificatesubtitle, theme_nextgen{{/str}}</p>
+                    <p class="ng-certificate-lead">{{#str}}certificatecertifies, theme_nextgen{{/str}}</p>
+                    <p class="ng-certificate-name">{{#str}}certificatelearner, theme_nextgen{{/str}}</p>
+                    <p class="ng-certificate-completed">{{#str}}certificatecompleted, theme_nextgen{{/str}}</p>
+                    <p class="ng-certificate-course">{{fullname}}</p>
+                    <div class="ng-certificate-signs">
+                        <div class="ng-certificate-sign">
+                            <span class="ng-certificate-sign-value">{{#str}}certificatesampledate, theme_nextgen{{/str}}</span>
+                            <span class="ng-certificate-sign-label">{{#str}}certificatedatelabel, theme_nextgen{{/str}}</span>
+                        </div>
+                        <div class="ng-certificate-sign">
+                            <span class="ng-certificate-sign-value">{{#hasteacher}}{{teacher.name}}{{/hasteacher}}{{^hasteacher}}{{#str}}certificateinstructorname, theme_nextgen{{/str}}{{/hasteacher}}</span>
+                            <span class="ng-certificate-sign-label">{{#str}}certificateinstructorlabel, theme_nextgen{{/str}}</span>
+                        </div>
+                    </div>
+                </div>
+            </figure>
             {{#hascertificate}}
                 {{#certificatenote}}
                     <p>{{certificatenote}}</p>
@@ -217,9 +238,6 @@
                 {{#certificates}}
                     <p>{{#url}}<a href="{{url}}">{{name}}</a>{{/url}}{{^url}}{{name}}{{/url}}</p>
                 {{/certificates}}
-            {{/hascertificate}}
-            {{^hascertificate}}
-                <p class="ng-course-empty">{{#str}}certificateempty, theme_nextgen{{/str}}</p>
             {{/hascertificate}}
         </section>
     </div>

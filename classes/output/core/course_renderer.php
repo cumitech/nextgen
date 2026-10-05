@@ -17,7 +17,7 @@
 namespace theme_nextgen\output\core;
 
 /**
- * Course catalogue presentation. Moodle still supplies the search form and course tree.
+ * Course catalogue presentation. Categories in the hero filter the course cards.
  *
  * @package   theme_nextgen
  * @copyright 2026 NextGen LMS
@@ -34,8 +34,7 @@ class course_renderer extends \core_course_renderer {
     public function course_category($category) {
         $context = theme_nextgen_catalogue_context();
         $html = $this->render_from_template('theme_nextgen/catalogue_hero', $context);
-        $html .= $this->render_from_template('theme_nextgen/catalogue_filters', $context);
-        $html .= parent::course_category($category);
+        $html .= $this->render_from_template('theme_nextgen/catalogue_search', $context);
         $html .= $this->render_from_template('theme_nextgen/catalogue_body', $context);
         return \html_writer::div($html, 'ng-catalogue');
     }
