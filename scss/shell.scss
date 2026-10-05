@@ -3496,6 +3496,7 @@ body.nextgen .ng-course-panel {
   border: 1px solid var(--ng-border);
   border-radius: 16px;
   box-shadow: 0 16px 40px rgba(22, 32, 22, 0.1);
+  margin-top: 2.5rem;
   padding: 1.2rem 1.25rem 1.1rem;
 }
 
@@ -3634,6 +3635,12 @@ body.nextgen .ng-course-card {
   border: 1px solid var(--ng-border);
   border-radius: 16px;
   padding: 1.15rem 1.25rem 1.2rem;
+}
+
+body.nextgen .ng-outcome-lead {
+  color: var(--ng-text-muted);
+  line-height: 1.5;
+  margin: 0 0 1rem;
 }
 
 body.nextgen .ng-outcomes {
@@ -3887,24 +3894,48 @@ body.nextgen .ng-course-quote:hover {
 }
 
 body.nextgen .ng-course-share {
-  border-top: 1px solid var(--ng-border);
-  margin-top: 1.1rem;
-  padding-top: 0.9rem;
+  background: #f7f5f1;
+  border-radius: 12px;
+  margin-top: 1.15rem;
+  padding: 0.85rem 0.85rem 0.8rem;
 }
 
 body.nextgen .ng-course-share h2 {
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  margin: 0 0 0.45rem;
-  text-transform: uppercase;
+  align-items: center;
+  display: flex;
+  font-size: 0.95rem;
+  font-weight: 700;
+  gap: 0.45rem;
+  letter-spacing: 0;
+  margin: 0 0 0.65rem;
+  text-transform: none;
+}
+
+body.nextgen .ng-course-share h2 svg,
+body.nextgen .ng-copy-link svg {
+  flex: none;
+  height: 1.05rem;
+  width: 1.05rem;
 }
 
 body.nextgen .ng-copy-link {
-  background: transparent;
-  border: 0;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 10px;
+  color: var(--ng-text);
+  display: flex;
+  font-weight: 700;
+  gap: 0.45rem;
+  justify-content: center;
+  padding: 0.65rem 0.85rem;
+  width: 100%;
+}
+
+body.nextgen .ng-copy-link:hover,
+body.nextgen .ng-copy-link:focus-visible {
+  border-color: var(--ng-primary);
   color: var(--ng-primary);
-  font-weight: 650;
-  padding: 0;
 }
 
 body.nextgen .ng-enrol-stack {
@@ -3966,9 +3997,9 @@ body.nextgen .ng-enrol-card .box {
   body.nextgen .ng-course-panel {
     grid-column: 2;
     grid-row: 1 / span 2;
-    margin-top: 0;
+    margin-top: 2.5rem;
     position: sticky;
-    top: 4.75rem;
+    top: 5.5rem;
   }
 
   body.nextgen .ng-course-main,

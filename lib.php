@@ -1634,7 +1634,10 @@ function theme_nextgen_course_detail_context(): ?array {
     }
     $teacher = $instructors[0] ?? null;
 
-    $outcomes = theme_nextgen_text_lines($extra['ngoutcomes']);
+    $customoutcomes = theme_nextgen_learning_from_raw($extra['ngoutcomes'], $context);
+    $outcomes = $customoutcomes['points'];
+    $outcometitle = $outcomes ? $customoutcomes['title'] : '';
+    $outcomelead = $outcomes ? $customoutcomes['lead'] : '';
     $subjects = [];
     $tones = ['primary', 'clay', 'ink', 'gold'];
     $tags = \core_tag_tag::get_item_tags_array('core', 'course', $course->id);
@@ -1652,6 +1655,11 @@ function theme_nextgen_course_detail_context(): ?array {
     $certificates = $outline['certificates'];
     if (!$outcomes) {
         $outcomes = $summaryoutcomes;
+        $outcometitle = $outline['outcometitle'];
+        $outcomelead = $outline['outcomelead'];
+    }
+    if ($outcometitle === '') {
+        $outcometitle = get_string('courseoutcomes', 'theme_nextgen');
     }
     if (!$outcomes) {
         foreach ($sectionnames as $name) {
@@ -1805,6 +1813,9 @@ function theme_nextgen_course_detail_context(): ?array {
         'hasincludes' => !empty($includes),
         'includes' => $includes,
         'hasoutcomes' => !empty($outcomes),
+        'outcometitle' => $outcometitle,
+        'hasoutcomelead' => $outcomelead !== '',
+        'outcomelead' => $outcomelead,
         'outcomes' => $outcomes,
         'hassubjects' => !empty($subjects),
         'subjects' => $subjects,
@@ -1844,7 +1855,7 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
 
     $sections = [];
     $sectionnames = [];
-    $summaryoutcomes = [];
+    $objectiveblocks = [];
     $certificates = [];
     $activities = 0;
     $resources = 0;
@@ -1903,16 +1914,18 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
         ];
         if ((int) $section->sectionnum !== 0 && $named) {
             $sectionnames[] = $name;
-            $learned = trim(html_to_text(format_text(
+            $block = theme_nextgen_learning_block(
                 (string) $section->summary,
                 (int) $section->summaryformat,
-                ['context' => $context]
-            ), 0, false));
-            if ($learned !== '') {
-                $summaryoutcomes[] = ['text' => shorten_text($learned, 180)];
+                $context
+            );
+            if ($block['points']) {
+                $objectiveblocks[] = $block;
             }
         }
     }
+
+    $objectives = theme_nextgen_merge_learning_blocks($objectiveblocks);
 
     $counts = get_string('contentcounts', 'theme_nextgen', (object) [
         'sections' => count($sections),
@@ -1923,7 +1936,9 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
     return [
         'sections' => $sections,
         'sectionnames' => $sectionnames,
-        'summaryoutcomes' => $summaryoutcomes,
+        'summaryoutcomes' => $objectives['points'],
+        'outcometitle' => $objectives['title'],
+        'outcomelead' => $objectives['lead'],
         'certificates' => $certificates,
         'activities' => $activities,
         'resources' => $resources,
@@ -2100,6 +2115,268 @@ function theme_nextgen_course_extra_fields(int $courseid): array {
         }
     }
     return $result;
+}
+
+/**
+ * Turn a learning-objectives field into a title, a lead, and points.
+ *
+ * Accepts an HTML list, a Markdown list, or one objective per line.
+ *
+ * @param string $raw
+ * @param context $context
+ * @return array{title: string, lead: string, points: array}
+ */
+function theme_nextgen_learning_from_raw(string $raw, context $context): array {
+    $raw = trim($raw);
+    if ($raw === '') {
+        return ['title' => '', 'lead' => '', 'points' => []];
+    }
+    $format = FORMAT_PLAIN;
+    if (preg_match('/<(?:ul|ol|li|p|h[1-6])\b/i', $raw)) {
+        $format = FORMAT_HTML;
+    } else if (theme_nextgen_looks_like_markdown($raw)) {
+        $format = FORMAT_MARKDOWN;
+    }
+    return theme_nextgen_learning_block($raw, $format, $context);
+}
+
+/**
+ * Split one summary into its heading, introductory line, and objective points.
+ *
+ * @param string $raw
+ * @param int $format
+ * @param context $context
+ * @return array{title: string, lead: string, points: array}
+ */
+function theme_nextgen_learning_block(string $raw, int $format, context $context): array {
+    $raw = trim($raw);
+    $empty = ['title' => '', 'lead' => '', 'points' => []];
+    if ($raw === '') {
+        return $empty;
+    }
+
+    if ($format === FORMAT_HTML || $format === FORMAT_MOODLE || preg_match('/<(?:ul|ol|li|h[1-6])\b/i', $raw)) {
+        $parsed = theme_nextgen_parse_learning_html($raw);
+        if ($parsed['points']) {
+            return $parsed;
+        }
+    }
+
+    $html = format_text($raw, $format, ['context' => $context, 'filter' => false]);
+    $parsed = theme_nextgen_parse_learning_html($html);
+    if ($parsed['points']) {
+        return $parsed;
+    }
+
+    $plain = trim(html_to_text($html, 0, false));
+    if ($format === FORMAT_MARKDOWN || theme_nextgen_looks_like_markdown($raw) || theme_nextgen_looks_like_markdown($plain)) {
+        $source = theme_nextgen_looks_like_markdown($raw) ? $raw : $plain;
+        $markdown = format_text($source, FORMAT_MARKDOWN, ['context' => $context, 'filter' => false]);
+        $parsed = theme_nextgen_parse_learning_html($markdown);
+        if ($parsed['points']) {
+            return $parsed;
+        }
+    }
+
+    $fallback = $plain !== '' ? $plain : trim(strip_tags($raw));
+    return theme_nextgen_plain_learning_lines($fallback);
+}
+
+/**
+ * Keep one shared heading and one shared introduction, then list every point.
+ *
+ * @param array $blocks
+ * @return array{title: string, lead: string, points: array}
+ */
+function theme_nextgen_merge_learning_blocks(array $blocks): array {
+    $titles = [];
+    $leads = [];
+    $points = [];
+    $seen = [];
+    foreach ($blocks as $block) {
+        if ($block['title'] !== '') {
+            $titles[$block['title']] = true;
+        }
+        if ($block['lead'] !== '') {
+            $leads[$block['lead']] = true;
+        }
+        foreach ($block['points'] as $point) {
+            $key = core_text::strtolower($point['text']);
+            if ($key === '' || isset($seen[$key])) {
+                continue;
+            }
+            $seen[$key] = true;
+            $points[] = $point;
+        }
+    }
+    return [
+        'title' => count($titles) === 1 ? (string) array_key_first($titles) : '',
+        'lead' => count($leads) === 1 ? (string) array_key_first($leads) : '',
+        'points' => $points,
+    ];
+}
+
+/**
+ * Read a heading, the first short introduction, and the list items from HTML.
+ *
+ * @param string $html
+ * @return array{title: string, lead: string, points: array}
+ */
+function theme_nextgen_parse_learning_html(string $html): array {
+    $result = ['title' => '', 'lead' => '', 'points' => []];
+    if (trim(strip_tags($html)) === '') {
+        return $result;
+    }
+
+    $previous = libxml_use_internal_errors(true);
+    $document = new DOMDocument();
+    $loaded = $document->loadHTML('<?xml encoding="UTF-8"><div>' . $html . '</div>');
+    libxml_clear_errors();
+    libxml_use_internal_errors($previous);
+    if (!$loaded) {
+        return $result;
+    }
+
+    $xpath = new DOMXPath($document);
+    $heading = $xpath->query('//h1|//h2|//h3|//h4|//h5|//h6')->item(0);
+    if ($heading) {
+        $result['title'] = theme_nextgen_plain_markup(theme_nextgen_collapse_text($heading->textContent));
+    }
+
+    $points = [];
+    foreach ($xpath->query('//li') as $item) {
+        $text = theme_nextgen_plain_markup(theme_nextgen_collapse_text($item->textContent));
+        if ($text === '') {
+            continue;
+        }
+        if ($result['title'] !== '' && core_text::strtolower($text) === core_text::strtolower($result['title'])) {
+            continue;
+        }
+        $points[] = ['text' => $text];
+    }
+    if (!$points) {
+        return ['title' => '', 'lead' => '', 'points' => []];
+    }
+
+    $paragraph = $xpath->query('//p[not(ancestor::li)]')->item(0);
+    if ($paragraph) {
+        $lead = theme_nextgen_plain_markup(theme_nextgen_collapse_text($paragraph->textContent));
+        if ($lead !== '' && core_text::strlen($lead) <= 180 && theme_nextgen_is_objective_lead($lead)) {
+            $result['lead'] = $lead;
+        }
+    }
+    $result['points'] = $points;
+    return $result;
+}
+
+/**
+ * Split plain lines, lifting a "Learning objectives" heading out of the points.
+ *
+ * @param string $raw
+ * @return array{title: string, lead: string, points: array}
+ */
+function theme_nextgen_plain_learning_lines(string $raw): array {
+    $result = ['title' => '', 'lead' => '', 'points' => []];
+    $lines = [];
+    foreach (preg_split("/\R/u", $raw) ?: [] as $line) {
+        $line = theme_nextgen_plain_markup(trim(strip_tags($line)));
+        if ($line !== '') {
+            $lines[] = $line;
+        }
+    }
+    if (!$lines) {
+        return $result;
+    }
+
+    $heading = theme_nextgen_objective_heading($lines[0]);
+    if ($heading !== '' && count($lines) > 1) {
+        $result['title'] = $heading;
+        $lines = array_slice($lines, 1);
+    }
+    if (count($lines) > 1 && theme_nextgen_is_objective_lead($lines[0])) {
+        $result['lead'] = $lines[0];
+        $lines = array_slice($lines, 1);
+    }
+    foreach ($lines as $line) {
+        if (count($lines) === 1 && core_text::strlen($line) > 280) {
+            $line = shorten_text($line, 280);
+        }
+        $result['points'][] = ['text' => $line];
+    }
+    return $result;
+}
+
+/**
+ * Whether the text still contains Markdown headings, emphasis, or list markers.
+ *
+ * @param string $text
+ * @return bool
+ */
+function theme_nextgen_looks_like_markdown(string $text): bool {
+    return (bool) preg_match(
+        '/(^|\R)\s*(?:#{1,6}\s+|\*\*|__|(?:[*+\-]|\d+\.)\s+\S)/u',
+        $text
+    );
+}
+
+/**
+ * Return the line when it is a learning-objectives heading.
+ *
+ * @param string $line
+ * @return string
+ */
+function theme_nextgen_objective_heading(string $line): string {
+    $line = trim(preg_replace('/^#{1,6}\s+/u', '', $line) ?? $line);
+    $line = trim($line, " \t:-");
+    if ($line === '' || core_text::strlen($line) > 80) {
+        return '';
+    }
+    if (!preg_match('/learning\s+objectives?/iu', $line)) {
+        return '';
+    }
+    return $line;
+}
+
+/**
+ * Whether a line introduces the points that follow it.
+ *
+ * @param string $line
+ * @return bool
+ */
+function theme_nextgen_is_objective_lead(string $line): bool {
+    if ($line === '' || core_text::strlen($line) > 180) {
+        return false;
+    }
+    if (preg_match('/:\s*$/u', $line)) {
+        return true;
+    }
+    return (bool) preg_match('/^by the end\b/iu', $line);
+}
+
+/**
+ * Collapse whitespace.
+ *
+ * @param string $text
+ * @return string
+ */
+function theme_nextgen_collapse_text(string $text): string {
+    return trim(preg_replace('/\s+/u', ' ', $text) ?? $text);
+}
+
+/**
+ * Turn leftover Markdown markers into readable text.
+ *
+ * @param string $text
+ * @return string
+ */
+function theme_nextgen_plain_markup(string $text): string {
+    $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $text = preg_replace('/\[([^\]]+)\]\([^)]+\)/u', '$1', $text) ?? $text;
+    $text = preg_replace('/`([^`]+)`/u', '$1', $text) ?? $text;
+    $text = preg_replace('/(\*\*|__)(.+?)\1/u', '$2', $text) ?? $text;
+    $text = preg_replace('/(?<!\w)[*_]([^*_\n]+)[*_](?!\w)/u', '$1', $text) ?? $text;
+    $text = preg_replace('/^\s*(?:[*+\-]|\d+\.|[•·])\s+/u', '', $text) ?? $text;
+    return theme_nextgen_collapse_text($text);
 }
 
 /**

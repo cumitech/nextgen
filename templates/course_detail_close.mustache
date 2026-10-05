@@ -128,10 +128,19 @@ require(['jquery'], function($) {
             var url = copy.getAttribute('data-ng-copy') || '';
             var label = copy.getAttribute('data-ng-copy-label') || '';
             var copied = copy.getAttribute('data-ng-copied') || label;
+            var text = copy.querySelector('.ng-copy-label');
             var mark = function() {
-                copy.textContent = copied;
+                if (text) {
+                    text.textContent = copied;
+                } else {
+                    copy.textContent = copied;
+                }
                 window.setTimeout(function() {
-                    copy.textContent = label;
+                    if (text) {
+                        text.textContent = label;
+                    } else {
+                        copy.textContent = label;
+                    }
                 }, 1600);
             };
             if (navigator.clipboard && navigator.clipboard.writeText) {
