@@ -329,11 +329,33 @@ body.nextgen .ng-footer-grid {
   grid-template-columns: minmax(14rem, 1.4fr);
 }
 
+body.nextgen .ng-footer-brand-link {
+  align-items: center;
+  color: #fff;
+  display: inline-flex;
+  gap: 0.7rem;
+  margin: 0 0 1rem;
+  text-decoration: none;
+}
+
+body.nextgen .ng-footer-brand-link:hover {
+  color: #fff;
+}
+
+body.nextgen .ng-footer-logo {
+  display: block;
+  flex: 0 0 auto;
+  height: 42px;
+  object-fit: contain;
+  width: 42px;
+}
+
 body.nextgen .ng-footer-name {
+  color: #fff;
   font-size: 1.125rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin: 0 0 0.5rem;
+  margin: 0;
 }
 
 body.nextgen .ng-footer-about {
@@ -429,6 +451,13 @@ body.nextgen .ng-footer-meta a,
 body.nextgen .ng-footer .logininfo,
 body.nextgen .ng-footer .logininfo a {
   color: #c5d5dc;
+}
+
+body.nextgen #page-footer .logininfo,
+body.nextgen #page-footer #theme_switch_link,
+body.nextgen #page-footer .tool_dataprivacy,
+body.nextgen #page-footer div:has(> a.mobilelink) {
+  display: none;
 }
 
 body.nextgen .ng-footer-powered {

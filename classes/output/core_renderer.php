@@ -72,6 +72,29 @@ class core_renderer extends \theme_boost\output\core_renderer {
     }
 
     /**
+     * Footer fragment without the mobile app, device theme, and retention links.
+     *
+     * @return string
+     */
+    #[\Override]
+    public function standard_footer_html() {
+        $html = parent::standard_footer_html();
+        $html = preg_replace('/<div>\s*<a\b[^>]*class="mobilelink"[^>]*>.*?<\/a>\s*<\/div>/s', '', $html);
+        $html = preg_replace('/<div class="tool_dataprivacy">.*?<\/div>/s', '', $html);
+        return is_string($html) ? $html : '';
+    }
+
+    /**
+     * This theme does not offer a switch back to the standard device theme.
+     *
+     * @return string
+     */
+    #[\Override]
+    protected function theme_switch_links() {
+        return '';
+    }
+
+    /**
      * Marketing columns for the footer.
      *
      * Called from the footer template so layout files can stay on Boost.
@@ -79,9 +102,8 @@ class core_renderer extends \theme_boost\output\core_renderer {
      * @return string
      */
     public function nextgen_footer_columns(): string {
-        return $this->render_from_template(
-            'theme_nextgen/footer_columns',
-            theme_nextgen_footer_context($this->page->theme)
-        );
+        $context = theme_nextgen_footer_context($this->page->theme);
+        $context['logourl'] = $this->nextgen_logo_url()->out(false);
+        return $this->render_from_template('theme_nextgen/footer_columns', $context);
     }
 }

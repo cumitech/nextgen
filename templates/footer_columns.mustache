@@ -22,8 +22,10 @@
 <div class="ng-footer-main">
     <div class="ng-footer-grid">
         <div class="ng-footer-brand">
-            <p class="ng-footer-name">{{sitename}}</p>
-            <div class="ng-footer-about">{{{ about }}}</div>
+            <a class="ng-footer-brand-link" href="{{{config.homeurl}}}">
+                <img src="{{logourl}}" class="ng-footer-logo" alt="">
+                <span class="ng-footer-name">{{#str}}pluginname, theme_nextgen{{/str}}</span>
+            </a>
             {{#hascontact}}
                 <h2 class="ng-footer-heading">{{#str}}footercontact, theme_nextgen{{/str}}</h2>
                 <ul class="ng-footer-links">
