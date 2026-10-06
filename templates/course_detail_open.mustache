@@ -33,7 +33,6 @@
         "hasincludes": false,
         "hassummary": false,
         "hasoutcomes": false,
-        "hassubjects": false,
         "hasrequirements": false,
         "showactivities": true,
         "enrolurl": "#ng-enrolment",
@@ -71,7 +70,7 @@
                             {{/stars}}
                             <span class="ng-course-rating-value">{{rating}}</span>
                             {{#hasreviews}}
-                                <span class="ng-course-meta-note">({{reviewcount}})</span>
+                                <span class="ng-course-review-count">{{reviewslabel}}</span>
                             {{/hasreviews}}
                         </div>
                     {{/hasrating}}
@@ -204,16 +203,6 @@
                 </ul>
             </section>
         {{/hasoutcomes}}
-        {{#hassubjects}}
-            <section class="ng-course-section">
-                <h2>{{#str}}coursesubjects, theme_nextgen{{/str}}</h2>
-                <ul class="ng-subjects">
-                    {{#subjects}}
-                        <li class="ng-subject ng-subject-{{tone}}">{{name}}</li>
-                    {{/subjects}}
-                </ul>
-            </section>
-        {{/hassubjects}}
         {{#hasrequirements}}
             <section class="ng-course-section">
                 <h2>{{#str}}courserequirements, theme_nextgen{{/str}}</h2>

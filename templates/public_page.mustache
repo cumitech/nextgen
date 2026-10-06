@@ -19,6 +19,99 @@
 
     Public information page: about, contact, privacy, terms, or FAQ.
 }}
+{{#iscontact}}
+<article class="ng-public ng-contact">
+    <header class="ng-public-hero ng-contact-hero">
+        <div class="ng-landing-inner ng-contact-wrap">
+            {{{navbar}}}
+            <h1 class="ng-public-title">{{title}}</h1>
+            <p class="ng-public-intro">{{intro}}</p>
+        </div>
+    </header>
+    <div class="ng-landing-inner ng-contact-wrap ng-public-body ng-contact-body">
+        <div class="ng-contact-layout">
+            <aside class="ng-contact-aside">
+                <section class="ng-contact-panel ng-contact-tips">
+                    <h2>{{tipstitle}}</h2>
+                    <ul>
+                        {{#tips}}
+                            <li>{{text}}</li>
+                        {{/tips}}
+                    </ul>
+                    <p class="ng-contact-response">{{response}}</p>
+                </section>
+                {{#haschannels}}
+                    <section class="ng-contact-panel ng-contact-channels">
+                        <h2>{{channelstitle}}</h2>
+                        <p>{{channelslead}}</p>
+                        <ul class="ng-contact-channel-list">
+                            {{#hasemail}}
+                                <li>
+                                    <span class="ng-contact-channel-label">{{#str}}contactfieldemail, theme_nextgen{{/str}}</span>
+                                    <a href="{{emailurl}}">{{email}}</a>
+                                </li>
+                            {{/hasemail}}
+                            {{#hasphone}}
+                                <li>
+                                    <span class="ng-contact-channel-label">{{#str}}contactphone, theme_nextgen{{/str}}</span>
+                                    {{#phoneurl}}
+                                        <a href="{{phoneurl}}">{{phone}}</a>
+                                    {{/phoneurl}}
+                                    {{^phoneurl}}
+                                        <span>{{phone}}</span>
+                                    {{/phoneurl}}
+                                </li>
+                            {{/hasphone}}
+                        </ul>
+                    </section>
+                {{/haschannels}}
+            </aside>
+            <section class="ng-contact-panel ng-contact-formcard">
+                <h2>{{formtitle}}</h2>
+                <p class="ng-contact-formlead">{{formlead}}</p>
+                {{#hasform}}
+                    <div class="ng-public-form ng-contact-form">{{{form}}}</div>
+                {{/hasform}}
+            </section>
+        </div>
+    </div>
+</article>
+{{/iscontact}}
+{{#isabout}}
+<article class="ng-public ng-about">
+    <header class="ng-public-hero ng-about-hero">
+        <div class="ng-landing-inner ng-about-wrap">
+            {{{navbar}}}
+            <h1 class="ng-public-title">{{title}}</h1>
+            <p class="ng-public-intro">{{intro}}</p>
+        </div>
+    </header>
+    <div class="ng-landing-inner ng-about-wrap ng-public-body ng-about-body">
+        {{#hasfeatures}}
+            <div class="ng-about-grid">
+                {{#features}}
+                    <section class="ng-about-card">
+                        <h2>{{title}}</h2>
+                        <p>{{text}}</p>
+                    </section>
+                {{/features}}
+            </div>
+        {{/hasfeatures}}
+        {{#hascta}}
+            {{#cta}}
+                <section class="ng-about-cta">
+                    <div class="ng-about-cta-copy">
+                        <h2>{{title}}</h2>
+                        <p>{{text}}</p>
+                    </div>
+                    <a class="btn btn-primary" href="{{url}}">{{urllabel}}</a>
+                </section>
+            {{/cta}}
+        {{/hascta}}
+    </div>
+</article>
+{{/isabout}}
+{{#isdefault}}
 <article class="ng-public">
     <header class="ng-public-hero">
         <div class="ng-landing-inner ng-public-wrap">
@@ -54,3 +147,4 @@
         </div>
     </div>
 </article>
+{{/isdefault}}

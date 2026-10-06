@@ -939,11 +939,17 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
 
     $ratingtext = $hasrating ? number_format($ratingvalue, 1) : '';
     $ratinglabel = '';
+    $reviewslabel = '';
     if ($hasrating) {
         $a = (object) ['rating' => $ratingtext, 'reviews' => $reviews];
-        $ratinglabel = $reviews !== null
-            ? get_string('ratinglabelreviews', 'theme_nextgen', $a)
-            : get_string('ratinglabel', 'theme_nextgen', $a);
+        if ($reviews !== null) {
+            $reviewslabel = theme_nextgen_review_count_label((int) $reviews);
+            $ratinglabel = ((int) $reviews === 1)
+                ? get_string('ratinglabelreview', 'theme_nextgen', $a)
+                : get_string('ratinglabelreviews', 'theme_nextgen', $a);
+        } else {
+            $ratinglabel = get_string('ratinglabel', 'theme_nextgen', $a);
+        }
     }
 
     $studentrole = $DB->get_field('role', 'id', ['shortname' => 'student']);
@@ -1000,6 +1006,7 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
         'stars' => $stars,
         'hasreviews' => $reviews !== null,
         'reviews' => $reviews ?? 0,
+        'reviewslabel' => $reviewslabel,
         'hasprice' => $price !== '',
         'price' => $price,
         'actionurl' => $actionurl,
@@ -1646,8 +1653,20 @@ function theme_nextgen_after_config(): void {
     }
     if (($CFG->theme ?? '') === 'nextgen') {
         theme_nextgen_publish_public_paths();
+        theme_nextgen_redirect_site_support();
     }
     \theme_nextgen\local\course_page::serve_public_course();
+}
+
+/**
+ * Send Moodle's contact-site-support page to the theme contact page.
+ */
+function theme_nextgen_redirect_site_support(): void {
+    $script = $_SERVER['SCRIPT_NAME'] ?? '';
+    if (!is_string($script) || !str_ends_with(str_replace('\\', '/', $script), '/user/contactsitesupport.php')) {
+        return;
+    }
+    redirect(\theme_nextgen\local\public_page::url('contact'));
 }
 
 /**
@@ -1750,16 +1769,6 @@ function theme_nextgen_course_detail_context(): ?array {
     $outcomes = $customoutcomes['points'];
     $outcometitle = $outcomes ? $customoutcomes['title'] : '';
     $outcomelead = $outcomes ? $customoutcomes['lead'] : '';
-    $subjects = [];
-    $tones = ['primary', 'clay', 'ink', 'gold'];
-    $tags = \core_tag_tag::get_item_tags_array('core', 'course', $course->id);
-    foreach (array_values($tags) as $index => $tag) {
-        $subjects[] = [
-            'name' => $tag,
-            'tone' => $tones[$index % 4],
-        ];
-    }
-
     $outline = theme_nextgen_course_outline($course, $context);
     $sectionnames = $outline['sectionnames'];
     $summaryoutcomes = $outline['summaryoutcomes'];
@@ -1776,13 +1785,6 @@ function theme_nextgen_course_detail_context(): ?array {
     if (!$outcomes) {
         foreach ($sectionnames as $name) {
             $outcomes[] = ['text' => $name];
-        }
-    } else if (!$subjects) {
-        foreach ($sectionnames as $index => $name) {
-            $subjects[] = [
-                'name' => $name,
-                'tone' => $tones[$index % 4],
-            ];
         }
     }
 
@@ -1915,7 +1917,8 @@ function theme_nextgen_course_detail_context(): ?array {
         'certificates' => $certificates,
         'hasreviews' => !empty($card['hasreviews']),
         'reviewcount' => $card['reviews'] ?? 0,
-        'ratingslabel' => get_string('ratingscount', 'theme_nextgen', (int) ($card['reviews'] ?? 0)),
+        'reviewslabel' => $card['reviewslabel'] ?? '',
+        'ratingslabel' => $card['reviewslabel'] ?? theme_nextgen_review_count_label((int) ($card['reviews'] ?? 0)),
         'hasrating' => $card['hasrating'],
         'rating' => $card['rating'],
         'ratinglabel' => $card['ratinglabel'],
@@ -1944,14 +1947,12 @@ function theme_nextgen_course_detail_context(): ?array {
         'hasoutcomelead' => $outcomelead !== '',
         'outcomelead' => $outcomelead,
         'outcomes' => $outcomes,
-        'hassubjects' => !empty($subjects),
-        'subjects' => $subjects,
         'hasrequirements' => $extra['ngrequirements'] !== '',
         'requirements' => theme_nextgen_text_lines($extra['ngrequirements']),
         'breadcrumbs' => $breadcrumbs,
         'enrolurl' => $enrolurl,
         'enrollabel' => $enrollabel,
-        'quoteurl' => (new moodle_url('/user/contactsitesupport.php'))->out(false),
+        'quoteurl' => \theme_nextgen\local\public_page::url('contact')->out(false),
         'shareurl' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false),
         'showactivities' => $PAGE->pagelayout === 'course',
         'hasoutline' => !empty($outline['sections']),
@@ -2190,6 +2191,19 @@ function theme_nextgen_star_states(float $value): array {
         $stars[] = ['state' => $state];
     }
     return $stars;
+}
+
+/**
+ * Singular or plural label for a review count.
+ *
+ * @param int $count
+ * @return string
+ */
+function theme_nextgen_review_count_label(int $count): string {
+    if ($count === 1) {
+        return get_string('reviewcountone', 'theme_nextgen', $count);
+    }
+    return get_string('reviewcount', 'theme_nextgen', $count);
 }
 
 /**

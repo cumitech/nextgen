@@ -19,10 +19,7 @@ namespace theme_nextgen\form;
 use core_user\form\contactsitesupport_form;
 
 /**
- * Site contact form with name and email left editable.
- *
- * Moodle's form fills those fields from the signed-in account and then freezes
- * them. This form keeps the account values as the starting point.
+ * Site contact form with editable name and email and theme button labels.
  *
  * @package   theme_nextgen
  * @copyright 2026 NextGen LMS
@@ -30,27 +27,58 @@ use core_user\form\contactsitesupport_form;
  */
 class contact extends contactsitesupport_form {
     /**
-     * Define the form, then unlock name and email.
+     * Define the form fields used on the public contact page.
      */
     #[\Override]
     public function definition(): void {
-        parent::definition();
+        global $CFG;
 
         $mform = $this->_form;
-        $rules = [
-            'name' => get_string('required'),
-            'email' => get_string('missingemail'),
-        ];
-        foreach ($rules as $field => $message) {
-            if (!$mform->elementExists($field)) {
-                continue;
-            }
-            $element = $mform->getElement($field);
-            if (!$element->isFrozen()) {
-                continue;
-            }
-            $element->unfreeze();
-            $mform->addRule($field, $message, 'required', null, 'client');
+        $user = $this->_customdata;
+        $required = get_string('required');
+
+        $mform->addElement('text', 'name', get_string('contactfieldname', 'theme_nextgen'), [
+            'size' => 48,
+            'placeholder' => get_string('contactnameplaceholder', 'theme_nextgen'),
+            'autocomplete' => 'name',
+        ]);
+        $mform->addRule('name', $required, 'required', null, 'client');
+        $mform->setType('name', PARAM_TEXT);
+
+        $mform->addElement('text', 'email', get_string('contactfieldemail', 'theme_nextgen'), [
+            'size' => 48,
+            'placeholder' => get_string('contactemailplaceholder', 'theme_nextgen'),
+            'autocomplete' => 'email',
+        ]);
+        $mform->addRule('email', get_string('missingemail'), 'required', null, 'client');
+        $mform->setType('email', PARAM_EMAIL);
+
+        $mform->addElement('text', 'subject', get_string('contactfieldsubject', 'theme_nextgen'), [
+            'size' => 48,
+            'placeholder' => get_string('contactsubjectplaceholder', 'theme_nextgen'),
+        ]);
+        $mform->addRule('subject', $required, 'required', null, 'client');
+        $mform->setType('subject', PARAM_TEXT);
+
+        $mform->addElement('textarea', 'message', get_string('contactfieldmessage', 'theme_nextgen'), [
+            'rows' => 7,
+            'cols' => 50,
+            'placeholder' => get_string('contactmessageplaceholder', 'theme_nextgen'),
+        ]);
+        $mform->addRule('message', $required, 'required', null, 'client');
+        $mform->setType('message', PARAM_TEXT);
+
+        if (isloggedin() && !isguestuser() && $user) {
+            $mform->setDefault('name', fullname($user));
+            $mform->setDefault('email', $user->email);
         }
+
+        if (!empty($CFG->recaptchapublickey) && !empty($CFG->recaptchaprivatekey)) {
+            $mform->addElement('recaptcha', 'recaptcha_element', get_string('security_question', 'auth'));
+            $mform->addHelpButton('recaptcha_element', 'recaptcha', 'auth');
+            $mform->closeHeaderBefore('recaptcha_element');
+        }
+
+        $this->add_action_buttons(true, get_string('contactsubmit', 'theme_nextgen'));
     }
 }

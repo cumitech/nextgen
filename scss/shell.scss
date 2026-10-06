@@ -2329,6 +2329,11 @@ body.nextgen .ng-course-reviews {
   font-size: 0.92rem;
 }
 
+body.nextgen .ng-course-reviews::before {
+  content: "·";
+  margin: 0 0.35rem 0 0.15rem;
+}
+
 body.nextgen article.ng-course-card .ng-course-commerce {
   align-items: flex-start;
   border-top: 1px solid var(--ng-border);
@@ -3218,6 +3223,16 @@ body.nextgen .ng-course-meta {
 
 body.nextgen .ng-course-meta-note {
   color: rgba(255, 255, 255, 0.82);
+}
+
+body.nextgen .ng-course-review-count {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 500;
+}
+
+body.nextgen .ng-course-review-count::before {
+  content: "·";
+  margin: 0 0.4rem 0 0.15rem;
 }
 
 body.nextgen .ng-bestseller {
@@ -4447,6 +4462,162 @@ body.nextgen .ng-public-hero {
   padding: 2.5rem 0 4.5rem;
 }
 
+body.nextgen.nextgen-about .ng-about-hero {
+  background-color: var(--ng-secondary);
+  isolation: isolate;
+  overflow: hidden;
+  padding: 2.75rem 0 5rem;
+  position: relative;
+}
+
+body.nextgen.nextgen-about .ng-about-hero::before {
+  background-image: url("[[pix:theme_nextgen|hero-catalogue]]");
+  background-position: center;
+  background-size: cover;
+  content: "";
+  filter: brightness(1.05) contrast(1.04) saturate(1.08);
+  inset: 0;
+  position: absolute;
+  z-index: -2;
+}
+
+body.nextgen.nextgen-about .ng-about-hero::after {
+  background:
+    linear-gradient(90deg, transparent, rgba(248, 235, 211, 0.4), transparent) bottom center / 80% 2px no-repeat,
+    radial-gradient(ellipse 70% 80% at 12% 20%, rgba(196, 132, 42, 0.18), transparent 52%),
+    linear-gradient(
+      145deg,
+      rgba(16, 40, 50, 0.9) 0%,
+      rgba(22, 58, 74, 0.78) 48%,
+      rgba(26, 70, 88, 0.68) 100%
+    );
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+body.nextgen.nextgen-about .ng-about-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+body.nextgen.nextgen-about .ng-about-wrap {
+  max-width: 1080px;
+}
+
+body.nextgen.nextgen-about .ng-about-hero .ng-public-title {
+  animation: ng-contact-rise 0.55s ease both;
+  max-width: 12ch;
+}
+
+body.nextgen.nextgen-about .ng-about-hero .ng-public-intro {
+  animation: ng-contact-rise 0.65s ease 0.06s both;
+  max-width: 36rem;
+}
+
+body.nextgen.nextgen-about .ng-about-body {
+  animation: ng-contact-rise 0.7s ease 0.14s both;
+  margin-top: -2.4rem;
+  padding-bottom: 4rem;
+}
+
+body.nextgen.nextgen-about .ng-about-grid {
+  display: grid;
+  gap: 1.15rem;
+}
+
+@media (min-width: 768px) {
+  body.nextgen.nextgen-about .ng-about-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+body.nextgen.nextgen-about .ng-about-card {
+  background: #fff;
+  border: 1px solid rgba(22, 58, 74, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 18px 44px rgba(16, 40, 51, 0.1);
+  padding: 1.45rem 1.5rem 1.55rem;
+}
+
+body.nextgen.nextgen-about .ng-about-card h2 {
+  color: var(--ng-text);
+  font-size: 1.2rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.55rem;
+}
+
+body.nextgen.nextgen-about .ng-about-card h2::before {
+  background: var(--ng-accent);
+  border-radius: 999px;
+  content: "";
+  display: block;
+  height: 3px;
+  margin-bottom: 0.85rem;
+  width: 2.25rem;
+}
+
+body.nextgen.nextgen-about .ng-about-card p {
+  color: var(--ng-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+body.nextgen.nextgen-about .ng-about-cta {
+  align-items: center;
+  background:
+    radial-gradient(ellipse 60% 80% at 90% 20%, rgba(196, 132, 42, 0.16), transparent 55%),
+    linear-gradient(135deg, #102832 0%, var(--ng-secondary) 55%, #1a4658 100%);
+  border-radius: 18px;
+  box-shadow: 0 18px 44px rgba(16, 40, 51, 0.14);
+  color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 1.75rem;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  padding: 1.55rem 1.65rem;
+}
+
+body.nextgen.nextgen-about .ng-about-cta-copy {
+  flex: 1 1 16rem;
+  max-width: 38rem;
+}
+
+body.nextgen.nextgen-about .ng-about-cta h2 {
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+}
+
+body.nextgen.nextgen-about .ng-about-cta p {
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.55;
+  margin: 0;
+}
+
+body.nextgen.nextgen-about .ng-about-cta .btn-primary {
+  background: #fff;
+  border-color: #fff;
+  border-radius: 999px;
+  color: var(--ng-secondary);
+  flex: 0 0 auto;
+  font-weight: 750;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.4rem;
+}
+
+body.nextgen.nextgen-about .ng-about-cta .btn-primary:hover {
+  background: #f8ebd3;
+  border-color: #f8ebd3;
+  color: var(--ng-secondary);
+}
+
 body.nextgen .ng-public-wrap {
   max-width: 760px;
 }
@@ -4563,6 +4734,317 @@ body.nextgen .ng-public-form .col-form-label {
 
 body.nextgen .ng-public-form textarea {
   min-height: 8rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-hero {
+  background-color: var(--ng-secondary);
+  isolation: isolate;
+  overflow: hidden;
+  padding: 2.75rem 0 5rem;
+  position: relative;
+}
+
+body.nextgen.nextgen-contact .ng-contact-hero::before {
+  background-image: url("[[pix:theme_nextgen|hero-home]]");
+  background-position: center;
+  background-size: cover;
+  content: "";
+  filter: brightness(1.05) contrast(1.04) saturate(1.08);
+  inset: 0;
+  position: absolute;
+  z-index: -2;
+}
+
+body.nextgen.nextgen-contact .ng-contact-hero::after {
+  background:
+    linear-gradient(90deg, transparent, rgba(248, 235, 211, 0.4), transparent) bottom center / 80% 2px no-repeat,
+    radial-gradient(ellipse 70% 80% at 88% 18%, rgba(196, 132, 42, 0.2), transparent 55%),
+    linear-gradient(
+      145deg,
+      rgba(16, 40, 50, 0.9) 0%,
+      rgba(22, 58, 74, 0.78) 48%,
+      rgba(26, 70, 88, 0.68) 100%
+    );
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+body.nextgen.nextgen-contact .ng-contact-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+body.nextgen.nextgen-contact .ng-contact-wrap {
+  max-width: 1080px;
+}
+
+body.nextgen.nextgen-contact .ng-contact-hero .ng-public-title {
+  animation: ng-contact-rise 0.55s ease both;
+  max-width: 14ch;
+}
+
+body.nextgen.nextgen-contact .ng-contact-hero .ng-public-intro {
+  animation: ng-contact-rise 0.65s ease 0.06s both;
+  max-width: 36rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-body {
+  margin-top: -2.4rem;
+  padding-bottom: 4rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-layout {
+  align-items: start;
+  animation: ng-contact-rise 0.7s ease 0.16s both;
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 900px) {
+  body.nextgen.nextgen-contact .ng-contact-layout {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.2fr);
+    gap: 1.5rem;
+  }
+}
+
+body.nextgen.nextgen-contact .ng-contact-aside {
+  display: grid;
+  gap: 1rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-panel {
+  background: #fff;
+  border: 1px solid rgba(22, 58, 74, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 18px 44px rgba(16, 40, 51, 0.1);
+  padding: 1.45rem 1.5rem 1.55rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-panel h2 {
+  color: var(--ng-text);
+  font-size: 1.15rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.55rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-tips ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.nextgen.nextgen-contact .ng-contact-tips li {
+  color: var(--ng-text-muted);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0.7rem 0 0.7rem 1.35rem;
+  position: relative;
+}
+
+body.nextgen.nextgen-contact .ng-contact-tips li + li {
+  border-top: 1px solid var(--ng-border);
+}
+
+body.nextgen.nextgen-contact .ng-contact-tips li::before {
+  background: var(--ng-accent);
+  border-radius: 50%;
+  content: "";
+  height: 0.45rem;
+  left: 0.15rem;
+  position: absolute;
+  top: 1.1rem;
+  width: 0.45rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-response {
+  background: linear-gradient(135deg, rgba(22, 58, 74, 0.06), rgba(196, 132, 42, 0.1));
+  border-radius: 12px;
+  color: var(--ng-text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 1rem 0 0;
+  padding: 0.85rem 1rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-channels p {
+  color: var(--ng-text-muted);
+  line-height: 1.5;
+  margin: 0 0 1rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-channel-list {
+  display: grid;
+  gap: 0.85rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.nextgen.nextgen-contact .ng-contact-channel-list li {
+  display: grid;
+  gap: 0.2rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-channel-label {
+  color: var(--ng-text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+body.nextgen.nextgen-contact .ng-contact-channel-list a {
+  color: var(--ng-primary);
+  font-weight: 700;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+body.nextgen.nextgen-contact .ng-contact-channel-list a:hover {
+  color: var(--ng-primary-hover);
+  text-decoration: underline;
+}
+
+body.nextgen.nextgen-contact .ng-contact-formlead {
+  color: var(--ng-text-muted);
+  line-height: 1.5;
+  margin: 0 0 1.15rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .mform {
+  max-width: none;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .fitem {
+  margin-bottom: 1rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .fitem.row {
+  --bs-gutter-x: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .fitem.row > .col-md-3,
+body.nextgen.nextgen-contact .ng-contact-form .fitem.row > .col-md-9 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .col-form-label {
+  color: var(--ng-text);
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding-bottom: 0.35rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .col-form-label .text-danger,
+body.nextgen.nextgen-contact .ng-contact-form .col-form-label .icon {
+  display: none;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .fitem.required .col-form-label::after {
+  color: var(--ng-accent);
+  content: " *";
+  font-weight: 700;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .form-control,
+body.nextgen.nextgen-contact .ng-contact-form textarea.form-control {
+  background: #f7fafb;
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  box-shadow: none;
+  color: var(--ng-text);
+  font: inherit;
+  min-height: 2.85rem;
+  padding: 0.7rem 0.9rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  width: 100%;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form textarea.form-control {
+  min-height: 9.5rem;
+  resize: vertical;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .form-control:focus,
+body.nextgen.nextgen-contact .ng-contact-form textarea.form-control:focus {
+  background: #fff;
+  border-color: var(--ng-primary);
+  box-shadow: 0 0 0 3px rgba(22, 58, 74, 0.12);
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .fdescription.required {
+  color: var(--ng-text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .fdescription.required .icon,
+body.nextgen.nextgen-contact .ng-contact-form .fdescription.required .text-danger {
+  display: none;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .fdescription.required::before {
+  color: var(--ng-accent);
+  content: "* ";
+  font-weight: 700;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .fitem.fitem_actionbuttons {
+  margin-bottom: 0;
+  margin-top: 0.35rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .fitem_actionbuttons .felement {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .btn {
+  border-radius: 999px;
+  font-weight: 700;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.35rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .btn-primary {
+  background: var(--ng-primary);
+  border-color: var(--ng-primary);
+  box-shadow: 0 10px 22px rgba(22, 58, 74, 0.18);
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .btn-primary:hover {
+  background: var(--ng-primary-hover);
+  border-color: var(--ng-primary-hover);
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .btn-secondary {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  color: var(--ng-text);
+}
+
+@keyframes ng-contact-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 body.nextgen.nextgen-dashboard #page-header {

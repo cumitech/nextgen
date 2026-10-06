@@ -96,6 +96,11 @@ class public_page {
         $PAGE->set_title($definition['title']);
         $PAGE->set_heading($definition['title']);
         $PAGE->add_body_class('nextgen-public');
+        if ($key === 'contact') {
+            $PAGE->add_body_class('nextgen-contact');
+        } else if ($key === 'about') {
+            $PAGE->add_body_class('nextgen-about');
+        }
         $PAGE->navbar->add($definition['title']);
 
         $formhtml = '';
@@ -104,7 +109,7 @@ class public_page {
         }
 
         echo $OUTPUT->header();
-        echo $OUTPUT->render_from_template('theme_nextgen/public_page', [
+        echo $OUTPUT->render_from_template('theme_nextgen/public_page', array_merge([
             'kicker' => $definition['kicker'],
             'title' => $definition['title'],
             'intro' => $definition['intro'],
@@ -114,8 +119,83 @@ class public_page {
             'navbar' => $OUTPUT->navbar(),
             'hasform' => $formhtml !== '',
             'form' => $formhtml,
-        ]);
+            'iscontact' => $key === 'contact',
+            'isabout' => $key === 'about',
+            'isdefault' => $key !== 'contact' && $key !== 'about',
+        ], self::contact_context($key), self::about_context($key, $definition)));
         echo $OUTPUT->footer();
+    }
+
+    /**
+     * Extra template data for the about page layout.
+     *
+     * @param string $key
+     * @param array $definition
+     * @return array
+     */
+    private static function about_context(string $key, array $definition): array {
+        if ($key !== 'about') {
+            return [];
+        }
+
+        $features = [];
+        $cta = null;
+        foreach ($definition['sections'] as $section) {
+            if (!empty($section['url'])) {
+                $cta = $section;
+                continue;
+            }
+            $features[] = $section;
+        }
+
+        return [
+            'features' => $features,
+            'hasfeatures' => !empty($features),
+            'hascta' => $cta !== null,
+            'cta' => $cta ?? [],
+        ];
+    }
+
+    /**
+     * Extra template data for the contact page layout.
+     *
+     * @param string $key
+     * @return array
+     */
+    private static function contact_context(string $key): array {
+        if ($key !== 'contact') {
+            return [];
+        }
+
+        $theme = \theme_config::load('nextgen');
+        $email = trim(theme_nextgen_setting($theme, 'contactemail'));
+        $phone = trim(theme_nextgen_setting($theme, 'contactphone'));
+        if ($email === '') {
+            $support = \core_user::get_support_user();
+            $email = trim((string) ($support->email ?? ''));
+        }
+        $dial = preg_replace('/[^\d+]/', '', $phone);
+
+        return [
+            'formtitle' => get_string('contactformtitle', 'theme_nextgen'),
+            'formlead' => get_string('contactformlead', 'theme_nextgen'),
+            'tipstitle' => get_string('contacttipstitle', 'theme_nextgen'),
+            'tips' => [
+                ['text' => get_string('contacttip1', 'theme_nextgen')],
+                ['text' => get_string('contacttip2', 'theme_nextgen')],
+                ['text' => get_string('contacttip3', 'theme_nextgen')],
+            ],
+            'response' => get_string('contactresponse', 'theme_nextgen'),
+            'haschannels' => ($email !== '' || $phone !== ''),
+            'channelstitle' => get_string('contactchannels', 'theme_nextgen'),
+            'channelslead' => get_string('contactchannelslead', 'theme_nextgen'),
+            'hasemail' => $email !== '',
+            'email' => $email,
+            'emailurl' => $email !== '' ? 'mailto:' . $email : '',
+            'hasphone' => $phone !== '',
+            'phone' => $phone,
+            'phoneurl' => $dial !== '' ? 'tel:' . $dial : '',
+        ];
     }
 
     /**
@@ -159,7 +239,7 @@ class public_page {
         if ($key === 'about' && $sections) {
             $last = count($sections) - 1;
             $sections[$last]['url'] = (new \moodle_url('/course/index.php'))->out(false);
-            $sections[$last]['urllabel'] = get_string('browseall', 'theme_nextgen');
+            $sections[$last]['urllabel'] = get_string('aboutctalabel', 'theme_nextgen');
         }
 
         return [
