@@ -29,7 +29,6 @@
         </div>
         <div class="ng-landing-inner ng-hero-grid">
             <div>
-                <p class="ng-kicker">{{#str}}loginkicker, theme_nextgen{{/str}}</p>
                 <h1 class="ng-hero-title">{{herotitle}}</h1>
                 <p class="ng-hero-text">{{herotext}}</p>
                 <div class="ng-hero-actions">
@@ -98,14 +97,17 @@
     </section>
 
     {{#hascategories}}
-        <section class="ng-section" id="categories">
+        <section class="ng-section ng-category-section" id="categories">
             <div class="ng-landing-inner">
                 <h2>{{#str}}categoriesheading, theme_nextgen{{/str}}</h2>
                 <div class="ng-category-grid">
                     {{#categories}}
                         <a class="ng-category-tile" href="{{url}}">
                             <img class="ng-category-photo" src="{{image}}" alt="">
-                            <span class="ng-category-copy">{{name}}</span>
+                            <span class="ng-category-copy">
+                                <span class="ng-category-name">{{name}}</span>
+                                <span class="ng-category-count">{{countlabel}}</span>
+                            </span>
                         </a>
                     {{/categories}}
                 </div>

@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+
+<html  dir="ltr" lang="en" xml:lang="en">
+<head>
+    <title>Education Entrepreneurship | NextGen</title>
+    <link rel="shortcut icon" href="http://localhost/moodle/theme/nextgen/pix/logo.webp?rev=1791275131" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="moodle, Education Entrepreneurship | NextGen" />
+<link rel="stylesheet" type="text/css" href="http://localhost/moodle/theme/yui_combo.php?rollup/3.18.1/yui-moodlesimple-min.css" /><script id="firstthemesheet" type="text/css">/** Required in order to fix style inclusion problems in IE with YUI **/</script><link rel="stylesheet" type="text/css" href="http://localhost/moodle/theme/styles.php/nextgen/1791275131_1791273236/all" />
+<script>
+//<![CDATA[
+var M = {}; M.yui = {};
+M.pageloadstarttime = new Date();
+M.cfg = {"wwwroot":"http:\/\/localhost\/moodle","apibase":"http:\/\/localhost\/moodle\/api","homeurl":{},"sesskey":"TDpJnaC1h4","sessiontimeout":"28800","sessiontimeoutwarning":"1200","themerev":"1791275131","slasharguments":1,"theme":"nextgen","iconsystemmodule":"core\/icon_system_fontawesome","jsrev":"1791275131","admin":"admin","svgicons":true,"usertimezone":"Africa\/Douala","language":"en","courseId":5,"courseContextId":135,"contextid":135,"contextInstanceId":5,"langrev":1791275131,"templaterev":"1791275131","siteId":1,"userId":0,"deprecationignorelist":[],"traceId":null};var yui1ConfigFn = function(me) {if(/-skin|reset|fonts|grids|base/.test(me.name)){me.type='css';me.path=me.path.replace(/\.js/,'.css');me.path=me.path.replace(/\/yui2-skin/,'/assets/skins/sam/yui2-skin')}};
+var yui2ConfigFn = function(me) {var parts=me.name.replace(/^moodle-/,'').split('-'),component=parts.shift(),module=parts[0],min='-min';if(/-(skin|core)$/.test(me.name)){parts.pop();me.type='css';min=''}
+if(module){var filename=parts.join('-');me.path=component+'/'+module+'/'+filename+min+'.'+me.type}else{me.path=component+'/'+component+'.'+me.type}};
+YUI_config = {"debug":false,"base":"http:\/\/localhost\/moodle\/lib\/yuilib\/3.18.1\/","comboBase":"http:\/\/localhost\/moodle\/theme\/yui_combo.php?","combine":true,"filter":null,"insertBefore":"firstthemesheet","groups":{"yui2":{"base":"http:\/\/localhost\/moodle\/lib\/yuilib\/2in3\/2.9.0\/build\/","comboBase":"http:\/\/localhost\/moodle\/theme\/yui_combo.php?","combine":true,"ext":false,"root":"2in3\/2.9.0\/build\/","patterns":{"yui2-":{"group":"yui2","configFn":yui1ConfigFn}}},"moodle":{"name":"moodle","base":"http:\/\/localhost\/moodle\/theme\/yui_combo.php?m\/1791275131\/","combine":true,"comboBase":"http:\/\/localhost\/moodle\/theme\/yui_combo.php?","ext":false,"root":"m\/1791275131\/","patterns":{"moodle-":{"group":"moodle","configFn":yui2ConfigFn}},"filter":null,"modules":{"moodle-core-actionmenu":{"requires":["base","event","node-event-simulate"]},"moodle-core-blocks":{"requires":["base","node","io","dom","dd","dd-scroll","moodle-core-dragdrop","moodle-core-notification"]},"moodle-core-chooserdialogue":{"requires":["base","panel","moodle-core-notification"]},"moodle-core-dragdrop":{"requires":["base","node","io","dom","dd","event-key","event-focus","moodle-core-notification"]},"moodle-core-event":{"requires":["event-custom"]},"moodle-core-handlebars":{"condition":{"trigger":"handlebars","when":"after"}},"moodle-core-lockscroll":{"requires":["plugin","base-build"]},"moodle-core-maintenancemodetimer":{"requires":["base","node"]},"moodle-core-notification":{"requires":["moodle-core-notification-dialogue","moodle-core-notification-alert","moodle-core-notification-exception","moodle-core-notification-ajaxexception"]},"moodle-core-notification-dialogue":{"requires":["base","node","panel","escape","event-key","dd-plugin","moodle-core-widget-focusafterclose","moodle-core-lockscroll"]},"moodle-core-notification-alert":{"requires":["moodle-core-notification-dialogue"]},"moodle-core-notification-exception":{"requires":["moodle-core-notification-dialogue"]},"moodle-core-notification-ajaxexception":{"requires":["moodle-core-notification-dialogue"]},"moodle-core_availability-form":{"requires":["base","node","event","event-delegate","panel","moodle-core-notification-dialogue","json"]},"moodle-course-categoryexpander":{"requires":["node","event-key"]},"moodle-course-dragdrop":{"requires":["base","node","io","dom","dd","dd-scroll","moodle-core-dragdrop","moodle-core-notification","moodle-course-coursebase","moodle-course-util"]},"moodle-course-management":{"requires":["base","node","io-base","moodle-core-notification-exception","json-parse","dd-constrain","dd-proxy","dd-drop","dd-delegate","node-event-delegate"]},"moodle-course-util":{"requires":["node"],"use":["moodle-course-util-base"],"submodules":{"moodle-course-util-base":{},"moodle-course-util-section":{"requires":["node","moodle-course-util-base"]},"moodle-course-util-cm":{"requires":["node","moodle-course-util-base"]}}},"moodle-form-dateselector":{"requires":["base","node","overlay","calendar"]},"moodle-form-shortforms":{"requires":["node","base","selector-css3","moodle-core-event"]},"moodle-question-searchform":{"requires":["base","node"]},"moodle-availability_completion-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_date-form":{"requires":["base","node","event","io","moodle-core_availability-form"]},"moodle-availability_grade-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_group-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_grouping-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_profile-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-mod_assign-history":{"requires":["node","transition"]},"moodle-mod_quiz-autosave":{"requires":["base","node","event","event-valuechange","node-event-delegate","io-form","datatype-date-format"]},"moodle-mod_quiz-dragdrop":{"requires":["base","node","io","dom","dd","dd-scroll","moodle-core-dragdrop","moodle-core-notification","moodle-mod_quiz-quizbase","moodle-mod_quiz-util-base","moodle-mod_quiz-util-page","moodle-mod_quiz-util-slot","moodle-course-util"]},"moodle-mod_quiz-modform":{"requires":["base","node","event"]},"moodle-mod_quiz-questionchooser":{"requires":["moodle-core-chooserdialogue","moodle-mod_quiz-util","querystring-parse"]},"moodle-mod_quiz-quizbase":{"requires":["base","node"]},"moodle-mod_quiz-toolboxes":{"requires":["base","node","event","event-key","io","moodle-mod_quiz-quizbase","moodle-mod_quiz-util-slot","moodle-core-notification-ajaxexception"]},"moodle-mod_quiz-util":{"requires":["node","moodle-core-actionmenu"],"use":["moodle-mod_quiz-util-base"],"submodules":{"moodle-mod_quiz-util-base":{},"moodle-mod_quiz-util-slot":{"requires":["node","moodle-mod_quiz-util-base"]},"moodle-mod_quiz-util-page":{"requires":["node","moodle-mod_quiz-util-base"]}}},"moodle-message_airnotifier-toolboxes":{"requires":["base","node","io"]},"moodle-report_eventlist-eventfilter":{"requires":["base","event","node","node-event-delegate","datatable","autocomplete","autocomplete-filters"]},"moodle-report_loglive-fetchlogs":{"requires":["base","event","node","io","node-event-delegate"]},"moodle-gradereport_history-userselector":{"requires":["escape","event-delegate","event-key","handlebars","io-base","json-parse","moodle-core-notification-dialogue"]},"moodle-qbank_editquestion-chooser":{"requires":["moodle-core-chooserdialogue"]},"moodle-tool_lp-dragdrop-reorder":{"requires":["moodle-core-dragdrop"]},"moodle-assignfeedback_editpdf-editor":{"requires":["base","event","node","io","graphics","json","event-move","event-resize","transition","querystring-stringify-simple","moodle-core-notification-dialog","moodle-core-notification-alert","moodle-core-notification-warning","moodle-core-notification-exception","moodle-core-notification-ajaxexception"]}}},"gallery":{"name":"gallery","base":"http:\/\/localhost\/moodle\/lib\/yuilib\/gallery\/","combine":true,"comboBase":"http:\/\/localhost\/moodle\/theme\/yui_combo.php?","ext":false,"root":"gallery\/1791275131\/","patterns":{"gallery-":{"group":"gallery"}}}},"modules":{"core_filepicker":{"name":"core_filepicker","fullpath":"http:\/\/localhost\/moodle\/lib\/javascript.php\/1791275131\/repository\/filepicker.js","requires":["base","node","node-event-simulate","json","async-queue","io-base","io-upload-iframe","io-form","yui2-treeview","panel","cookie","datatable","datatable-sort","resize-plugin","dd-plugin","escape","moodle-core_filepicker","moodle-core-notification-dialogue"]},"core_comment":{"name":"core_comment","fullpath":"http:\/\/localhost\/moodle\/lib\/javascript.php\/1791275131\/comment\/comment.js","requires":["base","io-base","node","json","yui2-animation","overlay","escape"]}},"logInclude":[],"logExclude":[],"logLevel":null};
+M.yui.loader = {modules: {}};
+
+//]]>
+</script>
+<script type="importmap">{
+    "imports": {
+        "@moodle/lms/": "http://localhost/moodle/core/esm/1791275131/@moodle/lms/",
+        "@moodlehq/design-system": "http://localhost/moodle/core/esm/1791275131/@moodlehq/design-system",
+        "react": "http://localhost/moodle/core/esm/1791275131/react",
+        "react/": "http://localhost/moodle/core/esm/1791275131/react/",
+        "react-dom": "http://localhost/moodle/core/esm/1791275131/react-dom",
+        "react-dom/": "http://localhost/moodle/core/esm/1791275131/react-dom/"
+    }
+}</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body  id="page-theme-nextgen-course" class="format-topics nextgen nextgen-course nextgen-sales  path-theme path-theme-nextgen chrome dir-ltr lang-en yui-skin-sam yui3-skin-sam localhost--moodle pagelayout-standard course-5 context-135 category-9 notloggedin theme uses-drawers">
+<div class="toast-wrapper mx-auto py-0 fixed-top" role="status" aria-live="polite"></div>
+<div id="page-wrapper" class="d-print-block">
+
+    <div>
+    <a class="visually-hidden-focusable" href="#maincontent">Skip to main content</a>
+</div><script src="http://localhost/moodle/lib/javascript.php/1791275131/lib/polyfills/polyfill.js"></script>
+<script src="http://localhost/moodle/theme/yui_combo.php?rollup/3.18.1/yui-moodlesimple-min.js"></script><script src="http://localhost/moodle/lib/javascript.php/1791275131/lib/javascript-static.js"></script>
+<script type="module">import "@moodle/lms/core/react_autoinit";</script><script>
+//<![CDATA[
+document.body.className += ' jsenabled';
+//]]>
+</script>
+
+
+
+    <nav class="navbar fixed-top navbar-expand ng-header" aria-label="Site navigation">
+        <div class="container-fluid ng-header-inner">
+            <button class="navbar-toggler aabtn d-block d-md-none ng-header-toggler" data-toggler="drawers" data-action="toggle" data-target="theme_boost-drawers-primary">
+                <span class="navbar-toggler-icon"></span>
+                <span class="visually-hidden">Side panel</span>
+            </button>
+    
+            <a href="http://localhost/moodle/" class="navbar-brand ng-brand aabtn">
+                <img src="http://localhost/moodle/theme/nextgen/pix/logo.webp?rev=1791275131" class="ng-brand-mark" alt="">
+                <span class="ng-brand-name">NextGen</span>
+            </a>
+    
+                <div class="primary-navigation ng-primary-nav">
+                    <nav class="moremenu navigation">
+                        <ul id="moremenu-6ac4b0bc24931-navbar-nav" role="menubar" class="nav more-nav navbar-nav">
+                                    <li data-key="home" class="nav-item" role="none" data-forceintomoremenu="false">
+                                                <a role="menuitem" class="nav-link  "
+                                                    href="http://localhost/moodle/?redirect=0"
+                                                    
+                                                    
+                                                    data-disableactive="true"
+                                                    tabindex="-1"
+                                                >
+                                                    Home
+                                                </a>
+                                    </li>
+                                    <li data-key="nextgen-courses" class="nav-item" role="none" data-forceintomoremenu="false">
+                                                <a role="menuitem" class="nav-link  "
+                                                    href="http://localhost/moodle/course/index.php"
+                                                    
+                                                    
+                                                    data-disableactive="true"
+                                                    tabindex="-1"
+                                                >
+                                                    Courses
+                                                </a>
+                                    </li>
+                                    <li class="dropdown nav-item" role="none" data-forceintomoremenu="false">
+                                        <a class="dropdown-toggle nav-link  " id="drop-down-6ac4b0bc24931" role="menuitem" data-bs-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false" href="#" aria-controls="drop-down-menu-6ac4b0bc24931"
+                                            
+                                            
+                                            tabindex="-1"
+                                        >
+                                            Categories
+                                        </a>
+                                        <div class="dropdown-menu" role="menu" id="drop-down-menu-6ac4b0bc24931" aria-labelledby="drop-down-6ac4b0bc24931">
+                                                        <a class="dropdown-item" role="menuitem" href="http://localhost/moodle/course/index.php?browse=categories"  data-disableactive="true" tabindex="-1"
+                                                            
+                                                        >
+                                                            All courses
+                                                        </a>
+                                                        <a class="dropdown-item" role="menuitem" href="http://localhost/moodle/course/index.php?categoryid=2"  data-disableactive="true" tabindex="-1"
+                                                            
+                                                        >
+                                                            Entrepreneurship
+                                                        </a>
+                                                        <a class="dropdown-item" role="menuitem" href="http://localhost/moodle/course/index.php?categoryid=15"  data-disableactive="true" tabindex="-1"
+                                                            
+                                                        >
+                                                            Business and Entrepreneurship
+                                                        </a>
+                                        </div>
+                                    </li>
+                                    <li data-key="nextgen-about" class="nav-item" role="none" data-forceintomoremenu="false">
+                                                <a role="menuitem" class="nav-link  "
+                                                    href="http://localhost/moodle/about.php"
+                                                    
+                                                    
+                                                    data-disableactive="true"
+                                                    tabindex="-1"
+                                                >
+                                                    About
+                                                </a>
+                                    </li>
+                                    <li data-key="nextgen-contact" class="nav-item" role="none" data-forceintomoremenu="false">
+                                                <a role="menuitem" class="nav-link  "
+                                                    href="http://localhost/moodle/contact.php"
+                                                    
+                                                    
+                                                    data-disableactive="true"
+                                                    tabindex="-1"
+                                                >
+                                                    Contact
+                                                </a>
+                                    </li>
+                            <li role="none" class="nav-item dropdown dropdownmoremenu d-none" data-region="morebutton">
+                                <a class="dropdown-toggle nav-link " href="#" id="moremenu-dropdown-6ac4b0bc24931" role="menuitem" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+                                    More
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-start" data-region="moredropdown" aria-labelledby="moremenu-dropdown-6ac4b0bc24931" role="menu">
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+    
+    
+            <div id="usernavigation" class="navbar-nav ms-auto ng-user-nav">
+                
+                    <div class="d-flex align-items-stretch usermenu-container" data-region="usermenu">
+                        <div class="usermenu">
+                                <span class="login ng-header-login">
+                                        <a class="btn btn-primary ng-header-login-btn" href="http://localhost/moodle/login/index.php">Log in</a>
+                                </span>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </nav>
+    
+<div  class="drawer drawer-left drawer-primary d-print-none not-initialized" data-region="fixed-drawer" id="theme_boost-drawers-primary" data-preference="" data-state="show-drawer-primary" data-forceopen="0" data-close-on-resize="1">
+    <div class="drawerheader">
+        <div class="drawerheading">
+                    <a href="http://localhost/moodle/" title="NextGen" data-region="site-home-link" class="aabtn ng-brand">
+            <img src="http://localhost/moodle/theme/nextgen/pix/logo.webp?rev=1791275131" class="ng-brand-mark" alt="">
+            <span class="ng-brand-name">NextGen</span>
+        </a>
+
+        </div>
+        <div class="draweractions">
+            <div class="drawerheadercontent">
+                
+            </div>
+            <button
+                class="btn btn-icon icon-size-3 drawertoggle"
+                data-toggler="drawers"
+                data-action="closedrawer"
+                data-target="theme_boost-drawers-primary"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="Close drawer"
+                aria-label="Close drawer"
+            >
+                    <i class="icon fa fa-xmark fa-fw " aria-hidden="true" ></i>
+            </button>
+        </div>
+    </div>
+    <div class="drawercontent drag-container" data-usertour="scroller">
+                <div class="list-group ng-mobile-nav">
+                <a href="http://localhost/moodle/?redirect=0" class="list-group-item list-group-item-action  " >
+                    Home
+                </a>
+                <a href="http://localhost/moodle/course/index.php" class="list-group-item list-group-item-action  " >
+                    Courses
+                </a>
+                <a id="drop-down-nextgen-categories" href="#" class="list-group-item list-group-item-action icons-collapse-expand collapsed d-flex" data-bs-toggle="collapse" data-bs-target="#drop-down-menu-nextgen-categories" aria-expanded="false" aria-controls="drop-down-menu-nextgen-categories">
+                    Categories
+                    <span class="ms-auto expanded-icon icon-no-margin mx-2">
+                        <i class="icon fa fa-chevron-down fa-fw " aria-hidden="true" ></i>
+                        <span class="visually-hidden">Collapse</span>
+                    </span>
+                    <span class="ms-auto collapsed-icon icon-no-margin mx-2">
+                        <i class="icon fa fa-chevron-right fa-fw " aria-hidden="true" ></i>
+                        <span class="visually-hidden">Expand</span>
+                    </span>
+                </a>
+                <div class="collapse list-group-item p-0 border-0" role="menu" id="drop-down-menu-nextgen-categories" aria-labelledby="drop-down-nextgen-categories">
+                             <a href="http://localhost/moodle/course/index.php?browse=categories" class="ps-5 bg-light list-group-item list-group-item-action">All courses</a>
+                             <a href="http://localhost/moodle/course/index.php?categoryid=2" class="ps-5 bg-light list-group-item list-group-item-action">Entrepreneurship</a>
+                             <a href="http://localhost/moodle/course/index.php?categoryid=15" class="ps-5 bg-light list-group-item list-group-item-action">Business and Entrepreneurship</a>
+                </div>
+                <a href="http://localhost/moodle/about.php" class="list-group-item list-group-item-action  " >
+                    About
+                </a>
+                <a href="http://localhost/moodle/contact.php" class="list-group-item list-group-item-action  " >
+                    Contact
+                </a>
+        </div>
+
+    </div>
+</div>
+    <div id="page" data-region="mainpage" data-usertour="scroller" class="drawers   drag-container">
+        <div id="topofscroll" class="main-inner">
+            <div class="drawer-toggles d-flex">
+            </div>
+            <header id="page-header" class="header-maxwidth d-print-none" data-for="page-heading">
+    <div class="w-100">
+        <div class="d-flex flex-wrap">
+            <div id="page-navbar">
+                <nav aria-label="Breadcrumb">
+    <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="http://localhost/moodle/"
+                        
+                        
+                        
+                    >
+                        Home
+                    </a>
+                </li>
+        
+                <li class="breadcrumb-item">
+                    <span >
+                        EDU101
+                    </span>
+                </li>
+        </ol>
+</nav>
+            </div>
+            <div class="ms-auto d-flex">
+                
+            </div>
+            <div id="course-header">
+                
+            </div>
+        </div>
+        <div class="d-flex align-items-center">
+            <div class="me-auto d-flex flex-column">
+                <div>
+                    <div class="page-context-header d-flex flex-wrap align-items-center mb-2">
+    <div class="page-header-headings">
+        
+    </div>
+</div>
+                </div>
+                <div>
+                </div>
+            </div>
+            <div class="header-actions-container ms-auto" data-region="header-actions-container">
+            </div>
+        </div>
+        <div class="header-extras-container ms-auto" data-region="header-extras-container">
+        </div>
+    </div>
+</header>
+                <section class="ng-course-band" style="--ng-course-image: url('http://localhost/moodle/pluginfile.php/135/course/overviewfiles/cover.jpg')">
+                    <div class="ng-course-band-media" aria-hidden="true"></div>
+                    <div class="ng-course-band-inner">
+                        <div class="ng-course-hero-copy">
+                            <nav class="ng-course-crumb" aria-label="Breadcrumb">
+                                    <a href="http://localhost/moodle/">Home</a>
+                                    
+                                    <span class="ng-course-crumb-sep" aria-hidden="true">/</span>
+                                    <a href="http://localhost/moodle/course/index.php">Courses</a>
+                                    
+                                    <span class="ng-course-crumb-sep" aria-hidden="true">/</span>
+                                    <a href="http://localhost/moodle/course/index.php?categoryid=9">Education Entrepreneurship</a>
+                                    
+                                    <span class="ng-course-crumb-sep" aria-hidden="true">/</span>
+                                    
+                                    <span class="visually-hidden" aria-current="page">Education Entrepreneurship</span>
+                                    
+                            </nav>
+                            <h1 class="ng-course-title">Education Entrepreneurship</h1>
+                                <p class="ng-course-excerpt">This course examines entrepreneurship within the education sector, emphasizing the creation, management, and scaling of innovative educational ventures. Students will explore business models in education, financing ...</p>
+                                <div class="ng-course-meta">
+                                        <div class="ng-course-stars" aria-label="Rated 5.0 out of 5 from 1 reviews">
+                                                <svg class="ng-star ng-star-full" viewBox="0 0 20 20" aria-hidden="true">
+                                                    <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                    <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                </svg>
+                                                <svg class="ng-star ng-star-full" viewBox="0 0 20 20" aria-hidden="true">
+                                                    <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                    <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                </svg>
+                                                <svg class="ng-star ng-star-full" viewBox="0 0 20 20" aria-hidden="true">
+                                                    <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                    <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                </svg>
+                                                <svg class="ng-star ng-star-full" viewBox="0 0 20 20" aria-hidden="true">
+                                                    <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                    <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                </svg>
+                                                <svg class="ng-star ng-star-full" viewBox="0 0 20 20" aria-hidden="true">
+                                                    <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                    <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                </svg>
+                                            <span class="ng-course-rating-value">5.0</span>
+                                                <span class="ng-course-meta-note">(1)</span>
+                                        </div>
+                                        <span class="ng-course-meta-note">Last updated 5 October 2026</span>
+                                </div>
+                                <div class="ng-course-teacher">
+                                    <a class="ng-course-teacher-link" href="http://localhost/moodle/user/profile.php?id=2"><span class="userinitials size-160" title="Admin Admin" aria-label="Admin Admin" role="img">AA</span></a>
+                                    <div>
+                                        <a class="ng-course-teacher-name" href="http://localhost/moodle/user/profile.php?id=2">Admin Admin</a>
+                                        <p class="ng-course-teacher-role">Teacher</p>
+                                    </div>
+                                </div>
+                            <div class="ng-course-hero-actions">
+                                <div class="ng-course-hero-cta">
+                                    <a class="btn btn-primary ng-course-enrol" href="http://localhost/moodle/login/index.php?wantsurl=%2Fenrol%2Findex.php%3Fid%3D5">Enrol now</a>
+                                    <a class="ng-course-quote ng-course-quote-hero" href="http://localhost/moodle/user/contactsitesupport.php">Request a quote</a>
+                                </div>
+                            </div>
+                        </div>
+                            <dl class="ng-course-hero-facts">
+                                    <div class="ng-course-hero-fact">
+                                        <dt>
+                                            <span class="ng-fact-glyph" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M4 12h16M12 4c2.4 2.6 2.4 13.4 0 16M12 4c-2.4 2.6-2.4 13.4 0 16"></path></svg>
+                                            </span>
+                                            Language
+                                        </dt>
+                                        <dd>English</dd>
+                                    </div>
+                                    <div class="ng-course-hero-fact">
+                                        <dt>
+                                            <span class="ng-fact-glyph" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M4 10h16M12 14v3"></path></svg>
+                                            </span>
+                                            Starts
+                                        </dt>
+                                        <dd>5 October 2026</dd>
+                                    </div>
+                            </dl>
+                    </div>
+                </section>
+                <div class="ng-course-columns">
+                    <div class="ng-course-tabs" role="tablist" aria-label="Education Entrepreneurship">
+                        <button type="button" class="is-active" role="tab" id="ng-tab-overview" data-ng-tab="overview" aria-selected="true" aria-controls="ng-panel-overview">Overview</button>
+                        <button type="button" role="tab" id="ng-tab-content" data-ng-tab="content" aria-selected="false" aria-controls="ng-course-content">Course content</button>
+                        <button type="button" role="tab" id="ng-tab-certificate" data-ng-tab="certificate" aria-selected="false" aria-controls="ng-panel-certificate">Certificate</button>
+                        <button type="button" role="tab" id="ng-tab-instructors" data-ng-tab="instructors" aria-selected="false" aria-controls="ng-panel-instructors">Instructors</button>
+                        <button type="button" role="tab" id="ng-tab-reviews" data-ng-tab="reviews" aria-selected="false" aria-controls="ng-panel-reviews">
+                            Reviews
+                                <span class="ng-tab-stars" aria-hidden="true">
+                                        <svg class="ng-star ng-star-full" viewBox="0 0 20 20">
+                                            <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                            <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                        </svg>
+                                        <svg class="ng-star ng-star-full" viewBox="0 0 20 20">
+                                            <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                            <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                        </svg>
+                                        <svg class="ng-star ng-star-full" viewBox="0 0 20 20">
+                                            <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                            <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                        </svg>
+                                        <svg class="ng-star ng-star-full" viewBox="0 0 20 20">
+                                            <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                            <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                        </svg>
+                                        <svg class="ng-star ng-star-full" viewBox="0 0 20 20">
+                                            <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                            <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                        </svg>
+                                </span>
+                        </button>
+                    </div>
+                    <aside class="ng-course-panel">
+                        <a class="btn btn-primary ng-course-enrol" href="http://localhost/moodle/login/index.php?wantsurl=%2Fenrol%2Findex.php%3Fid%3D5">Enrol now</a>
+                        <a class="ng-course-quote" href="http://localhost/moodle/user/contactsitesupport.php">Request a quote</a>
+                            <div class="ng-course-includes">
+                                <h2>This course includes</h2>
+                                <ul>
+                                        <li>1 activity</li>
+                                        <li>10 sections</li>
+                                        <li>English</li>
+                                </ul>
+                            </div>
+                        <div class="ng-course-share">
+                            <h2>
+                                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="18" cy="5" r="2.15" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.15" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.15" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" d="M8.1 11.1 15.8 6.5M8.1 12.9 15.8 17.5"/></svg>
+                                Share this course
+                            </h2>
+                            <button type="button" class="ng-copy-link" data-ng-copy="http://localhost/moodle/course/view.php?id=5" data-ng-copied="Link copied" data-ng-copy-label="Copy link">
+                                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M10 13.5a4.5 4.5 0 0 0 6.4.1l1.8-1.8a4.5 4.5 0 0 0-6.4-6.4L10.4 6.8M14 10.5a4.5 4.5 0 0 0-6.4-.1l-1.8 1.8a4.5 4.5 0 0 0 6.4 6.4l1.4-1.4"/></svg>
+                                <span class="ng-copy-label">Copy link</span>
+                            </button>
+                        </div>
+                    </aside>
+                    <div class="ng-course-main" id="ng-panel-overview" data-ng-panel="overview" role="tabpanel" aria-labelledby="ng-tab-overview">
+                            <section class="ng-course-section">
+                                <h2>About the course</h2>
+                                <div class="ng-course-summary"><p style="margin:0 0 1rem;line-height:1.75;">This course examines entrepreneurship within the education sector, emphasizing the creation, management, and scaling of innovative educational ventures. Students will explore business models in education, financing strategies, digital transformation, social impact, and policy frameworks affecting educational entrepreneurship.</p></div>
+                            </section>
+                            <section class="ng-course-section ng-course-card">
+                                <h2>Learning objectives</h2>
+                                    <p class="ng-outcome-lead">By the end of this module, students should be able to:</p>
+                                <ul class="ng-outcomes">
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Define education entrepreneurship and its role in transforming education systems.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Analyze the opportunities and challenges unique to educational ventures.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Differentiate between traditional entrepreneurship and education-focused entrepreneurship.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Assess the impact of entrepreneurship on educational access, quality, and innovation.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Identify unmet needs in the education sector that can be transformed into entrepreneurial opportunities.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Apply creative thinking techniques to generate viable education-focused business ideas.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Conduct preliminary market research to validate education venture ideas.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Evaluate the social and economic impact of potential educational innovations.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Develop a comprehensive business model for an educational venture.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Identify and assess revenue streams and cost structures in education entrepreneurship.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Design a business plan tailored to the education sector.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Apply strategic planning tools to anticipate risks and opportunities.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Analyze target markets for educational products and services.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Develop marketing strategies for education ventures, including digital strategies.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Build strategies for customer acquisition, retention, and engagement.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Assess branding and communication techniques appropriate for educational contexts.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Prepare financial projections for an education startup.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Understand funding options, including venture capital, grants, and social impact investment.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Evaluate the financial sustainability of education ventures.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Apply basic accounting and budgeting principles to manage educational projects.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Demonstrate leadership skills appropriate for education entrepreneurship.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Build and manage teams for educational ventures.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Develop change management strategies for implementing innovative educational solutions.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Navigate ethical and regulatory considerations in education management.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Evaluate emerging technologies and their potential in education.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Design technology-enabled educational solutions.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Understand trends in EdTech startups and digital learning platforms.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Assess the scalability and impact of tech-based educational ventures.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Design strategies for scaling educational ventures sustainably.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Analyze the social, cultural, and economic impact of education entrepreneurship.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Apply sustainability frameworks to ensure long-term viability.</span></li>
+                                        <li><span class="ng-tick" aria-hidden="true"></span><span>Develop exit strategies and growth pathways for education ventures.</span></li>
+                                </ul>
+                            </section>
+                            <section class="ng-course-section">
+                                <h2>Subjects covered in this course</h2>
+                                <ul class="ng-subjects">
+                                        <li class="ng-subject ng-subject-primary">Module 1: Introduction to Education Entrepreneurship</li>
+                                        <li class="ng-subject ng-subject-clay">Module 2: Opportunity Recognition and Idea Generation in Education</li>
+                                        <li class="ng-subject ng-subject-ink">Module 3: Business Models and Planning for Education Ventures</li>
+                                        <li class="ng-subject ng-subject-gold">Module 4: Marketing and Customer Engagement in Education</li>
+                                        <li class="ng-subject ng-subject-primary">Module 5: Financial Management for Education Entrepreneurs</li>
+                                        <li class="ng-subject ng-subject-clay">Module 6: Leadership and Management in Educational Ventures</li>
+                                        <li class="ng-subject ng-subject-ink">Module 7: Technology and Innovation in Education</li>
+                                        <li class="ng-subject ng-subject-gold">Module 8: Scaling, Sustainability, and Social Impact</li>
+                                        <li class="ng-subject ng-subject-primary">References</li>
+                                </ul>
+                            </section>
+                    </div>
+                    <div class="ng-course-main ng-course-panelpage" id="ng-panel-certificate" data-ng-panel="certificate" role="tabpanel" aria-labelledby="ng-tab-certificate" hidden>
+                        <section class="ng-course-section ng-course-card">
+                            <h2>Certificate</h2>
+                            <figure class="ng-certificate">
+                                <figcaption class="ng-certificate-sample">Sample certificate</figcaption>
+                                <div class="ng-certificate-sheet">
+                                    <p class="ng-certificate-title">Certificate</p>
+                                    <p class="ng-certificate-subtitle">of course completion</p>
+                                    <p class="ng-certificate-lead">This certifies that</p>
+                                    <p class="ng-certificate-name">Learner's name</p>
+                                    <p class="ng-certificate-completed">has successfully completed the training programme requirement for</p>
+                                    <p class="ng-certificate-course">Education Entrepreneurship</p>
+                                    <div class="ng-certificate-signs">
+                                        <div class="ng-certificate-sign">
+                                            <span class="ng-certificate-sign-value">Completion date</span>
+                                            <span class="ng-certificate-sign-label">Date</span>
+                                        </div>
+                                        <div class="ng-certificate-sign">
+                                            <span class="ng-certificate-sign-value">Admin Admin</span>
+                                            <span class="ng-certificate-sign-label">Instructor</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </figure>
+                        </section>
+                    </div>
+                    <div class="ng-course-main ng-course-panelpage" id="ng-panel-instructors" data-ng-panel="instructors" role="tabpanel" aria-labelledby="ng-tab-instructors" hidden>
+                        <section class="ng-course-section">
+                            <h2>Instructors</h2>
+                                <ul class="ng-instructor-list">
+                                        <li class="ng-instructor-card">
+                                            <div class="ng-instructor-side">
+                                                <a href="http://localhost/moodle/user/profile.php?id=2"><span class="userinitials size-160" title="Admin Admin" aria-label="Admin Admin" role="img">AA</span></a>
+                                                <ul class="ng-instructor-stats">
+                                                    <li>
+                                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h11A3 3 0 0 1 19 7.5V20H8a3 3 0 0 0-3 3z"></path><path d="M5 4.5A3 3 0 0 0 8 7.5H19"></path></svg>
+                                                        <span>10 courses</span>
+                                                    </li>
+                                                    <li>
+                                                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="2.4"></circle><path d="M4.2 18.5c.5-2.3 2.4-3.6 4.8-3.6s4.3 1.3 4.8 3.6"></path><circle cx="16.5" cy="9" r="1.8"></circle><path d="M16.2 14.8c1.6.2 2.8 1.2 3.4 2.7"></path></svg>
+                                                        <span>0 students</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="ng-instructor-body">
+                                                <a class="ng-instructor-name" href="http://localhost/moodle/user/profile.php?id=2">Admin Admin</a>
+                                                <p class="ng-instructor-credential">Teacher</p>
+                                            </div>
+                                        </li>
+                                </ul>
+                        </section>
+                    </div>
+                    <div class="ng-course-main ng-course-panelpage" id="ng-panel-reviews" data-ng-panel="reviews" role="tabpanel" aria-labelledby="ng-tab-reviews" hidden>
+                        <section class="ng-course-section">
+                                <h2>Course rating</h2>
+                                <div class="ng-rating-layout">
+                                    <div class="ng-rating-scoreblock">
+                                        <p class="ng-review-score">5.0</p>
+                                        <div>
+                                            <div class="ng-course-stars" aria-label="Rated 5.0 out of 5 from 1 reviews">
+                                                    <svg class="ng-star ng-star-full" viewBox="0 0 20 20" aria-hidden="true">
+                                                        <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                        <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                    </svg>
+                                                    <svg class="ng-star ng-star-full" viewBox="0 0 20 20" aria-hidden="true">
+                                                        <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                        <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                    </svg>
+                                                    <svg class="ng-star ng-star-full" viewBox="0 0 20 20" aria-hidden="true">
+                                                        <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                        <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                    </svg>
+                                                    <svg class="ng-star ng-star-full" viewBox="0 0 20 20" aria-hidden="true">
+                                                        <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                        <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                    </svg>
+                                                    <svg class="ng-star ng-star-full" viewBox="0 0 20 20" aria-hidden="true">
+                                                        <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                        <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                    </svg>
+                                            </div>
+                                                <p class="ng-rating-count">1 ratings</p>
+                                        </div>
+                                    </div>
+                                        <ul class="ng-rating-bars">
+                                                <li>
+                                                    <span class="ng-rating-level">5 <svg class="ng-star" viewBox="0 0 20 20" aria-hidden="true"><path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path></svg></span>
+                                                    <span class="ng-rating-track"><span class="ng-rating-fill" style="--ng-bar: 100%"></span></span>
+                                                    <span class="ng-rating-percent">100%</span>
+                                                </li>
+                                                <li>
+                                                    <span class="ng-rating-level">4 <svg class="ng-star" viewBox="0 0 20 20" aria-hidden="true"><path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path></svg></span>
+                                                    <span class="ng-rating-track"><span class="ng-rating-fill" style="--ng-bar: 0%"></span></span>
+                                                    <span class="ng-rating-percent">0%</span>
+                                                </li>
+                                                <li>
+                                                    <span class="ng-rating-level">3 <svg class="ng-star" viewBox="0 0 20 20" aria-hidden="true"><path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path></svg></span>
+                                                    <span class="ng-rating-track"><span class="ng-rating-fill" style="--ng-bar: 0%"></span></span>
+                                                    <span class="ng-rating-percent">0%</span>
+                                                </li>
+                                                <li>
+                                                    <span class="ng-rating-level">2 <svg class="ng-star" viewBox="0 0 20 20" aria-hidden="true"><path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path></svg></span>
+                                                    <span class="ng-rating-track"><span class="ng-rating-fill" style="--ng-bar: 0%"></span></span>
+                                                    <span class="ng-rating-percent">0%</span>
+                                                </li>
+                                                <li>
+                                                    <span class="ng-rating-level">1 <svg class="ng-star" viewBox="0 0 20 20" aria-hidden="true"><path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path></svg></span>
+                                                    <span class="ng-rating-track"><span class="ng-rating-fill" style="--ng-bar: 0%"></span></span>
+                                                    <span class="ng-rating-percent">0%</span>
+                                                </li>
+                                        </ul>
+                                </div>
+                            <h2>Reviews</h2>
+                                <p class="ng-review-login">
+                                    <a class="btn btn-primary" href="http://localhost/moodle/login/index.php?wantsurl=%2Fcourse%2Fview.php%3Fid%3D5%23ng-panel-reviews">Log in to write a review</a>
+                                </p>
+                                <ul class="ng-review-list">
+                                        <li class="ng-review-item">
+                                            <span class="ng-review-avatar" aria-hidden="true">L</span>
+                                            <div>
+                                                <div class="ng-review-meta">
+                                                    <span class="ng-course-stars" aria-hidden="true">
+                                                            <svg class="ng-star ng-star-full" viewBox="0 0 20 20">
+                                                                <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                                <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                            </svg>
+                                                            <svg class="ng-star ng-star-full" viewBox="0 0 20 20">
+                                                                <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                                <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                            </svg>
+                                                            <svg class="ng-star ng-star-full" viewBox="0 0 20 20">
+                                                                <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                                <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                            </svg>
+                                                            <svg class="ng-star ng-star-full" viewBox="0 0 20 20">
+                                                                <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                                <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                            </svg>
+                                                            <svg class="ng-star ng-star-full" viewBox="0 0 20 20">
+                                                                <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                                <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                                                            </svg>
+                                                    </span>
+                                                    <strong>Learner</strong>
+                                                    <span class="ng-review-date">5 October 2026</span>
+                                                </div>
+                                                <p>Useful coverage of how to spot an education opportunity and turn it into a workable venture.</p>
+                                            </div>
+                                        </li>
+                                </ul>
+                        </section>
+                    </div>
+                    <div class="ng-course-below" id="ng-course-content" data-ng-panel="content" role="tabpanel" aria-labelledby="ng-tab-content" hidden>
+                            <div class="ng-outline">
+                                <div class="ng-outline-head">
+                                    <div>
+                                        <h2>Course content</h2>
+                                        <p class="ng-outline-meta">Sections: 10 • Activities: 1 • Resources: 33</p>
+                                    </div>
+                                    <button type="button" class="ng-outline-expand" data-ng-expand data-expand-label="Expand all" data-collapse-label="Collapse all">Expand all</button>
+                                </div>
+                                <label class="ng-outline-search">
+                                    <span class="visually-hidden">Search</span>
+                                    <input type="search" data-ng-outline-search placeholder="Search">
+                                </label>
+                                    <details class="ng-outline-section" data-ng-outline-name="General" open>
+                                        <summary>
+                                            <span class="ng-outline-num">1</span>
+                                            <span class="ng-outline-title">General</span>
+                                        </summary>
+                                            <ul class="ng-outline-list">
+                                                    <li class="ng-outline-item" data-ng-outline-text="Announcements">
+                                                        <a href="http://localhost/moodle/mod/forum/view.php?id=102">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/forum/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>Announcements</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                    </details>
+                                    <details class="ng-outline-section" data-ng-outline-name="Module 1: Introduction to Education Entrepreneurship" >
+                                        <summary>
+                                            <span class="ng-outline-num">2</span>
+                                            <span class="ng-outline-title">Module 1: Introduction to Education Entrepreneurship</span>
+                                        </summary>
+                                            <ul class="ng-outline-list">
+                                                    <li class="ng-outline-item" data-ng-outline-text="1.1 Concept of Entrepreneurship in Education">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=103">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>1.1 Concept of Entrepreneurship in Education</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="1.2 Key Drivers of Education Entrepreneurship">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=104">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>1.2 Key Drivers of Education Entrepreneurship</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="1.3 Historical and Contemporary Examples of Educational Ventures">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=105">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>1.3 Historical and Contemporary Examples of Educational Ventures</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="1.4 Trends in Education Innovation and Startups">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=106">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>1.4 Trends in Education Innovation and Startups</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                    </details>
+                                    <details class="ng-outline-section" data-ng-outline-name="Module 2: Opportunity Recognition and Idea Generation in Education" >
+                                        <summary>
+                                            <span class="ng-outline-num">3</span>
+                                            <span class="ng-outline-title">Module 2: Opportunity Recognition and Idea Generation in Education</span>
+                                        </summary>
+                                            <ul class="ng-outline-list">
+                                                    <li class="ng-outline-item" data-ng-outline-text="2.1 Sources of Opportunities in Education">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=107">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>2.1 Sources of Opportunities in Education</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="2.2 Market Gaps and Needs Analysis">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=108">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>2.2 Market Gaps and Needs Analysis</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="2.3 Techniques for Creativity and Idea Generation">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=109">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>2.3 Techniques for Creativity and Idea Generation</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="2.4 Feasibility Assessment of Educational Innovations">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=110">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>2.4 Feasibility Assessment of Educational Innovations</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                    </details>
+                                    <details class="ng-outline-section" data-ng-outline-name="Module 3: Business Models and Planning for Education Ventures" >
+                                        <summary>
+                                            <span class="ng-outline-num">4</span>
+                                            <span class="ng-outline-title">Module 3: Business Models and Planning for Education Ventures</span>
+                                        </summary>
+                                            <ul class="ng-outline-list">
+                                                    <li class="ng-outline-item" data-ng-outline-text="3.1 Business Model Canvas for Education Ventures">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=111">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>3.1 Business Model Canvas for Education Ventures</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="3.2 Revenue Models: Tuition, Subscriptions, Freemium, Grants">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=112">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>3.2 Revenue Models: Tuition, Subscriptions, Freemium, Grants</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="3.3 Business Plan Components for Education Startups">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=113">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>3.3 Business Plan Components for Education Startups</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="3.4 Strategic and Operational Planning">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=114">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>3.4 Strategic and Operational Planning</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                    </details>
+                                    <details class="ng-outline-section" data-ng-outline-name="Module 4: Marketing and Customer Engagement in Education" >
+                                        <summary>
+                                            <span class="ng-outline-num">5</span>
+                                            <span class="ng-outline-title">Module 4: Marketing and Customer Engagement in Education</span>
+                                        </summary>
+                                            <ul class="ng-outline-list">
+                                                    <li class="ng-outline-item" data-ng-outline-text="4.1 Market Segmentation in Education">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=115">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>4.1 Market Segmentation in Education</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="4.2 Marketing Channels and Strategies">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=116">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>4.2 Marketing Channels and Strategies</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="4.3 Branding and Positioning for Education Ventures">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=117">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>4.3 Branding and Positioning for Education Ventures</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="4.4 Customer Relationship Management (CRM) in Education">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=118">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>4.4 Customer Relationship Management (CRM) in Education</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                    </details>
+                                    <details class="ng-outline-section" data-ng-outline-name="Module 5: Financial Management for Education Entrepreneurs" >
+                                        <summary>
+                                            <span class="ng-outline-num">6</span>
+                                            <span class="ng-outline-title">Module 5: Financial Management for Education Entrepreneurs</span>
+                                        </summary>
+                                            <ul class="ng-outline-list">
+                                                    <li class="ng-outline-item" data-ng-outline-text="5.1 Start-up Costs and Financial Planning">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=119">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>5.1 Start-up Costs and Financial Planning</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="5.2 Funding Sources for Education Ventures">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=120">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>5.2 Funding Sources for Education Ventures</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="5.3 Budgeting and Cash Flow Management">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=121">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>5.3 Budgeting and Cash Flow Management</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="5.4 Financial Sustainability and Break-even Analysis">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=122">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>5.4 Financial Sustainability and Break-even Analysis</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                    </details>
+                                    <details class="ng-outline-section" data-ng-outline-name="Module 6: Leadership and Management in Educational Ventures" >
+                                        <summary>
+                                            <span class="ng-outline-num">7</span>
+                                            <span class="ng-outline-title">Module 6: Leadership and Management in Educational Ventures</span>
+                                        </summary>
+                                            <ul class="ng-outline-list">
+                                                    <li class="ng-outline-item" data-ng-outline-text="6.1 Leadership Styles and Theories in Education">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=123">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>6.1 Leadership Styles and Theories in Education</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="6.2 Team Building and Human Resource Management">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=124">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>6.2 Team Building and Human Resource Management</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="6.3 Change and Innovation Management">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=125">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>6.3 Change and Innovation Management</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="6.4 Legal, Ethical, and Regulatory Issues in Education Entrepreneurship">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=126">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>6.4 Legal, Ethical, and Regulatory Issues in Education Entrepreneurship</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                    </details>
+                                    <details class="ng-outline-section" data-ng-outline-name="Module 7: Technology and Innovation in Education" >
+                                        <summary>
+                                            <span class="ng-outline-num">8</span>
+                                            <span class="ng-outline-title">Module 7: Technology and Innovation in Education</span>
+                                        </summary>
+                                            <ul class="ng-outline-list">
+                                                    <li class="ng-outline-item" data-ng-outline-text="7.1 EdTech Trends and Innovations">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=127">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>7.1 EdTech Trends and Innovations</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="7.2 Digital Learning Platforms and Tools">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=128">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>7.2 Digital Learning Platforms and Tools</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="7.3 Technology Integration Strategies">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=129">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>7.3 Technology Integration Strategies</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="7.4 Evaluating Impact and Scalability of EdTech Solutions">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=130">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>7.4 Evaluating Impact and Scalability of EdTech Solutions</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                    </details>
+                                    <details class="ng-outline-section" data-ng-outline-name="Module 8: Scaling, Sustainability, and Social Impact" >
+                                        <summary>
+                                            <span class="ng-outline-num">9</span>
+                                            <span class="ng-outline-title">Module 8: Scaling, Sustainability, and Social Impact</span>
+                                        </summary>
+                                            <ul class="ng-outline-list">
+                                                    <li class="ng-outline-item" data-ng-outline-text="8.1 Scaling Strategies and Challenges">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=131">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>8.1 Scaling Strategies and Challenges</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="8.2 Social Entrepreneurship in Education">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=132">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>8.2 Social Entrepreneurship in Education</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="8.3 Sustainability Models and Best Practices">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=133">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>8.3 Sustainability Models and Best Practices</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="ng-outline-item" data-ng-outline-text="8.4 Measuring Impact and Success">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=134">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>8.4 Measuring Impact and Success</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                    </details>
+                                    <details class="ng-outline-section" data-ng-outline-name="References" >
+                                        <summary>
+                                            <span class="ng-outline-num">10</span>
+                                            <span class="ng-outline-title">References</span>
+                                        </summary>
+                                            <ul class="ng-outline-list">
+                                                    <li class="ng-outline-item" data-ng-outline-text="References">
+                                                        <a href="http://localhost/moodle/mod/page/view.php?id=135">
+                                                        <img class="ng-outline-modicon" src="http://localhost/moodle/theme/image.php/nextgen/page/1791275131/monologo?filtericon=1" alt="">
+                                                        <span>References</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                    </details>
+                            </div>
+            <div id="page-content" class="pb-3 d-print-block">
+                <div id="region-main-box">
+                    <div id="region-main">
+
+                        <span class="notifications" id="user-notifications"></span>
+                        <div role="main"><span id="maincontent"></span></div>
+                        
+                        
+
+                    </div>
+                </div>
+            </div>
+                    </div>
+                </div>
+        </div>
+        <footer id="page-footer" class="ng-footer tw:bg-secondary tw:antialiased">
+            <div class="ng-footer-main">
+    <div class="ng-footer-grid">
+        <div class="ng-footer-brand">
+            <a class="ng-footer-brand-link" href="http://localhost/moodle/">
+                <img src="http://localhost/moodle/theme/nextgen/pix/logo.webp?rev=1791275131" class="ng-footer-logo" alt="">
+                <span class="ng-footer-name">NextGen LMS</span>
+            </a>
+        </div>
+            <div class="ng-footer-col">
+                <h2 class="ng-footer-heading">Quick links</h2>
+                <ul class="ng-footer-links">
+                        <li>
+                            <a href="http://localhost/moodle/" >Home</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost/moodle/course/index.php" >Courses</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost/moodle/course/index.php?browse=categories" >Categories</a>
+                        </li>
+                </ul>
+            </div>
+            <div class="ng-footer-col">
+                <h2 class="ng-footer-heading">Learning</h2>
+                <ul class="ng-footer-links">
+                        <li>
+                            <a href="http://localhost/moodle/my/courses.php" >My learning</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost/moodle/my/" >Dashboard</a>
+                        </li>
+                </ul>
+            </div>
+            <div class="ng-footer-col">
+                <h2 class="ng-footer-heading">Support</h2>
+                <ul class="ng-footer-links">
+                        <li>
+                            <a href="http://localhost/moodle/faq.php" >Frequently asked questions</a>
+                        </li>
+                </ul>
+            </div>
+    </div>
+    <div class="ng-footer-bar">
+        <p>© 2026 NextGen Academy</p>
+        <ul class="ng-footer-policies">
+                <li><a href="http://localhost/moodle/privacy.php">Privacy policy</a></li>
+                <li><a href="http://localhost/moodle/terms.php">Terms and conditions</a></li>
+        </ul>
+    </div>
+</div>
+        
+            <div class="ng-footer-meta">
+                <div class="ng-footer-meta-inner">
+                    <div class="tool_usertours-resettourcontainer"></div>
+                    
+                    <script>
+//<![CDATA[
+var require = {
+    baseUrl : 'http://localhost/moodle/lib/requirejs.php/1791275131/',
+    // We only support AMD modules with an explicit define() statement.
+    enforceDefine: true,
+    skipDataMain: true,
+    waitSeconds : 0,
+
+    paths: {
+        jquery: 'http://localhost/moodle/lib/javascript.php/1791275131/lib/jquery/jquery-3.7.1.min',
+        jqueryui: 'http://localhost/moodle/lib/javascript.php/1791275131/lib/jquery/ui-1.14.1/jquery-ui.min',
+        jqueryprivate: 'http://localhost/moodle/lib/javascript.php/1791275131/lib/requirejs/jquery-private'
+    },
+
+    // Custom jquery config map.
+    map: {
+      // '*' means all modules will get 'jqueryprivate'
+      // for their 'jquery' dependency.
+      '*': { jquery: 'jqueryprivate' },
+
+      // 'jquery-private' wants the real jQuery module
+      // though. If this line was not here, there would
+      // be an unresolvable cyclic dependency.
+      jqueryprivate: { jquery: 'jquery' }
+    }
+};
+
+//]]>
+</script>
+<script src="http://localhost/moodle/lib/javascript.php/1791275131/lib/requirejs/require.min.js"></script>
+<script>
+//<![CDATA[
+M.util.js_pending("core/first");
+require(['core/first'], function() {
+require(['core/prefetch'])
+;
+M.util.js_pending('filter_mathjaxloader/loader'); require(['filter_mathjaxloader/loader'], function(amd) {amd.configure({"mathjaxurl":"https:\/\/cdn.jsdelivr.net\/npm\/mathjax@4.0.0\/tex-mml-chtml.js","mathjaxconfig":"","lang":"en"}); M.util.js_complete('filter_mathjaxloader/loader');});;
+require(["media_videojs/loader"], function(loader) {
+    loader.setUp('en');
+});;
+M.util.js_pending('theme_nextgen/loadline'); require(['theme_nextgen/loadline'], function(amd) {amd.init(); M.util.js_complete('theme_nextgen/loadline');});;
+
+    require(['core/moremenu'], function(moremenu) {
+        moremenu(document.querySelector('#moremenu-6ac4b0bc24931-navbar-nav'));
+    });
+;
+
+    require(['core/usermenu'], function(UserMenu) {
+        UserMenu.init();
+    });
+;
+
+M.util.js_pending('theme_boost/drawers:load');
+require(['theme_boost/drawers'], function() {
+    M.util.js_complete('theme_boost/drawers:load');
+});
+;
+
+require(['jquery'], function($) {
+    var root = document.querySelector('.ng-course-columns');
+    if (!root) {
+        return;
+    }
+    var tabs = root.querySelectorAll('[data-ng-tab]');
+    var panels = root.querySelectorAll('[data-ng-panel]');
+
+    var show = function(name) {
+        tabs.forEach(function(tab) {
+            var on = tab.getAttribute('data-ng-tab') === name;
+            tab.classList.toggle('is-active', on);
+            tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        panels.forEach(function(panel) {
+            if (panel.getAttribute('data-ng-panel') === name) {
+                panel.hidden = false;
+            } else {
+                panel.hidden = true;
+            }
+        });
+        window.dispatchEvent(new Event('resize'));
+    };
+
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            show(tab.getAttribute('data-ng-tab'));
+        });
+    });
+
+    var fromHash = function() {
+        var hash = window.location.hash;
+        if (hash === '#ng-course-content' || hash === '#ng-enrolment') {
+            return 'content';
+        }
+        if (hash === '#ng-panel-instructors') {
+            return 'instructors';
+        }
+        if (hash === '#ng-panel-reviews') {
+            return 'reviews';
+        }
+        if (hash === '#ng-panel-certificate') {
+            return 'certificate';
+        }
+        return 'overview';
+    };
+
+    document.querySelectorAll('.ng-course-enrol').forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            var href = link.getAttribute('href') || '';
+            if (href.indexOf('#ng-course-content') === -1 && href.indexOf('#ng-enrolment') === -1) {
+                return;
+            }
+            event.preventDefault();
+            show('content');
+            var target = document.getElementById(href.slice(href.indexOf('#') + 1));
+            if (target) {
+                target.scrollIntoView({behavior: 'smooth', block: 'start'});
+            }
+        });
+    });
+
+    show(fromHash());
+
+    var expand = root.querySelector('[data-ng-expand]');
+    if (expand) {
+        expand.addEventListener('click', function() {
+            var opening = expand.getAttribute('data-ng-expanded') !== '1';
+            root.querySelectorAll('.ng-outline-section').forEach(function(section) {
+                section.open = opening;
+            });
+            expand.setAttribute('data-ng-expanded', opening ? '1' : '0');
+            expand.textContent = opening ? expand.getAttribute('data-collapse-label') : expand.getAttribute('data-expand-label');
+        });
+    }
+
+    var search = root.querySelector('[data-ng-outline-search]');
+    if (search) {
+        search.addEventListener('input', function() {
+            var query = search.value.trim().toLowerCase();
+            root.querySelectorAll('.ng-outline-section').forEach(function(section) {
+                var sectionname = (section.getAttribute('data-ng-outline-name') || '').toLowerCase();
+                var named = query !== '' && sectionname.indexOf(query) !== -1;
+                var any = false;
+                section.querySelectorAll('.ng-outline-item').forEach(function(item) {
+                    var text = (item.getAttribute('data-ng-outline-text') || '').toLowerCase();
+                    var match = query === '' || named || text.indexOf(query) !== -1;
+                    item.hidden = !match;
+                    if (match) {
+                        any = true;
+                    }
+                });
+                section.hidden = query !== '' && !any && !named;
+                if (query !== '' && (any || named)) {
+                    section.open = true;
+                }
+            });
+        });
+    }
+
+    document.querySelectorAll('[data-ng-copy]').forEach(function(copy) {
+        copy.addEventListener('click', function() {
+            var url = copy.getAttribute('data-ng-copy') || '';
+            var label = copy.getAttribute('data-ng-copy-label') || '';
+            var copied = copy.getAttribute('data-ng-copied') || label;
+            var text = copy.querySelector('.ng-copy-label');
+            var mark = function() {
+                if (text) {
+                    text.textContent = copied;
+                } else {
+                    copy.textContent = copied;
+                }
+                window.setTimeout(function() {
+                    if (text) {
+                        text.textContent = label;
+                    } else {
+                        copy.textContent = label;
+                    }
+                }, 1600);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(mark);
+            }
+        });
+    });
+});
+;
+
+require(['core/copy_to_clipboard'], function() {
+});
+;
+
+M.util.js_pending('theme_boost/loader');
+require(['theme_boost/loader', 'theme_boost/drawer'], function(Loader, Drawer) {
+    Drawer.init();
+    M.util.js_complete('theme_boost/loader');
+});
+;
+M.util.js_pending('core/notification'); require(['core/notification'], function(amd) {amd.init(135, []); M.util.js_complete('core/notification');});;
+M.util.js_pending('core/log'); require(['core/log'], function(amd) {amd.setConfig({"level":"warn"}); M.util.js_complete('core/log');});;
+M.util.js_pending('core/page_global'); require(['core/page_global'], function(amd) {amd.init(); M.util.js_complete('core/page_global');});;
+M.util.js_pending('core/utility'); require(['core/utility'], function(amd) {M.util.js_complete('core/utility');});;
+M.util.js_pending('core/storage_validation'); require(['core/storage_validation'], function(amd) {amd.init(null); M.util.js_complete('core/storage_validation');});
+    M.util.js_complete("core/first");
+});
+//]]>
+</script>
+<script>
+//<![CDATA[
+M.str = {"moodle":{"lastmodified":"Last modified","name":"Name","error":"Error","info":"Information","yes":"Yes","no":"No","cancel":"Cancel","confirm":"Confirm","areyousure":"Are you sure?","closebuttontitle":"Close","unknownerror":"Unknown error","file":"File","url":"URL","collapseall":"Collapse all","expandall":"Expand all"},"repository":{"type":"Type","size":"Size","invalidjson":"Invalid JSON string","nofilesattached":"No files attached","filepicker":"File picker","logout":"Logout","nofilesavailable":"No files available","norepositoriesavailable":"Sorry, none of your current repositories can return files in the required format.","fileexistsdialogheader":"File exists","fileexistsdialog_editor":"A file with that name has already been attached to the text you are editing.","fileexistsdialog_filemanager":"A file with that name has already been attached","renameto":"Rename to \"{$a}\"","referencesexist":"There are {$a} links to this file","select":"Select","invalidfiletypetitle":"File type not accepted"},"admin":{"confirmdeletecomments":"Are you sure you want to delete the selected comment(s)?","confirmation":"Confirmation"},"debug":{"debuginfo":"Debug info","line":"Line","stacktrace":"Stack trace"},"langconfig":{"labelsep":": "}};
+//]]>
+</script>
+<script>
+//<![CDATA[
+(function() {M.util.help_popups.setup(Y);
+ M.util.js_pending('random6ac4b0bc258df2'); Y.on('domready', function() { M.util.js_complete("init");  M.util.js_complete('random6ac4b0bc258df2'); });
+})();
+//]]>
+</script>
+
+                    <div class="ng-footer-powered">Powered by <a href="https://cumisolutions.io/en">CumiSolutions</a></div>
+                </div>
+            </div>
+        
+            <div class="footer-content-debugging">
+                
+            </div>
+        </footer>
+    </div>
+    
+</div>
+
+
+</body></html>

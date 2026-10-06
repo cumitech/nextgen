@@ -768,7 +768,7 @@ function theme_nextgen_landing_context(): array {
 
     $theme = theme_config::load('nextgen');
     $courses = theme_nextgen_featured_courses();
-    $categories = theme_nextgen_landing_categories();
+    $categories = theme_nextgen_landing_categories(0);
     $instructors = theme_nextgen_landing_instructors();
 
     $coursecount = core_course_category::top()->get_courses_count(['recursive' => true]);
@@ -927,6 +927,14 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
             }
             $stars[] = ['state' => $state];
         }
+    }
+
+    $submittedstats = theme_nextgen_submitted_review_stats((int) $course->id);
+    if ($submittedstats !== null) {
+        $ratingvalue = $submittedstats['average'];
+        $reviews = $submittedstats['count'];
+        $hasrating = true;
+        $stars = theme_nextgen_star_states($ratingvalue);
     }
 
     $ratingtext = $hasrating ? number_format($ratingvalue, 1) : '';
@@ -1526,10 +1534,17 @@ function theme_nextgen_landing_categories(int $limit = 6): array {
     $photos = ['category-architecture', 'category-business', 'category-data', 'category-social'];
     $items = [];
     foreach (core_course_category::top()->get_children() as $category) {
+        $coursecount = (int) $category->get_courses_count(['recursive' => true]);
+        if ($coursecount === 1) {
+            $countlabel = get_string('categorycoursecount', 'theme_nextgen', $coursecount);
+        } else {
+            $countlabel = get_string('categorycoursecounts', 'theme_nextgen', $coursecount);
+        }
         $items[] = [
             'id' => $category->id,
-            'name' => $category->get_formatted_name(),
-            'count' => $category->get_courses_count(),
+            'name' => $category->get_formatted_name(['escape' => false]),
+            'count' => $coursecount,
+            'countlabel' => $countlabel,
             'image' => $OUTPUT->image_url($photos[count($items) % 4], 'theme')->out(false),
             'url' => (new moodle_url('/course/index.php', ['categoryid' => $category->id]))->out(false),
         ];
@@ -1877,6 +1892,12 @@ function theme_nextgen_course_detail_context(): ?array {
     $price = $card['price'];
     $distribution = theme_nextgen_rating_distribution($extra['ngratingdist']);
     $reviewlist = theme_nextgen_review_lines($extra['ngreviewlist']);
+    $submitted = theme_nextgen_submitted_reviews((int) $course->id);
+    if ($submitted !== null) {
+        $reviewlist = array_merge($submitted['items'], $reviewlist);
+        $distribution = $submitted['distribution'];
+    }
+    $reviewform = theme_nextgen_review_form((int) $course->id);
 
     return [
         'fullname' => $card['fullname'],
@@ -1903,6 +1924,15 @@ function theme_nextgen_course_detail_context(): ?array {
         'distribution' => $distribution,
         'hasreviewlist' => !empty($reviewlist),
         'reviewlist' => $reviewlist,
+        'canreview' => $reviewform['canreview'],
+        'reviewlogin' => $reviewform['reviewlogin'],
+        'reviewloginurl' => $reviewform['reviewloginurl'],
+        'reviewaction' => $reviewform['reviewaction'],
+        'sesskey' => $reviewform['sesskey'],
+        'reviewcourseid' => $course->id,
+        'ratingchoices' => $reviewform['ratingchoices'],
+        'ownreview' => $reviewform['ownreview'],
+        'reviewbutton' => $reviewform['reviewbutton'],
         'hasprice' => $price !== '',
         'price' => $price,
         'hasfacts' => !empty($facts),
@@ -2124,6 +2154,214 @@ function theme_nextgen_rating_distribution(string $raw): array {
         ];
     }
     return $rows;
+}
+
+/**
+ * Whether the student review table has been installed.
+ *
+ * @return bool
+ */
+function theme_nextgen_review_table_ready(): bool {
+    global $DB;
+
+    static $ready = null;
+    if ($ready === null) {
+        $ready = $DB->get_manager()->table_exists('theme_nextgen_review');
+    }
+    return $ready;
+}
+
+/**
+ * Star states for a rating from 0 to 5.
+ *
+ * @param float $value
+ * @return array
+ */
+function theme_nextgen_star_states(float $value): array {
+    $stars = [];
+    for ($i = 1; $i <= 5; $i++) {
+        if ($value >= $i) {
+            $state = 'full';
+        } else if ($value >= ($i - 0.5)) {
+            $state = 'half';
+        } else {
+            $state = 'empty';
+        }
+        $stars[] = ['state' => $state];
+    }
+    return $stars;
+}
+
+/**
+ * Average and count of saved student reviews, or null when there are none.
+ *
+ * @param int $courseid
+ * @return array{average: float, count: int}|null
+ */
+function theme_nextgen_submitted_review_stats(int $courseid): ?array {
+    global $DB;
+
+    if (!theme_nextgen_review_table_ready()) {
+        return null;
+    }
+
+    $row = $DB->get_record_sql(
+        "SELECT COUNT(1) AS reviewcount, AVG(r.rating) AS ratingavg
+           FROM {theme_nextgen_review} r
+           JOIN {user} u ON u.id = r.userid
+          WHERE r.courseid = :courseid AND u.deleted = 0",
+        ['courseid' => $courseid]
+    );
+    if (!$row || (int) $row->reviewcount < 1) {
+        return null;
+    }
+    return [
+        'average' => round((float) $row->ratingavg, 1),
+        'count' => (int) $row->reviewcount,
+    ];
+}
+
+/**
+ * Saved student reviews for the course page, newest first.
+ *
+ * @param int $courseid
+ * @return array{items: array, distribution: array, count: int, average: float}|null
+ */
+function theme_nextgen_submitted_reviews(int $courseid): ?array {
+    global $DB;
+
+    if (!theme_nextgen_review_table_ready()) {
+        return null;
+    }
+
+    $namefields = \core_user\fields::for_name()->get_sql('u', false, '', '', false)->selects;
+    $records = $DB->get_records_sql(
+        "SELECT r.id, r.rating, r.reviewtext, r.timemodified, u.id, {$namefields}
+           FROM {theme_nextgen_review} r
+           JOIN {user} u ON u.id = r.userid
+          WHERE r.courseid = :courseid AND u.deleted = 0
+       ORDER BY r.timemodified DESC",
+        ['courseid' => $courseid]
+    );
+    if (!$records) {
+        return null;
+    }
+
+    $counts = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
+    $items = [];
+    $total = 0;
+    foreach ($records as $record) {
+        $score = max(1, min(5, (int) $record->rating));
+        $counts[$score]++;
+        $total += $score;
+        $name = fullname($record);
+        $date = preg_replace('/^0/', '', userdate((int) $record->timemodified, '%d %B %Y'));
+        $items[] = [
+            'name' => $name,
+            'date' => $date,
+            'initials' => theme_nextgen_initials($name),
+            'text' => $record->reviewtext,
+            'stars' => theme_nextgen_star_states($score),
+        ];
+    }
+
+    $count = count($records);
+    $distribution = [];
+    foreach ([5, 4, 3, 2, 1] as $level) {
+        $distribution[] = [
+            'level' => $level,
+            'percent' => (int) round($counts[$level] * 100 / $count),
+        ];
+    }
+
+    return [
+        'items' => $items,
+        'distribution' => $distribution,
+        'count' => $count,
+        'average' => round($total / $count, 1),
+    ];
+}
+
+/**
+ * Save one review for a student. A second save from the same student updates it.
+ *
+ * @param int $courseid
+ * @param int $userid
+ * @param int $rating
+ * @param string $text
+ * @return bool True when an existing review was updated
+ */
+function theme_nextgen_save_review(int $courseid, int $userid, int $rating, string $text): bool {
+    global $DB;
+
+    $existing = $DB->get_record('theme_nextgen_review', [
+        'courseid' => $courseid,
+        'userid' => $userid,
+    ]);
+    $now = time();
+    if ($existing) {
+        $existing->rating = $rating;
+        $existing->reviewtext = $text;
+        $existing->timemodified = $now;
+        $DB->update_record('theme_nextgen_review', $existing);
+        return true;
+    }
+
+    $record = new stdClass();
+    $record->courseid = $courseid;
+    $record->userid = $userid;
+    $record->rating = $rating;
+    $record->reviewtext = $text;
+    $record->timecreated = $now;
+    $record->timemodified = $now;
+    $DB->insert_record('theme_nextgen_review', $record);
+    return false;
+}
+
+/**
+ * Review form state for the course page.
+ *
+ * Signed-in users get the form. Everyone else gets a link through the login page.
+ *
+ * @param int $courseid
+ * @return array
+ */
+function theme_nextgen_review_form(int $courseid): array {
+    global $DB, $USER;
+
+    $return = new moodle_url('/course/view.php', ['id' => $courseid], 'ng-panel-reviews');
+    $loggedin = isloggedin() && !isguestuser();
+    $own = null;
+    if ($loggedin && theme_nextgen_review_table_ready()) {
+        $own = $DB->get_record('theme_nextgen_review', [
+            'courseid' => $courseid,
+            'userid' => $USER->id,
+        ]);
+    }
+
+    $choices = [];
+    $ownrating = $own ? (int) $own->rating : 0;
+    for ($value = 5; $value >= 1; $value--) {
+        $choices[] = [
+            'value' => $value,
+            'id' => 'ng-review-star-' . $courseid . '-' . $value,
+            'label' => get_string('reviewstars', 'theme_nextgen', $value),
+            'checked' => $ownrating === $value,
+        ];
+    }
+
+    return [
+        'canreview' => $loggedin,
+        'reviewlogin' => !$loggedin,
+        'reviewloginurl' => (new moodle_url('/login/index.php', [
+            'wantsurl' => $return->out_as_local_url(false),
+        ]))->out(false),
+        'reviewaction' => (new moodle_url('/theme/nextgen/review.php'))->out(false),
+        'sesskey' => $loggedin ? sesskey() : '',
+        'ratingchoices' => $choices,
+        'ownreview' => $own ? $own->reviewtext : '',
+        'reviewbutton' => get_string($own ? 'reviewupdate' : 'reviewsubmit', 'theme_nextgen'),
+    ];
 }
 
 /**

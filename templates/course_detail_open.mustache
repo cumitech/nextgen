@@ -92,6 +92,15 @@
                     </div>
                 </div>
             {{/hasteacher}}
+            <div class="ng-course-hero-actions">
+                {{#hasprice}}
+                    <p class="ng-course-hero-price">{{price}}</p>
+                {{/hasprice}}
+                <div class="ng-course-hero-cta">
+                    <a class="btn btn-primary ng-course-enrol" href="{{enrolurl}}">{{enrollabel}}</a>
+                    <a class="ng-course-quote ng-course-quote-hero" href="{{quoteurl}}">{{#str}}requestquote, theme_nextgen{{/str}}</a>
+                </div>
+            </div>
         </div>
         {{#hasfacts}}
             <dl class="ng-course-hero-facts">
@@ -321,6 +330,33 @@
                 </div>
             {{/hasrating}}
             <h2>{{#str}}tabreviews, theme_nextgen{{/str}}</h2>
+            {{#canreview}}
+                <form class="ng-review-form" method="post" action="{{reviewaction}}">
+                    <h3>{{#str}}reviewwrite, theme_nextgen{{/str}}</h3>
+                    <input type="hidden" name="sesskey" value="{{sesskey}}">
+                    <input type="hidden" name="courseid" value="{{reviewcourseid}}">
+                    <fieldset class="ng-review-rate">
+                        <legend>{{#str}}reviewrating, theme_nextgen{{/str}}</legend>
+                        {{#ratingchoices}}
+                            <input type="radio" name="rating" id="{{id}}" value="{{value}}" {{#checked}}checked{{/checked}} required>
+                            <label for="{{id}}">
+                                <span class="visually-hidden">{{label}}</span>
+                                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path></svg>
+                            </label>
+                        {{/ratingchoices}}
+                    </fieldset>
+                    <label class="ng-review-text">
+                        <span>{{#str}}reviewtext, theme_nextgen{{/str}}</span>
+                        <textarea name="review" rows="4" maxlength="1000" required>{{ownreview}}</textarea>
+                    </label>
+                    <button type="submit" class="btn btn-primary">{{reviewbutton}}</button>
+                </form>
+            {{/canreview}}
+            {{#reviewlogin}}
+                <p class="ng-review-login">
+                    <a class="btn btn-primary" href="{{reviewloginurl}}">{{#str}}reviewlogin, theme_nextgen{{/str}}</a>
+                </p>
+            {{/reviewlogin}}
             {{#hasreviewlist}}
                 <ul class="ng-review-list">
                     {{#reviewlist}}

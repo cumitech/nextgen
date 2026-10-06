@@ -16,23 +16,174 @@
 
 namespace theme_nextgen\privacy;
 
+use core_privacy\local\metadata\collection;
+use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\approved_userlist;
+use core_privacy\local\request\contextlist;
+use core_privacy\local\request\transform;
+use core_privacy\local\request\userlist;
+use core_privacy\local\request\writer;
+
 /**
- * Privacy provider for the NextGen LMS theme.
- *
- * Drawer preferences are declared by theme_boost, which this theme inherits.
+ * Privacy provider for course reviews stored by the NextGen LMS theme.
  *
  * @package   theme_nextgen
  * @copyright 2026 NextGen LMS
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class provider implements \core_privacy\local\metadata\null_provider {
+class provider implements
+    \core_privacy\local\metadata\provider,
+    \core_privacy\local\request\plugin\provider,
+    \core_privacy\local\request\core_userlist_provider {
+
     /**
-     * Language string explaining why this plugin stores no personal data.
+     * Describe the review table.
      *
-     * @return string
+     * @param collection $collection
+     * @return collection
      */
     #[\Override]
-    public static function get_reason(): string {
-        return 'privacy:metadata';
+    public static function get_metadata(collection $collection): collection {
+        $collection->add_database_table('theme_nextgen_review', [
+            'userid' => 'privacy:metadata:theme_nextgen_review:userid',
+            'courseid' => 'privacy:metadata:theme_nextgen_review:courseid',
+            'rating' => 'privacy:metadata:theme_nextgen_review:rating',
+            'reviewtext' => 'privacy:metadata:theme_nextgen_review:reviewtext',
+            'timecreated' => 'privacy:metadata:theme_nextgen_review:timecreated',
+            'timemodified' => 'privacy:metadata:theme_nextgen_review:timemodified',
+        ], 'privacy:metadata:theme_nextgen_review');
+        return $collection;
+    }
+
+    /**
+     * Course contexts where this user has written a review.
+     *
+     * @param int $userid
+     * @return contextlist
+     */
+    #[\Override]
+    public static function get_contexts_for_userid(int $userid): contextlist {
+        $contextlist = new contextlist();
+        $sql = "SELECT ctx.id
+                  FROM {context} ctx
+                  JOIN {theme_nextgen_review} r
+                    ON r.courseid = ctx.instanceid AND ctx.contextlevel = :level
+                 WHERE r.userid = :userid";
+        $contextlist->add_from_sql($sql, [
+            'level' => CONTEXT_COURSE,
+            'userid' => $userid,
+        ]);
+        return $contextlist;
+    }
+
+    /**
+     * Export one user's reviews.
+     *
+     * @param approved_contextlist $contextlist
+     */
+    #[\Override]
+    public static function export_user_data(approved_contextlist $contextlist) {
+        global $DB;
+
+        $userid = $contextlist->get_user()->id;
+        foreach ($contextlist->get_contexts() as $context) {
+            if ($context->contextlevel != CONTEXT_COURSE) {
+                continue;
+            }
+            $records = $DB->get_records('theme_nextgen_review', [
+                'courseid' => $context->instanceid,
+                'userid' => $userid,
+            ]);
+            foreach ($records as $record) {
+                writer::with_context($context)->export_data(
+                    [get_string('tabreviews', 'theme_nextgen')],
+                    (object) [
+                        'rating' => $record->rating,
+                        'reviewtext' => $record->reviewtext,
+                        'timecreated' => transform::datetime($record->timecreated),
+                        'timemodified' => transform::datetime($record->timemodified),
+                    ]
+                );
+            }
+        }
+    }
+
+    /**
+     * Delete every review in one course context.
+     *
+     * @param \context $context
+     */
+    #[\Override]
+    public static function delete_data_for_all_users_in_context(\context $context) {
+        global $DB;
+
+        if ($context->contextlevel != CONTEXT_COURSE) {
+            return;
+        }
+        $DB->delete_records('theme_nextgen_review', ['courseid' => $context->instanceid]);
+    }
+
+    /**
+     * Delete one user's reviews in the approved course contexts.
+     *
+     * @param approved_contextlist $contextlist
+     */
+    #[\Override]
+    public static function delete_data_for_user(approved_contextlist $contextlist) {
+        global $DB;
+
+        $userid = $contextlist->get_user()->id;
+        foreach ($contextlist->get_contexts() as $context) {
+            if ($context->contextlevel != CONTEXT_COURSE) {
+                continue;
+            }
+            $DB->delete_records('theme_nextgen_review', [
+                'courseid' => $context->instanceid,
+                'userid' => $userid,
+            ]);
+        }
+    }
+
+    /**
+     * Users who have a review in this course context.
+     *
+     * @param userlist $userlist
+     */
+    #[\Override]
+    public static function get_users_in_context(userlist $userlist) {
+        $context = $userlist->get_context();
+        if ($context->contextlevel != CONTEXT_COURSE) {
+            return;
+        }
+        $sql = "SELECT userid
+                  FROM {theme_nextgen_review}
+                 WHERE courseid = :courseid";
+        $userlist->add_from_sql('userid', $sql, ['courseid' => $context->instanceid]);
+    }
+
+    /**
+     * Delete reviews for the listed users in one course context.
+     *
+     * @param approved_userlist $userlist
+     */
+    #[\Override]
+    public static function delete_data_for_users(approved_userlist $userlist) {
+        global $DB;
+
+        $context = $userlist->get_context();
+        if ($context->contextlevel != CONTEXT_COURSE) {
+            return;
+        }
+        $userids = $userlist->get_userids();
+        if (!$userids) {
+            return;
+        }
+        [$insql, $params] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+        $params['courseid'] = $context->instanceid;
+        $DB->delete_records_select(
+            'theme_nextgen_review',
+            "courseid = :courseid AND userid {$insql}",
+            $params
+        );
     }
 }

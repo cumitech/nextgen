@@ -31,6 +31,8 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool
  */
 function xmldb_theme_nextgen_upgrade($oldversion) {
+    global $DB;
+
     if ($oldversion < 2026100106) {
         theme_nextgen_install_commercial_fields();
         upgrade_plugin_savepoint(true, 2026100106, 'theme', 'nextgen');
@@ -58,6 +60,14 @@ function xmldb_theme_nextgen_upgrade($oldversion) {
     if ($oldversion < 2026100115) {
         theme_nextgen_install_fact_fields();
         upgrade_plugin_savepoint(true, 2026100115, 'theme', 'nextgen');
+    }
+
+    if ($oldversion < 2026100116) {
+        $dbman = $DB->get_manager();
+        if (!$dbman->table_exists('theme_nextgen_review')) {
+            $dbman->install_one_table_from_xmldb_file(__DIR__ . '/install.xml', 'theme_nextgen_review');
+        }
+        upgrade_plugin_savepoint(true, 2026100116, 'theme', 'nextgen');
     }
 
     return true;

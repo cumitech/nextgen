@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_nextgen';
-$plugin->version = 2026100115;
+$plugin->version = 2026100116;
 $plugin->requires = 2026041000;
 $plugin->dependencies = [
     'theme_boost' => 2026042000,

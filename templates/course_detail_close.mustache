@@ -122,8 +122,7 @@ require(['jquery'], function($) {
         });
     }
 
-    var copy = document.querySelector('[data-ng-copy]');
-    if (copy) {
+    document.querySelectorAll('[data-ng-copy]').forEach(function(copy) {
         copy.addEventListener('click', function() {
             var url = copy.getAttribute('data-ng-copy') || '';
             var label = copy.getAttribute('data-ng-copy-label') || '';
@@ -147,6 +146,6 @@ require(['jquery'], function($) {
                 navigator.clipboard.writeText(url).then(mark);
             }
         });
-    }
+    });
 });
 {{/js}}

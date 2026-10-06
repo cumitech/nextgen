@@ -873,7 +873,6 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
   body.nextgen .card:hover,
   body.nextgen article.ng-course-card:hover,
   body.nextgen .ng-tile:hover,
-  body.nextgen .ng-category-tile:hover,
   body.nextgen .ng-feature:hover,
   body.nextgen .ng-forward-list li:hover {
     box-shadow: var(--ng-shadow-md);
@@ -881,9 +880,13 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
   }
 
   body.nextgen .ng-course-card:hover .ng-course-media img,
-  body.nextgen .ng-course-card:hover .card-img-top,
-  body.nextgen .ng-category-tile:hover .ng-category-photo {
+  body.nextgen .ng-course-card:hover .card-img-top {
     transform: scale(1.04);
+  }
+
+  body.nextgen .ng-category-tile:hover {
+    box-shadow: var(--ng-shadow-sm);
+    transform: translateY(-1px);
   }
 
   body.nextgen.pagelayout-login .login-layout-left-content,
@@ -1871,53 +1874,56 @@ body.nextgen .ng-instructor-intro p {
   margin: 0;
 }
 
+body.nextgen .ng-category-section {
+  padding: 2.25rem 0 2.5rem;
+}
+
+body.nextgen .ng-category-grid {
+  gap: 0.75rem;
+}
+
 body.nextgen .ng-category-tile {
-  aspect-ratio: 3 / 4;
-  background: #102833;
-  border: 0;
-  border-radius: 18px;
-  color: #fff;
-  display: block;
-  isolation: isolate;
-  min-height: 20rem;
+  align-items: center;
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  color: var(--ng-text);
+  display: flex;
+  gap: 0.8rem;
+  min-height: 0;
+  min-width: 0;
   overflow: hidden;
-  position: relative;
+  padding: 0.5rem 0.85rem 0.5rem 0.5rem;
   text-decoration: none;
 }
 
 body.nextgen .ng-category-photo {
+  border-radius: 8px;
   display: block;
-  height: 100%;
-  inset: 0;
+  flex: 0 0 3.25rem;
+  height: 3.25rem;
   object-fit: cover;
-  position: absolute;
-  transition: transform 0.35s ease;
-  width: 100%;
-}
-
-body.nextgen .ng-category-tile::after {
-  background: linear-gradient(
-    180deg,
-    rgba(8, 16, 24, 0) 48%,
-    rgba(8, 16, 24, 0.78) 100%
-  );
-  content: "";
-  inset: 0;
-  pointer-events: none;
-  position: absolute;
+  width: 3.25rem;
 }
 
 body.nextgen .ng-category-copy {
-  bottom: 0;
-  color: #fff;
-  font-size: 1.05rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+body.nextgen .ng-category-name {
+  font-size: 0.95rem;
   font-weight: 600;
-  left: 0;
   line-height: 1.3;
-  padding: 2.75rem 1.15rem 1.2rem;
-  position: absolute;
-  right: 0;
-  z-index: 1;
+}
+
+body.nextgen .ng-category-count {
+  color: var(--ng-text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.3;
 }
 
 body.nextgen .ng-partners {
@@ -3112,6 +3118,10 @@ body.nextgen .ng-course-hero-copy {
   min-width: 0;
 }
 
+body.nextgen .ng-course-hero-actions {
+  display: none;
+}
+
 @keyframes ng-course-drift {
   0%,
   100% {
@@ -3712,6 +3722,98 @@ body.nextgen .ng-review-item p {
   margin: 0.35rem 0 0;
 }
 
+body.nextgen .ng-review-form,
+body.nextgen .ng-review-login {
+  background: var(--ng-muted);
+  border-radius: 14px;
+  margin: 0 0 1.35rem;
+  padding: 1rem 1.1rem 1.1rem;
+}
+
+body.nextgen .ng-review-form h3,
+body.nextgen .ng-review-rate legend,
+body.nextgen .ng-review-text span {
+  color: var(--ng-text);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+body.nextgen .ng-review-form h3 {
+  margin: 0 0 0.75rem;
+}
+
+body.nextgen .ng-review-rate {
+  border: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  justify-content: flex-end;
+  margin: 0 0 0.9rem;
+  padding: 0;
+}
+
+body.nextgen .ng-review-rate legend {
+  flex: 1 0 100%;
+  margin: 0 0 0.4rem;
+  padding: 0;
+}
+
+body.nextgen .ng-review-rate input {
+  clip: rect(0 0 0 0);
+  height: 1px;
+  position: absolute;
+  width: 1px;
+}
+
+body.nextgen .ng-review-rate label {
+  color: #e6e8eb;
+  cursor: pointer;
+  line-height: 0;
+}
+
+body.nextgen .ng-review-rate svg {
+  fill: currentColor;
+  height: 1.55rem;
+  width: 1.55rem;
+}
+
+body.nextgen .ng-review-rate input:checked + label,
+body.nextgen .ng-review-rate input:checked ~ label,
+body.nextgen .ng-review-rate label:hover,
+body.nextgen .ng-review-rate label:hover ~ label {
+  color: #f5a524;
+}
+
+body.nextgen .ng-review-rate input:focus-visible + label {
+  outline: 2px solid var(--ng-primary);
+  outline-offset: 2px;
+}
+
+body.nextgen .ng-review-text {
+  display: block;
+  margin: 0 0 0.85rem;
+}
+
+body.nextgen .ng-review-text textarea {
+  border: 1px solid var(--ng-border);
+  border-radius: 10px;
+  display: block;
+  font: inherit;
+  margin-top: 0.4rem;
+  min-height: 6.5rem;
+  padding: 0.7rem 0.8rem;
+  width: 100%;
+}
+
+body.nextgen .ng-review-login {
+  margin-bottom: 1rem;
+}
+
+body.nextgen .ng-review-login .btn {
+  font-weight: 700;
+}
+
 body.nextgen .ng-course-panel {
   background: #fff;
   border: 1px solid var(--ng-border);
@@ -4189,11 +4291,101 @@ body.nextgen .ng-enrol-card .box {
   body.nextgen .ng-course-band-inner {
     align-items: stretch;
     flex-direction: column;
+    gap: 1.25rem;
     min-height: 0;
+    padding: 2rem 1rem 2.5rem;
   }
 
   body.nextgen .ng-course-hero-facts {
     flex-basis: auto;
+  }
+
+  body.nextgen .ng-course-hero-actions {
+    display: block;
+    margin-top: 1.35rem;
+  }
+
+  body.nextgen .ng-course-hero-price {
+    color: #fff;
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 0 0 0.75rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  }
+
+  body.nextgen .ng-course-hero-cta {
+    display: grid;
+    gap: 0.65rem;
+    grid-template-columns: 1fr;
+  }
+
+  body.nextgen .ng-course-hero-cta .ng-course-enrol {
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+    width: 100%;
+  }
+
+  body.nextgen .ng-course-quote-hero {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.55);
+    color: #fff;
+    margin-top: 0;
+  }
+
+  body.nextgen .ng-course-quote-hero:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+
+  body.nextgen .ng-course-columns {
+    gap: 0.85rem;
+    padding: 0 1rem 2rem;
+  }
+
+  body.nextgen .ng-course-tabs {
+    margin-top: 0;
+    order: 1;
+  }
+
+  body.nextgen .ng-course-main,
+  body.nextgen .ng-course-below {
+    order: 2;
+  }
+
+  body.nextgen .ng-course-panel {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    margin-top: 0.35rem;
+    order: 3;
+    padding: 0;
+  }
+
+  body.nextgen .ng-course-panel > .ng-course-price-label,
+  body.nextgen .ng-course-panel > .ng-course-price,
+  body.nextgen .ng-course-panel > .ng-course-enrol,
+  body.nextgen .ng-course-panel > .ng-course-quote {
+    display: none;
+  }
+
+  body.nextgen .ng-course-includes {
+    background: var(--ng-surface);
+    border: 1px solid var(--ng-border);
+    border-radius: 12px;
+    border-top: 1px solid var(--ng-border);
+    margin-top: 0;
+    padding: 0.85rem 1rem;
+  }
+
+  body.nextgen .ng-course-includes ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1rem;
+  }
+
+  body.nextgen .ng-course-share {
+    margin-top: 0.75rem;
   }
 }
 
@@ -4377,8 +4569,28 @@ body.nextgen.nextgen-dashboard #page-header {
   display: none;
 }
 
+body.nextgen.nextgen-dashboard {
+  overflow-x: clip;
+}
+
+body.nextgen.nextgen-dashboard #page.drawers {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body.nextgen.nextgen-dashboard #page.drawers .main-inner {
+  contain: inline-size;
+  flex: 1 1 auto;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  width: 100%;
+}
+
 body.nextgen.nextgen-dashboard #page.drawers div[role="main"] {
   background: var(--ng-background);
+  max-width: 100%;
+  min-width: 0;
   padding-left: 0;
   padding-right: 0;
 }
@@ -4390,19 +4602,20 @@ body.nextgen.nextgen-dashboard #region-main {
 }
 
 body.nextgen.nextgen-dashboard #page-content {
+  box-sizing: border-box;
   margin: 0 auto;
-  max-width: 76rem;
-  padding: 0.25rem 1.5rem 3rem;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.25rem 1rem 3rem;
+  width: 100%;
 }
 
-body.nextgen .ng-dash-hero-tiles {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 32px 32px;
-  inset: 0;
-  mask-image: linear-gradient(90deg, transparent 0%, #000 30%, #000 100%);
-  position: absolute;
+body.nextgen .ng-dash {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  width: 100%;
 }
 
 body.nextgen .ng-dash-hero-hills {
@@ -4418,36 +4631,78 @@ body.nextgen .ng-dash-hero-hills path {
   fill: rgba(255, 255, 255, 0.16);
 }
 
+body.nextgen .ng-dash-hero-copy {
+  align-items: flex-end;
+  box-sizing: border-box;
+  display: flex;
+  margin: 0 auto;
+  max-width: 76rem;
+  min-height: 12rem;
+  padding: 2.25rem 1rem 3.5rem;
+  position: relative;
+  width: 100%;
+}
+
 body.nextgen .ng-dash-hero h1 {
   color: #fff;
-  font-size: 2.4rem;
+  font-size: clamp(1.75rem, 6vw, 2.4rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 body.nextgen .ng-dash-grid {
+  box-sizing: border-box;
+  contain: inline-size;
   display: grid;
   gap: 1rem;
+  margin: -2.5rem auto 1.5rem;
+  max-width: min(76rem, 100%);
+  min-width: 0;
+  padding: 0 1rem;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+body.nextgen .ng-dash-card {
+  box-sizing: border-box;
+  contain: inline-size;
+  max-width: 100%;
+  min-width: 0;
+  padding: 1.15rem;
+  width: 100%;
+}
+
+body.nextgen .ng-dash-card p,
+body.nextgen .ng-dash-card a {
+  overflow-wrap: anywhere;
 }
 
 body.nextgen .ng-dash-rings {
-  align-items: start;
+  box-sizing: border-box;
   display: flex;
   gap: 0.75rem;
-  justify-content: space-between;
+  justify-content: flex-start;
+  max-width: 100%;
+  min-width: 0;
+  width: 100%;
 }
 
 body.nextgen .ng-dash-rings > div {
-  flex: 1 1 0;
+  flex: 0 0 auto;
   min-width: 0;
+  text-align: center;
+  width: 4.75rem;
 }
 
 body.nextgen .ng-dash-ring-wrap {
-  height: 7rem;
+  aspect-ratio: 1;
+  height: auto;
   margin: 0 auto;
   position: relative;
-  width: 7rem;
+  width: 100%;
 }
 
 body.nextgen .ng-dash-ring-wrap svg {
@@ -4460,16 +4715,57 @@ body.nextgen .ng-dash-ring-value {
   align-items: center;
   color: var(--ng-text);
   display: flex;
-  font-size: 1.6rem;
+  font-size: clamp(1.05rem, 4.2vw, 1.6rem);
   font-weight: 700;
   inset: 0;
   justify-content: center;
   position: absolute;
 }
 
+@media (max-width: 767.98px) {
+  body.nextgen .ng-dash,
+  body.nextgen .ng-dash-hero,
+  body.nextgen .ng-dash-grid {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+  }
+
+  body.nextgen .ng-dash-ring-wrap {
+    max-width: 100%;
+  }
+}
+
 @media (min-width: 768px) {
+  body.nextgen.nextgen-dashboard #page-content {
+    max-width: 76rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  body.nextgen .ng-dash-hero-copy {
+    min-height: 14.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
   body.nextgen .ng-dash-grid {
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  body.nextgen .ng-dash-card {
+    padding: 1.5rem;
+  }
+
+  body.nextgen .ng-dash-rings {
+    justify-content: space-between;
+  }
+
+  body.nextgen .ng-dash-rings > div {
+    width: 6.5rem;
   }
 }
 
