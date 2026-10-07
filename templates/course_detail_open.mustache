@@ -135,7 +135,16 @@
         {{/hasfacts}}
     </div>
 </section>
-<div class="ng-course-columns">
+<div class="ng-course-columns"{{#hasenrolsuccess}} data-ng-enrol-success="1"{{/hasenrolsuccess}}>
+    {{#hasenrolsuccess}}
+        <div class="ng-enrol-success" role="status">
+            <div class="ng-enrol-success-copy">
+                <h2>{{#str}}enrolsuccesstitle, theme_nextgen{{/str}}</h2>
+                <p>{{#str}}enrolsuccesstext, theme_nextgen{{/str}}</p>
+            </div>
+            <a class="btn btn-primary ng-course-enrol ng-enrol-success-cta" href="{{enrolsuccessurl}}">{{#str}}enrolsuccesscta, theme_nextgen{{/str}}</a>
+        </div>
+    {{/hasenrolsuccess}}
     <div class="ng-course-tabs" role="tablist" aria-label="{{fullname}}">
         <button type="button" class="is-active" role="tab" id="ng-tab-overview" data-ng-tab="overview" aria-selected="true" aria-controls="ng-panel-overview">{{#str}}taboverview, theme_nextgen{{/str}}</button>
         <button type="button" role="tab" id="ng-tab-content" data-ng-tab="content" aria-selected="false" aria-controls="ng-course-content">{{#str}}coursecontent, theme_nextgen{{/str}}</button>

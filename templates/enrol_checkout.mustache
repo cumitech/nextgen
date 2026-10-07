@@ -1,0 +1,105 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_nextgen/enrol_checkout
+
+    Dedicated enrolment / payment checkout page.
+}}
+<article class="ng-checkout">
+    <header class="ng-checkout-band">
+        <div class="ng-checkout-inner">
+            <a class="ng-checkout-back" href="{{courseurl}}">{{#str}}checkoutback, theme_nextgen{{/str}}</a>
+            <p class="ng-checkout-kicker">{{#str}}checkouttitle, theme_nextgen{{/str}}</p>
+            <h1 class="ng-checkout-title">{{fullname}}</h1>
+            <ol class="ng-checkout-steps">
+                {{#steps}}
+                    <li class="ng-checkout-step is-{{state}}">
+                        <span class="ng-checkout-step-marker" aria-hidden="true"></span>
+                        <span class="ng-checkout-step-label">{{label}}</span>
+                    </li>
+                {{/steps}}
+            </ol>
+        </div>
+    </header>
+    <div class="ng-checkout-inner ng-checkout-layout">
+        <div class="ng-checkout-main">
+            {{#needsbasic}}
+                <section class="ng-checkout-card ng-checkout-profile">
+                    <h2>{{#str}}checkoutprofiletitle, theme_nextgen{{/str}}</h2>
+                    <p>{{#str}}checkoutprofiletext, theme_nextgen{{/str}}</p>
+                    <div class="ng-checkout-profile-form">
+                        {{{profileform}}}
+                    </div>
+                </section>
+            {{/needsbasic}}
+            {{#needscustom}}
+                <section class="ng-checkout-card ng-checkout-profile">
+                    <h2>{{#str}}checkoutprofiletitle, theme_nextgen{{/str}}</h2>
+                    <p>{{#str}}checkoutprofilecustomtext, theme_nextgen{{/str}}</p>
+                    <a class="btn btn-primary" href="{{profileurl}}">{{#str}}checkoutprofilecta, theme_nextgen{{/str}}</a>
+                </section>
+            {{/needscustom}}
+            {{#haswidgets}}
+                <section class="ng-checkout-card ng-checkout-pay" aria-label="{{#str}}enrolmentoptions, enrol{{/str}}">
+                    <h2>{{#str}}checkoutpaytitle, theme_nextgen{{/str}}</h2>
+                    {{#widgets}}
+                        <div class="ng-enrol-card">{{{.}}}</div>
+                    {{/widgets}}
+                    <p class="ng-checkout-trust">{{#str}}checkouttrust, theme_nextgen{{/str}}</p>
+                </section>
+            {{/haswidgets}}
+            {{#hasmessage}}
+                <section class="ng-checkout-card ng-checkout-empty">
+                    <h2>{{#str}}checkoutemptytitle, theme_nextgen{{/str}}</h2>
+                    <p>{{message}}</p>
+                    {{{continuebutton}}}
+                </section>
+            {{/hasmessage}}
+        </div>
+        <aside class="ng-checkout-aside">
+            <div class="ng-checkout-summary">
+                {{#hasimage}}
+                    <img class="ng-checkout-cover" src="{{image}}" alt="">
+                {{/hasimage}}
+                <h2>{{fullname}}</h2>
+                {{#hasprice}}
+                    <p class="ng-checkout-price-label">{{#str}}courseprice, theme_nextgen{{/str}}</p>
+                    <p class="ng-checkout-price">{{price}}</p>
+                {{/hasprice}}
+                {{#hasincludes}}
+                    <div class="ng-course-includes">
+                        <h3>{{#str}}courseincludes, theme_nextgen{{/str}}</h3>
+                        <ul>
+                            {{#includes}}
+                                <li>{{label}}</li>
+                            {{/includes}}
+                        </ul>
+                    </div>
+                {{/hasincludes}}
+                {{#hasaccount}}
+                    <div class="ng-checkout-account">
+                        <p class="ng-checkout-account-label">{{#str}}checkoutaccount, theme_nextgen{{/str}}</p>
+                        <p class="ng-checkout-account-name">{{accountname}}</p>
+                        {{#accountemail}}
+                            <p class="ng-checkout-account-email">{{accountemail}}</p>
+                        {{/accountemail}}
+                    </div>
+                {{/hasaccount}}
+            </div>
+        </aside>
+    </div>
+</article>

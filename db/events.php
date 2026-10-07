@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * NextGen LMS theme version.
+ * Event observers for the NextGen LMS theme.
  *
  * @package   theme_nextgen
  * @copyright 2026 NextGen LMS
@@ -24,11 +24,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'theme_nextgen';
-$plugin->version = 2026100702;
-$plugin->requires = 2026041000;
-$plugin->dependencies = [
-    'theme_boost' => 2026042000,
+$observers = [
+    [
+        'eventname' => '\core\event\user_updated',
+        'callback' => \theme_nextgen\observer::class . '::user_updated',
+    ],
+    [
+        'eventname' => '\core\event\user_enrolment_created',
+        'callback' => \theme_nextgen\observer::class . '::user_enrolment_created',
+    ],
 ];
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '1.0.0-alpha';

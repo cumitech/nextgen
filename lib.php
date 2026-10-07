@@ -45,6 +45,9 @@ function theme_nextgen_page_init($page) {
     if ((string) $page->pagetype === 'theme-nextgen-course') {
         $page->add_body_class('nextgen-sales');
     }
+    if ((string) $page->pagetype === 'enrol-index') {
+        $page->add_body_class('nextgen-enrol-checkout');
+    }
     if ($page->pagelayout === 'mydashboard') {
         $page->add_body_class('nextgen-dashboard');
     }
@@ -1703,7 +1706,194 @@ function theme_nextgen_is_course_detail_page(moodle_page $page): bool {
         return true;
     }
     $pagetype = (string) $page->pagetype;
-    return $pagetype === 'enrol-index' || $pagetype === 'theme-nextgen-course';
+    return $pagetype === 'theme-nextgen-course';
+}
+
+/**
+ * Save checkout profile fields when the inline form is submitted.
+ *
+ * @param int $courseid
+ */
+function theme_nextgen_enrol_checkout_process(int $courseid): void {
+    global $CFG, $DB, $SESSION, $USER;
+
+    if (!isloggedin() || isguestuser()) {
+        return;
+    }
+    if (!user_not_fully_set_up($USER, true)) {
+        return;
+    }
+
+    require_once($CFG->dirroot . '/user/lib.php');
+
+    $enrolurl = new moodle_url('/enrol/index.php', ['id' => $courseid]);
+    $form = new \theme_nextgen\form\checkout_profile($enrolurl, ['user' => $USER]);
+    if ($form->is_cancelled()) {
+        redirect(new moodle_url('/course/view.php', ['id' => $courseid]));
+    }
+    $data = $form->get_data();
+    if (!$data) {
+        return;
+    }
+
+    $user = $DB->get_record('user', ['id' => (int) $USER->id], '*', MUST_EXIST);
+    $user->firstname = trim((string) $data->firstname);
+    $user->lastname = trim((string) $data->lastname);
+    $newemail = trim((string) $data->email);
+    $emailchanged = (strcasecmp($newemail, (string) $user->email) !== 0);
+    $emailblocked = false;
+    if ($emailchanged) {
+        if (!empty($CFG->emailchangeconfirmation) && !has_capability('moodle/user:update', context_system::instance())) {
+            $emailblocked = true;
+        } else {
+            $user->email = $newemail;
+            $user->emailstop = 0;
+        }
+    }
+    $user->timemodified = time();
+    user_update_user($user, false, false);
+    unset($SESSION->fullysetupstrict);
+    \core\session\manager::set_user($DB->get_record('user', ['id' => $user->id], '*', MUST_EXIST));
+    if ($emailblocked) {
+        redirect(
+            $enrolurl,
+            get_string('checkoutemailunchanged', 'theme_nextgen'),
+            null,
+            \core\output\notification::NOTIFY_INFO
+        );
+    }
+    redirect($enrolurl);
+}
+
+/**
+ * Context for the dedicated enrolment checkout page.
+ *
+ * @param \stdClass $course
+ * @param string[] $widgets
+ * @param string $message
+ * @param string $continuebutton
+ * @return array
+ */
+function theme_nextgen_enrol_checkout_context(
+    \stdClass $course,
+    array $widgets,
+    string $message = '',
+    string $continuebutton = ''
+): array {
+    global $SESSION, $USER;
+
+    $listelement = new core_course_list_element($course);
+    $card = theme_nextgen_course_card_data($listelement);
+    $context = context_course::instance((int) $course->id);
+    $outline = theme_nextgen_course_outline($listelement, $context);
+    $activitycount = (int) $outline['activities'];
+    $sectioncount = count($outline['sections']);
+    $includes = [];
+    if ($activitycount === 1) {
+        $includes[] = ['label' => get_string('courseactivity', 'theme_nextgen')];
+    } else if ($activitycount > 1) {
+        $includes[] = ['label' => get_string('courseactivities', 'theme_nextgen', $activitycount)];
+    }
+    if ($sectioncount === 1) {
+        $includes[] = ['label' => get_string('coursesection', 'theme_nextgen')];
+    } else if ($sectioncount > 1) {
+        $includes[] = ['label' => get_string('coursesections', 'theme_nextgen', $sectioncount)];
+    }
+    $price = theme_nextgen_enrol_fee_price((int) $course->id);
+    if ($price === '') {
+        $price = (string) ($card['price'] ?? '');
+    }
+
+    $signedin = isloggedin() && !isguestuser();
+    $isguest = isguestuser() || !isloggedin();
+    $enrolurl = new moodle_url('/enrol/index.php', ['id' => (int) $course->id]);
+    $needsprofile = $signedin && user_not_fully_set_up($USER, true);
+    $needsbasic = $needsprofile && (
+        empty($USER->firstname) || empty($USER->lastname) || empty($USER->email)
+    );
+    $needscustom = $needsprofile && !$needsbasic;
+    $profileform = '';
+    $profileurl = '';
+    if ($needsbasic) {
+        $form = new \theme_nextgen\form\checkout_profile($enrolurl, ['user' => $USER]);
+        $profileform = $form->render();
+    } else if ($needscustom) {
+        $SESSION->wantsurl = $enrolurl->out(false);
+        $profileurl = (new moodle_url('/user/edit.php', [
+            'id' => (int) $USER->id,
+            'course' => SITEID,
+        ]))->out(false);
+    }
+
+    $accountname = '';
+    $accountemail = '';
+    if ($signedin) {
+        $accountname = fullname($USER);
+        $accountemail = (string) $USER->email;
+    }
+
+    $canpay = $signedin && !$needsprofile && !empty($widgets);
+    $steps = [
+        [
+            'label' => get_string('checkoutstepcourse', 'theme_nextgen'),
+            'state' => 'done',
+            'done' => true,
+            'current' => false,
+        ],
+        [
+            'label' => get_string('checkoutstepaccount', 'theme_nextgen'),
+            'state' => ($isguest || $needsprofile) ? 'current' : 'done',
+            'done' => $signedin && !$needsprofile,
+            'current' => $isguest || $needsprofile,
+        ],
+        [
+            'label' => get_string('checkoutsteppayment', 'theme_nextgen'),
+            'state' => $canpay ? 'current' : 'todo',
+            'done' => false,
+            'current' => $canpay,
+        ],
+    ];
+
+    if ($isguest && $message === '') {
+        $message = get_string('checkoutguesttext', 'theme_nextgen');
+        $continuebutton = html_writer::link(
+            theme_nextgen_course_enrol_url((int) $course->id),
+            get_string('checkoutguestcta', 'theme_nextgen'),
+            ['class' => 'btn btn-primary']
+        );
+    } else if (!$isguest && !$needsprofile && !$widgets && $message === '') {
+        $message = get_string('checkoutclosedtext', 'theme_nextgen');
+        $continuebutton = html_writer::link(
+            new moodle_url('/course/view.php', ['id' => (int) $course->id]),
+            get_string('checkoutback', 'theme_nextgen'),
+            ['class' => 'btn btn-primary']
+        );
+    }
+
+    return [
+        'fullname' => $card['fullname'],
+        'image' => $card['image'],
+        'hasimage' => !empty($card['image']),
+        'courseurl' => (new moodle_url('/course/view.php', ['id' => (int) $course->id]))->out(false),
+        'hasprice' => $price !== '',
+        'price' => $price,
+        'hasincludes' => !empty($includes),
+        'includes' => $includes,
+        'haswidgets' => $canpay,
+        'widgets' => array_values($widgets),
+        'hasmessage' => $message !== '' && !$needsbasic && !$needscustom,
+        'message' => $message,
+        'continuebutton' => $continuebutton,
+        'needsprofile' => $needsbasic || $needscustom,
+        'needsbasic' => $needsbasic,
+        'needscustom' => $needscustom,
+        'profileform' => $profileform,
+        'profileurl' => $profileurl,
+        'hasaccount' => $accountname !== '',
+        'accountname' => $accountname,
+        'accountemail' => $accountemail,
+        'steps' => $steps,
+    ];
 }
 
 /**
@@ -1712,7 +1902,7 @@ function theme_nextgen_is_course_detail_page(moodle_page $page): bool {
  * @return array|null
  */
 function theme_nextgen_course_detail_context(): ?array {
-    global $OUTPUT, $PAGE, $USER;
+    global $OUTPUT, $PAGE, $SESSION, $USER;
 
     if (!theme_nextgen_is_course_detail_page($PAGE)) {
         return null;
@@ -1855,14 +2045,10 @@ function theme_nextgen_course_detail_context(): ?array {
     if ($enrolled) {
         $enrolurl = (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false) . '#ng-course-content';
         $enrollabel = get_string('coursecontinue', 'theme_nextgen');
-    } else if ((string) $PAGE->pagetype === 'enrol-index') {
-        $enrolurl = '#ng-enrolment';
-        $enrollabel = get_string('courseenrol', 'theme_nextgen');
-    } else if ((string) $PAGE->pagetype === 'theme-nextgen-course') {
-        $enrolurl = theme_nextgen_course_enrol_url((int) $course->id)->out(false);
-        $enrollabel = get_string('courseenrol', 'theme_nextgen');
     } else {
-        $enrolurl = (new moodle_url('/enrol/index.php', ['id' => $course->id]))->out(false);
+        // Guests and visitors go through login with wantsurl set to the enrol page
+        // so a successful sign-in returns them to enrolment, not /my/.
+        $enrolurl = theme_nextgen_course_enrol_url((int) $course->id)->out(false);
         $enrollabel = get_string('courseenrol', 'theme_nextgen');
     }
 
@@ -1900,6 +2086,14 @@ function theme_nextgen_course_detail_context(): ?array {
         $distribution = $submitted['distribution'];
     }
     $reviewform = theme_nextgen_review_form((int) $course->id);
+
+    $hasenrolsuccess = false;
+    if (!empty($SESSION->theme_nextgen_enrolsuccess)
+            && (int) $SESSION->theme_nextgen_enrolsuccess === (int) $course->id
+            && $enrolled) {
+        $hasenrolsuccess = true;
+        unset($SESSION->theme_nextgen_enrolsuccess);
+    }
 
     return [
         'fullname' => $card['fullname'],
@@ -1965,6 +2159,8 @@ function theme_nextgen_course_detail_context(): ?array {
         'hasupdated' => !empty($card['date']),
         'updated' => get_string('lastupdated', 'theme_nextgen', $card['date'] ?? ''),
         'hasmeta' => !empty($card['bestseller']) || $card['hasrating'] || (int) ($card['enrolments'] ?? 0) > 0 || !empty($card['date']),
+        'hasenrolsuccess' => $hasenrolsuccess,
+        'enrolsuccessurl' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false) . '#ng-course-content',
     ];
 }
 
