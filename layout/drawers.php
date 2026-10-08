@@ -65,6 +65,7 @@ if (!$courseindex) {
 
 $bodyattributes = $OUTPUT->body_attributes($extraclasses);
 $forceblockdraweropen = $OUTPUT->firstview_fakeblocks();
+$homeurl = (new \moodle_url('/'))->out(false);
 
 $secondarynavigation = false;
 $overflow = '';
@@ -111,6 +112,7 @@ $templatecontext = [
     'bodyattributes' => $bodyattributes,
     'courseindexopen' => $courseindexopen,
     'blockdraweropen' => $blockdraweropen,
+    'homeurl' => $homeurl,
     'courseindex' => $courseindex,
     'primarymoremenu' => $primarymenu['moremenu'],
     'secondarymoremenu' => $secondarynavigation ?: false,

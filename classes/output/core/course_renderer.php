@@ -66,9 +66,7 @@ class course_renderer extends \core_course_renderer {
     }
 
     /**
-     * Enrolment page widgets, without the default course info box.
-     *
-     * The sales layout already shows the course. The forms themselves are unchanged.
+     * Dedicated checkout page for enrolment and payment widgets.
      *
      * @param \stdClass $course
      * @param string[] $widgets
@@ -77,29 +75,25 @@ class course_renderer extends \core_course_renderer {
      */
     #[\Override]
     public function enrolment_options(\stdClass $course, array $widgets, ?\core\url $returnurl = null): string {
+        theme_nextgen_enrol_checkout_process((int) $course->id);
+
         $message = '';
         $continuebutton = '';
-        if (!$widgets) {
-            if (isguestuser()) {
-                $message = get_string('noguestaccess', 'enrol');
-                $continuebutton = $this->output->continue_button(get_login_url());
-            } else if ($returnurl) {
-                $message = get_string('notenrollable', 'enrol');
+        if (!$widgets && !isguestuser() && isloggedin()) {
+            if ($returnurl) {
+                $message = get_string('checkoutclosedtext', 'theme_nextgen');
                 $continuebutton = $this->output->continue_button($returnurl);
             } else {
-                $url = get_local_referer(false);
-                if (empty($url)) {
-                    $url = new \moodle_url('/index.php');
-                }
-                $message = get_string('notenrollable', 'enrol');
-                $continuebutton = $this->output->continue_button($url);
+                $message = get_string('checkoutclosedtext', 'theme_nextgen');
+                $continuebutton = $this->output->continue_button(
+                    new \moodle_url('/course/view.php', ['id' => (int) $course->id])
+                );
             }
         }
 
-        return $this->render_from_template('theme_nextgen/enrolment_options', [
-            'widgets' => array_values($widgets),
-            'message' => $message,
-            'continuebutton' => $continuebutton,
-        ]);
+        return $this->render_from_template(
+            'theme_nextgen/enrol_checkout',
+            theme_nextgen_enrol_checkout_context($course, $widgets, $message, $continuebutton)
+        );
     }
 }

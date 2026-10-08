@@ -60,7 +60,6 @@ $THEME->layouts = [
         'file' => 'drawers.php',
         'regions' => ['side-pre'],
         'defaultregion' => 'side-pre',
-        'options' => ['nonavbar' => true],
     ],
     'admin' => [
         'file' => 'drawers.php',
@@ -77,7 +76,7 @@ $THEME->layouts = [
         'file' => 'drawers.php',
         'regions' => ['side-pre'],
         'defaultregion' => 'side-pre',
-        'options' => ['nonavbar' => true, 'langmenu' => true],
+        'options' => ['langmenu' => true],
     ],
     'mypublic' => [
         'file' => 'drawers.php',
