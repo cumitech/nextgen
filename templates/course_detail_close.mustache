@@ -84,11 +84,7 @@ require(['jquery'], function($) {
         });
     });
 
-    if (root.getAttribute('data-ng-enrol-success') === '1') {
-        show('content');
-    } else {
-        show(fromHash());
-    }
+    show(fromHash());
 
     var expand = root.querySelector('[data-ng-expand]');
     if (expand) {
