@@ -21,11 +21,6 @@
 }}
 <div class="ng-dash">
     <header class="ng-dash-hero tw:relative tw:overflow-hidden tw:bg-secondary tw:text-white">
-        <svg class="ng-dash-hero-hills" viewBox="0 0 960 240" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
-            <path class="ng-dash-hill ng-dash-hill-back" d="M520 150c70-48 140-48 220-18 50 18 90 18 140 4 40-12 70-28 80-36v140H520z"/>
-            <path class="ng-dash-hill ng-dash-hill-mid" d="M430 176c80-36 150-20 230 8 60 20 120 16 180-8 40-16 80-36 120-40v104H430z"/>
-            <path class="ng-dash-hill ng-dash-hill-front" d="M360 198c90-24 160-8 250 16 70 18 140 10 210-12 50-16 90-28 140-24v62H360z"/>
-        </svg>
         <div class="ng-dash-hero-copy">
             <h1 class="tw:m-0 tw:font-bold tw:tracking-tight tw:text-white">{{title}}</h1>
         </div>
@@ -49,38 +44,20 @@
         </section>
         <section class="ng-dash-card tw:rounded-2xl tw:border tw:border-border tw:bg-surface tw:shadow-sm" aria-label="{{#str}}dashboardmycourses, theme_nextgen{{/str}}">
             <h2 class="tw:m-0 tw:text-lg tw:font-bold tw:text-text">{{#str}}dashboardmycourses, theme_nextgen{{/str}}</h2>
-            <div class="ng-dash-rings tw:mt-5">
-                <div class="tw:flex tw:flex-col tw:items-center tw:gap-2">
-                    <div class="ng-dash-ring-wrap">
-                        <svg viewBox="0 0 120 120" width="100%" height="100%" aria-hidden="true">
-                            <circle cx="60" cy="60" r="46" class="ng-dash-ring-track"></circle>
-                            <circle cx="60" cy="60" r="46" class="ng-dash-ring ng-dash-ring-all" stroke-dasharray="{{circumference}}" stroke-dashoffset="{{alloffset}}"></circle>
-                        </svg>
-                        <span class="ng-dash-ring-value">{{allcount}}</span>
-                    </div>
-                    <span class="tw:text-xs tw:font-medium tw:text-text-muted tw:sm:text-sm">{{#str}}dashboardall, theme_nextgen{{/str}}</span>
-                </div>
-                <div class="tw:flex tw:flex-col tw:items-center tw:gap-2">
-                    <div class="ng-dash-ring-wrap">
-                        <svg viewBox="0 0 120 120" width="100%" height="100%" aria-hidden="true">
-                            <circle cx="60" cy="60" r="46" class="ng-dash-ring-track"></circle>
-                            <circle cx="60" cy="60" r="46" class="ng-dash-ring ng-dash-ring-progress" stroke-dasharray="{{circumference}}" stroke-dashoffset="{{inprogressoffset}}"></circle>
-                        </svg>
-                        <span class="ng-dash-ring-value">{{inprogresscount}}</span>
-                    </div>
-                    <span class="tw:text-xs tw:font-medium tw:text-text-muted tw:sm:text-sm">{{#str}}dashboardinprogress, theme_nextgen{{/str}}</span>
-                </div>
-                <div class="tw:flex tw:flex-col tw:items-center tw:gap-2">
-                    <div class="ng-dash-ring-wrap">
-                        <svg viewBox="0 0 120 120" width="100%" height="100%" aria-hidden="true">
-                            <circle cx="60" cy="60" r="46" class="ng-dash-ring-track"></circle>
-                            <circle cx="60" cy="60" r="46" class="ng-dash-ring ng-dash-ring-past" stroke-dasharray="{{circumference}}" stroke-dashoffset="{{pastoffset}}"></circle>
-                        </svg>
-                        <span class="ng-dash-ring-value">{{pastcount}}</span>
-                    </div>
-                    <span class="tw:text-xs tw:font-medium tw:text-text-muted tw:sm:text-sm">{{#str}}dashboardpast, theme_nextgen{{/str}}</span>
-                </div>
-            </div>
+            <ul class="ng-dash-counts">
+                <li>
+                    <span class="ng-dash-count">{{allcount}}</span>
+                    <span>{{#str}}dashboardall, theme_nextgen{{/str}}</span>
+                </li>
+                <li>
+                    <span class="ng-dash-count">{{inprogresscount}}</span>
+                    <span>{{#str}}dashboardinprogress, theme_nextgen{{/str}}</span>
+                </li>
+                <li>
+                    <span class="ng-dash-count">{{pastcount}}</span>
+                    <span>{{#str}}dashboardpast, theme_nextgen{{/str}}</span>
+                </li>
+            </ul>
         </section>
     </div>
 </div>

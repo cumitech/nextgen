@@ -72,6 +72,19 @@ class core_renderer extends \theme_boost\output\core_renderer {
     }
 
     /**
+     * Page head without the Moodle app banners.
+     *
+     * @return string
+     */
+    #[\Override]
+    public function standard_head_html() {
+        $html = parent::standard_head_html();
+        $html = preg_replace('/<meta\b[^>]*name=["\']apple-itunes-app["\'][^>]*>/i', '', $html);
+        $html = preg_replace('/<link\b[^>]*rel=["\']manifest["\'][^>]*mobile\.webmanifest\.php[^>]*>/i', '', $html);
+        return is_string($html) ? $html : '';
+    }
+
+    /**
      * Footer fragment without the mobile app, device theme, and retention links.
      *
      * @return string
@@ -79,7 +92,16 @@ class core_renderer extends \theme_boost\output\core_renderer {
     #[\Override]
     public function standard_footer_html() {
         $html = parent::standard_footer_html();
-        $html = preg_replace('/<div>\s*<a\b[^>]*class="mobilelink"[^>]*>.*?<\/a>\s*<\/div>/s', '', $html);
+        $html = preg_replace(
+            '/<div>\s*<a\b[^>]*class="[^"]*\bmobilelink\b[^"]*"[^>]*>.*?<\/a>\s*<\/div>/s',
+            '',
+            $html,
+        );
+        $html = preg_replace(
+            '/<a\b[^>]*(?:download\.moodle\.org\/mobile|\/tool\/mobile\/)[^>]*>.*?<\/a>/s',
+            '',
+            $html,
+        );
         $html = preg_replace('/<div class="tool_dataprivacy">.*?<\/div>/s', '', $html);
         return is_string($html) ? $html : '';
     }

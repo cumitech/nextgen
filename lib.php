@@ -2180,7 +2180,10 @@ function theme_nextgen_course_detail_context(): ?array {
         $category = core_course_category::get((int) $course->category, IGNORE_MISSING, true);
         if ($category) {
             $breadcrumbs[] = [
-                'label' => $category->get_formatted_name(),
+                'label' => format_string($category->name, true, [
+                    'context' => $category->get_context(),
+                    'escape' => false,
+                ]),
                 'url' => (new moodle_url('/course/index.php', ['categoryid' => $category->id]))->out(false),
             ];
         }

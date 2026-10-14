@@ -51,8 +51,7 @@ body.nextgen .ng-loadline.is-done {
 }
 
 body.nextgen .ng-loadline-bar {
-  background: linear-gradient(90deg, var(--ng-brand-dark), var(--ng-brand) 55%, var(--ng-yellow));
-  box-shadow: 0 0 12px rgba(35, 171, 12, 0.6);
+  background: var(--ng-brand);
   height: 100%;
   width: 0;
 }
@@ -62,11 +61,9 @@ body.nextgen .ng-loadline.is-active .ng-loadline-bar {
 }
 
 body.nextgen .ng-header {
-  background: linear-gradient(180deg, #fff 0%, #f4f8fa 100%);
+  background: #fff;
   border-bottom: 1px solid var(--ng-border);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    0 10px 28px rgba(16, 40, 51, 0.06);
+  box-shadow: none;
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -96,19 +93,7 @@ body.nextgen .ng-brand {
 }
 
 body.nextgen .ng-brand::after {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.85),
-    transparent
-  );
-  content: "";
-  inset: -30% auto -30% -45%;
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  transform: skewX(-18deg);
-  width: 38%;
+  content: none;
 }
 
 body.nextgen .ng-brand:hover {
@@ -259,14 +244,8 @@ body.nextgen .btn-primary {
   --bs-btn-hover-bg: var(--ng-primary-hover);
   --bs-btn-hover-border-color: var(--ng-primary-hover);
   --bs-btn-hover-color: #fff;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.28),
-    rgba(255, 255, 255, 0) 48%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    0 8px 18px rgba(16, 40, 51, 0.18);
+  background-image: none;
+  box-shadow: none;
 }
 
 body.nextgen .ng-header-login-btn.btn-primary,
@@ -295,16 +274,10 @@ body.nextgen a:not(.btn):not(.nav-link):not(.dropdown-item) {
 }
 
 body.nextgen .card {
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.7),
-    rgba(255, 255, 255, 0) 2.5rem
-  );
+  background-image: none;
   border-color: var(--ng-border);
-  border-radius: var(--ng-radius-md);
-  box-shadow:
-    var(--ng-shadow-sm),
-    inset 0 1px 0 #fff;
+  border-radius: 8px;
+  box-shadow: none;
 }
 
 body.nextgen .ng-mobile-nav .list-group-item.active {
@@ -313,15 +286,9 @@ body.nextgen .ng-mobile-nav .list-group-item.active {
 }
 
 body.nextgen .ng-footer {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.1),
-      rgba(255, 255, 255, 0) 5rem
-    ),
-    var(--ng-secondary);
+  background: var(--ng-secondary);
   border-radius: 0;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: none;
   color: #e4eef2;
   margin-left: 0;
   margin-right: 0;
@@ -1345,76 +1312,13 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
 @media (prefers-reduced-motion: no-preference) {
   body.nextgen .btn,
   body.nextgen .ng-brand,
-  body.nextgen .ng-brand-mark,
   body.nextgen .ng-primary-nav .moremenu .nav-link,
   body.nextgen .card,
-  body.nextgen .ng-course-card,
-  body.nextgen .ng-tile,
-  body.nextgen .ng-category-tile,
-  body.nextgen .ng-feature,
-  body.nextgen .ng-forward-list li,
-  body.nextgen .ng-chip,
-  body.nextgen .ng-footer a,
-  body.nextgen .ng-course-media img,
-  body.nextgen .ng-course-card .card-img-top {
+  body.nextgen .ng-footer a {
     transition:
       background-color 0.18s ease,
       border-color 0.18s ease,
-      box-shadow 0.22s ease,
-      color 0.18s ease,
-      transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  body.nextgen .ng-brand-mark {
-    animation: ng-fade 0.5s ease both;
-  }
-
-  body.nextgen .ng-brand::after {
-    animation: ng-sheen 5.5s ease-in-out 0.8s infinite;
-  }
-
-  body.nextgen .ng-brand:hover .ng-brand-mark {
-    transform: scale(1.06);
-  }
-
-  body.nextgen .btn:hover {
-    transform: translateY(-1px);
-  }
-
-  body.nextgen .card:hover,
-  body.nextgen article.ng-course-card:hover,
-  body.nextgen .ng-tile:hover,
-  body.nextgen .ng-feature:hover,
-  body.nextgen .ng-forward-list li:hover {
-    box-shadow: var(--ng-shadow-md);
-    transform: translateY(-3px);
-  }
-
-  body.nextgen .ng-course-card:hover .ng-course-media img,
-  body.nextgen .ng-course-card:hover .card-img-top {
-    transform: scale(1.04);
-  }
-
-  body.nextgen .ng-category-tile:hover {
-    box-shadow: var(--ng-shadow-sm);
-    transform: translateY(-1px);
-  }
-
-  body.nextgen.pagelayout-login .login-layout-left-content,
-  body.nextgen.pagelayout-login .login-container,
-  body.nextgen .ng-hero-title,
-  body.nextgen .ng-hero-text,
-  body.nextgen .ng-hero-actions {
-    animation: ng-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  body.nextgen.pagelayout-login .login-container,
-  body.nextgen .ng-hero-text {
-    animation-delay: 0.08s;
-  }
-
-  body.nextgen .ng-hero-actions {
-    animation-delay: 0.14s;
+      color 0.18s ease;
   }
 }
 
@@ -1540,19 +1444,7 @@ body.nextgen .ng-hero::before {
 }
 
 body.nextgen .ng-hero::after {
-  background:
-    radial-gradient(
-      ellipse at 92% 0%,
-      rgba(255, 255, 255, 0.28),
-      transparent 16rem
-    ),
-    linear-gradient(
-      105deg,
-      rgba(6, 24, 14, 0.84) 0%,
-      rgba(6, 24, 14, 0.62) 36%,
-      rgba(6, 24, 14, 0.22) 68%,
-      rgba(6, 24, 14, 0.08) 100%
-    );
+  background: rgba(8, 28, 18, 0.55);
   content: "";
   inset: 0;
   pointer-events: none;
@@ -1575,19 +1467,7 @@ body.nextgen-landing .ng-hero::before {
 }
 
 body.nextgen-landing .ng-hero::after {
-  background:
-    linear-gradient(
-      to bottom left,
-      rgba(8, 36, 20, 0.78) 0%,
-      rgba(8, 36, 20, 0.34) 32%,
-      rgba(8, 36, 20, 0) 58%
-    ),
-    linear-gradient(
-      105deg,
-      rgba(6, 24, 14, 0.8) 0%,
-      rgba(6, 24, 14, 0.48) 40%,
-      rgba(6, 24, 14, 0.16) 100%
-    );
+  background: rgba(8, 28, 18, 0.55);
 }
 
 body.nextgen.nextgen-landing .ng-hero > .ng-hero-slides {
@@ -1610,27 +1490,17 @@ body.nextgen-landing .ng-hero-slide {
   inset: 0;
   opacity: 0;
   position: absolute;
-  animation: ng-hero-slide 32s ease-in-out infinite;
 }
 
-body.nextgen-landing .ng-hero-slide:nth-child(1) {
-  animation-delay: -2s;
+body.nextgen-landing .ng-hero-slide:first-child {
+  opacity: 1;
   background-image: url("[[pix:theme_nextgen|hero-slide-1]]");
 }
 
-body.nextgen-landing .ng-hero-slide:nth-child(2) {
-  animation-delay: 6s;
-  background-image: url("[[pix:theme_nextgen|hero-slide-2]]");
-}
-
-body.nextgen-landing .ng-hero-slide:nth-child(3) {
-  animation-delay: 14s;
-  background-image: url("[[pix:theme_nextgen|hero-slide-3]]");
-}
-
+body.nextgen-landing .ng-hero-slide:nth-child(2),
+body.nextgen-landing .ng-hero-slide:nth-child(3),
 body.nextgen-landing .ng-hero-slide:nth-child(4) {
-  animation-delay: 22s;
-  background-image: url("[[pix:theme_nextgen|hero-slide-4]]");
+  display: none;
 }
 
 @keyframes ng-hero-slide {
@@ -1807,29 +1677,7 @@ body.nextgen .ng-tile {
 }
 
 body.nextgen .ng-tile-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cpolygon points='70,58 118,46 96,102' fill='white' fill-opacity='.7'/%3E%3Cpolygon points='118,46 158,68 136,112' fill='white' fill-opacity='.45'/%3E%3Cpolygon points='86,102 136,112 118,154 78,138' fill='black' fill-opacity='.18'/%3E%3Cpolygon points='136,78 172,96 154,140 122,124' fill='white' fill-opacity='.5'/%3E%3Cpolygon points='78,138 118,154 104,184 64,168' fill='white' fill-opacity='.38'/%3E%3C/svg%3E");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  height: 52%;
-  left: 50%;
-  -webkit-mask-image: radial-gradient(
-    circle at center,
-    #000 0%,
-    #000 18%,
-    transparent 64%
-  );
-  mask-image: radial-gradient(
-    circle at center,
-    #000 0%,
-    #000 18%,
-    transparent 64%
-  );
-  pointer-events: none;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 54%;
+  display: none;
 }
 
 body.nextgen .ng-tile.ng-tile h2 {
@@ -1896,7 +1744,7 @@ body.nextgen .ng-tile-gold {
 }
 
 body.nextgen .ng-faculty {
-  background: linear-gradient(180deg, #fbf8f3 0%, #f3eee4 100%);
+  background: #f7f4ee;
 }
 
 body.nextgen .ng-faculty-grid {
@@ -1911,8 +1759,7 @@ body.nextgen .ng-faculty-stage {
 }
 
 body.nextgen .ng-faculty-shape {
-  border-radius: 2.4rem;
-  position: absolute;
+  display: none;
 }
 
 body.nextgen .ng-faculty-shape-gold {
@@ -1949,8 +1796,9 @@ body.nextgen .ng-faculty-names {
 body.nextgen .ng-faculty-ring {
   aspect-ratio: 1;
   background: #fff;
+  border: 1px solid var(--ng-border);
   border-radius: 50%;
-  box-shadow: 0 18px 40px rgba(22, 32, 22, 0.14);
+  box-shadow: none;
   left: 50%;
   overflow: hidden;
   position: absolute;
@@ -2847,14 +2695,14 @@ body.nextgen .ng-cta-photo {
 body.nextgen article.ng-course-card,
 body.nextgen .card.ng-course-card {
   background: #fff;
-  border: 0;
-  border-radius: 16px;
-  box-shadow: 0 10px 28px rgba(16, 40, 51, 0.08);
+  border: 1px solid var(--ng-border);
+  border-radius: 8px;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  padding: 0.7rem 0.7rem 1rem;
+  padding: 0 0 1rem;
 }
 
 body.nextgen .ng-catalogue-course {
@@ -2874,7 +2722,7 @@ body.nextgen .ng-catalogue-course > .ng-course-card {
 }
 
 body.nextgen .ng-course-media {
-  border-radius: 12px;
+  border-radius: 0;
   display: block;
   overflow: hidden;
   position: relative;
@@ -2882,7 +2730,7 @@ body.nextgen .ng-course-media {
 
 body.nextgen article.ng-course-card .ng-course-media img {
   aspect-ratio: 16 / 10;
-  border-radius: 12px;
+  border-radius: 0;
   height: auto;
 }
 
@@ -3041,7 +2889,7 @@ body.nextgen .ng-course-body {
   flex: 1 1 auto;
   flex-direction: column;
   gap: 0.2rem;
-  padding: 0.85rem 0.3rem 0.15rem;
+  padding: 0.85rem 1rem 0.15rem;
 }
 
 body.nextgen article.ng-course-card .ng-course-title {
@@ -3106,7 +2954,7 @@ body.nextgen .ng-course-meta {
 }
 
 body.nextgen article.ng-course-card .ng-course-action {
-  padding: 0.85rem 0.3rem 0.15rem;
+  padding: 0.85rem 1rem 0.15rem;
 }
 
 body.nextgen article.ng-course-card .ng-course-action .btn {
@@ -3140,19 +2988,19 @@ body.nextgen .card.course-card:focus-within {
 }
 
 body.nextgen .card.course-card .ng-course-media {
-  border-radius: 16px 16px 0 0;
+  border-radius: 0;
   flex: 0 0 auto;
 }
 
 body.nextgen .card.course-card .card-img-top {
   aspect-ratio: 16 / 10;
-  border-radius: 16px 16px 0 0;
+  border-radius: 0;
   height: auto;
 }
 
 body.nextgen .card.course-card .ng-course-body {
   min-width: 0;
-  padding: 0.85rem 0.95rem 0.2rem;
+  padding: 0.85rem 1rem 0.2rem;
 }
 
 body.nextgen .card.course-card .ng-course-kicker,
@@ -3720,20 +3568,11 @@ body.nextgen .ng-course-band-media {
   background-size: cover;
   inset: 0;
   position: absolute;
-  transform: scale(1.06) translate3d(0, 0, 0);
-  transform-origin: center;
   z-index: 0;
-  animation: ng-course-drift 32s ease-in-out infinite;
 }
 
 body.nextgen .ng-course-band::after {
-  background: linear-gradient(
-    105deg,
-    rgba(6, 24, 14, 0.92) 0%,
-    rgba(6, 24, 14, 0.8) 34%,
-    rgba(6, 24, 14, 0.42) 68%,
-    rgba(6, 24, 14, 0.2) 100%
-  );
+  background: rgba(8, 28, 18, 0.62);
   content: "";
   inset: 0;
   pointer-events: none;
@@ -3805,11 +3644,9 @@ body.nextgen .ng-course-band .ng-course-title {
   color: #fff;
   font-size: 2rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  line-height: 1.2;
   margin: 0 0 0.75rem;
   max-width: 40rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 
 body.nextgen .ng-course-excerpt {
@@ -3818,7 +3655,6 @@ body.nextgen .ng-course-excerpt {
   line-height: 1.55;
   margin: 0;
   max-width: 40rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 body.nextgen .ng-course-teacher {
@@ -3882,22 +3718,22 @@ body.nextgen .ng-bestseller {
 }
 
 body.nextgen .ng-course-hero-facts {
-  backdrop-filter: blur(10px);
-  background: rgba(8, 24, 48, 0.62);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 18px;
-  flex: 0 0 320px;
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 8px;
+  color: var(--ng-text);
+  flex: 0 0 280px;
   margin: 0;
-  padding: 0.35rem 1.15rem;
+  padding: 0.15rem 1rem;
 }
 
 body.nextgen .ng-course-hero-fact {
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid var(--ng-border);
   display: flex;
   gap: 1rem;
   justify-content: space-between;
-  padding: 0.85rem 0;
+  padding: 0.75rem 0;
 }
 
 body.nextgen .ng-course-hero-fact:last-child {
@@ -3910,18 +3746,15 @@ body.nextgen .ng-course-hero-fact dd {
 }
 
 body.nextgen .ng-course-hero-fact dt {
-  align-items: center;
-  color: rgba(255, 255, 255, 0.78);
-  display: flex;
-  font-size: 0.92rem;
+  color: var(--ng-text-muted);
+  font-size: 0.875rem;
   font-weight: 500;
-  gap: 0.55rem;
 }
 
 body.nextgen .ng-course-hero-fact dd {
-  color: #fff;
-  font-size: 0.95rem;
-  font-weight: 650;
+  color: var(--ng-ink);
+  font-size: 0.875rem;
+  font-weight: 600;
   text-align: right;
 }
 
@@ -4006,45 +3839,23 @@ body.nextgen .ng-course-empty {
 }
 
 body.nextgen .ng-certificate {
-  background-color: var(--ng-primary);
-  background-image:
-    radial-gradient(circle at 12px 0, var(--ng-surface) 10px, transparent 11px),
-    radial-gradient(circle at 12px 100%, var(--ng-surface) 10px, transparent 11px),
-    radial-gradient(circle at 0 12px, var(--ng-surface) 10px, transparent 11px),
-    radial-gradient(circle at 100% 12px, var(--ng-surface) 10px, transparent 11px);
-  background-position: top, bottom, left, right;
-  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-  background-size: 24px 14px, 24px 14px, 14px 24px, 14px 24px;
+  background: transparent;
   margin: 0.35rem 0 0;
-  padding: 0.85rem;
+  padding: 0;
 }
 
 body.nextgen .ng-certificate-sample {
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  color: var(--ng-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
   margin: 0 0 0.55rem;
-  text-align: center;
-  text-transform: uppercase;
 }
 
 body.nextgen .ng-certificate-sheet {
-  background:
-    linear-gradient(var(--ng-primary), var(--ng-primary)) top left / 2.2rem 2px no-repeat,
-    linear-gradient(var(--ng-primary), var(--ng-primary)) top left / 2px 2.2rem no-repeat,
-    linear-gradient(var(--ng-primary), var(--ng-primary)) top right / 2.2rem 2px no-repeat,
-    linear-gradient(var(--ng-primary), var(--ng-primary)) top right / 2px 2.2rem no-repeat,
-    linear-gradient(var(--ng-primary), var(--ng-primary)) bottom left / 2.2rem 2px no-repeat,
-    linear-gradient(var(--ng-primary), var(--ng-primary)) bottom left / 2px 2.2rem no-repeat,
-    linear-gradient(var(--ng-primary), var(--ng-primary)) bottom right / 2.2rem 2px no-repeat,
-    linear-gradient(var(--ng-primary), var(--ng-primary)) bottom right / 2px 2.2rem no-repeat,
-    #fff;
-  border: 1px solid var(--ng-brand);
-  box-shadow: inset 0 0 0 6px #fff, inset 0 0 0 7px var(--ng-primary);
+  background: #fff;
+  border: 1px solid var(--ng-border);
   color: var(--ng-ink);
-  font-family: Manrope, "Segoe UI", sans-serif;
-  padding: 2.2rem 1.4rem 1.6rem;
+  padding: 1.5rem 1.25rem;
   text-align: center;
 }
 
@@ -4058,20 +3869,16 @@ body.nextgen .ng-certificate-course {
 }
 
 body.nextgen .ng-certificate-title {
-  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-size: 1.35rem;
   font-weight: 700;
-  letter-spacing: 0.28em;
-  line-height: 1.1;
-  text-transform: uppercase;
+  line-height: 1.2;
 }
 
 body.nextgen .ng-certificate-subtitle {
-  color: var(--ng-primary);
-  font-size: 0.78rem;
+  color: var(--ng-text-muted);
+  font-size: 0.875rem;
   font-weight: 600;
-  letter-spacing: 0.22em;
-  margin-top: 0.45rem;
-  text-transform: uppercase;
+  margin-top: 0.35rem;
 }
 
 body.nextgen .ng-certificate-lead,
@@ -4100,12 +3907,10 @@ body.nextgen .ng-certificate-completed {
 }
 
 body.nextgen .ng-certificate-course {
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
   line-height: 1.35;
   margin-top: 0.85rem;
-  text-transform: uppercase;
 }
 
 body.nextgen .ng-certificate-signs {
@@ -4469,10 +4274,10 @@ body.nextgen .ng-review-login .btn {
 body.nextgen .ng-course-panel {
   background: #fff;
   border: 1px solid var(--ng-border);
-  border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(22, 32, 22, 0.1);
-  margin-top: 2.5rem;
-  padding: 1.2rem 1.25rem 1.1rem;
+  border-radius: 8px;
+  box-shadow: none;
+  margin-top: 1.5rem;
+  padding: 1.15rem 1.15rem 1rem;
 }
 
 body.nextgen .ng-course-price-label {
@@ -4540,39 +4345,20 @@ body.nextgen .ng-course-includes h2 {
 
 body.nextgen .ng-course-includes ul {
   display: grid;
-  gap: 0.45rem;
-  list-style: none;
+  gap: 0.35rem;
+  list-style: disc;
   margin: 0;
-  padding: 0;
+  padding-left: 1.15rem;
 }
 
 body.nextgen .ng-course-includes li {
-  align-items: center;
   color: var(--ng-text);
-  display: flex;
+  display: list-item;
   font-size: 0.875rem;
-  gap: 0.55rem;
 }
 
 body.nextgen .ng-course-includes li::before {
-  background: var(--ng-brand);
-  border-radius: 999px;
-  content: "";
-  flex: none;
-  height: 0.55rem;
-  width: 0.55rem;
-}
-
-body.nextgen .ng-course-includes li:nth-child(2)::before {
-  background: #d4654a;
-}
-
-body.nextgen .ng-course-includes li:nth-child(3)::before {
-  background: #2f6f97;
-}
-
-body.nextgen .ng-course-includes li:nth-child(4)::before {
-  background: var(--ng-yellow);
+  content: none;
 }
 
 body.nextgen .ng-course-image {
@@ -4608,7 +4394,7 @@ body.nextgen .ng-course-summary p:last-child {
 body.nextgen .ng-course-card {
   background: #fff;
   border: 1px solid var(--ng-border);
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 1.15rem 1.25rem 1.2rem;
 }
 
@@ -4884,10 +4670,9 @@ body.nextgen .ng-course-quote:hover {
 }
 
 body.nextgen .ng-course-share {
-  background: #f7f5f1;
-  border-radius: 12px;
-  margin-top: 1.15rem;
-  padding: 0.85rem 0.85rem 0.8rem;
+  border-top: 1px solid var(--ng-border);
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
 }
 
 body.nextgen .ng-course-share h2 {
@@ -4939,8 +4724,9 @@ body.nextgen .ng-enrol-stack > h2 {
 }
 
 body.nextgen .ng-enrol-card {
-  background: #f3f1ec;
-  border-radius: 12px;
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 8px;
   margin-bottom: 0.85rem;
   padding: 1rem 1.15rem;
 }
@@ -5085,8 +4871,8 @@ body.nextgen .ng-checkout-card,
 body.nextgen .ng-checkout-summary {
   background: var(--ng-surface);
   border: 1px solid var(--ng-border);
-  border-radius: 16px;
-  box-shadow: 0 14px 36px rgba(16, 40, 51, 0.08);
+  border-radius: 8px;
+  box-shadow: none;
 }
 
 body.nextgen .ng-checkout-card {
@@ -5450,9 +5236,7 @@ body.nextgen .ng-checkout-account-email {
     color: #fff;
     font-size: 1.45rem;
     font-weight: 700;
-    letter-spacing: -0.03em;
     margin: 0 0 0.75rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   }
 
   body.nextgen .ng-course-hero-cta {
@@ -6138,8 +5922,9 @@ body.nextgen .ng-public-body {
 
 body.nextgen .ng-public-card {
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 10px 28px rgba(16, 40, 51, 0.08);
+  border: 1px solid var(--ng-border);
+  border-radius: 8px;
+  box-shadow: none;
   padding: 1.6rem 1.6rem 1.8rem;
 }
 
@@ -6571,12 +6356,40 @@ body.nextgen .ng-dash-grid {
 }
 
 body.nextgen .ng-dash-card {
+  border-radius: 8px;
+  box-shadow: none;
   box-sizing: border-box;
   contain: inline-size;
   max-width: 100%;
   min-width: 0;
   padding: 1.15rem;
   width: 100%;
+}
+
+body.nextgen .ng-dash-counts {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 1.15rem 0 0;
+  padding: 0;
+}
+
+body.nextgen .ng-dash-counts li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+body.nextgen .ng-dash-count {
+  color: var(--ng-ink);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+body.nextgen .ng-dash-counts li span:last-child {
+  color: var(--ng-text-muted);
+  font-size: 0.875rem;
 }
 
 body.nextgen .ng-dash-card p,
@@ -7243,4 +7056,142 @@ body.nextgen.single-section-page:not(.editing) .course-content li.activity:last-
 body.nextgen.single-section-page:not(.editing) .course-content .activity-item .activityname a {
   color: var(--ng-ink);
   font-weight: 600;
+}
+
+/* Course index: a separate menu panel, with a small gutter around the lesson. */
+body.nextgen.pagelayout-course,
+body.nextgen.pagelayout-incourse {
+  background: var(--ng-background);
+}
+
+body.nextgen.pagelayout-course #page.drawers,
+body.nextgen.pagelayout-incourse #page.drawers {
+  background: transparent;
+}
+
+body.nextgen.pagelayout-course .courseindex .courseindex-section.current,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-section.current {
+  border-left-color: var(--ng-brand);
+}
+
+body.nextgen.pagelayout-course .courseindex .courseindex-item,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item {
+  border-radius: 8px;
+}
+
+body.nextgen.pagelayout-course .courseindex .courseindex-item .courseindex-link,
+body.nextgen.pagelayout-course .courseindex .courseindex-item .courseindex-chevron,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item .courseindex-link,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item .courseindex-chevron {
+  color: var(--ng-text);
+}
+
+body.nextgen.pagelayout-course .courseindex .courseindex-item:hover:not(.pageitem),
+body.nextgen.pagelayout-course .courseindex .courseindex-item:focus:not(.pageitem),
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:hover:not(.pageitem),
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus:not(.pageitem) {
+  background: var(--ng-muted);
+}
+
+body.nextgen.pagelayout-course .courseindex .courseindex-item:hover:not(.pageitem) .courseindex-link,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:hover:not(.pageitem) .courseindex-chevron,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:focus:not(.pageitem) .courseindex-link,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:focus:not(.pageitem) .courseindex-chevron,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:hover:not(.pageitem) .courseindex-link,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:hover:not(.pageitem) .courseindex-chevron,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus:not(.pageitem) .courseindex-link,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus:not(.pageitem) .courseindex-chevron {
+  color: var(--ng-ink);
+}
+
+body.nextgen.pagelayout-course .courseindex .courseindex-item.pageitem,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:hover.pageitem,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:focus.pageitem,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:hover .pageitem,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:focus .pageitem,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item.pageitem,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:hover.pageitem,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus.pageitem,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:hover .pageitem,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus .pageitem {
+  background: var(--ng-brand-soft);
+  border-color: transparent;
+  color: var(--ng-brand-dark);
+}
+
+body.nextgen.pagelayout-course .courseindex .courseindex-item.pageitem .courseindex-link,
+body.nextgen.pagelayout-course .courseindex .courseindex-item.pageitem .courseindex-chevron,
+body.nextgen.pagelayout-course .courseindex .courseindex-item.pageitem a,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:hover.pageitem .courseindex-link,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:hover.pageitem .courseindex-chevron,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:hover.pageitem a,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:focus.pageitem .courseindex-link,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:focus.pageitem .courseindex-chevron,
+body.nextgen.pagelayout-course .courseindex .courseindex-item:focus.pageitem a,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item.pageitem .courseindex-link,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item.pageitem .courseindex-chevron,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item.pageitem a,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:hover.pageitem .courseindex-link,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:hover.pageitem .courseindex-chevron,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:hover.pageitem a,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus.pageitem .courseindex-link,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus.pageitem .courseindex-chevron,
+body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus.pageitem a {
+  color: var(--ng-brand-dark);
+  font-weight: 700;
+}
+
+@media (min-width: 992px) {
+  body.nextgen.pagelayout-course .drawer.drawer-left.show:not(.drawer-primary),
+  body.nextgen.pagelayout-incourse .drawer.drawer-left.show:not(.drawer-primary) {
+    background: var(--ng-surface);
+    border: 1px solid var(--ng-border);
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(16, 40, 51, 0.07);
+    height: calc(100vh - var(--navbar-height) - 1.5rem);
+    left: 0.75rem;
+    overflow: hidden;
+    top: calc(var(--navbar-height) + 0.75rem);
+  }
+
+  body.nextgen.pagelayout-course .drawer.drawer-left .drawerheader,
+  body.nextgen.pagelayout-incourse .drawer.drawer-left .drawerheader {
+    border-bottom: 1px solid var(--ng-border);
+    padding-left: 0.85rem;
+  }
+
+  body.nextgen.pagelayout-course #page.drawers,
+  body.nextgen.pagelayout-incourse #page.drawers {
+    padding: 0.75rem 0.75rem 0;
+  }
+
+  body.nextgen.pagelayout-course #page.drawers.show-drawer-left,
+  body.nextgen.pagelayout-incourse #page.drawers.show-drawer-left {
+    margin-left: calc(285px + 0.75rem);
+    padding: 0.75rem 0.75rem 0;
+  }
+
+  body.nextgen.pagelayout-course #page.drawers .main-inner,
+  body.nextgen.pagelayout-incourse #page.drawers .main-inner {
+    background: var(--ng-surface);
+    border: 1px solid var(--ng-border);
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(16, 40, 51, 0.05);
+    margin-top: 0;
+    padding: 0.85rem 1.1rem 1.35rem;
+  }
+
+  body.nextgen.pagelayout-course #page.drawers #region-main,
+  body.nextgen.pagelayout-course #page.drawers div[role="main"],
+  body.nextgen.pagelayout-incourse #page.drawers #region-main,
+  body.nextgen.pagelayout-incourse #page.drawers div[role="main"] {
+    background: transparent;
+  }
+
+  body.nextgen.pagelayout-course #page.drawers .ng-footer,
+  body.nextgen.pagelayout-incourse #page.drawers .ng-footer {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    width: calc(100% + 1.5rem);
+  }
 }
