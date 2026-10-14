@@ -1,0 +1,303 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_nextgen/about_page
+
+    About page for Next Gen Entrepreneurship Development Ltd, in full-width bands.
+
+    Example context (json):
+    {
+        "title": "About us",
+        "intro": "Practical online entrepreneurship training.",
+        "images": {"who": "https://example.com/a.jpg", "teach": "https://example.com/b.jpg",
+            "gain": "https://example.com/c.jpg", "vision": "https://example.com/d.jpg", "contact": "https://example.com/e.jpg"},
+        "areas": [{"text": "Agripreneurship"}],
+        "outcomes": [{"text": "Acquire knowledge and skills."}],
+        "visionpoints": [{"text": "Every young person has access to training."}],
+        "commitments": [{"title": "Accessibility", "text": "Training that reaches you."}],
+        "impact": [{"challenge": "Youth unemployment", "responses": [{"tag": "Mission", "text": "Skills."}]}],
+        "founder": {"name": "Professor A B", "highlights": [], "positions": []},
+        "participants": [{"name": "Dr. C D", "isfounder": false}],
+        "hascontact": true,
+        "offices": [{"label": "Main office", "address": "Yaoundé", "mapurl": "https://www.google.com/maps"}],
+        "hasphone": true,
+        "phone": {"display": "+237 000", "url": "tel:+237000"},
+        "hasemail": true,
+        "email": "info@example.com",
+        "emailurl": "mailto:info@example.com",
+        "contacturl": "https://example.com/contact.php",
+        "coursesurl": "https://example.com/course/index.php",
+        "cansignup": true,
+        "signupurl": "https://example.com/login/signup.php"
+    }
+}}
+<article class="ng-public ng-about">
+    <header class="ng-public-hero ng-about-hero">
+        <div class="ng-landing-inner ng-about-wrap">
+            {{{navbar}}}
+            <h1 class="ng-public-title">{{title}}</h1>
+            <p class="ng-public-intro">{{intro}}</p>
+            <div class="ng-about-actions">
+                <a class="btn btn-primary" href="{{coursesurl}}">{{#str}}aboutctalabel, theme_nextgen{{/str}}</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="ng-about-band">
+        <div class="ng-landing-inner ng-about-wrap">
+            <div class="ng-about-row" id="ng-about-who">
+                <div class="ng-about-row-copy">
+                    <h2>{{#str}}aboutwhotitle, theme_nextgen{{/str}}</h2>
+                    <p class="ng-about-lead">{{#str}}aboutwhotext1, theme_nextgen{{/str}}</p>
+                    <p class="ng-about-text">{{#str}}aboutwhotext2, theme_nextgen{{/str}}</p>
+                </div>
+                <div class="ng-about-row-media">
+                    <img src="{{images.who}}" alt="" loading="lazy">
+                </div>
+            </div>
+
+            <div class="ng-about-row ng-about-row-reverse">
+                <div class="ng-about-row-copy">
+                    <h2>{{#str}}aboutteachtitle, theme_nextgen{{/str}}</h2>
+                    <p class="ng-about-text">{{#str}}aboutteachtext, theme_nextgen{{/str}}</p>
+                    <ul class="ng-about-list ng-about-list-columns">
+                        {{#areas}}
+                            <li>{{text}}</li>
+                        {{/areas}}
+                    </ul>
+                    <p class="ng-about-text">{{#str}}aboutareasmore, theme_nextgen{{/str}}</p>
+                </div>
+                <div class="ng-about-row-media">
+                    <img src="{{images.teach}}" alt="" loading="lazy">
+                </div>
+            </div>
+
+            <div class="ng-about-row">
+                <div class="ng-about-row-copy">
+                    <h2>{{#str}}aboutgaintitle, theme_nextgen{{/str}}</h2>
+                    <p class="ng-about-text">{{#str}}aboutoutcomestitle, theme_nextgen{{/str}}</p>
+                    <ol class="ng-about-list">
+                        {{#outcomes}}
+                            <li>{{text}}</li>
+                        {{/outcomes}}
+                    </ol>
+                </div>
+                <div class="ng-about-row-media">
+                    <img src="{{images.gain}}" alt="" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ng-about-band ng-about-band-dark" id="ng-about-vision" aria-labelledby="ng-about-vision-title">
+        <div class="ng-landing-inner ng-about-wrap">
+            <div class="ng-about-row ng-about-row-reverse">
+                <div class="ng-about-row-copy">
+                    <h2 id="ng-about-vision-title">{{#str}}aboutvisiontitle, theme_nextgen{{/str}}</h2>
+                    <p class="ng-about-statement">{{#str}}aboutvisionquote, theme_nextgen{{/str}}</p>
+                    <p class="ng-about-text">{{#str}}aboutvisionclose, theme_nextgen{{/str}}</p>
+                </div>
+                <div class="ng-about-row-media">
+                    <img src="{{images.vision}}" alt="" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ng-about-band" aria-labelledby="ng-about-future-title">
+        <div class="ng-landing-inner ng-about-wrap">
+            <h2 id="ng-about-future-title">{{#str}}aboutvisionlisttitle, theme_nextgen{{/str}}</h2>
+            <ul class="ng-about-list ng-about-points">
+                {{#visionpoints}}
+                    <li>{{text}}</li>
+                {{/visionpoints}}
+            </ul>
+        </div>
+    </section>
+
+    <section class="ng-about-band ng-about-band-muted" id="ng-about-mission" aria-labelledby="ng-about-mission-title">
+        <div class="ng-landing-inner ng-about-wrap">
+            <div class="ng-about-head">
+                <h2 id="ng-about-mission-title">{{#str}}aboutmissiontitle, theme_nextgen{{/str}}</h2>
+                <p class="ng-about-statement">{{#str}}aboutmissionquote, theme_nextgen{{/str}}</p>
+            </div>
+            <h3 class="ng-about-subtitle">{{#str}}aboutcommitmentstitle, theme_nextgen{{/str}}</h3>
+            <dl class="ng-about-commitments">
+                {{#commitments}}
+                    <div>
+                        <dt>{{title}}</dt>
+                        <dd>{{text}}</dd>
+                    </div>
+                {{/commitments}}
+            </dl>
+        </div>
+    </section>
+
+    <section class="ng-about-band" id="ng-about-impact" aria-labelledby="ng-about-impact-title">
+        <div class="ng-landing-inner ng-about-wrap ng-about-aside">
+            <div class="ng-about-head">
+                <h2 id="ng-about-impact-title">{{#str}}aboutimpacttitle, theme_nextgen{{/str}}</h2>
+                <p class="ng-about-text">{{#str}}aboutimpactlead, theme_nextgen{{/str}}</p>
+            </div>
+            <div class="ng-about-table-wrap">
+                <table class="ng-about-table table-reboot">
+                    <caption class="visually-hidden">{{#str}}aboutimpacttitle, theme_nextgen{{/str}}</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">{{#str}}aboutimpactchallenge, theme_nextgen{{/str}}</th>
+                            <th scope="col">{{#str}}aboutimpactresponse, theme_nextgen{{/str}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#impact}}
+                            <tr>
+                                <th scope="row">{{challenge}}</th>
+                                <td>
+                                    {{#responses}}
+                                        <p><strong>{{tag}}:</strong> {{text}}</p>
+                                    {{/responses}}
+                                </td>
+                            </tr>
+                        {{/impact}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="ng-about-band ng-about-band-muted" id="ng-about-team" aria-labelledby="ng-about-team-title">
+        <div class="ng-landing-inner ng-about-wrap">
+            <div class="ng-about-aside">
+                <div class="ng-about-head">
+                    <h2 id="ng-about-team-title">{{#str}}aboutteamtitle, theme_nextgen{{/str}}</h2>
+                </div>
+                {{#founder}}
+                    <div class="ng-about-founder">
+                        <p class="ng-about-founder-role">{{#str}}aboutfounderlabel, theme_nextgen{{/str}}</p>
+                        <h3>{{name}}</h3>
+                        <p class="ng-about-founder-title">{{#str}}aboutfoundertitle, theme_nextgen{{/str}}</p>
+                        <ul class="ng-about-list">
+                            {{#highlights}}
+                                <li>{{text}}</li>
+                            {{/highlights}}
+                        </ul>
+                        {{< theme_nextgen/showmore }}
+                            {{$content}}
+                                <p>{{#str}}aboutfounderbio1, theme_nextgen{{/str}}</p>
+                                <p>{{#str}}aboutfounderbio2, theme_nextgen{{/str}}</p>
+                                <h4>{{#str}}aboutfounderbeyondtitle, theme_nextgen{{/str}}</h4>
+                                <p>{{#str}}aboutfounderbeyond, theme_nextgen{{/str}}</p>
+                                <h4>{{#str}}aboutfounderpositionstitle, theme_nextgen{{/str}}</h4>
+                                <ul class="ng-about-list">
+                                    {{#positions}}
+                                        <li>{{text}}</li>
+                                    {{/positions}}
+                                </ul>
+                            {{/content}}
+                        {{/ theme_nextgen/showmore }}
+                    </div>
+                {{/founder}}
+            </div>
+
+            <h3 class="ng-about-subtitle">{{#str}}aboutparticipantstitle, theme_nextgen{{/str}}</h3>
+            <ul class="ng-about-people">
+                {{#participants}}
+                    <li>
+                        {{name}}
+                        {{#isfounder}}<span class="ng-about-person-role">{{#str}}aboutfounderlabel, theme_nextgen{{/str}}</span>{{/isfounder}}
+                    </li>
+                {{/participants}}
+            </ul>
+            <p class="ng-about-text">{{#str}}aboutparticipantsmore, theme_nextgen{{/str}}</p>
+        </div>
+    </section>
+
+    {{#partnersblock}}
+        {{> theme_nextgen/partners }}
+    {{/partnersblock}}
+
+    {{#hascontact}}
+        <section class="ng-about-band ng-about-band-dark" id="ng-about-visit" aria-labelledby="ng-about-visit-title">
+            <div class="ng-landing-inner ng-about-wrap">
+                <div class="ng-about-row">
+                    <div class="ng-about-row-copy">
+                        <h2 id="ng-about-visit-title">{{#str}}aboutvisittitle, theme_nextgen{{/str}}</h2>
+                        <dl class="ng-about-contacts">
+                            {{#offices}}
+                                <div>
+                                    <dt>{{#label}}{{label}}{{/label}}{{^label}}{{#str}}officelabel, theme_nextgen{{/str}}{{/label}}</dt>
+                                    <dd>
+                                        {{address}}
+                                        <a href="{{mapurl}}" target="_blank" rel="noopener noreferrer">{{#str}}officedirections, theme_nextgen{{/str}}</a>
+                                    </dd>
+                                </div>
+                            {{/offices}}
+                            {{#hasphone}}
+                                <div>
+                                    <dt>{{#str}}aboutcalllabel, theme_nextgen{{/str}}</dt>
+                                    {{#phone}}
+                                        <dd>
+                                            {{#url}}<a href="{{url}}">{{display}}</a>{{/url}}
+                                            {{^url}}{{display}}{{/url}}
+                                        </dd>
+                                    {{/phone}}
+                                </div>
+                            {{/hasphone}}
+                            {{#hasemail}}
+                                <div>
+                                    <dt>{{#str}}aboutemaillabel, theme_nextgen{{/str}}</dt>
+                                    <dd><a href="{{emailurl}}">{{email}}</a></dd>
+                                </div>
+                            {{/hasemail}}
+                        </dl>
+                    </div>
+                    <div class="ng-about-row-media">
+                        <img src="{{images.contact}}" alt="" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+    {{/hascontact}}
+
+    {{#socialblock}}
+        <section class="ng-about-band ng-about-social" aria-labelledby="ng-about-social-title">
+            <div class="ng-landing-inner ng-about-wrap">
+                <h2 id="ng-about-social-title">{{#str}}aboutsocialtitle, theme_nextgen{{/str}}</h2>
+                <p class="ng-about-text">{{#str}}aboutsociallead, theme_nextgen{{/str}}</p>
+                {{> theme_nextgen/social_links }}
+            </div>
+        </section>
+    {{/socialblock}}
+
+    <section class="ng-about-band ng-about-band-muted ng-about-final" aria-labelledby="ng-about-final-title">
+        <div class="ng-landing-inner ng-about-wrap">
+            <div class="ng-about-final-copy">
+                <h2 id="ng-about-final-title">{{#str}}aboutctatitle, theme_nextgen{{/str}}</h2>
+                <p>{{#str}}aboutctatext, theme_nextgen{{/str}}</p>
+            </div>
+            <div class="ng-about-actions">
+                {{#cansignup}}
+                    <a class="btn btn-primary" href="{{signupurl}}">{{#str}}aboutcreateaccount, theme_nextgen{{/str}}</a>
+                {{/cansignup}}
+                {{^cansignup}}
+                    <a class="btn btn-primary" href="{{coursesurl}}">{{#str}}aboutctalabel, theme_nextgen{{/str}}</a>
+                {{/cansignup}}
+                <a class="btn btn-outline-primary" href="{{contacturl}}">{{#str}}aboutcontactlabel, theme_nextgen{{/str}}</a>
+            </div>
+        </div>
+    </section>
+</article>

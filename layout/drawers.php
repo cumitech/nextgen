@@ -59,6 +59,9 @@ if (!$hasblocks) {
     $blockdraweropen = false;
 }
 $courseindex = core_course_drawer();
+if ($courseindex && !empty($PAGE->course->id) && (int) $PAGE->course->id !== SITEID) {
+    $courseindex = \theme_nextgen\local\module_page::rewrite_section_links($courseindex, $PAGE->course);
+}
 if (!$courseindex) {
     $courseindexopen = false;
 }

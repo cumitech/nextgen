@@ -79,7 +79,7 @@ if ($ADMIN->fulltree) {
         'theme_nextgen/accentcolor',
         get_string('accentcolor', 'theme_nextgen'),
         get_string('accentcolordesc', 'theme_nextgen'),
-        '#C4842A'
+        '#FCD116'
     );
     $setting->set_updatedcallback('theme_reset_all_caches');
     $page->add($setting);
@@ -162,8 +162,19 @@ if ($ADMIN->fulltree) {
         'theme_nextgen/contactphone',
         get_string('contactphone', 'theme_nextgen'),
         get_string('contactphonedesc', 'theme_nextgen'),
-        '',
+        \theme_nextgen\local\organisation::DEFAULT_PHONE,
         PARAM_TEXT
+    );
+    $page->add($setting);
+
+    $setting = new admin_setting_configtextarea(
+        'theme_nextgen/contactaddress',
+        get_string('contactaddress', 'theme_nextgen'),
+        get_string('contactaddressdesc', 'theme_nextgen'),
+        \theme_nextgen\local\organisation::DEFAULT_OFFICES,
+        PARAM_TEXT,
+        60,
+        4
     );
     $page->add($setting);
 
@@ -244,17 +255,6 @@ if ($ADMIN->fulltree) {
         get_string('herobuttondesc', 'theme_nextgen'),
         get_string('herosecondarydefault', 'theme_nextgen'),
         PARAM_RAW
-    );
-    $page->add($setting);
-
-    $setting = new admin_setting_configtextarea(
-        'theme_nextgen/testimonials',
-        get_string('testimonials', 'theme_nextgen'),
-        get_string('testimonialsdesc', 'theme_nextgen'),
-        get_string('testimonialsdefault', 'theme_nextgen'),
-        PARAM_RAW,
-        60,
-        6
     );
     $page->add($setting);
 

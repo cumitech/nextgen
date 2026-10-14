@@ -14,25 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Course and module entry when this file is requested from the theme directory.
+ *
+ * The site-root copy is published to public/learn.php. Both call the same code.
+ *
+ * @package   theme_nextgen
+ * @copyright 2026 NextGen LMS
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 require(__DIR__ . '/bootstrap.php');
 
 defined('MOODLE_INTERNAL') || die();
 
-$courseid = required_param('id', PARAM_INT);
-
-if (!isloggedin() || isguestuser()) {
-    $wantsurl = (new moodle_url('/learn.php', ['id' => $courseid]))->out_as_local_url(false);
-    redirect(new moodle_url('/login/index.php', ['wantsurl' => $wantsurl]));
+$sectionfile = \theme_nextgen\local\module_page::dispatch();
+if (is_string($sectionfile)) {
+    require($sectionfile);
+    exit(0);
 }
-
-$course = get_course($courseid);
-if (!$course || (int) $course->id === SITEID) {
-    redirect(new moodle_url('/my/'));
-}
-
-$context = context_course::instance($course->id);
-if (!is_enrolled($context, $USER, '', true) && !has_capability('moodle/course:view', $context, $USER)) {
-    redirect(new moodle_url('/course/view.php', ['id' => $course->id]));
-}
-
-redirect(new moodle_url('/course/view.php', ['id' => $course->id]));

@@ -196,7 +196,9 @@
         {{#hassummary}}
             <section class="ng-course-section">
                 <h2>{{#str}}courseabout, theme_nextgen{{/str}}</h2>
-                <div class="ng-course-summary">{{{summary}}}</div>
+                {{< theme_nextgen/showmore }}
+                    {{$content}}<div class="ng-course-summary">{{{summary}}}</div>{{/content}}
+                {{/ theme_nextgen/showmore }}
             </section>
         {{/hassummary}}
         {{#hasoutcomes}}
@@ -205,11 +207,16 @@
                 {{#hasoutcomelead}}
                     <p class="ng-outcome-lead">{{outcomelead}}</p>
                 {{/hasoutcomelead}}
-                <ul class="ng-outcomes">
-                    {{#outcomes}}
-                        <li><span class="ng-tick" aria-hidden="true"></span><span>{{text}}</span></li>
-                    {{/outcomes}}
-                </ul>
+                {{< theme_nextgen/showmore }}
+                    {{$modifier}}ng-showmore-lg{{/modifier}}
+                    {{$content}}
+                        <ul class="ng-outcomes">
+                            {{#outcomes}}
+                                <li><span class="ng-tick" aria-hidden="true"></span><span>{{text}}</span></li>
+                            {{/outcomes}}
+                        </ul>
+                    {{/content}}
+                {{/ theme_nextgen/showmore }}
             </section>
         {{/hasoutcomes}}
         {{#hasrequirements}}
@@ -281,7 +288,9 @@
                                 <a class="ng-instructor-name" href="{{url}}">{{name}}</a>
                                 <p class="ng-instructor-credential">{{credential}}</p>
                                 {{#hasbio}}
-                                    <div class="ng-instructor-bio">{{{bio}}}</div>
+                                    {{< theme_nextgen/showmore }}
+                                        {{$content}}<div class="ng-instructor-bio">{{{bio}}}</div>{{/content}}
+                                    {{/ theme_nextgen/showmore }}
                                 {{/hasbio}}
                             </div>
                         </li>
@@ -373,7 +382,10 @@
                                     <strong>{{name}}</strong>
                                     {{#date}}<span class="ng-review-date">{{date}}</span>{{/date}}
                                 </div>
-                                <p>{{text}}</p>
+                                {{< theme_nextgen/showmore }}
+                                    {{$modifier}}ng-showmore-sm{{/modifier}}
+                                    {{$content}}<p>{{text}}</p>{{/content}}
+                                {{/ theme_nextgen/showmore }}
                             </div>
                         </li>
                     {{/reviewlist}}

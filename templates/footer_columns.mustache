@@ -42,6 +42,12 @@
                             {{/contactphonehref}}
                         </li>
                     {{/contactphone}}
+                    {{#offices}}
+                        <li class="ng-footer-office">
+                            {{#label}}<span class="ng-footer-office-label">{{label}}</span>{{/label}}
+                            <span>{{address}}</span>
+                        </li>
+                    {{/offices}}
                 </ul>
             {{/hascontact}}
         </div>
@@ -65,6 +71,9 @@
             </div>
         {{/hassocial}}
     </div>
+    {{#partnersblock}}
+        {{> theme_nextgen/partners }}
+    {{/partnersblock}}
     <div class="ng-footer-bar">
         <p>{{copyright}}</p>
         <ul class="ng-footer-policies">

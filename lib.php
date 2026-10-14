@@ -51,7 +51,25 @@ function theme_nextgen_page_init($page) {
     if ($page->pagelayout === 'mydashboard') {
         $page->add_body_class('nextgen-dashboard');
     }
+
+    // section.php sets its own URL before the header. Put the readable address
+    // back so the editing switch and the rest of the page stay on it.
+    if (\theme_nextgen\local\module_page::$currenturl instanceof moodle_url) {
+        $page->set_url(\theme_nextgen\local\module_page::$currenturl);
+    }
+    $course = $page->course;
+    $learningpage = !empty($course->id) && (int) $course->id !== SITEID
+        && (in_array($page->pagelayout, ['course', 'incourse'], true)
+            || \theme_nextgen\local\module_page::$currentsectionid > 0);
+    if ($learningpage) {
+        $page->requires->js_call_amd('theme_nextgen/sectionlinks', 'init', [
+            \theme_nextgen\local\module_page::link_map($course),
+            \theme_nextgen\local\module_page::$currentsectionid,
+        ]);
+    }
+
     $page->requires->js_call_amd('theme_nextgen/loadline', 'init');
+    $page->requires->js_call_amd('theme_nextgen/showmore', 'init');
 }
 
 /**
@@ -106,7 +124,7 @@ function theme_nextgen_dashboard_context(): ?array {
     $enrolled = enrol_get_my_courses(['id', 'shortname', 'fullname'], 'sortorder ASC');
     if (!empty($enrolled)) {
         $firstenrolled = reset($enrolled);
-        $continueurl = (new moodle_url('/learn.php', ['id' => (int) $firstenrolled->id]))->out(false);
+        $continueurl = (new moodle_url('/course/view.php', ['id' => (int) $firstenrolled->id]))->out(false);
     }
     if ($DB->get_manager()->table_exists('block_recentlyaccessedcourses')) {
         $recent = $DB->get_record_sql(
@@ -118,16 +136,14 @@ function theme_nextgen_dashboard_context(): ?array {
             ['userid' => $USER->id],
             IGNORE_MULTIPLE
         );
-        if ($recent) {
+        if ($recent && isset($enrolled[(int) $recent->id])) {
             $context = context_course::instance($recent->id);
             $recentname = format_string($recent->fullname, true, [
                 'context' => $context,
                 'escape' => false,
             ]);
-            $recenturl = (new moodle_url('/learn.php', ['id' => $recent->id]))->out(false);
-            if (is_enrolled($context, $USER, '', true) || has_capability('moodle/course:view', $context, $USER)) {
-                $continueurl = $recenturl;
-            }
+            $recenturl = (new moodle_url('/course/view.php', ['id' => $recent->id]))->out(false);
+            $continueurl = $recenturl;
         }
     }
 
@@ -207,7 +223,10 @@ function theme_nextgen_get_precompiled_css() {
  */
 function theme_nextgen_get_pre_scss($theme) {
     $primary = theme_nextgen_color(theme_nextgen_setting($theme, 'primarycolor'), '#163A4A');
-    return '$primary: ' . $primary . ";\n" . '$success: #1A6C25;' . "\n";
+    return '$primary: ' . $primary . ";\n" .
+        '$success: #116306;' . "\n" .
+        '$warning: #FCD116;' . "\n" .
+        '$danger: #CE1126;' . "\n";
 }
 
 /**
@@ -222,11 +241,19 @@ function theme_nextgen_get_pre_scss($theme) {
 function theme_nextgen_get_extra_scss($theme) {
     $primary = theme_nextgen_color(theme_nextgen_setting($theme, 'primarycolor'), '#163A4A');
     $secondary = theme_nextgen_color(theme_nextgen_setting($theme, 'secondarycolor'), '#102833');
-    $accent = theme_nextgen_color(theme_nextgen_setting($theme, 'accentcolor'), '#C4842A');
+    $accent = theme_nextgen_color(theme_nextgen_setting($theme, 'accentcolor'), '#FCD116');
 
+    // Vivid green and yellow fail text contrast on white; use them as fills. Anything on yellow uses brand-ink.
     $css = ":root {\n";
-    $css .= "--ng-brand: #1A6C25;\n";
-    $css .= "--ng-brand-soft: #E8F3EA;\n";
+    $css .= "--ng-brand: #23AB0C;\n";
+    $css .= "--ng-brand-dark: #116306;\n";
+    $css .= "--ng-brand-ink: #0A3A03;\n";
+    $css .= "--ng-brand-soft: #E9F7E6;\n";
+    $css .= "--ng-yellow: #FCD116;\n";
+    $css .= "--ng-yellow-hover: #FDE05A;\n";
+    $css .= "--ng-yellow-soft: #FFF7D1;\n";
+    $css .= "--ng-red: #CE1126;\n";
+    $css .= "--ng-red-soft: #FCE8EA;\n";
     $css .= '--ng-primary: ' . $primary . ";\n";
     $css .= '--ng-primary-hover: ' . theme_nextgen_darken($primary, 0.12) . ";\n";
     $css .= '--ng-primary-foreground: #FFFFFF' . ";\n";
@@ -243,9 +270,9 @@ function theme_nextgen_get_extra_scss($theme) {
     $css .= "--ng-border: #E1E6EA;\n";
     $css .= "--ng-text: #1A2330;\n";
     $css .= "--ng-text-muted: #5C6770;\n";
-    $css .= "--ng-success: #1A6C25;\n";
+    $css .= "--ng-success: #116306;\n";
     $css .= "--ng-warning: #8A5410;\n";
-    $css .= "--ng-error: #9F2B22;\n";
+    $css .= "--ng-error: #CE1126;\n";
     $css .= "--ng-info: #1F5C73;\n";
     $css .= "--ng-radius-sm: 6px;\n";
     $css .= "--ng-radius-md: 10px;\n";
@@ -264,8 +291,8 @@ function theme_nextgen_get_extra_scss($theme) {
     $loginbackground = $theme->setting_file_url('loginbackgroundimage', 'loginbackgroundimage');
     if (!empty($loginbackground)) {
         $loginbackground = str_replace(["'", '\\', "\n", "\r"], '', $loginbackground);
-        $css .= 'body.nextgen.pagelayout-login #page .login-layout-left {';
-        $css .= "background-image: url('" . $loginbackground . "'); background-size: cover; background-position: center;";
+        $css .= 'body.nextgen.pagelayout-login .ng-login-panel {';
+        $css .= "background-image: url('" . $loginbackground . "');";
         $css .= "}\n";
     }
 
@@ -477,6 +504,7 @@ function theme_nextgen_footer_context($theme): array {
     }
     $phone = trim(theme_nextgen_setting($theme, 'contactphone'));
     $dial = preg_replace('/[^0-9+]/', '', $phone);
+    $offices = \theme_nextgen\local\organisation::offices();
 
     $copyright = theme_nextgen_setting($theme, 'copyright');
     if ($copyright === '') {
@@ -507,13 +535,15 @@ function theme_nextgen_footer_context($theme): array {
         'social' => $social,
         'variant' => 'footer',
         'showlabels' => false,
-        'hascontact' => ($email !== '' || $phone !== ''),
+        'hascontact' => ($email !== '' || $phone !== '' || $offices),
+        'offices' => $offices,
         'contactemail' => $email,
         'contactphone' => $phone,
         'contactphonehref' => $dial,
         'copyright' => $copyright,
         'privacyurl' => $privacy,
         'termsurl' => $terms,
+        'partnersblock' => \theme_nextgen\local\organisation::partners_block('footer'),
     ];
 }
 
@@ -601,14 +631,16 @@ function theme_nextgen_publish_public_paths(): void {
     if (during_initial_install() || empty($CFG->dirroot)) {
         return;
     }
-    if (get_config('theme_nextgen', 'publicpathrev') === '2026100114') {
+    if (get_config('theme_nextgen', 'publicpathrev') === '2026101407') {
         return;
     }
 
     $ready = theme_nextgen_ensure_public_scripts();
+    $ready = theme_nextgen_ensure_learn_script() && $ready;
+    $ready = theme_nextgen_ensure_public_rewrites() && $ready;
     theme_nextgen_rewrite_public_urls();
     if ($ready) {
-        set_config('publicpathrev', '2026100114', 'theme_nextgen');
+        set_config('publicpathrev', '2026101407', 'theme_nextgen');
     }
 }
 
@@ -688,6 +720,118 @@ PHP;
 }
 
 /**
+ * Write the site-root learn.php that serves readable module addresses.
+ *
+ * A file that is already there and was not created for this theme is left alone.
+ *
+ * @return bool
+ */
+function theme_nextgen_ensure_learn_script(): bool {
+    global $CFG;
+
+    $path = $CFG->dirroot . DIRECTORY_SEPARATOR . 'learn.php';
+    if (is_file($path)) {
+        $head = (string) file_get_contents($path);
+        if (!str_contains($head, 'theme_nextgen learn page')) {
+            return true;
+        }
+        if (str_contains($head, 'is_string($sectionfile)')) {
+            return true;
+        }
+    }
+
+    $source = <<<'PHP'
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * theme_nextgen learn page
+ *
+ * Published at the site root so a module address does not include the theme directory.
+ * The page itself is Moodle's course section, rendered by theme_nextgen.
+ *
+ * @package    core
+ * @copyright  2026 NextGen LMS
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+require(__DIR__ . '/config.php');
+
+defined('MOODLE_INTERNAL') || die();
+
+$sectionfile = \theme_nextgen\local\module_page::dispatch();
+if (is_string($sectionfile)) {
+    require($sectionfile);
+    exit(0);
+}
+
+PHP;
+    return file_put_contents($path, $source) !== false;
+}
+
+/**
+ * Map extensionless public addresses onto the site-root scripts.
+ *
+ * /contact and /contact.php both run the contact page. The same applies to
+ * about, privacy, terms, and faq, including a trailing slash and the older
+ * /theme/nextgen/ addresses. /learn/{course}/{module} runs learn.php.
+ * The substitution is an absolute URL path and the flag is END, because a
+ * per-directory L flag still lets FallbackResource answer the original
+ * address with a 404.
+ *
+ * @return bool
+ */
+function theme_nextgen_ensure_public_rewrites(): bool {
+    global $CFG;
+
+    $path = $CFG->dirroot . DIRECTORY_SEPARATOR . '.htaccess';
+    $start = '# theme_nextgen public pages';
+    $end = '# end theme_nextgen public pages';
+    $keys = implode('|', \theme_nextgen\local\public_page::keys());
+    $prefix = parse_url($CFG->wwwroot, PHP_URL_PATH);
+    if (!is_string($prefix) || $prefix === '/') {
+        $prefix = '';
+    }
+    $prefix = rtrim($prefix, '/');
+    $base = ($prefix === '') ? '/' : $prefix . '/';
+    $block = $start . "\n" .
+        "RewriteEngine On\n" .
+        'RewriteBase ' . $base . "\n" .
+        'RewriteRule ^(' . $keys . ')/?$ ' . $prefix . '/$1.php [END,QSA]' . "\n" .
+        'RewriteRule ^theme/nextgen/(' . $keys . ')/?$ ' . $prefix . '/$1.php [END,QSA]' . "\n" .
+        'RewriteRule ^learn/([a-z0-9-]+)/([a-z0-9-]+)/?$ ' . $prefix . '/learn.php?course=$1&module=$2 [END,QSA]' . "\n" .
+        $end . "\n";
+
+    $current = is_file($path) ? (string) file_get_contents($path) : "DirectoryIndex index.php\n";
+    $pattern = '/' . preg_quote($start, '/') . '.*?' . preg_quote($end, '/') . '\R?/s';
+    if (preg_match($pattern, $current)) {
+        // A plain preg_replace replacement treats $1 in the block as a backreference.
+        $updated = preg_replace_callback($pattern, function() use ($block) {
+            return $block;
+        }, $current, 1);
+    } else {
+        $updated = rtrim($current) . "\n\n" . $block;
+    }
+    if (!is_string($updated) || $updated === $current) {
+        return is_file($path) && str_contains($current, $block);
+    }
+    return file_put_contents($path, $updated) !== false;
+}
+
+/**
  * Replace theme-directory addresses already saved in theme settings.
  */
 function theme_nextgen_rewrite_public_urls(): void {
@@ -755,15 +899,10 @@ function theme_nextgen_frontpage_landing(): string {
  * @return array
  */
 function theme_nextgen_landing_context(): array {
-    global $DB;
-
     $theme = theme_config::load('nextgen');
     $courses = theme_nextgen_featured_courses();
     $categories = theme_nextgen_landing_categories(0);
     $instructors = theme_nextgen_landing_instructors();
-
-    $coursecount = core_course_category::top()->get_courses_count(['recursive' => true]);
-    $categorycount = $DB->count_records('course_categories', ['visible' => 1]);
 
     $primary = theme_nextgen_parse_links(theme_nextgen_setting(
         $theme,
@@ -810,12 +949,6 @@ function theme_nextgen_landing_context(): array {
         ];
     }
 
-    $quotes = theme_nextgen_testimonials(theme_nextgen_setting(
-        $theme,
-        'testimonials',
-        get_string('testimonialsdefault', 'theme_nextgen')
-    ));
-
     return [
         'herotitle' => $herotitle,
         'herotext' => $herotext,
@@ -823,8 +956,7 @@ function theme_nextgen_landing_context(): array {
         'primary' => $primary[0] ?? null,
         'hassecondary' => !empty($secondary),
         'secondary' => $secondary[0] ?? null,
-        'coursecount' => $coursecount,
-        'categorycount' => $categorycount,
+        'stats' => \theme_nextgen\local\platform_stats::for_landing(),
         'hascourses' => !empty($courses),
         'courses' => $courses,
         'hascategories' => !empty($categories),
@@ -836,12 +968,11 @@ function theme_nextgen_landing_context(): array {
         'reasons' => $reasons,
         'steps' => $steps,
         'benefits' => $benefits,
-        'hasquotes' => !empty($quotes),
-        'quotes' => $quotes,
         'ctaimage' => $theme->image_url('hero-home', 'theme')->out(false),
         'coursesurl' => (new moodle_url('/course/index.php'))->out(false),
         'loginurl' => (new moodle_url('/login/index.php'))->out(false),
         'isloggedin' => isloggedin() && !isguestuser(),
+        'partnersblock' => \theme_nextgen\local\organisation::partners_block('landing'),
     ];
 }
 
@@ -971,7 +1102,7 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
     $enrolled = isloggedin() && !isguestuser() && is_enrolled($context, $USER, '', true);
     if ($enrolled) {
         $entry = new moodle_url('/course/view.php', ['id' => $course->id]);
-        $actionurl = $entry->out(false) . '#ng-course-content';
+        $actionurl = $entry->out(false);
         $actionlabel = get_string('coursecontinue', 'theme_nextgen');
     } else {
         $entry = theme_nextgen_course_public_url((int) $course->id);
@@ -1645,6 +1776,7 @@ function theme_nextgen_after_config(): void {
     if (($CFG->theme ?? '') === 'nextgen') {
         theme_nextgen_publish_public_paths();
         theme_nextgen_redirect_site_support();
+        \theme_nextgen\local\module_page::redirect_plain_section();
     }
     \theme_nextgen\local\course_page::serve_public_course();
 }
@@ -1680,21 +1812,15 @@ function theme_nextgen_course_enrol_url(int $courseid): moodle_url {
 /**
  * Whether this request should use the course sales layout.
  *
- * Activity pages are unchanged. The course editor stays available under the sales layout.
+ * Only the public sales page uses that layout. Course, section, and activity
+ * pages stay on Moodle's own layout so the course index, editor, and
+ * availability tools keep working.
  *
  * @param moodle_page $page
  * @return bool
  */
 function theme_nextgen_is_course_detail_page(moodle_page $page): bool {
-    $course = $page->course;
-    if (empty($course->id) || (int) $course->id === SITEID) {
-        return false;
-    }
-    if ($page->pagelayout === 'course') {
-        return true;
-    }
-    $pagetype = (string) $page->pagetype;
-    return $pagetype === 'theme-nextgen-course';
+    return (string) $page->pagetype === 'theme-nextgen-course';
 }
 
 /**
@@ -2031,7 +2157,7 @@ function theme_nextgen_course_detail_context(): ?array {
 
     $enrolled = is_enrolled($context, $USER, '', true);
     if ($enrolled) {
-        $enrolurl = (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false) . '#ng-course-content';
+        $enrolurl = (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false);
         $enrollabel = get_string('coursecontinue', 'theme_nextgen');
     } else {
         // Guests and visitors go through login with wantsurl set to the enrol page
@@ -2148,7 +2274,7 @@ function theme_nextgen_course_detail_context(): ?array {
         'updated' => get_string('lastupdated', 'theme_nextgen', $card['date'] ?? ''),
         'hasmeta' => !empty($card['bestseller']) || $card['hasrating'] || (int) ($card['enrolments'] ?? 0) > 0 || !empty($card['date']),
         'hasenrolsuccess' => $hasenrolsuccess,
-        'enrolsuccessurl' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false) . '#ng-course-content',
+        'enrolsuccessurl' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false),
     ];
 }
 
@@ -2931,30 +3057,3 @@ function theme_nextgen_text_lines(string $raw): array {
     return $lines;
 }
 
-/**
- * Parse marketing quotes written as Quote|Attribution.
- *
- * @param string $raw
- * @return array
- */
-function theme_nextgen_testimonials(string $raw): array {
-    $quotes = [];
-    foreach (preg_split("/\r\n|\n|\r/", $raw) as $line) {
-        $line = trim($line);
-        if ($line === '' || !str_contains($line, '|')) {
-            continue;
-        }
-        [$quote, $attribution] = array_map('trim', explode('|', $line, 2));
-        if ($quote === '' || $attribution === '') {
-            continue;
-        }
-        $quotes[] = [
-            'quote' => $quote,
-            'attribution' => $attribution,
-        ];
-        if (count($quotes) >= 3) {
-            break;
-        }
-    }
-    return $quotes;
-}

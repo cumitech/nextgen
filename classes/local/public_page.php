@@ -122,7 +122,7 @@ class public_page {
             'iscontact' => $key === 'contact',
             'isabout' => $key === 'about',
             'isdefault' => $key !== 'contact' && $key !== 'about',
-        ], self::contact_context($key), self::about_context($key, $definition)));
+        ], self::contact_context($key), self::about_context($key)));
         echo $OUTPUT->footer();
     }
 
@@ -130,29 +130,14 @@ class public_page {
      * Extra template data for the about page layout.
      *
      * @param string $key
-     * @param array $definition
      * @return array
      */
-    private static function about_context(string $key, array $definition): array {
+    private static function about_context(string $key): array {
         if ($key !== 'about') {
             return [];
         }
 
-        $features = [];
-        $cta = null;
-        foreach ($definition['sections'] as $section) {
-            if (!empty($section['url'])) {
-                $cta = $section;
-                continue;
-            }
-            $features[] = $section;
-        }
-
-        return [
-            'features' => $features,
-            'hasfeatures' => !empty($features),
-            'hascta' => $cta !== null,
-            'cta' => $cta ?? [],
+        return about::context() + [
             'socialblock' => self::social_block('tiles'),
         ];
     }
@@ -168,35 +153,26 @@ class public_page {
             return [];
         }
 
-        $theme = \theme_config::load('nextgen');
-        $email = trim(theme_nextgen_setting($theme, 'contactemail'));
-        $phone = trim(theme_nextgen_setting($theme, 'contactphone'));
-        if ($email === '') {
-            $support = \core_user::get_support_user();
-            $email = trim((string) ($support->email ?? ''));
-        }
-        $dial = preg_replace('/[^\d+]/', '', $phone);
+        $email = organisation::email();
+        $phone = organisation::phone();
+        $offices = organisation::offices();
 
         return [
             'formtitle' => get_string('contactformtitle', 'theme_nextgen'),
             'formlead' => get_string('contactformlead', 'theme_nextgen'),
-            'tipstitle' => get_string('contacttipstitle', 'theme_nextgen'),
-            'tips' => [
-                ['text' => get_string('contacttip1', 'theme_nextgen')],
-                ['text' => get_string('contacttip2', 'theme_nextgen')],
-                ['text' => get_string('contacttip3', 'theme_nextgen')],
-            ],
             'response' => get_string('contactresponse', 'theme_nextgen'),
-            'haschannels' => ($email !== '' || $phone !== ''),
+            'haschannels' => ($email !== '' || $phone !== null || $offices),
             'channelstitle' => get_string('contactchannels', 'theme_nextgen'),
-            'channelslead' => get_string('contactchannelslead', 'theme_nextgen'),
             'hasemail' => $email !== '',
             'email' => $email,
             'emailurl' => $email !== '' ? 'mailto:' . $email : '',
-            'hasphone' => $phone !== '',
-            'phone' => $phone,
-            'phoneurl' => $dial !== '' ? 'tel:' . $dial : '',
+            'hasphone' => $phone !== null,
+            'phone' => $phone['display'] ?? '',
+            'phoneurl' => $phone['url'] ?? '',
+            'hasoffices' => !empty($offices),
+            'offices' => $offices,
             'socialblock' => self::social_block('card'),
+            'partnersblock' => organisation::partners_block('contact', true),
         ];
     }
 
@@ -256,12 +232,6 @@ class public_page {
                 ];
             }
         }
-        if ($key === 'about' && $sections) {
-            $last = count($sections) - 1;
-            $sections[$last]['url'] = (new \moodle_url('/course/index.php'))->out(false);
-            $sections[$last]['urllabel'] = get_string('aboutctalabel', 'theme_nextgen');
-        }
-
         return [
             'kicker' => get_string($key . 'kicker', 'theme_nextgen'),
             'title' => get_string($key . 'title', 'theme_nextgen'),

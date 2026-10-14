@@ -51,8 +51,8 @@ body.nextgen .ng-loadline.is-done {
 }
 
 body.nextgen .ng-loadline-bar {
-  background: linear-gradient(90deg, #c2410c, #f97316 55%, #ffe4cc);
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.85);
+  background: linear-gradient(90deg, var(--ng-brand-dark), var(--ng-brand) 55%, var(--ng-yellow));
+  box-shadow: 0 0 12px rgba(35, 171, 12, 0.6);
   height: 100%;
   width: 0;
 }
@@ -151,7 +151,9 @@ body.nextgen .ng-primary-nav .moremenu .nav-link:focus-visible {
 
 body.nextgen .ng-primary-nav .moremenu .nav-link.active {
   background: transparent;
-  box-shadow: inset 0 -2px 0 #f97316;
+  border-bottom-color: var(--ng-brand);
+  border-radius: 0;
+  box-shadow: none;
   color: var(--ng-ink);
 }
 
@@ -212,7 +214,7 @@ body.nextgen .secondary-navigation {
 }
 
 body.nextgen .secondary-navigation .nav-link.active {
-  border-color: #f97316;
+  border-color: var(--ng-brand);
   color: var(--ng-ink);
 }
 
@@ -265,6 +267,27 @@ body.nextgen .btn-primary {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
     0 8px 18px rgba(16, 40, 51, 0.18);
+}
+
+body.nextgen .ng-header-login-btn.btn-primary,
+body.nextgen .ng-hero-actions .btn-primary,
+body.nextgen.nextgen-about .ng-about-hero .btn-primary,
+body.nextgen .btn-primary.ng-course-enrol,
+body.nextgen .ng-course-action .btn-primary,
+body.nextgen .card.course-card .ng-course-cta,
+body.nextgen .ng-enrol-instance-actions .btn-primary,
+body.nextgen .ng-checkout-pay .ng-enrol-card .btn-primary {
+  --bs-btn-active-bg: #ebc20f;
+  --bs-btn-active-border-color: #ebc20f;
+  --bs-btn-active-color: var(--ng-brand-ink);
+  --bs-btn-bg: var(--ng-yellow);
+  --bs-btn-border-color: var(--ng-yellow);
+  --bs-btn-color: var(--ng-brand-ink);
+  --bs-btn-focus-shadow-rgb: 10, 58, 3;
+  --bs-btn-hover-bg: var(--ng-yellow-hover);
+  --bs-btn-hover-border-color: var(--ng-yellow-hover);
+  --bs-btn-hover-color: var(--ng-brand-ink);
+  font-weight: 700;
 }
 
 body.nextgen a:not(.btn):not(.nav-link):not(.dropdown-item) {
@@ -370,7 +393,7 @@ body.nextgen .ng-footer-about p:last-child {
 }
 
 body.nextgen .ng-footer-heading {
-  color: var(--ng-gold-soft);
+  color: var(--ng-yellow);
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -387,6 +410,22 @@ body.nextgen .ng-footer-policies {
 
 body.nextgen .ng-footer-links li + li {
   margin-top: 0.45rem;
+}
+
+body.nextgen .ng-footer-office {
+  color: #c5d5dc;
+  display: grid;
+  font-size: 0.9375rem;
+  gap: 0.1rem;
+  line-height: 1.45;
+}
+
+body.nextgen .ng-footer-office-label {
+  color: #e4eef2;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 body.nextgen .ng-footer a {
@@ -651,7 +690,7 @@ body.nextgen .ng-social-arrow {
 
 body.nextgen .ng-social-link:hover .ng-social-arrow,
 body.nextgen .ng-social-link:focus-visible .ng-social-arrow {
-  color: var(--ng-accent);
+  color: var(--ng-brand-dark);
   transform: translate(2px, -2px);
 }
 
@@ -740,165 +779,177 @@ body.nextgen .footer-content-debugging {
   color: var(--ng-text);
 }
 
-body.nextgen.pagelayout-login {
+body.nextgen.pagelayout-login,
+body.nextgen.pagelayout-login #page {
   background: var(--ng-surface);
 }
 
 body.nextgen.pagelayout-login #page {
-  background: var(--ng-surface);
   min-height: 100vh;
 }
 
+/* The photo card stays in view while the form column scrolls. */
 body.nextgen.pagelayout-login #page .login-layout-left {
-  align-items: stretch;
-  background-color: var(--ng-secondary);
-  background-image: none;
-  color: #fff;
-  justify-content: flex-start;
-  overflow: hidden;
-  padding: 3.5rem;
-  position: relative;
-}
-
-body.nextgen.pagelayout-login #page .login-layout-left::before {
-  background:
-    linear-gradient(
-      118deg,
-      rgba(255, 255, 255, 0.2) 0%,
-      rgba(255, 255, 255, 0) 34%
-    ),
-    radial-gradient(
-      circle at 18% 16%,
-      rgba(243, 215, 161, 0.45),
-      rgba(196, 132, 42, 0) 36%
-    ),
-    radial-gradient(
-      circle at 88% 88%,
-      rgba(31, 92, 115, 0.55),
-      rgba(31, 92, 115, 0) 48%
-    );
-  content: "";
-  display: block;
-  left: 0;
-  pointer-events: none;
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  align-self: flex-start;
+  background: transparent;
+  height: 100vh;
+  padding: 1.5rem 0 1.5rem 1.5rem;
+  position: sticky;
   top: 0;
 }
 
+/* Boost captions its own login photograph; this theme supplies a different one. */
 body.nextgen.pagelayout-login #page .login-layout-left::after {
-  content: "";
-  display: none;
+  content: none;
 }
 
-body.nextgen.pagelayout-login .login-layout-left-content {
-  background: transparent;
-  border-radius: 0;
+body.nextgen.pagelayout-login .ng-login-panel {
+  background-color: var(--ng-secondary);
+  background-image: url("[[pix:theme_nextgen|hero-home]]");
+  background-position: center;
+  background-size: cover;
+  border-radius: 28px;
+  box-shadow: 0 24px 60px rgba(16, 40, 51, 0.18);
   color: #fff;
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-between;
+  isolation: isolate;
+  justify-content: flex-end;
   margin: 0;
-  max-width: 28rem;
-  padding: 0;
+  max-width: none;
+  overflow: hidden;
+  padding: 2.75rem;
   position: relative;
   text-align: left;
   width: 100%;
-  z-index: 1;
 }
 
-body.nextgen.pagelayout-login .ng-login-accent {
-  background: linear-gradient(
-    90deg,
-    #f8e7c4,
-    #c4842a 42%,
-    #fff6e4 58%,
-    #c4842a
-  );
-  border-radius: 999px;
-  box-shadow: 0 0 12px rgba(243, 215, 161, 0.65);
-  display: block;
-  height: 4px;
-  margin-bottom: 1.5rem;
-  width: 3rem;
+body.nextgen.pagelayout-login .ng-login-panel::before {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(16, 40, 51, 0) 32%,
+      rgba(16, 40, 51, 0.55) 60%,
+      rgba(16, 40, 51, 0.92) 100%
+    ),
+    linear-gradient(0deg, rgba(22, 58, 74, 0.16), rgba(22, 58, 74, 0.16));
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
 }
 
-body.nextgen.pagelayout-login .ng-login-kicker {
-  color: var(--ng-gold-soft);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  margin-bottom: 0.85rem;
-  text-transform: uppercase;
+body.nextgen.pagelayout-login .ng-login-panel-copy {
+  max-width: 32rem;
 }
 
 body.nextgen.pagelayout-login .ng-login-title {
   color: #fff;
-  font-size: 3rem;
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.02;
-  margin: 0 0 1rem;
-  max-width: 12ch;
+  font-size: clamp(2rem, 3.2vw, 2.85rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 0 0 0.75rem;
+  max-width: 14ch;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.25);
 }
 
 body.nextgen.pagelayout-login .ng-login-copy {
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.88);
   font-size: 1.0625rem;
-  line-height: 1.65;
+  line-height: 1.6;
   margin: 0;
-  max-width: 34ch;
+  max-width: 36ch;
 }
 
-body.nextgen.pagelayout-login .ng-login-browse {
+body.nextgen.pagelayout-login .ng-login-instructions,
+body.nextgen.pagelayout-login .ng-login-instructions a {
   color: #fff;
-  display: inline-flex;
-  font-weight: 600;
-  margin-top: 2rem;
-  text-decoration: none;
-}
-
-body.nextgen.pagelayout-login .ng-login-browse:hover,
-body.nextgen.pagelayout-login .ng-login-browse:focus {
-  color: #fff;
-  text-decoration: underline;
 }
 
 body.nextgen.pagelayout-login .login-layout-right {
   background: var(--ng-surface);
+  padding: 3rem 2rem;
 }
 
 body.nextgen.pagelayout-login .login-container {
-  max-width: 24.5rem;
+  margin: 0 auto;
+  max-width: 27rem;
   width: 100%;
 }
 
-body.nextgen.pagelayout-login .ng-auth-form #loginlogo {
-  justify-content: flex-start;
-  margin-bottom: 1.75rem;
+body.nextgen.pagelayout-login .ng-auth-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
-body.nextgen.pagelayout-login .ng-auth-form #loginlogo img {
+body.nextgen.pagelayout-login .ng-auth-logo img {
   background: transparent;
-  height: 64px;
-  max-width: 64px;
+  height: 56px;
+  max-width: 56px;
   object-fit: contain;
-  width: 64px;
+  width: 56px;
 }
 
-body.nextgen.pagelayout-login .ng-auth-heading {
+body.nextgen.pagelayout-login .ng-auth-welcome {
   color: var(--ng-text);
-  font-size: 1.75rem;
+  font-size: 1.0625rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+body.nextgen.pagelayout-login .ng-auth-switch {
+  background: var(--ng-brand-soft);
+  border: 1px solid rgba(35, 171, 12, 0.22);
+  border-radius: 999px;
+  display: flex;
+  gap: 0.25rem;
+  margin: 0 auto 2rem;
+  max-width: 20rem;
+  padding: 0.3rem;
+}
+
+body.nextgen.pagelayout-login .login-container .ng-auth-switch-link {
+  border-radius: 999px;
+  color: var(--ng-brand-ink);
+  flex: 1 1 0;
+  font-weight: 700;
+  padding: 0.6rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
+}
+
+body.nextgen.pagelayout-login .login-container .ng-auth-switch-link:hover,
+body.nextgen.pagelayout-login .login-container .ng-auth-switch-link:focus-visible {
+  background: rgba(35, 171, 12, 0.14);
+  color: var(--ng-brand-ink);
+  text-decoration: none;
+}
+
+body.nextgen.pagelayout-login .login-container .ng-auth-switch-link.active {
+  background: var(--ng-brand-ink);
+  box-shadow: 0 6px 16px rgba(10, 58, 3, 0.25);
+  color: #fff;
+}
+
+body.nextgen.pagelayout-login .ng-auth-heading,
+body.nextgen.pagelayout-login .login-container .ng-auth-heading {
+  color: var(--ng-text);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
   margin: 0 0 0.4rem;
 }
 
 body.nextgen.pagelayout-login .ng-auth-lead {
   color: var(--ng-text-muted);
+  line-height: 1.55;
   margin: 0 0 1.75rem;
 }
 
@@ -917,17 +968,34 @@ body.nextgen.pagelayout-login .login-container .mform .form-select,
 body.nextgen.pagelayout-login .login-container .mform select,
 body.nextgen.pagelayout-login .login-container .mform textarea {
   background-color: #fff;
-  border: 1px solid var(--ng-border);
-  border-radius: 12px;
+  border: 1.5px solid rgba(22, 58, 74, 0.26);
+  border-radius: 999px;
   box-shadow: none;
   color: var(--ng-text);
-  min-height: 48px;
+  min-height: 50px;
+  padding: 0.6rem 1.25rem;
+}
+
+body.nextgen.pagelayout-login .login-container .mform .form-select,
+body.nextgen.pagelayout-login .login-container .mform select {
+  background-position: right 1.15rem center;
+  padding-right: 2.75rem;
+  width: 100%;
+}
+
+body.nextgen.pagelayout-login .login-container .mform textarea {
+  border-radius: 18px;
+}
+
+body.nextgen.pagelayout-login .login-form .form-control::placeholder,
+body.nextgen.pagelayout-login .login-container .mform .form-control::placeholder {
+  color: #8a959d;
 }
 
 body.nextgen.pagelayout-login .login-form .form-control:hover,
 body.nextgen.pagelayout-login .login-container .mform .form-control:hover {
   background-color: #fff;
-  border-color: #c5cdd2;
+  border-color: rgba(22, 58, 74, 0.45);
 }
 
 body.nextgen.pagelayout-login .login-form .form-control:focus,
@@ -949,9 +1017,12 @@ body.nextgen.pagelayout-login
   --bs-btn-hover-bg: var(--ng-muted);
   --bs-btn-hover-border-color: var(--ng-border);
   background-color: #fff;
-  border-radius: 0 12px 12px 0;
+  border: 1.5px solid rgba(22, 58, 74, 0.26);
+  border-left: 0;
+  border-radius: 0 999px 999px 0;
   color: var(--ng-text-muted);
-  min-height: 48px;
+  min-height: 50px;
+  padding: 0 1.15rem 0 0.75rem;
 }
 
 body.nextgen.pagelayout-login
@@ -959,12 +1030,19 @@ body.nextgen.pagelayout-login
   .toggle-sensitive-wrapper
   .form-control {
   border-bottom-right-radius: 0;
+  border-right: 0;
   border-top-right-radius: 0;
 }
 
 body.nextgen.pagelayout-login .ng-auth-forgot {
-  margin: -0.25rem 0 1.25rem;
+  font-size: 0.875rem;
+  margin: -0.25rem 0 1.5rem;
   text-align: right;
+}
+
+body.nextgen.pagelayout-login .login-form-submit {
+  display: flex;
+  justify-content: flex-end;
 }
 
 body.nextgen.pagelayout-login .ng-auth-forgot a,
@@ -985,29 +1063,81 @@ body.nextgen.pagelayout-login .login-container .btn-primary,
 body.nextgen.pagelayout-login
   .login-container
   input[type="submit"].btn-primary {
-  background-color: var(--ng-primary);
+  background-color: var(--ng-yellow);
   background-image: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.28),
     rgba(255, 255, 255, 0) 48%
   );
   border: 0;
-  border-radius: 12px;
+  border-radius: 999px;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
     0 10px 20px rgba(16, 40, 51, 0.16);
-  color: #fff;
-  font-weight: 600;
-  min-height: 48px;
-  width: 100%;
+  color: var(--ng-brand-ink);
+  font-weight: 700;
+  min-height: 50px;
+  min-width: 11rem;
+  padding: 0.6rem 2rem;
+  width: auto;
+}
+
+body.nextgen.pagelayout-login .login-container .btn-secondary,
+body.nextgen.pagelayout-login .login-container input[type="submit"].btn-secondary {
+  background: #fff;
+  border: 1.5px solid rgba(22, 58, 74, 0.26);
+  border-radius: 999px;
+  color: var(--ng-primary);
+  font-weight: 700;
+  min-height: 50px;
+  padding: 0.6rem 1.75rem;
+}
+
+body.nextgen.pagelayout-login .login-container .btn-secondary:hover,
+body.nextgen.pagelayout-login .login-container .btn-secondary:focus {
+  background: rgba(22, 58, 74, 0.06);
+  border-color: rgba(22, 58, 74, 0.45);
+  color: var(--ng-primary);
+}
+
+/* Signup form: labels sit above the fields in the narrow column. */
+body.nextgen.pagelayout-login .signupform .mform .fitem.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+body.nextgen.pagelayout-login .signupform .mform .fitem.row > .col-md-3,
+body.nextgen.pagelayout-login .signupform .mform .fitem.row > .col-md-9 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.nextgen.pagelayout-login .signupform .mform .fitem.row > .col-md-3 {
+  padding-bottom: 0.4rem;
+}
+
+body.nextgen.pagelayout-login .signupform .mform .femptylabel > .col-md-3 {
+  display: none;
+}
+
+body.nextgen.pagelayout-login .signupform .mform .femptylabel .d-flex.flex-wrap {
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+body.nextgen.pagelayout-login .signupform .mform .fdescription.required {
+  color: var(--ng-text-muted);
+  font-size: 0.8125rem;
 }
 
 body.nextgen.pagelayout-login #loginbtn:hover,
 body.nextgen.pagelayout-login #loginbtn:focus,
 body.nextgen.pagelayout-login .login-container .btn-primary:hover,
 body.nextgen.pagelayout-login .login-container .btn-primary:focus {
-  background-color: var(--ng-primary-hover);
-  color: #fff;
+  background-color: var(--ng-yellow-hover);
+  color: var(--ng-brand-ink);
 }
 
 body.nextgen.pagelayout-login .ng-auth-signup {
@@ -1031,11 +1161,11 @@ body.nextgen.pagelayout-login .login-container .login-separator::after {
 body.nextgen.pagelayout-login .login-identityprovider-btn,
 body.nextgen.pagelayout-login #loginguestbtn {
   background: #fff;
-  border: 1px solid var(--ng-border);
-  border-radius: 12px;
+  border: 1.5px solid rgba(22, 58, 74, 0.2);
+  border-radius: 999px;
   color: var(--ng-text);
   font-weight: 600;
-  min-height: 48px;
+  min-height: 50px;
   width: 100%;
 }
 
@@ -1081,88 +1211,48 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
 }
 
 @media (max-width: 767.98px) {
-  body.nextgen.pagelayout-login {
-    background: var(--ng-background);
-  }
-
-  body.nextgen.pagelayout-login #page {
-    min-height: 100vh;
-  }
-
-  body.nextgen.pagelayout-login #page .login-layout-left {
-    display: none;
-  }
-
   body.nextgen.pagelayout-login .login-layout-right {
-    background: var(--ng-background);
-    padding: 0;
+    padding: 1.5rem 1.15rem;
   }
 
   body.nextgen.pagelayout-login .login-container {
-    margin: 0 auto;
-    max-width: none;
-    padding: 0;
-    width: min(100%, 32rem);
+    max-width: 32rem;
   }
 
-  body.nextgen.pagelayout-login .ng-auth-form {
-    padding: 1rem 0 0;
+  body.nextgen.pagelayout-login .ng-auth-switch {
+    margin-bottom: 1.5rem;
   }
 
-  body.nextgen.pagelayout-login .ng-auth-form #loginlogo {
-    margin-bottom: 1.15rem;
-  }
-
-  body.nextgen.pagelayout-login .ng-auth-form #loginlogo img {
-    height: 48px;
-    width: 48px;
-  }
-
-  body.nextgen.pagelayout-login .ng-auth-heading {
-    font-size: clamp(2rem, 7vw, 2.8rem);
-    line-height: 1.08;
+  body.nextgen.pagelayout-login .ng-auth-heading,
+  body.nextgen.pagelayout-login .login-container .ng-auth-heading {
+    font-size: 1.375rem;
   }
 
   body.nextgen.pagelayout-login .ng-auth-lead {
-    font-size: 1rem;
-    line-height: 1.5;
     margin-bottom: 1.35rem;
   }
 
   body.nextgen.pagelayout-login .login-form .form-control,
   body.nextgen.pagelayout-login .login-container .mform .form-control,
   body.nextgen.pagelayout-login .login-container .mform .form-select,
-  body.nextgen.pagelayout-login .login-container .mform select,
-  body.nextgen.pagelayout-login .login-container .mform textarea {
-    border-radius: 14px;
-    font-size: 1.02rem;
+  body.nextgen.pagelayout-login .login-container .mform select {
+    font-size: 1rem;
     min-height: 52px;
-  }
-
-  body.nextgen.pagelayout-login .ng-auth-forgot {
-    margin: 0 0 1.1rem;
-    text-align: left;
   }
 
   body.nextgen.pagelayout-login #loginbtn,
   body.nextgen.pagelayout-login .login-container .btn-primary,
-  body.nextgen.pagelayout-login .login-container input[type="submit"].btn-primary,
-  body.nextgen.pagelayout-login .login-identityprovider-btn,
-  body.nextgen.pagelayout-login #loginguestbtn {
-    border-radius: 14px;
+  body.nextgen.pagelayout-login .login-container input[type="submit"].btn-primary {
     min-height: 52px;
+    width: 100%;
+  }
+
+  body.nextgen.pagelayout-login .signupform .mform .femptylabel .d-flex.flex-wrap > .fitem {
+    flex: 1 1 100%;
   }
 
   body.nextgen.pagelayout-login .login-container .login-separator {
     margin-top: 1.4rem;
-  }
-
-  body.nextgen.pagelayout-login .ng-auth-signup {
-    text-align: left;
-  }
-
-  body.nextgen.pagelayout-login .ng-auth-browse {
-    margin-top: 1rem;
   }
 
   body.nextgen.pagelayout-login .ng-auth-footer {
@@ -1314,8 +1404,7 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
   body.nextgen.pagelayout-login .login-container,
   body.nextgen .ng-hero-title,
   body.nextgen .ng-hero-text,
-  body.nextgen .ng-hero-actions,
-  body.nextgen .ng-stat {
+  body.nextgen .ng-hero-actions {
     animation: ng-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
@@ -1326,18 +1415,6 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
 
   body.nextgen .ng-hero-actions {
     animation-delay: 0.14s;
-  }
-
-  body.nextgen .ng-stat:nth-child(1) {
-    animation-delay: 0.12s;
-  }
-
-  body.nextgen .ng-stat:nth-child(2) {
-    animation-delay: 0.18s;
-  }
-
-  body.nextgen .ng-stat:nth-child(3) {
-    animation-delay: 0.24s;
   }
 }
 
@@ -1398,7 +1475,6 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
   body.nextgen .ng-hero-title,
   body.nextgen .ng-hero-text,
   body.nextgen .ng-hero-actions,
-  body.nextgen .ng-stat,
   body.nextgen-landing .ng-hero-slide {
     animation: none;
     transition: none;
@@ -1594,7 +1670,7 @@ body.nextgen .ng-hero-grid {
 }
 
 body.nextgen .ng-kicker {
-  color: var(--ng-gold-text);
+  color: var(--ng-brand-dark);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -1603,7 +1679,7 @@ body.nextgen .ng-kicker {
 }
 
 body.nextgen .ng-hero .ng-kicker {
-  color: #f8ebd3;
+  color: var(--ng-yellow);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 
@@ -1647,50 +1723,55 @@ body.nextgen .ng-btn-ghost:hover {
   color: var(--ng-secondary);
 }
 
-body.nextgen .ng-hero-stats {
+body.nextgen .ng-section.ng-stats {
+  background: var(--ng-surface);
+  border-bottom: 1px solid var(--ng-border);
+  border-top: 1px solid var(--ng-border);
+  padding: 2.75rem 0;
+}
+
+body.nextgen .ng-stats-list {
   display: grid;
-  gap: 0.75rem;
+  gap: 1.5rem 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 body.nextgen .ng-stat {
-  background:
-    linear-gradient(90deg, #f8e7c4, #c4842a 40%, #fff6e4) top / 100% 3px
-      no-repeat,
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.22),
-      rgba(255, 255, 255, 0.06)
-    );
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: var(--ng-radius-lg);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    0 12px 28px rgba(0, 0, 0, 0.12);
   margin: 0;
-  padding: 1.25rem 1.5rem;
+  min-width: 0;
+  text-align: center;
 }
 
 body.nextgen .ng-stat strong {
+  color: var(--ng-ink);
   display: block;
-  font-size: 2rem;
+  font-size: 1.875rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
 }
 
-body.nextgen .ng-hero .ng-stat {
-  background: rgba(6, 22, 14, 0.62);
-  border-color: rgba(255, 255, 255, 0.42);
-}
-
-body.nextgen .ng-hero .ng-stat strong,
-body.nextgen .ng-hero .ng-stat span {
-  color: #fff;
-}
-
 body.nextgen .ng-stat span {
-  color: #c5d5dc;
+  color: var(--ng-text-muted);
   display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.3;
   margin-top: 0.35rem;
+}
+
+@media (min-width: 768px) {
+  body.nextgen .ng-stats-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  body.nextgen .ng-stat + .ng-stat {
+    border-left: 1px solid var(--ng-border);
+  }
 }
 
 body.nextgen .ng-section {
@@ -2270,10 +2351,11 @@ body.nextgen .ng-forward-list p {
 
 body.nextgen .ng-forward-list .ng-step-number {
   align-items: center;
-  background: linear-gradient(160deg, #f8ebd3, #e4c27a);
+  background: var(--ng-yellow);
   border-radius: 999px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-  color: #8a5410;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: var(--ng-brand-ink);
+  font-weight: 800;
   display: inline-flex;
   flex: 0 0 auto;
   font-size: 0.95rem;
@@ -2284,7 +2366,7 @@ body.nextgen .ng-forward-list .ng-step-number {
 }
 
 body.nextgen .ng-instructor-intro {
-  background: var(--ng-gold-soft);
+  background: var(--ng-yellow-soft);
   border-radius: var(--ng-radius-lg);
   padding: 1.75rem 1.5rem;
 }
@@ -2354,35 +2436,162 @@ body.nextgen .ng-partners {
   padding: 2.5rem 0 2.75rem;
 }
 
+body.nextgen .ng-partners-inner {
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 0 1.5rem;
+}
+
 body.nextgen .ng-partners h2 {
   color: #1a2330;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.16em;
-  margin: 0 0 1.75rem;
+  margin: 0 0 0.5rem;
   text-align: center;
   text-transform: uppercase;
 }
 
+body.nextgen .ng-partners-lead {
+  color: var(--ng-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 auto 1.5rem;
+  max-width: 36rem;
+  text-align: center;
+}
+
 body.nextgen .ng-partner-row {
-  align-items: center;
+  align-items: stretch;
   display: flex;
   flex-wrap: wrap;
-  gap: 2.25rem 3.25rem;
+  gap: 1rem 1.25rem;
   justify-content: center;
   list-style: none;
-  margin: 0;
+  margin: 1.25rem 0 0;
   padding: 0;
+}
+
+body.nextgen .ng-partner-link {
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(16, 24, 40, 0.08);
+  border-radius: 0.85rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  display: flex;
+  justify-content: center;
+  min-height: 5.25rem;
+  min-width: 8.5rem;
+  padding: 0.65rem 0.9rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+body.nextgen .ng-partner-link:hover,
+body.nextgen .ng-partner-link:focus-visible {
+  border-color: rgba(16, 24, 40, 0.22);
+  box-shadow: 0 6px 16px rgba(16, 24, 40, 0.08);
+  outline: none;
 }
 
 body.nextgen .ng-partner-logo {
   display: block;
-  height: 2.35rem;
+  height: 3.35rem;
+  max-width: 10.5rem;
+  object-fit: contain;
   width: auto;
 }
 
-body.nextgen .ng-partner-microsoft {
-  height: 2.15rem;
+body.nextgen .ng-partner-minefop .ng-partner-logo,
+body.nextgen .ng-partner-cga .ng-partner-logo {
+  height: 4rem;
+}
+
+body.nextgen .ng-partner-minpmeesa .ng-partner-logo {
+  height: 3.75rem;
+}
+
+body.nextgen .ng-partner-wordmark {
+  align-items: center;
+  color: #16325c;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: center;
+}
+
+body.nextgen .ng-partner-wordmark-main {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+
+body.nextgen .ng-partner-wordmark-sub {
+  color: #4b5b73;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  max-width: 9.5rem;
+}
+
+body.nextgen.nextgen-about .ng-partners-about,
+body.nextgen.nextgen-contact .ng-partners-contact {
+  background-color: var(--ng-background);
+  background-image: none;
+  padding: 3.25rem 0;
+}
+
+body.nextgen .ng-footer .ng-partners-footer {
+  background: transparent;
+  background-image: none;
+  margin-top: 1.75rem;
+  padding: 1.5rem 0 0;
+}
+
+body.nextgen .ng-footer .ng-partners-footer .ng-partners-inner {
+  max-width: none;
+  padding: 0;
+}
+
+body.nextgen .ng-footer .ng-partners-footer h2 {
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 0.85rem;
+  text-align: left;
+}
+
+body.nextgen .ng-footer .ng-partner-row {
+  gap: 0.75rem;
+  justify-content: flex-start;
+  margin-top: 0;
+}
+
+body.nextgen .ng-footer .ng-partner-link {
+  background: #fff;
+  min-height: 4.15rem;
+  min-width: 6.75rem;
+  padding: 0.45rem 0.65rem;
+}
+
+body.nextgen .ng-footer .ng-partner-logo {
+  height: 2.45rem;
+  max-width: 8rem;
+}
+
+body.nextgen .ng-footer .ng-partner-minefop .ng-partner-logo,
+body.nextgen .ng-footer .ng-partner-cga .ng-partner-logo,
+body.nextgen .ng-footer .ng-partner-minpmeesa .ng-partner-logo {
+  height: 2.85rem;
+}
+
+body.nextgen .ng-footer .ng-partner-wordmark-main {
+  font-size: 1.05rem;
+}
+
+body.nextgen .ng-footer .ng-partner-wordmark-sub {
+  font-size: 0.55rem;
+  max-width: 7.5rem;
 }
 
 body.nextgen .ng-cta-panel {
@@ -2488,7 +2697,7 @@ body.nextgen .ng-steps li {
 }
 
 body.nextgen .ng-step-number {
-  color: var(--ng-gold-text);
+  color: var(--ng-brand-dark);
   display: block;
   font-size: 0.8125rem;
   font-weight: 700;
@@ -2508,7 +2717,7 @@ body.nextgen .ng-instructor {
 }
 
 body.nextgen .ng-category {
-  border-left: 3px solid var(--ng-gold);
+  border-left: 3px solid var(--ng-brand);
 }
 
 body.nextgen .ng-category strong {
@@ -2552,7 +2761,7 @@ body.nextgen .ng-cta {
 }
 
 body.nextgen .ng-cta-banner {
-  background: #ef8c12;
+  background: var(--ng-yellow);
   border-radius: 14px;
   min-height: 15.5rem;
   overflow: hidden;
@@ -2567,13 +2776,13 @@ body.nextgen .ng-cta-copy {
 }
 
 body.nextgen .ng-cta-banner h2 {
-  color: #fff;
+  color: var(--ng-brand-ink);
   font-size: 1.45rem;
   margin: 0 0 0.75rem;
 }
 
 body.nextgen .ng-cta-banner p {
-  color: #fff;
+  color: var(--ng-brand-ink);
   font-size: 0.95rem;
   line-height: 1.5;
   margin: 0 0 1.35rem;
@@ -2581,7 +2790,7 @@ body.nextgen .ng-cta-banner p {
 }
 
 body.nextgen .ng-cta-link {
-  background: #2a2a2a;
+  background: var(--ng-brand-ink);
   border-radius: 999px;
   color: #fff;
   display: inline-flex;
@@ -2594,7 +2803,7 @@ body.nextgen .ng-cta-link {
 
 body.nextgen .ng-cta-link:hover,
 body.nextgen .ng-cta-link:focus {
-  background: #111;
+  background: var(--ng-brand-dark);
   color: #fff;
 }
 
@@ -2615,16 +2824,23 @@ body.nextgen .ng-cta-photo {
 }
 
 @media (max-width: 767.98px) {
+  body.nextgen .ng-cta-banner {
+    display: flex;
+    flex-direction: column;
+  }
+
   body.nextgen .ng-cta-copy {
-    max-width: 70%;
-    padding: 1.5rem 1.15rem 1.6rem;
+    max-width: none;
+    padding: 1.5rem 1.25rem 1.25rem;
   }
 
   body.nextgen .ng-cta-photo {
-    object-position: 80% center;
-    width: 54%;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 58%);
-    mask-image: linear-gradient(90deg, transparent 0%, #000 58%);
+    height: 11rem;
+    object-position: center 35%;
+    position: static;
+    width: 100%;
+    -webkit-mask-image: linear-gradient(180deg, #000 65%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 65%, transparent 100%);
   }
 }
 
@@ -2860,7 +3076,7 @@ body.nextgen article.ng-course-card .ng-course-blurb {
 
 body.nextgen .ng-course-kicker,
 body.nextgen .ng-course-card .categoryname {
-  color: var(--ng-gold-text);
+  color: var(--ng-brand-dark);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -2947,14 +3163,14 @@ body.nextgen .card.course-card a.ng-course-title {
 
 body.nextgen .card.course-card .ng-course-kicker {
   align-items: flex-start;
-  color: var(--ng-accent);
+  color: var(--ng-brand-dark);
   display: flex;
   gap: 0.35rem;
 }
 
 body.nextgen .card.course-card .ng-course-kicker .categoryname,
 body.nextgen .card.course-card .ng-course-kicker .text-truncate {
-  color: var(--ng-accent);
+  color: var(--ng-brand-dark);
 }
 
 body.nextgen .card.course-card .ng-course-kicker:not(:has(.text-truncate)) {
@@ -3051,7 +3267,7 @@ body.nextgen .ng-dash-progress-track {
 }
 
 body.nextgen .ng-dash-progress-track > span {
-  background: var(--ng-success);
+  background: var(--ng-brand);
   border-radius: inherit;
   display: block;
   height: 100%;
@@ -3824,7 +4040,7 @@ body.nextgen .ng-certificate-sheet {
     linear-gradient(var(--ng-primary), var(--ng-primary)) bottom right / 2.2rem 2px no-repeat,
     linear-gradient(var(--ng-primary), var(--ng-primary)) bottom right / 2px 2.2rem no-repeat,
     #fff;
-  border: 1px solid var(--ng-accent);
+  border: 1px solid var(--ng-brand);
   box-shadow: inset 0 0 0 6px #fff, inset 0 0 0 7px var(--ng-primary);
   color: var(--ng-ink);
   font-family: Manrope, "Segoe UI", sans-serif;
@@ -3871,7 +4087,7 @@ body.nextgen .ng-certificate-lead {
 }
 
 body.nextgen .ng-certificate-name {
-  color: var(--ng-accent);
+  color: var(--ng-brand-dark);
   font-size: clamp(1.45rem, 3vw, 1.9rem);
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -3902,7 +4118,7 @@ body.nextgen .ng-certificate-signs {
 
 body.nextgen .ng-certificate-sign-value {
   border-bottom: 1px solid var(--ng-primary);
-  color: var(--ng-accent);
+  color: var(--ng-brand-dark);
   display: block;
   font-size: 0.95rem;
   font-weight: 600;
@@ -4339,7 +4555,7 @@ body.nextgen .ng-course-includes li {
 }
 
 body.nextgen .ng-course-includes li::before {
-  background: #1f8a4c;
+  background: var(--ng-brand);
   border-radius: 999px;
   content: "";
   flex: none;
@@ -4356,7 +4572,7 @@ body.nextgen .ng-course-includes li:nth-child(3)::before {
 }
 
 body.nextgen .ng-course-includes li:nth-child(4)::before {
-  background: #e0a84a;
+  background: var(--ng-yellow);
 }
 
 body.nextgen .ng-course-image {
@@ -4418,7 +4634,7 @@ body.nextgen .ng-outcomes li {
 }
 
 body.nextgen .ng-tick {
-  background: #1f8a4c;
+  background: var(--ng-brand);
   border-radius: 999px;
   flex: none;
   height: 1.15rem;
@@ -4468,7 +4684,7 @@ body.nextgen .ng-subject::before {
 }
 
 body.nextgen .ng-subject-primary::before {
-  background: #1f8a4c;
+  background: var(--ng-brand);
 }
 
 body.nextgen .ng-subject-clay::before {
@@ -4480,7 +4696,7 @@ body.nextgen .ng-subject-ink::before {
 }
 
 body.nextgen .ng-subject-gold::before {
-  background: #e0a84a;
+  background: var(--ng-yellow);
 }
 
 body.nextgen .ng-requirements {
@@ -4844,7 +5060,7 @@ body.nextgen .ng-checkout-step.is-done {
 }
 
 body.nextgen .ng-checkout-step.is-done .ng-checkout-step-marker {
-  background: var(--ng-success);
+  background: var(--ng-brand);
 }
 
 body.nextgen .ng-checkout-step.is-current {
@@ -4853,7 +5069,7 @@ body.nextgen .ng-checkout-step.is-current {
 
 body.nextgen .ng-checkout-step.is-current .ng-checkout-step-marker {
   background: var(--ng-accent);
-  box-shadow: 0 0 0 3px rgba(196, 132, 42, 0.28);
+  box-shadow: 0 0 0 3px rgba(252, 209, 22, 0.3);
 }
 
 body.nextgen .ng-checkout-layout {
@@ -5046,7 +5262,7 @@ body.nextgen .ng-checkout-trust {
 body.nextgen .ng-enrol-success {
   align-items: flex-start;
   background: var(--ng-brand-soft);
-  border: 1px solid rgba(26, 108, 37, 0.18);
+  border: 1px solid rgba(35, 171, 12, 0.3);
   border-radius: 16px;
   display: flex;
   flex-wrap: wrap;
@@ -5376,7 +5592,7 @@ body.nextgen.nextgen-about .ng-about-hero {
   background-color: var(--ng-secondary);
   isolation: isolate;
   overflow: hidden;
-  padding: 2.75rem 0 5rem;
+  padding: 3rem 0 3.5rem;
   position: relative;
 }
 
@@ -5385,22 +5601,13 @@ body.nextgen.nextgen-about .ng-about-hero::before {
   background-position: center;
   background-size: cover;
   content: "";
-  filter: brightness(1.05) contrast(1.04) saturate(1.08);
   inset: 0;
   position: absolute;
   z-index: -2;
 }
 
 body.nextgen.nextgen-about .ng-about-hero::after {
-  background:
-    linear-gradient(90deg, transparent, rgba(248, 235, 211, 0.4), transparent) bottom center / 80% 2px no-repeat,
-    radial-gradient(ellipse 70% 80% at 12% 20%, rgba(196, 132, 42, 0.18), transparent 52%),
-    linear-gradient(
-      145deg,
-      rgba(16, 40, 50, 0.9) 0%,
-      rgba(22, 58, 74, 0.78) 48%,
-      rgba(26, 70, 88, 0.68) 100%
-    );
+  background: rgba(16, 40, 51, 0.8);
   content: "";
   inset: 0;
   pointer-events: none;
@@ -5408,162 +5615,480 @@ body.nextgen.nextgen-about .ng-about-hero::after {
   z-index: -1;
 }
 
-body.nextgen.nextgen-about .ng-about-hero > * {
-  position: relative;
-  z-index: 1;
-}
-
 body.nextgen.nextgen-about .ng-about-wrap {
   max-width: 1080px;
 }
 
 body.nextgen.nextgen-about .ng-about-hero .ng-public-title {
-  animation: ng-contact-rise 0.55s ease both;
   max-width: 12ch;
 }
 
 body.nextgen.nextgen-about .ng-about-hero .ng-public-intro {
-  animation: ng-contact-rise 0.65s ease 0.06s both;
-  max-width: 36rem;
+  max-width: 40rem;
 }
 
-body.nextgen.nextgen-about .ng-about-body {
-  animation: ng-contact-rise 0.7s ease 0.14s both;
-  margin-top: -2.4rem;
-  padding-bottom: 4rem;
+body.nextgen.nextgen-about .ng-about-band {
+  background: var(--ng-surface);
+  padding: 4.5rem 0;
 }
 
-body.nextgen.nextgen-about .ng-about-grid {
+body.nextgen.nextgen-about .ng-about-band-muted {
+  background: var(--ng-background);
+}
+
+body.nextgen.nextgen-about .ng-about-band-dark {
+  background: var(--ng-secondary);
+  color: #fff;
+}
+
+body.nextgen.nextgen-about .ng-about-band h2 {
+  color: var(--ng-text);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin: 0 0 1rem;
+}
+
+body.nextgen.nextgen-about .ng-about-band-dark h2 {
+  color: #fff;
+}
+
+body.nextgen.nextgen-about .ng-about-head {
+  margin-bottom: 2.5rem;
+  max-width: 48rem;
+}
+
+body.nextgen.nextgen-about .ng-about-aside > .ng-about-head {
+  margin-bottom: 0;
+}
+
+body.nextgen.nextgen-about .ng-about-subtitle {
+  color: var(--ng-text);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 3rem 0 1.25rem;
+}
+
+body.nextgen.nextgen-about .ng-about-head + .ng-about-subtitle {
+  margin-top: 0;
+}
+
+body.nextgen.nextgen-about .ng-about-lead {
+  color: var(--ng-text);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  margin: 0 0 1rem;
+}
+
+body.nextgen.nextgen-about .ng-about-text {
+  color: var(--ng-text-muted);
+  line-height: 1.7;
+  margin: 0 0 1rem;
+  max-width: 44rem;
+}
+
+body.nextgen.nextgen-about .ng-about-band-dark .ng-about-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+body.nextgen.nextgen-about .ng-about-row-copy > :last-child,
+body.nextgen.nextgen-about .ng-about-head > :last-child {
+  margin-bottom: 0;
+}
+
+body.nextgen.nextgen-about .ng-about-statement {
+  color: var(--ng-text);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin: 0 0 1rem;
+}
+
+body.nextgen.nextgen-about .ng-about-band-dark .ng-about-statement {
+  color: #fff;
+}
+
+body.nextgen.nextgen-about .ng-about-list {
+  color: var(--ng-text);
+  line-height: 1.6;
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+
+body.nextgen.nextgen-about .ng-about-list li + li {
+  margin-top: 0.4rem;
+}
+
+@media (min-width: 576px) {
+  body.nextgen.nextgen-about .ng-about-list-columns {
+    column-count: 2;
+    column-gap: 2rem;
+  }
+
+  body.nextgen.nextgen-about .ng-about-list-columns li {
+    break-inside: avoid;
+  }
+}
+
+body.nextgen.nextgen-about .ng-about-points {
+  margin-bottom: 0;
+  max-width: 60rem;
+}
+
+body.nextgen.nextgen-about .ng-about-points li + li {
+  margin-top: 0.75rem;
+}
+
+body.nextgen.nextgen-about .ng-about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+body.nextgen.nextgen-about .ng-about-actions .btn {
+  border-radius: 999px;
+  font-weight: 700;
+  padding: 0.6rem 1.4rem;
+}
+
+body.nextgen.nextgen-about .ng-about-actions .btn-outline-primary {
+  border-color: var(--ng-primary);
+  color: var(--ng-primary);
+}
+
+body.nextgen.nextgen-about .ng-about-actions .btn-outline-primary:hover,
+body.nextgen.nextgen-about .ng-about-actions .btn-outline-primary:focus-visible {
+  background: var(--ng-primary);
+  color: #fff;
+}
+
+body.nextgen.nextgen-about .ng-about-row {
+  align-items: center;
   display: grid;
-  gap: 1.15rem;
+  gap: 2rem 4rem;
 }
 
-@media (min-width: 768px) {
-  body.nextgen.nextgen-about .ng-about-grid {
+body.nextgen.nextgen-about .ng-about-row + .ng-about-row {
+  margin-top: 4.5rem;
+}
+
+body.nextgen.nextgen-about .ng-about-row-media {
+  order: -1;
+}
+
+body.nextgen.nextgen-about .ng-about-row-media img {
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  body.nextgen.nextgen-about .ng-about-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.nextgen.nextgen-about .ng-about-row-media {
+    order: 1;
+  }
+
+  body.nextgen.nextgen-about .ng-about-row-reverse .ng-about-row-media {
+    order: -1;
+  }
+}
+
+body.nextgen.nextgen-about .ng-about-commitments {
+  display: grid;
+  gap: 1.75rem 2rem;
+  margin: 0;
+}
+
+@media (min-width: 576px) {
+  body.nextgen.nextgen-about .ng-about-commitments {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-body.nextgen.nextgen-about .ng-about-card {
-  background: #fff;
-  border: 1px solid rgba(22, 58, 74, 0.08);
-  border-radius: 18px;
-  box-shadow: 0 18px 44px rgba(16, 40, 51, 0.1);
-  padding: 1.45rem 1.5rem 1.55rem;
+@media (min-width: 992px) {
+  body.nextgen.nextgen-about .ng-about-commitments {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
-body.nextgen.nextgen-about .ng-about-card h2 {
+body.nextgen.nextgen-about .ng-about-commitments > div {
+  border-top: 2px solid var(--ng-border);
+  padding-top: 1rem;
+}
+
+body.nextgen.nextgen-about .ng-about-commitments dt {
   color: var(--ng-text);
-  font-size: 1.2rem;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.55rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
 }
 
-body.nextgen.nextgen-about .ng-about-card h2::before {
-  background: var(--ng-accent);
-  border-radius: 999px;
-  content: "";
-  display: block;
-  height: 3px;
-  margin-bottom: 0.85rem;
-  width: 2.25rem;
+body.nextgen.nextgen-about .ng-about-commitments dd {
+  color: var(--ng-text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin: 0;
 }
 
-body.nextgen.nextgen-about .ng-about-card p {
+body.nextgen.nextgen-about .ng-about-aside {
+  display: grid;
+  gap: 2rem 4rem;
+}
+
+@media (min-width: 992px) {
+  body.nextgen.nextgen-about .ng-about-aside {
+    align-items: start;
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  }
+
+  body.nextgen.nextgen-about .ng-about-aside > .ng-about-head {
+    position: sticky;
+    top: 6rem;
+  }
+}
+
+body.nextgen.nextgen-about .ng-about-table-wrap {
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+body.nextgen.nextgen-about .ng-about-table {
+  border-collapse: collapse;
+  margin: 0;
+  width: 100%;
+}
+
+body.nextgen.nextgen-about .ng-about-table thead th {
+  background: var(--ng-background);
+  color: var(--ng-text);
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 0.85rem 1.25rem;
+  text-align: left;
+}
+
+body.nextgen.nextgen-about .ng-about-table tbody th,
+body.nextgen.nextgen-about .ng-about-table tbody td {
+  border-top: 1px solid var(--ng-border);
+  padding: 1rem 1.25rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+body.nextgen.nextgen-about .ng-about-table tbody th {
+  color: var(--ng-text);
+  font-weight: 700;
+  line-height: 1.5;
+  width: 40%;
+}
+
+body.nextgen.nextgen-about .ng-about-table td p {
+  color: var(--ng-text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+body.nextgen.nextgen-about .ng-about-table td p + p {
+  margin-top: 0.6rem;
+}
+
+body.nextgen.nextgen-about .ng-about-table td strong {
+  color: var(--ng-text);
+}
+
+@media (max-width: 767.98px) {
+  body.nextgen.nextgen-about .ng-about-table thead {
+    display: none;
+  }
+
+  body.nextgen.nextgen-about .ng-about-table tbody tr,
+  body.nextgen.nextgen-about .ng-about-table tbody th,
+  body.nextgen.nextgen-about .ng-about-table tbody td {
+    display: block;
+    width: auto;
+  }
+
+  body.nextgen.nextgen-about .ng-about-table tbody tr {
+    border-top: 1px solid var(--ng-border);
+    padding: 1rem 1.15rem;
+  }
+
+  body.nextgen.nextgen-about .ng-about-table tbody tr:first-child {
+    border-top: 0;
+  }
+
+  body.nextgen.nextgen-about .ng-about-table tbody th,
+  body.nextgen.nextgen-about .ng-about-table tbody td {
+    border-top: 0;
+    padding: 0;
+  }
+
+  body.nextgen.nextgen-about .ng-about-table tbody th {
+    margin-bottom: 0.6rem;
+  }
+}
+
+body.nextgen.nextgen-about .ng-about-founder {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+body.nextgen.nextgen-about .ng-about-founder h3 {
+  color: var(--ng-text);
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin: 0 0 0.2rem;
+}
+
+body.nextgen.nextgen-about .ng-about-founder-role {
+  color: var(--ng-text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+}
+
+body.nextgen.nextgen-about .ng-about-founder-title {
+  color: var(--ng-text-muted);
+  margin: 0 0 1.25rem;
+}
+
+body.nextgen.nextgen-about .ng-about-founder > p {
+  color: var(--ng-text-muted);
+  line-height: 1.7;
+  margin: 0 0 1rem;
+}
+
+body.nextgen.nextgen-about .ng-about-founder h4 {
+  color: var(--ng-text);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.5rem;
+}
+
+body.nextgen.nextgen-about .ng-about-founder > .ng-about-list:last-child {
+  margin-bottom: 0;
+}
+
+body.nextgen.nextgen-about .ng-about-people {
+  column-gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+body.nextgen.nextgen-about .ng-about-people li {
+  border-bottom: 1px solid var(--ng-border);
+  color: var(--ng-text);
+  font-weight: 600;
+  padding: 0.7rem 0;
+}
+
+body.nextgen.nextgen-about .ng-about-person-role {
+  color: var(--ng-text-muted);
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin-left: 0.4rem;
+}
+
+body.nextgen.nextgen-about .ng-about-contacts {
+  display: grid;
+  gap: 1.5rem 2rem;
+  margin: 1.5rem 0 0;
+}
+
+@media (min-width: 576px) {
+  body.nextgen.nextgen-about .ng-about-contacts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+body.nextgen.nextgen-about .ng-about-contacts dt {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+body.nextgen.nextgen-about .ng-about-contacts dd {
+  color: #fff;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
+}
+
+body.nextgen.nextgen-about .ng-about-contacts a {
+  color: var(--ng-yellow);
+  display: table;
+}
+
+body.nextgen.nextgen-about .ng-about-contacts a:hover,
+body.nextgen.nextgen-about .ng-about-contacts a:focus-visible {
+  color: #fff;
+}
+
+body.nextgen.nextgen-about .ng-about-social .ng-about-text {
+  margin-bottom: 1.5rem;
+}
+
+body.nextgen.nextgen-about .ng-about-final {
+  padding: 3.5rem 0;
+}
+
+body.nextgen.nextgen-about .ng-about-final .ng-about-wrap {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2.5rem;
+  justify-content: space-between;
+}
+
+body.nextgen.nextgen-about .ng-about-final-copy {
+  flex: 1 1 22rem;
+  max-width: 40rem;
+}
+
+body.nextgen.nextgen-about .ng-about-final h2 {
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  margin-bottom: 0.4rem;
+}
+
+body.nextgen.nextgen-about .ng-about-final p {
   color: var(--ng-text-muted);
   line-height: 1.6;
   margin: 0;
 }
 
-body.nextgen.nextgen-about .ng-about-cta {
-  align-items: center;
-  background:
-    radial-gradient(ellipse 60% 80% at 90% 20%, rgba(196, 132, 42, 0.16), transparent 55%),
-    linear-gradient(135deg, #102832 0%, var(--ng-secondary) 55%, #1a4658 100%);
-  border-radius: 18px;
-  box-shadow: 0 18px 44px rgba(16, 40, 51, 0.14);
-  color: #fff;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem 1.75rem;
-  justify-content: space-between;
-  margin-top: 1.25rem;
-  padding: 1.55rem 1.65rem;
+body.nextgen.nextgen-about .ng-about-final .ng-about-actions {
+  margin-top: 0;
 }
 
-body.nextgen.nextgen-about .ng-about-cta-copy {
-  flex: 1 1 16rem;
-  max-width: 38rem;
-}
+@media (max-width: 767.98px) {
+  body.nextgen.nextgen-about .ng-about-band {
+    padding: 3.5rem 0;
+  }
 
-body.nextgen.nextgen-about .ng-about-cta h2 {
-  color: #fff;
-  font-size: 1.35rem;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.4rem;
-}
+  body.nextgen.nextgen-about .ng-about-row + .ng-about-row {
+    margin-top: 3.5rem;
+  }
 
-body.nextgen.nextgen-about .ng-about-cta p {
-  color: rgba(255, 255, 255, 0.88);
-  line-height: 1.55;
-  margin: 0;
-}
+  body.nextgen.nextgen-about .ng-about-row-media img {
+    aspect-ratio: 16 / 10;
+  }
 
-body.nextgen.nextgen-about .ng-about-cta .btn-primary {
-  background: #fff;
-  border-color: #fff;
-  border-radius: 999px;
-  color: var(--ng-secondary);
-  flex: 0 0 auto;
-  font-weight: 750;
-  min-height: 2.75rem;
-  padding: 0.55rem 1.4rem;
-}
-
-body.nextgen.nextgen-about .ng-about-cta .btn-primary:hover {
-  background: #f8ebd3;
-  border-color: #f8ebd3;
-  color: var(--ng-secondary);
-}
-
-body.nextgen.nextgen-about .ng-about-social {
-  background: #fff;
-  border: 1px solid rgba(22, 58, 74, 0.08);
-  border-radius: 18px;
-  box-shadow: 0 18px 44px rgba(16, 40, 51, 0.1);
-  margin-top: 1.25rem;
-  padding: 1.55rem 1.65rem 1.65rem;
-}
-
-body.nextgen.nextgen-about .ng-about-social-copy {
-  margin-bottom: 1.15rem;
-  max-width: 40rem;
-}
-
-body.nextgen.nextgen-about .ng-about-social h2 {
-  color: var(--ng-text);
-  font-size: 1.35rem;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.4rem;
-}
-
-body.nextgen.nextgen-about .ng-about-social h2::before {
-  background: var(--ng-accent);
-  border-radius: 999px;
-  content: "";
-  display: block;
-  height: 3px;
-  margin-bottom: 0.85rem;
-  width: 2.25rem;
-}
-
-body.nextgen.nextgen-about .ng-about-social p {
-  color: var(--ng-text-muted);
-  line-height: 1.55;
-  margin: 0;
+  body.nextgen.nextgen-about .ng-about-founder {
+    padding: 1.5rem;
+  }
 }
 
 body.nextgen.nextgen-contact .ng-contact-social p {
@@ -5586,7 +6111,7 @@ body.nextgen .ng-public-hero .breadcrumb-item.active {
 }
 
 body.nextgen .ng-public-hero .ng-kicker {
-  color: #f8ebd3;
+  color: var(--ng-yellow);
 }
 
 body.nextgen .ng-public-title {
@@ -5694,7 +6219,7 @@ body.nextgen.nextgen-contact .ng-contact-hero {
   background-color: var(--ng-secondary);
   isolation: isolate;
   overflow: hidden;
-  padding: 2.75rem 0 5rem;
+  padding: 2.75rem 0 3rem;
   position: relative;
 }
 
@@ -5703,22 +6228,13 @@ body.nextgen.nextgen-contact .ng-contact-hero::before {
   background-position: center;
   background-size: cover;
   content: "";
-  filter: brightness(1.05) contrast(1.04) saturate(1.08);
   inset: 0;
   position: absolute;
   z-index: -2;
 }
 
 body.nextgen.nextgen-contact .ng-contact-hero::after {
-  background:
-    linear-gradient(90deg, transparent, rgba(248, 235, 211, 0.4), transparent) bottom center / 80% 2px no-repeat,
-    radial-gradient(ellipse 70% 80% at 88% 18%, rgba(196, 132, 42, 0.2), transparent 55%),
-    linear-gradient(
-      145deg,
-      rgba(16, 40, 50, 0.9) 0%,
-      rgba(22, 58, 74, 0.78) 48%,
-      rgba(26, 70, 88, 0.68) 100%
-    );
+  background: rgba(16, 40, 51, 0.8);
   content: "";
   inset: 0;
   pointer-events: none;
@@ -5726,142 +6242,98 @@ body.nextgen.nextgen-contact .ng-contact-hero::after {
   z-index: -1;
 }
 
-body.nextgen.nextgen-contact .ng-contact-hero > * {
-  position: relative;
-  z-index: 1;
-}
-
 body.nextgen.nextgen-contact .ng-contact-wrap {
   max-width: 1080px;
 }
 
-body.nextgen.nextgen-contact .ng-contact-hero .ng-public-title {
-  animation: ng-contact-rise 0.55s ease both;
-  max-width: 14ch;
-}
-
 body.nextgen.nextgen-contact .ng-contact-hero .ng-public-intro {
-  animation: ng-contact-rise 0.65s ease 0.06s both;
   max-width: 36rem;
 }
 
 body.nextgen.nextgen-contact .ng-contact-body {
-  margin-top: -2.4rem;
+  margin-top: 0;
   padding-bottom: 4rem;
+  padding-top: 2.5rem;
 }
 
 body.nextgen.nextgen-contact .ng-contact-layout {
   align-items: start;
-  animation: ng-contact-rise 0.7s ease 0.16s both;
   display: grid;
   gap: 1.25rem;
 }
 
 @media (min-width: 900px) {
   body.nextgen.nextgen-contact .ng-contact-layout {
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.2fr);
     gap: 1.5rem;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.2fr);
   }
 }
 
 body.nextgen.nextgen-contact .ng-contact-aside {
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 body.nextgen.nextgen-contact .ng-contact-panel {
-  background: #fff;
-  border: 1px solid rgba(22, 58, 74, 0.08);
-  border-radius: 18px;
-  box-shadow: 0 18px 44px rgba(16, 40, 51, 0.1);
-  padding: 1.45rem 1.5rem 1.55rem;
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  padding: 1.5rem;
 }
 
 body.nextgen.nextgen-contact .ng-contact-panel h2 {
   color: var(--ng-text);
-  font-size: 1.15rem;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.55rem;
-}
-
-body.nextgen.nextgen-contact .ng-contact-tips ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-body.nextgen.nextgen-contact .ng-contact-tips li {
-  color: var(--ng-text-muted);
-  line-height: 1.5;
-  margin: 0;
-  padding: 0.7rem 0 0.7rem 1.35rem;
-  position: relative;
-}
-
-body.nextgen.nextgen-contact .ng-contact-tips li + li {
-  border-top: 1px solid var(--ng-border);
-}
-
-body.nextgen.nextgen-contact .ng-contact-tips li::before {
-  background: var(--ng-accent);
-  border-radius: 50%;
-  content: "";
-  height: 0.45rem;
-  left: 0.15rem;
-  position: absolute;
-  top: 1.1rem;
-  width: 0.45rem;
-}
-
-body.nextgen.nextgen-contact .ng-contact-response {
-  background: linear-gradient(135deg, rgba(22, 58, 74, 0.06), rgba(196, 132, 42, 0.1));
-  border-radius: 12px;
-  color: var(--ng-text);
-  font-size: 0.95rem;
-  font-weight: 600;
-  line-height: 1.45;
-  margin: 1rem 0 0;
-  padding: 0.85rem 1rem;
-}
-
-body.nextgen.nextgen-contact .ng-contact-channels p {
-  color: var(--ng-text-muted);
-  line-height: 1.5;
+  font-size: 1.125rem;
+  font-weight: 700;
   margin: 0 0 1rem;
 }
 
 body.nextgen.nextgen-contact .ng-contact-channel-list {
-  display: grid;
-  gap: 0.85rem;
-  list-style: none;
   margin: 0;
-  padding: 0;
 }
 
-body.nextgen.nextgen-contact .ng-contact-channel-list li {
-  display: grid;
-  gap: 0.2rem;
+body.nextgen.nextgen-contact .ng-contact-channel-list > div + div {
+  margin-top: 1rem;
 }
 
-body.nextgen.nextgen-contact .ng-contact-channel-label {
+body.nextgen.nextgen-contact .ng-contact-channel-list dt {
   color: var(--ng-text-muted);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-channel-list dd {
+  color: var(--ng-text);
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
 }
 
 body.nextgen.nextgen-contact .ng-contact-channel-list a {
   color: var(--ng-primary);
-  font-weight: 700;
-  text-decoration: none;
+  display: table;
+  font-weight: 600;
   word-break: break-word;
 }
 
 body.nextgen.nextgen-contact .ng-contact-channel-list a:hover {
   color: var(--ng-primary-hover);
-  text-decoration: underline;
+}
+
+body.nextgen.nextgen-contact .ng-contact-response {
+  border-top: 1px solid var(--ng-border);
+  color: var(--ng-text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 1.25rem 0 0;
+  padding-top: 1rem;
+}
+
+body.nextgen.nextgen-contact .ng-contact-channels h2 + .ng-contact-response {
+  border-top: 0;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 body.nextgen.nextgen-contact .ng-contact-formlead {
@@ -5905,8 +6377,9 @@ body.nextgen.nextgen-contact .ng-contact-form .col-form-label .icon {
   display: none;
 }
 
-body.nextgen.nextgen-contact .ng-contact-form .fitem.required .col-form-label::after {
-  color: var(--ng-accent);
+body.nextgen.nextgen-contact .ng-contact-form .fitem.required .col-form-label::after,
+body.nextgen.nextgen-contact .ng-contact-form .fitem:has(.form-label-addon .text-danger) .col-form-label label::after {
+  color: var(--ng-red);
   content: " *";
   font-weight: 700;
 }
@@ -5937,6 +6410,14 @@ body.nextgen.nextgen-contact .ng-contact-form textarea.form-control:focus {
   box-shadow: 0 0 0 3px rgba(22, 58, 74, 0.12);
 }
 
+body.nextgen.nextgen-contact .ng-contact-form .form-control.is-invalid {
+  border-color: var(--ng-red);
+}
+
+body.nextgen.nextgen-contact .ng-contact-form .form-control.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(206, 17, 38, 0.15);
+}
+
 body.nextgen.nextgen-contact .ng-contact-form .fdescription.required {
   color: var(--ng-text-muted);
   font-size: 0.85rem;
@@ -5949,7 +6430,7 @@ body.nextgen.nextgen-contact .ng-contact-form .fdescription.required .text-dange
 }
 
 body.nextgen.nextgen-contact .ng-contact-form .fdescription.required::before {
-  color: var(--ng-accent);
+  color: var(--ng-red);
   content: "* ";
   font-weight: 700;
 }
@@ -5975,7 +6456,6 @@ body.nextgen.nextgen-contact .ng-contact-form .btn {
 body.nextgen.nextgen-contact .ng-contact-form .btn-primary {
   background: var(--ng-primary);
   border-color: var(--ng-primary);
-  box-shadow: 0 10px 22px rgba(22, 58, 74, 0.18);
 }
 
 body.nextgen.nextgen-contact .ng-contact-form .btn-primary:hover {
@@ -5987,18 +6467,6 @@ body.nextgen.nextgen-contact .ng-contact-form .btn-secondary {
   background: #fff;
   border: 1px solid var(--ng-border);
   color: var(--ng-text);
-}
-
-@keyframes ng-contact-rise {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 body.nextgen.nextgen-dashboard #page-header {
@@ -6234,7 +6702,7 @@ body.nextgen .ng-dash-ring {
 }
 
 body.nextgen .ng-dash-ring-all {
-  stroke: var(--ng-success);
+  stroke: var(--ng-brand);
 }
 
 body.nextgen .ng-dash-ring-progress {
@@ -6660,4 +7128,119 @@ body.nextgen[id="page-user-preferences"] #region-main .card-text a:hover {
   body.nextgen[id^="page-reportbuilder-"] #region-main .table-responsive {
     -webkit-overflow-scrolling: touch;
   }
+}
+
+/* Long content collapsed behind "Show more". */
+body.nextgen .ng-showmore {
+  --ng-showmore-height: 9rem;
+  scroll-margin-top: 6rem;
+}
+
+body.nextgen .ng-showmore-sm {
+  --ng-showmore-height: 5.5rem;
+}
+
+body.nextgen .ng-showmore-lg {
+  --ng-showmore-height: 16rem;
+}
+
+body.nextgen .ng-showmore.is-collapsible:not(.is-expanded) > .ng-showmore-body {
+  max-height: var(--ng-showmore-height);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+  mask-image: linear-gradient(180deg, #000 55%, transparent);
+}
+
+body.nextgen .ng-showmore-toggle {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  color: var(--ng-primary);
+  display: inline-flex;
+  font-size: 0.92rem;
+  font-weight: 700;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  padding: 0.25rem 0.1rem;
+}
+
+body.nextgen .ng-showmore-toggle[hidden] {
+  display: none;
+}
+
+body.nextgen .ng-showmore-toggle:hover .ng-showmore-label {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+body.nextgen .ng-showmore-toggle:focus-visible {
+  outline: 2px solid var(--ng-primary);
+  outline-offset: 2px;
+}
+
+body.nextgen .ng-showmore-sign {
+  align-items: center;
+  background: var(--ng-yellow);
+  border-radius: 999px;
+  color: var(--ng-brand-ink);
+  display: inline-flex;
+  flex: none;
+  font-size: 1rem;
+  font-weight: 800;
+  height: 1.35rem;
+  justify-content: center;
+  line-height: 1;
+  width: 1.35rem;
+}
+
+@media print {
+  body.nextgen .ng-showmore.is-collapsible > .ng-showmore-body {
+    max-height: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  body.nextgen .ng-showmore-toggle {
+    display: none;
+  }
+}
+
+/* Module page: the section name is the page title, and its activities are the lessons. */
+body.nextgen.single-section-page #page-header {
+  background: transparent;
+  border-bottom: 0;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0;
+}
+
+body.nextgen.single-section-page #page-header h1 {
+  color: var(--ng-ink);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+body.nextgen.single-section-page:not(.editing) .course-content .activity-item {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  box-shadow: none;
+  margin-bottom: -1px;
+}
+
+body.nextgen.single-section-page:not(.editing) .course-content li.activity:first-child .activity-item {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+body.nextgen.single-section-page:not(.editing) .course-content li.activity:last-child .activity-item {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  margin-bottom: 0;
+}
+
+body.nextgen.single-section-page:not(.editing) .course-content .activity-item .activityname a {
+  color: var(--ng-ink);
+  font-weight: 600;
 }

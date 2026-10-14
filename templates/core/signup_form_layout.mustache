@@ -1,0 +1,43 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template core/signup_form_layout
+
+    NextGen signup page: shares the welcome line and Login/Register switch with the login form.
+
+    Example context (json):
+    {
+        "logourl": "https://moodle.org/logo/moodle-logo.svg",
+        "sitename": "Site name",
+        "formhtml": "<p>(Form html would go here)</p>"
+    }
+}}
+<div class="signupform ng-auth-form">
+    {{#logourl}}
+        <div id="loginlogo" class="ng-auth-logo">
+            <img id="logoimage" src="{{logourl}}" class="ng-brand-mark" alt="{{sitename}}"/>
+        </div>
+    {{/logourl}}
+    <p class="ng-auth-welcome">{{#str}}authwelcome, theme_nextgen, {{sitename}}{{/str}}</p>
+    <nav class="ng-auth-switch" aria-label="{{#str}}authswitchlabel, theme_nextgen{{/str}}">
+        <a class="ng-auth-switch-link" href="{{config.wwwroot}}/login/index.php">{{#str}}authswitchlogin, theme_nextgen{{/str}}</a>
+        <a class="ng-auth-switch-link active" href="{{config.wwwroot}}/login/signup.php" aria-current="page">{{#str}}authswitchregister, theme_nextgen{{/str}}</a>
+    </nav>
+    <h1 class="ng-auth-heading login-heading">{{#str}}authsignupheading, theme_nextgen{{/str}}</h1>
+    <p class="ng-auth-lead">{{#str}}authsignuplead, theme_nextgen{{/str}}</p>
+    {{{formhtml}}}
+</div>

@@ -115,63 +115,9 @@
         </section>
     {{/hascategories}}
 
-    <section class="ng-partners" aria-labelledby="ng-partners-heading">
-        <div class="ng-landing-inner">
-            <h2 id="ng-partners-heading">{{#str}}partnersheading, theme_nextgen{{/str}}</h2>
-            <ul class="ng-partner-row">
-                <li>
-                    <span class="visually-hidden">Atos</span>
-                    <svg class="ng-partner-logo ng-partner-atos" viewBox="0 0 118 36" aria-hidden="true">
-                        <text x="0" y="29" fill="#0072CE" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700">Atos</text>
-                    </svg>
-                </li>
-                <li>
-                    <span class="visually-hidden">Cisco</span>
-                    <svg class="ng-partner-logo ng-partner-cisco" viewBox="0 0 168 52" aria-hidden="true">
-                        <g fill="#049FD9">
-                            <rect x="28" y="18" width="5" height="10" rx="1"/>
-                            <rect x="37" y="13" width="5" height="15" rx="1"/>
-                            <rect x="46" y="8" width="5" height="20" rx="1"/>
-                            <rect x="55" y="4" width="5" height="24" rx="1"/>
-                            <rect x="64" y="1" width="5" height="27" rx="1"/>
-                            <rect x="73" y="4" width="5" height="24" rx="1"/>
-                            <rect x="82" y="8" width="5" height="20" rx="1"/>
-                            <rect x="91" y="13" width="5" height="15" rx="1"/>
-                            <rect x="100" y="18" width="5" height="10" rx="1"/>
-                        </g>
-                        <text x="18" y="49" fill="#049FD9" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="0.5">cisco</text>
-                    </svg>
-                </li>
-                <li>
-                    <span class="visually-hidden">EMC</span>
-                    <svg class="ng-partner-logo ng-partner-emc" viewBox="0 0 108 40" aria-hidden="true">
-                        <text x="0" y="32" fill="#1A6BB5" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="700">EMC</text>
-                        <text x="86" y="14" fill="#1A6BB5" font-family="Georgia, 'Times New Roman', serif" font-size="16" font-weight="700">2</text>
-                    </svg>
-                </li>
-                <li>
-                    <span class="visually-hidden">Microsoft</span>
-                    <svg class="ng-partner-logo ng-partner-microsoft" viewBox="0 0 40 40" aria-hidden="true">
-                        <rect x="1" y="1" width="17" height="17" fill="#F25022"/>
-                        <rect x="22" y="1" width="17" height="17" fill="#7FBA00"/>
-                        <rect x="1" y="22" width="17" height="17" fill="#00A4EF"/>
-                        <rect x="22" y="22" width="17" height="17" fill="#FFB900"/>
-                    </svg>
-                </li>
-                <li>
-                    <span class="visually-hidden">IBM</span>
-                    <svg class="ng-partner-logo ng-partner-ibm" viewBox="0 0 96 36" aria-hidden="true">
-                        <defs>
-                            <pattern id="ng-ibm-stripes" width="5" height="5" patternUnits="userSpaceOnUse">
-                                <rect width="5" height="2.6" fill="#1A1A1A"/>
-                            </pattern>
-                        </defs>
-                        <text x="0" y="30" fill="url(#ng-ibm-stripes)" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="800" letter-spacing="1">IBM</text>
-                    </svg>
-                </li>
-            </ul>
-        </div>
-    </section>
+    {{#partnersblock}}
+        {{> theme_nextgen/partners }}
+    {{/partnersblock}}
 
     <section class="ng-section ng-faculty" id="instructors">
         <div class="ng-landing-inner ng-faculty-grid">
@@ -212,21 +158,18 @@
         </div>
     </section>
 
-    {{#hasquotes}}
-        <section class="ng-section">
-            <div class="ng-landing-inner">
-                <h2>{{#str}}quotesheading, theme_nextgen{{/str}}</h2>
-                <div class="ng-quote-grid">
-                    {{#quotes}}
-                        <blockquote class="ng-quote">
-                            <p>{{quote}}</p>
-                            <footer>{{attribution}}</footer>
-                        </blockquote>
-                    {{/quotes}}
-                </div>
-            </div>
-        </section>
-    {{/hasquotes}}
+    <section class="ng-section ng-stats">
+        <div class="ng-landing-inner">
+            <ul class="ng-stats-list" aria-label="{{#str}}platformstats, theme_nextgen{{/str}}">
+                {{#stats}}
+                    <li class="ng-stat">
+                        <strong>{{value}}</strong>
+                        <span>{{label}}</span>
+                    </li>
+                {{/stats}}
+            </ul>
+        </div>
+    </section>
 
     <section class="ng-cta">
         <div class="ng-landing-inner">

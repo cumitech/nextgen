@@ -17,22 +17,17 @@
 {{!
     @template core/login_panel
 
-    Login panel copy. Site auth instructions replace the default message when set.
+    Photo card beside the login and signup forms. Site auth instructions replace the default copy when set.
 }}
 <div class="login-layout-left-content ng-login-panel">
-    {{^leftinstructions}}
-        <div>
-            <span class="ng-login-accent" aria-hidden="true"></span>
-            <h1 class="ng-login-title">{{#str}}logintitle, theme_nextgen{{/str}}</h1>
+    <div class="ng-login-panel-copy">
+        {{^leftinstructions}}
+            <p class="ng-login-title">{{#str}}logintitle, theme_nextgen{{/str}}</p>
             <p class="ng-login-copy">{{#str}}logindescription, theme_nextgen{{/str}}</p>
-        </div>
-        <div class="ng-login-actions">
-            <a class="ng-login-browse" href="{{config.wwwroot}}/course/index.php">{{#str}}authbrowse, theme_nextgen{{/str}}</a>
-            <div class="ng-login-social">{{{ output.nextgen_social_links }}}</div>
-        </div>
-    {{/leftinstructions}}
-    {{#leftinstructions}}
-        <div class="ng-login-instructions">{{{leftinstructions}}}</div>
+        {{/leftinstructions}}
+        {{#leftinstructions}}
+            <div class="ng-login-instructions">{{{leftinstructions}}}</div>
+        {{/leftinstructions}}
         <div class="ng-login-social">{{{ output.nextgen_social_links }}}</div>
-    {{/leftinstructions}}
+    </div>
 </div>

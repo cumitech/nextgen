@@ -75,5 +75,28 @@ function xmldb_theme_nextgen_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026101400, 'theme', 'nextgen');
     }
 
+    if ($oldversion < 2026101401) {
+        \theme_nextgen\local\organisation::install_defaults();
+        upgrade_plugin_savepoint(true, 2026101401, 'theme', 'nextgen');
+    }
+
+    if ($oldversion < 2026101402) {
+        $accent = get_config('theme_nextgen', 'accentcolor');
+        if ($accent === false || $accent === '' || strtoupper($accent) === '#C4842A') {
+            set_config('accentcolor', '#FCD116', 'theme_nextgen');
+        }
+        upgrade_plugin_savepoint(true, 2026101402, 'theme', 'nextgen');
+    }
+
+    if ($oldversion < 2026101403) {
+        theme_nextgen_publish_public_paths();
+        upgrade_plugin_savepoint(true, 2026101403, 'theme', 'nextgen');
+    }
+
+    if ($oldversion < 2026101404) {
+        theme_nextgen_publish_public_paths();
+        upgrade_plugin_savepoint(true, 2026101404, 'theme', 'nextgen');
+    }
+
     return true;
 }

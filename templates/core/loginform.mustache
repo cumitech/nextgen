@@ -22,12 +22,19 @@
 }}
 <div class="loginform ng-auth-form">
     {{#logourl}}
-    <div id="loginlogo" class="d-flex mb-4">
-        <img id="logoimage" src="{{logourl}}" class="ng-brand-mark" alt="{{sitename}}"/>
-    </div>
+        <div id="loginlogo" class="ng-auth-logo">
+            <img id="logoimage" src="{{logourl}}" class="ng-brand-mark" alt="{{sitename}}"/>
+        </div>
     {{/logourl}}
-    <h1 class="ng-auth-heading">{{#str}}loginwelcomeback{{/str}}</h1>
-    <p class="ng-auth-lead">{{#str}} loginto, core, {{sitename}} {{/str}}</p>
+    <p class="ng-auth-welcome">{{#str}}authwelcome, theme_nextgen, {{sitename}}{{/str}}</p>
+    {{#cansignup}}
+        <nav class="ng-auth-switch" aria-label="{{#str}}authswitchlabel, theme_nextgen{{/str}}">
+            <a class="ng-auth-switch-link active" href="{{loginurl}}" aria-current="page">{{#str}}authswitchlogin, theme_nextgen{{/str}}</a>
+            <a class="ng-auth-switch-link" href="{{signupurl}}">{{#str}}authswitchregister, theme_nextgen{{/str}}</a>
+        </nav>
+    {{/cansignup}}
+    <h1 class="ng-auth-heading">{{#str}}authloginheading, theme_nextgen{{/str}}</h1>
+    <p class="ng-auth-lead">{{#str}}authloginlead, theme_nextgen{{/str}}</p>
     {{#maintenance}}
         <div class="alert alert-danger login-maintenance">
             {{{maintenance}}}
@@ -78,7 +85,7 @@
                 </div>
             {{/recaptcha}}
             <div class="login-form-submit">
-                <button class="btn btn-primary w-100" type="submit" id="loginbtn">{{#str}}login{{/str}}</button>
+                <button class="btn btn-primary" type="submit" id="loginbtn">{{#str}}login{{/str}}</button>
             </div>
         </form>
     {{/showloginform}}
@@ -133,7 +140,7 @@
             </form>
         {{/canloginasguest}}
     {{/hasidentityproviders}}
-    <p class="ng-auth-browse d-lg-none">
+    <p class="ng-auth-browse">
         <a href="{{config.wwwroot}}/course/index.php">{{#str}}authbrowse, theme_nextgen{{/str}}</a>
     </p>
     {{#languagemenu}}
