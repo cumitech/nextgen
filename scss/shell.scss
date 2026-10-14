@@ -379,15 +379,13 @@ body.nextgen .ng-footer-heading {
 }
 
 body.nextgen .ng-footer-links,
-body.nextgen .ng-social-list,
 body.nextgen .ng-footer-policies {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-body.nextgen .ng-footer-links li + li,
-body.nextgen .ng-social-list li + li {
+body.nextgen .ng-footer-links li + li {
   margin-top: 0.45rem;
 }
 
@@ -401,16 +399,289 @@ body.nextgen .ng-footer a:hover {
   color: #fff;
 }
 
-body.nextgen .ng-social {
-  align-items: center;
-  display: inline-flex;
-  gap: 0.5rem;
-  text-decoration: none;
+body.nextgen {
+  --ng-brand-facebook: #1877f2;
+  --ng-brand-instagram: linear-gradient(45deg, #f58529 0%, #dd2a7b 50%, #8134af 80%, #515bd4 100%);
+  --ng-brand-tiktok: #010101;
+  --ng-brand-x: #000;
+  --ng-brand-linkedin: #0a66c2;
+  --ng-brand-youtube: #ff0000;
 }
 
-body.nextgen .ng-social-icon {
+body.nextgen .ng-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.nextgen .ng-social-link {
   align-items: center;
   display: inline-flex;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.nextgen .ng-social-mark {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+}
+
+body.nextgen .ng-social-mark svg {
+  display: block;
+}
+
+/* Footer: round icon buttons that take the network colour on hover. */
+body.nextgen .ng-footer-social-lead {
+  color: #c5d5dc;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0 0 0.9rem;
+  max-width: 24ch;
+}
+
+body.nextgen .ng-footer .ng-social-links-footer .ng-social-link,
+body.nextgen .ng-social-links-auth .ng-social-link {
+  border-radius: 50%;
+  height: 2.5rem;
+  justify-content: center;
+  width: 2.5rem;
+}
+
+body.nextgen .ng-footer .ng-social-links-footer .ng-social-link {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+body.nextgen .ng-footer .ng-social-links-footer .ng-social-link:hover,
+body.nextgen .ng-footer .ng-social-links-footer .ng-social-link:focus-visible {
+  border-color: transparent;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+body.nextgen .ng-social-links-footer .ng-social-facebook:hover,
+body.nextgen .ng-social-links-footer .ng-social-facebook:focus-visible,
+body.nextgen .ng-social-links-auth .ng-social-facebook:hover,
+body.nextgen .ng-social-links-auth .ng-social-facebook:focus-visible {
+  background: var(--ng-brand-facebook);
+}
+
+body.nextgen .ng-social-links-footer .ng-social-instagram:hover,
+body.nextgen .ng-social-links-footer .ng-social-instagram:focus-visible,
+body.nextgen .ng-social-links-auth .ng-social-instagram:hover,
+body.nextgen .ng-social-links-auth .ng-social-instagram:focus-visible {
+  background: var(--ng-brand-instagram);
+}
+
+body.nextgen .ng-social-links-footer .ng-social-tiktok:hover,
+body.nextgen .ng-social-links-footer .ng-social-tiktok:focus-visible,
+body.nextgen .ng-social-links-auth .ng-social-tiktok:hover,
+body.nextgen .ng-social-links-auth .ng-social-tiktok:focus-visible {
+  background: var(--ng-brand-tiktok);
+  box-shadow: -2px -2px 0 #25f4ee, 2px 2px 0 #fe2c55;
+}
+
+body.nextgen .ng-social-links-footer .ng-social-x:hover,
+body.nextgen .ng-social-links-footer .ng-social-x:focus-visible,
+body.nextgen .ng-social-links-auth .ng-social-x:hover,
+body.nextgen .ng-social-links-auth .ng-social-x:focus-visible {
+  background: var(--ng-brand-x);
+}
+
+body.nextgen .ng-social-links-footer .ng-social-linkedin:hover,
+body.nextgen .ng-social-links-footer .ng-social-linkedin:focus-visible,
+body.nextgen .ng-social-links-auth .ng-social-linkedin:hover,
+body.nextgen .ng-social-links-auth .ng-social-linkedin:focus-visible {
+  background: var(--ng-brand-linkedin);
+}
+
+body.nextgen .ng-social-links-footer .ng-social-youtube:hover,
+body.nextgen .ng-social-links-footer .ng-social-youtube:focus-visible,
+body.nextgen .ng-social-links-auth .ng-social-youtube:hover,
+body.nextgen .ng-social-links-auth .ng-social-youtube:focus-visible {
+  background: var(--ng-brand-youtube);
+}
+
+/* Login: icons on the dark welcome panel; the footer copy serves small screens. */
+body.nextgen .ng-social-links-auth {
+  justify-content: center;
+  margin: 0 0 0.85rem;
+}
+
+body.nextgen.pagelayout-login .ng-login-social .ng-social-links-auth {
+  justify-content: flex-start;
+  margin: 1.1rem 0 0;
+}
+
+body.nextgen.pagelayout-login .ng-login-social:empty {
+  display: none;
+}
+
+body.nextgen.pagelayout-login .ng-login-social .ng-social-links-auth .ng-social-link {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+body.nextgen.pagelayout-login .ng-login-social .ng-social-links-auth .ng-social-link:hover,
+body.nextgen.pagelayout-login .ng-login-social .ng-social-links-auth .ng-social-link:focus-visible {
+  border-color: transparent;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+@media (min-width: 992px) {
+  body.nextgen.pagelayout-login .ng-auth-footer .ng-social-links-auth {
+    display: none;
+  }
+}
+
+body.nextgen.pagelayout-login .ng-auth-footer .ng-social-links-auth .ng-social-link {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  color: var(--ng-text);
+}
+
+body.nextgen.pagelayout-login .ng-auth-footer .ng-social-links-auth .ng-social-link:hover,
+body.nextgen.pagelayout-login .ng-auth-footer .ng-social-links-auth .ng-social-link:focus-visible {
+  border-color: transparent;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Contact page: labelled rows with handle and an arrow. */
+body.nextgen .ng-social-links-card {
+  display: grid;
+  gap: 0.6rem;
+}
+
+body.nextgen .ng-social-links-card .ng-social-link,
+body.nextgen .ng-social-links-tiles .ng-social-link {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 14px;
+  color: var(--ng-text);
+  gap: 0.8rem;
+  padding: 0.6rem 0.85rem 0.6rem 0.6rem;
+  width: 100%;
+}
+
+body.nextgen .ng-social-links-card .ng-social-link:hover,
+body.nextgen .ng-social-links-card .ng-social-link:focus-visible,
+body.nextgen .ng-social-links-tiles .ng-social-link:hover,
+body.nextgen .ng-social-links-tiles .ng-social-link:focus-visible {
+  border-color: rgba(22, 58, 74, 0.28);
+  box-shadow: 0 10px 24px rgba(16, 40, 51, 0.1);
+  color: var(--ng-text);
+  transform: translateY(-2px);
+}
+
+body.nextgen .ng-social-links-card .ng-social-mark,
+body.nextgen .ng-social-links-tiles .ng-social-mark {
+  border-radius: 10px;
+  color: #fff;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+body.nextgen .ng-social-links-card .ng-social-facebook .ng-social-mark,
+body.nextgen .ng-social-links-tiles .ng-social-facebook .ng-social-mark {
+  background: var(--ng-brand-facebook);
+}
+
+body.nextgen .ng-social-links-card .ng-social-instagram .ng-social-mark,
+body.nextgen .ng-social-links-tiles .ng-social-instagram .ng-social-mark {
+  background: var(--ng-brand-instagram);
+}
+
+body.nextgen .ng-social-links-card .ng-social-tiktok .ng-social-mark,
+body.nextgen .ng-social-links-tiles .ng-social-tiktok .ng-social-mark {
+  background: var(--ng-brand-tiktok);
+  box-shadow: inset -2px -2px 0 rgba(254, 44, 85, 0.85), inset 2px 2px 0 rgba(37, 244, 238, 0.85);
+}
+
+body.nextgen .ng-social-links-card .ng-social-x .ng-social-mark,
+body.nextgen .ng-social-links-tiles .ng-social-x .ng-social-mark {
+  background: var(--ng-brand-x);
+}
+
+body.nextgen .ng-social-links-card .ng-social-linkedin .ng-social-mark,
+body.nextgen .ng-social-links-tiles .ng-social-linkedin .ng-social-mark {
+  background: var(--ng-brand-linkedin);
+}
+
+body.nextgen .ng-social-links-card .ng-social-youtube .ng-social-mark,
+body.nextgen .ng-social-links-tiles .ng-social-youtube .ng-social-mark {
+  background: var(--ng-brand-youtube);
+}
+
+body.nextgen .ng-social-text {
+  display: grid;
+  flex: 1 1 auto;
+  gap: 0.05rem;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+body.nextgen .ng-social-name {
+  font-weight: 700;
+}
+
+body.nextgen .ng-social-handle {
+  color: var(--ng-text-muted);
+  font-size: 0.85rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.nextgen .ng-social-arrow {
+  color: var(--ng-text-muted);
+  display: inline-flex;
+  flex: 0 0 auto;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+body.nextgen .ng-social-link:hover .ng-social-arrow,
+body.nextgen .ng-social-link:focus-visible .ng-social-arrow {
+  color: var(--ng-accent);
+  transform: translate(2px, -2px);
+}
+
+/* About page: a row of labelled tiles. */
+body.nextgen .ng-social-links-tiles {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+body.nextgen .ng-social-links-tiles .ng-social-link {
+  gap: 0.7rem;
+  padding-right: 0.7rem;
+}
+
+body.nextgen .ng-social-links-tiles .ng-social-arrow {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.nextgen .ng-social-link,
+  body.nextgen .ng-social-arrow {
+    transition: none;
+  }
+
+  body.nextgen .ng-social-link:hover,
+  body.nextgen .ng-social-link:focus-visible,
+  body.nextgen .ng-social-link:hover .ng-social-arrow {
+    transform: none;
+  }
 }
 
 body.nextgen .ng-footer-bar {
@@ -809,6 +1080,152 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
   color: var(--ng-text-muted);
 }
 
+@media (max-width: 767.98px) {
+  body.nextgen.pagelayout-login {
+    background: var(--ng-background);
+  }
+
+  body.nextgen.pagelayout-login #page {
+    min-height: 100vh;
+  }
+
+  body.nextgen.pagelayout-login #page .login-layout-left {
+    display: none;
+  }
+
+  body.nextgen.pagelayout-login .login-layout-right {
+    background: var(--ng-background);
+    padding: 0;
+  }
+
+  body.nextgen.pagelayout-login .login-container {
+    margin: 0 auto;
+    max-width: none;
+    padding: 0;
+    width: min(100%, 32rem);
+  }
+
+  body.nextgen.pagelayout-login .ng-auth-form {
+    padding: 1rem 0 0;
+  }
+
+  body.nextgen.pagelayout-login .ng-auth-form #loginlogo {
+    margin-bottom: 1.15rem;
+  }
+
+  body.nextgen.pagelayout-login .ng-auth-form #loginlogo img {
+    height: 48px;
+    width: 48px;
+  }
+
+  body.nextgen.pagelayout-login .ng-auth-heading {
+    font-size: clamp(2rem, 7vw, 2.8rem);
+    line-height: 1.08;
+  }
+
+  body.nextgen.pagelayout-login .ng-auth-lead {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1.35rem;
+  }
+
+  body.nextgen.pagelayout-login .login-form .form-control,
+  body.nextgen.pagelayout-login .login-container .mform .form-control,
+  body.nextgen.pagelayout-login .login-container .mform .form-select,
+  body.nextgen.pagelayout-login .login-container .mform select,
+  body.nextgen.pagelayout-login .login-container .mform textarea {
+    border-radius: 14px;
+    font-size: 1.02rem;
+    min-height: 52px;
+  }
+
+  body.nextgen.pagelayout-login .ng-auth-forgot {
+    margin: 0 0 1.1rem;
+    text-align: left;
+  }
+
+  body.nextgen.pagelayout-login #loginbtn,
+  body.nextgen.pagelayout-login .login-container .btn-primary,
+  body.nextgen.pagelayout-login .login-container input[type="submit"].btn-primary,
+  body.nextgen.pagelayout-login .login-identityprovider-btn,
+  body.nextgen.pagelayout-login #loginguestbtn {
+    border-radius: 14px;
+    min-height: 52px;
+  }
+
+  body.nextgen.pagelayout-login .login-container .login-separator {
+    margin-top: 1.4rem;
+  }
+
+  body.nextgen.pagelayout-login .ng-auth-signup {
+    text-align: left;
+  }
+
+  body.nextgen.pagelayout-login .ng-auth-browse {
+    margin-top: 1rem;
+  }
+
+  body.nextgen.pagelayout-login .ng-auth-footer {
+    padding: 0 1rem 1.25rem;
+  }
+
+  body.nextgen.nextgen-dashboard #page.drawers .main-inner,
+  body.nextgen.nextgen-dashboard #region-main {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash {
+    gap: 0.85rem;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-grid {
+    gap: 0.85rem;
+    grid-template-columns: 1fr;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-card,
+  body.nextgen.nextgen-dashboard .block .card-body {
+    padding: 1rem;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-hero {
+    border-radius: 0;
+    min-height: 8.5rem;
+    padding: 1.2rem 1rem 1.5rem;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-hero-copy {
+    max-width: none;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-rings {
+    gap: 0.7rem;
+    justify-content: space-between;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-ring-wrap {
+    height: 72px;
+    width: 72px;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-ring-value {
+    font-size: 1.05rem;
+  }
+
+  body.nextgen .block_myoverview .card-grid .col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  body.nextgen .card.course-card .card-body,
+  body.nextgen .card.course-card .ng-course-body,
+  body.nextgen .card.course-card .ng-course-action {
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+  }
+}
+
 @media (min-width: 768px) {
   body.nextgen .ng-footer-grid {
     grid-template-columns: minmax(14rem, 1.5fr) repeat(2, minmax(9rem, 1fr));
@@ -818,6 +1235,10 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
 @media (min-width: 1024px) {
   body.nextgen .ng-footer-grid {
     grid-template-columns: minmax(16rem, 1.6fr) repeat(3, minmax(8rem, 1fr));
+  }
+
+  body.nextgen .ng-footer-grid:has(> .ng-footer-social) {
+    grid-template-columns: minmax(15rem, 1.5fr) repeat(3, minmax(7.5rem, 1fr)) minmax(11.5rem, 1.2fr);
   }
 
   body.nextgen .ng-brand-name {
@@ -4208,6 +4629,21 @@ body.nextgen .ng-outline-item a:hover {
   text-decoration: underline;
 }
 
+body.nextgen .ng-outline-item span {
+  align-items: center;
+  display: inline-flex;
+}
+
+body.nextgen .ng-outline-lock {
+  color: var(--ng-text-muted);
+  flex: 0 0 auto;
+  opacity: 0.85;
+}
+
+body.nextgen .ng-outline-lock .icon {
+  font-size: 0.8rem;
+}
+
 body.nextgen .ng-outline-modicon {
   height: 1.25rem;
   width: 1.25rem;
@@ -5092,6 +5528,50 @@ body.nextgen.nextgen-about .ng-about-cta .btn-primary:hover {
   color: var(--ng-secondary);
 }
 
+body.nextgen.nextgen-about .ng-about-social {
+  background: #fff;
+  border: 1px solid rgba(22, 58, 74, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 18px 44px rgba(16, 40, 51, 0.1);
+  margin-top: 1.25rem;
+  padding: 1.55rem 1.65rem 1.65rem;
+}
+
+body.nextgen.nextgen-about .ng-about-social-copy {
+  margin-bottom: 1.15rem;
+  max-width: 40rem;
+}
+
+body.nextgen.nextgen-about .ng-about-social h2 {
+  color: var(--ng-text);
+  font-size: 1.35rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+}
+
+body.nextgen.nextgen-about .ng-about-social h2::before {
+  background: var(--ng-accent);
+  border-radius: 999px;
+  content: "";
+  display: block;
+  height: 3px;
+  margin-bottom: 0.85rem;
+  width: 2.25rem;
+}
+
+body.nextgen.nextgen-about .ng-about-social p {
+  color: var(--ng-text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+body.nextgen.nextgen-contact .ng-contact-social p {
+  color: var(--ng-text-muted);
+  line-height: 1.5;
+  margin: 0 0 1rem;
+}
+
 body.nextgen .ng-public-wrap {
   max-width: 760px;
 }
@@ -5782,4 +6262,402 @@ body.nextgen.nextgen-dashboard .block .card-title {
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: 1rem;
+}
+
+/* Give core account and utility pages a cohesive NextGen surface. */
+body.nextgen.path-user #page-content,
+body.nextgen.path-grade #page-content,
+body.nextgen.path-calendar #page-content,
+body.nextgen.path-reportbuilder #page-content,
+body.nextgen[id^="page-grade-"] #page-content,
+body.nextgen[id^="page-calendar-"] #page-content,
+body.nextgen[id^="page-reportbuilder-"] #page-content {
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 78rem;
+  padding: 1.5rem;
+  width: 100%;
+}
+
+body.nextgen.path-user #region-main,
+body.nextgen.path-grade #region-main,
+body.nextgen.path-calendar #region-main,
+body.nextgen.path-reportbuilder #region-main,
+body.nextgen[id^="page-grade-"] #region-main,
+body.nextgen[id^="page-calendar-"] #region-main,
+body.nextgen[id^="page-reportbuilder-"] #region-main {
+  background: transparent;
+  border: 0;
+  min-width: 0;
+}
+
+body.nextgen.path-user #page-header h1,
+body.nextgen.path-grade #page-header h1,
+body.nextgen.path-calendar #page-header h1,
+body.nextgen.path-reportbuilder #page-header h1,
+body.nextgen[id^="page-grade-"] #page-header h1,
+body.nextgen[id^="page-calendar-"] #page-header h1,
+body.nextgen[id^="page-reportbuilder-"] #page-header h1 {
+  color: var(--ng-text);
+  font-size: clamp(1.65rem, 4vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+body.nextgen.path-user #region-main > .card,
+body.nextgen.path-grade #region-main > .card,
+body.nextgen.path-calendar #region-main > .card,
+body.nextgen.path-reportbuilder #region-main > .card,
+body.nextgen[id^="page-grade-"] #region-main > .card,
+body.nextgen[id^="page-calendar-"] #region-main > .card,
+body.nextgen[id^="page-reportbuilder-"] #region-main > .card {
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  box-shadow: 0 8px 26px rgba(16, 40, 51, 0.06);
+}
+
+body.nextgen.path-user #region-main .card-header,
+body.nextgen.path-grade #region-main .card-header,
+body.nextgen.path-calendar #region-main .card-header,
+body.nextgen.path-reportbuilder #region-main .card-header,
+body.nextgen[id^="page-grade-"] #region-main .card-header,
+body.nextgen[id^="page-calendar-"] #region-main .card-header,
+body.nextgen[id^="page-reportbuilder-"] #region-main .card-header {
+  background: linear-gradient(180deg, #fff, #f8fafb);
+  border-bottom: 1px solid var(--ng-border);
+  border-radius: 15px 15px 0 0;
+}
+
+body.nextgen.path-user #region-main h2,
+body.nextgen.path-grade #region-main h2,
+body.nextgen.path-calendar #region-main h2,
+body.nextgen.path-reportbuilder #region-main h2,
+body.nextgen[id^="page-grade-"] #region-main h2,
+body.nextgen[id^="page-calendar-"] #region-main h2,
+body.nextgen[id^="page-reportbuilder-"] #region-main h2 {
+  color: var(--ng-text);
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+body.nextgen.path-user #region-main .breadcrumb,
+body.nextgen.path-grade #region-main .breadcrumb,
+body.nextgen.path-calendar #region-main .breadcrumb,
+body.nextgen.path-reportbuilder #region-main .breadcrumb,
+body.nextgen[id^="page-grade-"] #region-main .breadcrumb,
+body.nextgen[id^="page-calendar-"] #region-main .breadcrumb,
+body.nextgen[id^="page-reportbuilder-"] #region-main .breadcrumb {
+  color: var(--ng-text-muted);
+}
+
+body.nextgen.path-user #region-main .nav-tabs,
+body.nextgen.path-grade #region-main .nav-tabs,
+body.nextgen.path-calendar #region-main .nav-tabs,
+body.nextgen.path-reportbuilder #region-main .nav-tabs,
+body.nextgen[id^="page-grade-"] #region-main .nav-tabs,
+body.nextgen[id^="page-calendar-"] #region-main .nav-tabs,
+body.nextgen[id^="page-reportbuilder-"] #region-main .nav-tabs {
+  border-bottom-color: var(--ng-border);
+  gap: 0.25rem;
+}
+
+body.nextgen.path-user #region-main .nav-tabs .nav-link,
+body.nextgen.path-grade #region-main .nav-tabs .nav-link,
+body.nextgen.path-calendar #region-main .nav-tabs .nav-link,
+body.nextgen.path-reportbuilder #region-main .nav-tabs .nav-link,
+body.nextgen[id^="page-grade-"] #region-main .nav-tabs .nav-link,
+body.nextgen[id^="page-calendar-"] #region-main .nav-tabs .nav-link,
+body.nextgen[id^="page-reportbuilder-"] #region-main .nav-tabs .nav-link {
+  border-radius: 10px 10px 0 0;
+  color: var(--ng-text-muted);
+  font-weight: 600;
+}
+
+body.nextgen.path-user #region-main .nav-tabs .nav-link.active,
+body.nextgen.path-grade #region-main .nav-tabs .nav-link.active,
+body.nextgen.path-calendar #region-main .nav-tabs .nav-link.active,
+body.nextgen.path-reportbuilder #region-main .nav-tabs .nav-link.active,
+body.nextgen[id^="page-grade-"] #region-main .nav-tabs .nav-link.active,
+body.nextgen[id^="page-calendar-"] #region-main .nav-tabs .nav-link.active,
+body.nextgen[id^="page-reportbuilder-"] #region-main .nav-tabs .nav-link.active {
+  border-color: var(--ng-border) var(--ng-border) #fff;
+  color: var(--ng-primary);
+}
+
+body.nextgen.path-user #region-main .form-control,
+body.nextgen.path-user #region-main .form-select,
+body.nextgen.path-grade #region-main .form-control,
+body.nextgen.path-grade #region-main .form-select,
+body.nextgen.path-calendar #region-main .form-control,
+body.nextgen.path-calendar #region-main .form-select,
+body.nextgen.path-reportbuilder #region-main .form-control,
+body.nextgen.path-reportbuilder #region-main .form-select,
+body.nextgen[id^="page-grade-"] #region-main .form-control,
+body.nextgen[id^="page-grade-"] #region-main .form-select,
+body.nextgen[id^="page-calendar-"] #region-main .form-control,
+body.nextgen[id^="page-calendar-"] #region-main .form-select,
+body.nextgen[id^="page-reportbuilder-"] #region-main .form-control,
+body.nextgen[id^="page-reportbuilder-"] #region-main .form-select {
+  border-color: #d5dee3;
+  border-radius: 10px;
+  min-height: 42px;
+}
+
+body.nextgen.path-user #region-main .form-control:focus,
+body.nextgen.path-user #region-main .form-select:focus,
+body.nextgen.path-grade #region-main .form-control:focus,
+body.nextgen.path-grade #region-main .form-select:focus,
+body.nextgen.path-calendar #region-main .form-control:focus,
+body.nextgen.path-calendar #region-main .form-select:focus,
+body.nextgen.path-reportbuilder #region-main .form-control:focus,
+body.nextgen.path-reportbuilder #region-main .form-select:focus,
+body.nextgen[id^="page-grade-"] #region-main .form-control:focus,
+body.nextgen[id^="page-grade-"] #region-main .form-select:focus,
+body.nextgen[id^="page-calendar-"] #region-main .form-control:focus,
+body.nextgen[id^="page-calendar-"] #region-main .form-select:focus,
+body.nextgen[id^="page-reportbuilder-"] #region-main .form-control:focus,
+body.nextgen[id^="page-reportbuilder-"] #region-main .form-select:focus {
+  border-color: var(--ng-primary);
+  box-shadow: 0 0 0 3px rgba(22, 58, 74, 0.12);
+}
+
+body.nextgen.path-user #region-main table.generaltable,
+body.nextgen.path-grade #region-main table.generaltable,
+body.nextgen.path-calendar #region-main table.generaltable,
+body.nextgen.path-reportbuilder #region-main table.generaltable,
+body.nextgen[id^="page-grade-"] #region-main table.generaltable,
+body.nextgen[id^="page-calendar-"] #region-main table.generaltable,
+body.nextgen[id^="page-reportbuilder-"] #region-main table.generaltable {
+  --bs-table-bg: #fff;
+  --bs-table-border-color: var(--ng-border);
+  border-color: var(--ng-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+body.nextgen.path-user #region-main table.generaltable thead th,
+body.nextgen.path-grade #region-main table.generaltable thead th,
+body.nextgen.path-calendar #region-main table.generaltable thead th,
+body.nextgen.path-reportbuilder #region-main table.generaltable thead th,
+body.nextgen[id^="page-grade-"] #region-main table.generaltable thead th,
+body.nextgen[id^="page-calendar-"] #region-main table.generaltable thead th,
+body.nextgen[id^="page-reportbuilder-"] #region-main table.generaltable thead th {
+  background: #f4f7f8;
+  color: var(--ng-text);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+body.nextgen.path-user #region-main table.generaltable td,
+body.nextgen.path-user #region-main table.generaltable th,
+body.nextgen.path-grade #region-main table.generaltable td,
+body.nextgen.path-grade #region-main table.generaltable th,
+body.nextgen.path-calendar #region-main table.generaltable td,
+body.nextgen.path-calendar #region-main table.generaltable th,
+body.nextgen.path-reportbuilder #region-main table.generaltable td,
+body.nextgen.path-reportbuilder #region-main table.generaltable th,
+body.nextgen[id^="page-grade-"] #region-main table.generaltable td,
+body.nextgen[id^="page-grade-"] #region-main table.generaltable th,
+body.nextgen[id^="page-calendar-"] #region-main table.generaltable td,
+body.nextgen[id^="page-calendar-"] #region-main table.generaltable th,
+body.nextgen[id^="page-reportbuilder-"] #region-main table.generaltable td,
+body.nextgen[id^="page-reportbuilder-"] #region-main table.generaltable th {
+  vertical-align: middle;
+}
+
+body.nextgen.path-user #region-main .userprofile {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(16, 40, 51, 0.07);
+  margin: 0 auto;
+  max-width: 68rem;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+body.nextgen.path-user #region-main .userprofile > .description {
+  background: var(--ng-muted);
+  border-radius: 12px;
+  color: var(--ng-text-muted);
+  line-height: 1.7;
+  padding: 1rem 1.15rem;
+}
+
+body.nextgen.path-user #region-main .userprofile .userpicture {
+  border: 4px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(16, 40, 51, 0.16);
+  height: clamp(5rem, 14vw, 8rem);
+  width: clamp(5rem, 14vw, 8rem);
+}
+
+body.nextgen.path-user #region-main .userprofile .profile_tree .node_category {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(16, 40, 51, 0.04);
+  margin-bottom: 1rem;
+  padding: 1rem 1.15rem;
+}
+
+body.nextgen.path-user #region-main .userprofile .profile_tree .node_category h3 {
+  color: var(--ng-text);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+body.nextgen.path-user #region-main .filemanager,
+body.nextgen.path-user #region-main .filemanager-container,
+body.nextgen.path-user #region-main .filepicker {
+  border-color: var(--ng-border);
+  border-radius: 14px;
+}
+
+body.nextgen.path-user #region-main .filemanager-container,
+body.nextgen.path-user #region-main .filepicker {
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(16, 40, 51, 0.05);
+}
+
+body.nextgen.path-calendar #region-main .maincalendar,
+body.nextgen[id^="page-calendar-"] #region-main .maincalendar {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  box-shadow: 0 8px 26px rgba(16, 40, 51, 0.05);
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+body.nextgen.path-calendar #region-main .calendar-controls,
+body.nextgen[id^="page-calendar-"] #region-main .calendar-controls {
+  align-items: center;
+  gap: 0.5rem;
+}
+
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-sidebar-menu .card,
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-sidebar-settings .card {
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(16, 40, 51, 0.05);
+  overflow: hidden;
+}
+
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-sidebar-menu .card-header,
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-sidebar-settings .card-header {
+  background: #f4f7f8;
+  border-bottom: 1px solid var(--ng-border);
+}
+
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-wrapper .form-control,
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-wrapper .form-select {
+  border-color: #d5dee3;
+  border-radius: 10px;
+}
+
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-wrapper .form-control:focus,
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-wrapper .form-select:focus {
+  border-color: var(--ng-primary);
+  box-shadow: 0 0 0 3px rgba(22, 58, 74, 0.12);
+}
+
+body.nextgen.path-admin-reportbuilder #region-main .nav-tabs {
+  border-bottom-color: var(--ng-border);
+}
+
+body.nextgen.path-admin-reportbuilder #region-main .nav-tabs .nav-link.active {
+  border-color: var(--ng-border) var(--ng-border) #fff;
+  color: var(--ng-primary);
+}
+
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-table thead th {
+  background: #f4f7f8;
+  color: var(--ng-text);
+  font-weight: 700;
+}
+
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-editor-table-container {
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+}
+
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-sidebar-menu .list-group-item,
+body.nextgen.path-admin-reportbuilder #region-main .reportbuilder-sidebar-settings .list-group-item {
+  border-color: var(--ng-border);
+}
+
+body.nextgen[id="page-user-preferences"] #region-main .card {
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(16, 40, 51, 0.05);
+}
+
+body.nextgen[id="page-user-preferences"] #region-main .card-title {
+  color: var(--ng-text);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+body.nextgen[id="page-user-preferences"] #region-main .card-text a {
+  text-decoration: none;
+}
+
+body.nextgen[id="page-user-preferences"] #region-main .card-text a:hover {
+  color: var(--ng-primary-hover);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+@media (max-width: 767.98px) {
+  body.nextgen.path-user #page-content,
+  body.nextgen.path-grade #page-content,
+  body.nextgen.path-calendar #page-content,
+  body.nextgen.path-reportbuilder #page-content,
+  body.nextgen[id^="page-grade-"] #page-content,
+  body.nextgen[id^="page-calendar-"] #page-content,
+  body.nextgen[id^="page-reportbuilder-"] #page-content {
+    padding: 1rem 0.75rem 2rem;
+  }
+
+  body.nextgen.path-user #region-main > .card,
+  body.nextgen.path-grade #region-main > .card,
+  body.nextgen.path-calendar #region-main > .card,
+  body.nextgen.path-reportbuilder #region-main > .card,
+  body.nextgen[id^="page-grade-"] #region-main > .card,
+  body.nextgen[id^="page-calendar-"] #region-main > .card,
+  body.nextgen[id^="page-reportbuilder-"] #region-main > .card {
+    border-radius: 12px;
+  }
+
+  body.nextgen.path-user #region-main .userprofile {
+    border-radius: 14px;
+    padding: 1rem;
+  }
+
+  body.nextgen.path-user #region-main .userprofile .profile_tree {
+    column-count: 1;
+  }
+
+  body.nextgen.path-user #region-main .userprofile .profile_tree .node_category {
+    border-radius: 11px;
+    padding: 0.85rem;
+  }
+
+  body.nextgen.path-calendar #region-main .maincalendar,
+  body.nextgen[id^="page-calendar-"] #region-main .maincalendar {
+    border-radius: 12px;
+  }
+
+  body.nextgen.path-user #region-main .table-responsive,
+  body.nextgen.path-grade #region-main .table-responsive,
+  body.nextgen.path-calendar #region-main .table-responsive,
+  body.nextgen.path-reportbuilder #region-main .table-responsive,
+  body.nextgen[id^="page-grade-"] #region-main .table-responsive,
+  body.nextgen[id^="page-calendar-"] #region-main .table-responsive,
+  body.nextgen[id^="page-reportbuilder-"] #region-main .table-responsive {
+    -webkit-overflow-scrolling: touch;
+  }
 }

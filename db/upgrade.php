@@ -70,5 +70,10 @@ function xmldb_theme_nextgen_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026100116, 'theme', 'nextgen');
     }
 
+    if ($oldversion < 2026101400) {
+        \theme_nextgen\local\social::install_defaults();
+        upgrade_plugin_savepoint(true, 2026101400, 'theme', 'nextgen');
+    }
+
     return true;
 }

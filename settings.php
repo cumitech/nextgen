@@ -167,18 +167,12 @@ if ($ADMIN->fulltree) {
     );
     $page->add($setting);
 
-    foreach ([
-        'facebookurl' => 'facebook',
-        'instagramurl' => 'instagram',
-        'linkedinurl' => 'linkedin',
-        'youtubeurl' => 'youtube',
-        'xurl' => 'x',
-    ] as $settingname => $stringid) {
+    foreach (\theme_nextgen\local\social::NETWORKS as $settingname => $stringid) {
         $setting = new admin_setting_configtext(
             'theme_nextgen/' . $settingname,
             get_string($stringid, 'theme_nextgen'),
             get_string('socialdesc', 'theme_nextgen'),
-            '',
+            \theme_nextgen\local\social::DEFAULTS[$settingname],
             PARAM_URL
         );
         $page->add($setting);

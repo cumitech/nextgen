@@ -153,6 +153,7 @@ class public_page {
             'hasfeatures' => !empty($features),
             'hascta' => $cta !== null,
             'cta' => $cta ?? [],
+            'socialblock' => self::social_block('tiles'),
         ];
     }
 
@@ -195,6 +196,25 @@ class public_page {
             'hasphone' => $phone !== '',
             'phone' => $phone,
             'phoneurl' => $dial !== '' ? 'tel:' . $dial : '',
+            'socialblock' => self::social_block('card'),
+        ];
+    }
+
+    /**
+     * Labelled social links for a public page, or false when none are set.
+     *
+     * @param string $variant card or tiles
+     * @return array|false
+     */
+    private static function social_block(string $variant) {
+        $social = social::links();
+        if (!$social) {
+            return false;
+        }
+        return [
+            'variant' => $variant,
+            'showlabels' => true,
+            'social' => $social,
         ];
     }
 

@@ -26,11 +26,13 @@
             <h1 class="ng-login-title">{{#str}}logintitle, theme_nextgen{{/str}}</h1>
             <p class="ng-login-copy">{{#str}}logindescription, theme_nextgen{{/str}}</p>
         </div>
-        <p class="ng-login-actions">
+        <div class="ng-login-actions">
             <a class="ng-login-browse" href="{{config.wwwroot}}/course/index.php">{{#str}}authbrowse, theme_nextgen{{/str}}</a>
-        </p>
+            <div class="ng-login-social">{{{ output.nextgen_social_links }}}</div>
+        </div>
     {{/leftinstructions}}
     {{#leftinstructions}}
         <div class="ng-login-instructions">{{{leftinstructions}}}</div>
+        <div class="ng-login-social">{{{ output.nextgen_social_links }}}</div>
     {{/leftinstructions}}
 </div>

@@ -411,7 +411,9 @@
                                         {{#url}}<a href="{{url}}">{{/url}}
                                         {{#iconurl}}<img class="ng-outline-modicon" src="{{iconurl}}" alt="">{{/iconurl}}
                                         <span>{{name}}</span>
+                                        {{#locked}}<span class="ng-outline-lock" aria-label="{{#str}}locked, core{{/str}}">{{#pix}}i/locked, core{{/pix}}</span>{{/locked}}
                                         {{#url}}</a>{{/url}}
+                                        {{^url}}<span class="ng-outline-lock" aria-label="{{#str}}locked, core{{/str}}">{{#pix}}i/locked, core{{/pix}}</span>{{/url}}
                                     </li>
                                 {{/activities}}
                             </ul>

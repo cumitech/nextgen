@@ -106,4 +106,21 @@ class core_renderer extends \theme_boost\output\core_renderer {
         $context['logourl'] = $this->nextgen_logo_url()->out(false);
         return $this->render_from_template('theme_nextgen/footer_columns', $context);
     }
+
+    /**
+     * Compact social icons for the login layout, which has no marketing footer.
+     *
+     * @return string
+     */
+    public function nextgen_social_links(): string {
+        $social = \theme_nextgen\local\social::links();
+        if (!$social) {
+            return '';
+        }
+        return $this->render_from_template('theme_nextgen/social_links', [
+            'variant' => 'auth',
+            'showlabels' => false,
+            'social' => $social,
+        ]);
+    }
 }

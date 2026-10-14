@@ -106,7 +106,7 @@ function theme_nextgen_dashboard_context(): ?array {
     $enrolled = enrol_get_my_courses(['id', 'shortname', 'fullname'], 'sortorder ASC');
     if (!empty($enrolled)) {
         $firstenrolled = reset($enrolled);
-        $continueurl = (new moodle_url('/course/view.php', ['id' => (int) $firstenrolled->id]))->out(false);
+        $continueurl = (new moodle_url('/learn.php', ['id' => (int) $firstenrolled->id]))->out(false);
     }
     if ($DB->get_manager()->table_exists('block_recentlyaccessedcourses')) {
         $recent = $DB->get_record_sql(
@@ -124,7 +124,7 @@ function theme_nextgen_dashboard_context(): ?array {
                 'context' => $context,
                 'escape' => false,
             ]);
-            $recenturl = (new moodle_url('/course/view.php', ['id' => $recent->id]))->out(false);
+            $recenturl = (new moodle_url('/learn.php', ['id' => $recent->id]))->out(false);
             if (is_enrolled($context, $USER, '', true) || has_capability('moodle/course:view', $context, $USER)) {
                 $continueurl = $recenturl;
             }
@@ -469,29 +469,7 @@ function theme_nextgen_footer_context($theme): array {
         }
     }
 
-    $social = [];
-    $networks = [
-        'facebookurl' => get_string('facebook', 'theme_nextgen'),
-        'instagramurl' => get_string('instagram', 'theme_nextgen'),
-        'linkedinurl' => get_string('linkedin', 'theme_nextgen'),
-        'youtubeurl' => get_string('youtube', 'theme_nextgen'),
-        'xurl' => get_string('x', 'theme_nextgen'),
-    ];
-    foreach ($networks as $setting => $label) {
-        $safe = theme_nextgen_safe_url(theme_nextgen_setting($theme, $setting));
-        if ($safe === null) {
-            continue;
-        }
-        $social[] = [
-            'label' => $label,
-            'url' => $safe,
-            'isfacebook' => $setting === 'facebookurl',
-            'isinstagram' => $setting === 'instagramurl',
-            'islinkedin' => $setting === 'linkedinurl',
-            'isyoutube' => $setting === 'youtubeurl',
-            'isx' => $setting === 'xurl',
-        ];
-    }
+    $social = \theme_nextgen\local\social::links();
 
     $email = trim(theme_nextgen_setting($theme, 'contactemail'));
     if ($email !== '' && !validate_email($email)) {
@@ -527,6 +505,8 @@ function theme_nextgen_footer_context($theme): array {
         'columns' => $columns,
         'hassocial' => !empty($social),
         'social' => $social,
+        'variant' => 'footer',
+        'showlabels' => false,
         'hascontact' => ($email !== '' || $phone !== ''),
         'contactemail' => $email,
         'contactphone' => $phone,
@@ -2214,10 +2194,12 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
             }
             $name = format_string($cm->name, true, ['context' => $context]);
             $icon = $cm->get_icon_url($OUTPUT);
+            $islocked = !$cm->uservisible;
             $items[] = [
                 'name' => $name,
                 'iconurl' => $icon ? $icon->out(false) : '',
                 'url' => ($cm->uservisible && $cm->url) ? $cm->url->out(false) : '',
+                'locked' => $islocked,
             ];
             if (in_array($cm->modname, ['customcert', 'certificate'], true)) {
                 $certificates[] = [

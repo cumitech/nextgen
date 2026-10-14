@@ -111,13 +111,6 @@
     {{/hasauthinstructions}}
     {{#hasidentityproviders}}
         <div class="login-separator">{{#str}}loginseparatoror{{/str}}</div>
-    {{/hasidentityproviders}}
-    {{^hasidentityproviders}}
-        {{#canloginasguest}}
-            <div class="login-separator">{{#str}}loginseparatoror{{/str}}</div>
-        {{/canloginasguest}}
-    {{/hasidentityproviders}}
-    {{#hasidentityproviders}}
         <div class="login-identityproviders">
             {{#identityproviders}}
                 <a class="btn login-identityprovider-btn mb-3" href="{{url}}">
@@ -129,14 +122,17 @@
             {{/identityproviders}}
         </div>
     {{/hasidentityproviders}}
-    {{#canloginasguest}}
-        <form action="{{loginurl}}" method="post" id="guestlogin">
-            <input type="hidden" name="logintoken" value="{{logintoken}}">
-            <input type="hidden" name="username" value="guest" />
-            <input type="hidden" name="password" value="guest" />
-            <button class="btn login-identityprovider-btn" type="submit" id="loginguestbtn"><i class="fa fa-user me-2" aria-hidden="true"></i>{{#str}}loginasguest{{/str}}</button>
-        </form>
-    {{/canloginasguest}}
+    {{^hasidentityproviders}}
+        {{#canloginasguest}}
+            <div class="login-separator">{{#str}}loginseparatoror{{/str}}</div>
+            <form action="{{loginurl}}" method="post" id="guestlogin">
+                <input type="hidden" name="logintoken" value="{{logintoken}}">
+                <input type="hidden" name="username" value="guest" />
+                <input type="hidden" name="password" value="guest" />
+                <button class="btn login-identityprovider-btn" type="submit" id="loginguestbtn"><i class="fa fa-user me-2" aria-hidden="true"></i>{{#str}}loginasguest{{/str}}</button>
+            </form>
+        {{/canloginasguest}}
+    {{/hasidentityproviders}}
     <p class="ng-auth-browse d-lg-none">
         <a href="{{config.wwwroot}}/course/index.php">{{#str}}authbrowse, theme_nextgen{{/str}}</a>
     </p>

@@ -65,6 +65,13 @@
                         </ul>
                     </section>
                 {{/haschannels}}
+                {{#socialblock}}
+                    <section class="ng-contact-panel ng-contact-social">
+                        <h2>{{#str}}socialfollowtitle, theme_nextgen{{/str}}</h2>
+                        <p>{{#str}}socialfollowlead, theme_nextgen{{/str}}</p>
+                        {{> theme_nextgen/social_links }}
+                    </section>
+                {{/socialblock}}
             </aside>
             <section class="ng-contact-panel ng-contact-formcard">
                 <h2>{{formtitle}}</h2>
@@ -108,6 +115,15 @@
                 </section>
             {{/cta}}
         {{/hascta}}
+        {{#socialblock}}
+            <section class="ng-about-social">
+                <div class="ng-about-social-copy">
+                    <h2>{{#str}}aboutsocialtitle, theme_nextgen{{/str}}</h2>
+                    <p>{{#str}}aboutsociallead, theme_nextgen{{/str}}</p>
+                </div>
+                {{> theme_nextgen/social_links }}
+            </section>
+        {{/socialblock}}
     </div>
 </article>
 {{/isabout}}
