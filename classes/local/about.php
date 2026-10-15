@@ -85,6 +85,7 @@ class about {
             'impact' => self::impact_rows(),
             'founder' => [
                 'name' => $founder,
+                'image' => $OUTPUT->image_url('team/prof-vukenkeng-andrew', 'theme_nextgen')->out(false),
                 'highlights' => self::lines('aboutfounderhighlights'),
                 'positions' => self::lines('aboutfounderpositions'),
             ],
@@ -97,6 +98,7 @@ class about {
             'email' => $email,
             'emailurl' => $email !== '' ? 'mailto:' . $email : '',
             'contacturl' => public_page::url('contact')->out(false),
+            'teamurl' => public_page::url('team')->out(false),
             'coursesurl' => (new \moodle_url('/course/index.php'))->out(false),
             'cansignup' => $signup,
             'signupurl' => (new \moodle_url('/login/signup.php'))->out(false),

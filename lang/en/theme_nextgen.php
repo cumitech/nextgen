@@ -418,6 +418,7 @@ $string['aboutimpact6mission'] = 'Build digital literacy and technology adoption
 $string['aboutimpact7challenge'] = 'Physical training is limited by geography and cost.';
 $string['aboutimpact7mission'] = 'Online, accessible, and affordable training that reaches learners wherever they are.';
 $string['aboutteamtitle'] = 'Our team';
+$string['aboutteamlink'] = 'Meet the team';
 $string['aboutfounderlabel'] = 'Founder';
 $string['aboutfoundername'] = 'Professor Vukenkeng Andrew Wujung';
 $string['aboutfoundertitle'] = 'Professor of Economics and Entrepreneurship';
@@ -429,8 +430,35 @@ $string['aboutfounderbeyond'] = 'He contributes to entrepreneurship training, ca
 $string['aboutfounderpositionstitle'] = 'Positions held';
 $string['aboutfounderpositions'] = "Technical Adviser to the Rector, University of Bertoua (since August 2025)\nInspector of Services, Ministry of Higher Education (MINESUP)\nDeputy Director, Higher Institute of Commerce and Management\nHead of the Department of Economics and Head of the Accounting Division, University of Bamenda\nLecturer and Researcher, University of Buea";
 $string['aboutparticipantstitle'] = 'Key participants';
-$string['aboutparticipants'] = "Professor Vukenkeng Andrew Wujung\nDr. Akumbom Paul\nDr. Kiambom Tracey\nDr. Forbe Hodu\nApostle Nfor Kilian\nNtsinu Raheal Viwin\nAnembom Francine\nBuemembom Favour\nAyeah Godlove\nWulneghewimbom Anguombom Cedrick";
+$string['aboutparticipants'] = "Professor Vukenkeng Andrew Wujung\nDr. Akumbom Paul\nDr. Kiambom Tracey\nDr. Forbe Hodu\nApostle Nfor Kilian\nNtsinu Raheal Viwin\nAnembom Francine\nBuemembom Favour Wujung\nAyeah Godlove Akoni\nWulneghewimbom Anguombom Cedrick";
 $string['aboutparticipantsmore'] = 'And other contributors who support our learners.';
+$string['teamnav'] = 'Team';
+$string['teamkicker'] = 'NextGen LMS';
+$string['teamtitle'] = 'Our team';
+$string['teamintro'] = 'The people who lead, teach, and build Next Gen Entrepreneurship Development Ltd.';
+$string['teamsectioncount'] = '0';
+$string['teammemberfavourname'] = 'Buemembom Favour Wujung';
+$string['teammemberfavourrole'] = 'Marketing and communications expert, digital marketing strategist, and entrepreneur';
+$string['teammemberfavourbio'] = 'Buemembom Favour Wujung is a passionate marketing and communications professional and entrepreneur, driven by a strong desire to inspire growth, create opportunities, and contribute to Africa\'s entrepreneurial development. With a keen interest in marketing, digital innovation, and business development, he embodies a forward-thinking mindset and a commitment to turning ideas into meaningful impact.' . "\n\n" .
+    'At NextGen Entrepreneurship Development Ltd, Favour plays a vital role in shaping the company\'s marketing direction, strengthening its brand identity, and expanding its digital presence. He oversees the company\'s social media campaigns, contributes to strategic marketing initiatives, and helps communicate NextGen\'s vision to audiences in Cameroon, across Africa, and around the world. Alongside his work at NextGen, he is also a member of the Young African Leaders Initiative (YALI) Network.';
+$string['teammemberponmumaname'] = 'Ponmuma Gabin Merveille Petit';
+$string['teammemberponmumarole'] = 'Accounting professional, educator, and entrepreneur';
+$string['teammemberponmumabio'] = 'Ponmuma Gabin Merveille Petit is an accounting professional, educator, project writer, and young entrepreneur. He serves as Programme Coordinator at ESRC-Cameroon, Head of the School of Business & Finance at PHIPT, and Director of the School of Business and Management Sciences at CIUIC. He is passionate about education, research, entrepreneurship, and helping students develop practical skills. He is hardworking, active, well-organized, and able to work under pressure while managing multiple responsibilities effectively.';
+$string['teammembermbalaname'] = 'Mbala Axel';
+$string['teammembermbalarole'] = 'Juriste et archiviste';
+$string['teammembermbalabio'] = 'Juriste (Master II droit privé) et archiviste cadre contractuel dans l\'administration publique depuis plus de douze ans. Formé en rédaction administrative, techniques archivistiques et leadership. Français-anglais.';
+$string['teammemberayeahname'] = 'Ayeah Godlove Akoni';
+$string['teammemberayeahrole'] = 'IT systems and software engineer';
+$string['teammemberayeahbio'] = 'Mr Ayeah Godlove Akoni is a Cameroonian IT professional with a background in Computer Network and System Maintenance and practical experience spanning software engineering, IT systems support, infrastructure management, web technologies, database administration and technical problem-solving.' . "\n\n" .
+    'He combines software development capabilities with an understanding of the computer systems, networks, servers and databases on which digital applications depend. His technical background enables him to contribute to the development and maintenance of software solutions while also supporting system configuration, deployment, troubleshooting and the reliable operation of IT environments.' . "\n\n" .
+    'His software engineering experience includes the development of web applications, backend services, REST APIs, database-driven platforms and business information systems. He has worked with technologies including JavaScript, TypeScript, Node.js, Express, PHP, Laravel, Python, C# and .NET, alongside frontend frameworks such as React and Next.js. His database experience includes MySQL, PostgreSQL and MongoDB.' . "\n\n" .
+    'His infrastructure-related competencies include Linux and Windows environments, server deployment and maintenance, web server configuration, DNS, SSL/TLS certificates, remote server administration, application hosting, access control, backups and troubleshooting. His academic background in computer networking and systems maintenance further supports his work in connectivity troubleshooting, computer hardware and software maintenance, operating systems, network configuration and user technical support.' . "\n\n" .
+    'In addition to his technical implementation experience, Mr Akoni has worked in tutoring and mentoring, helping learners understand web development, backend programming, databases, APIs and software development practices. This experience strengthens his ability to communicate technical concepts, support users, explain solutions and work collaboratively.' . "\n\n" .
+    'He is positioned to contribute to organisations that require a versatile IT professional capable of working across software development, IT operations, systems support, networking and digital infrastructure. His combination of academic training and practical software and systems experience is particularly relevant to IT departments, technology service providers, enterprise IT environments and telecommunications organisations.';
+$string['teammemberetamename'] = 'Etame Vivien Millan';
+$string['teammemberetamerole'] = 'Technico-commercial';
+$string['teammemberetamebio'] = 'Technico-commercial spécialisé en assistance commerciale digitale, fort de plus de huit ans d\'expérience dans la vente/closing en ligne, le suivi client (online et offline) et en campagnes publicitaires digitales.' . "\n\n" .
+    'Français-Anglais.';
 $string['aboutvisittitle'] = 'Get in touch';
 $string['aboutcalllabel'] = 'Phone';
 $string['aboutemaillabel'] = 'Email';

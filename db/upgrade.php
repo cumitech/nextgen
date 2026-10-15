@@ -103,5 +103,10 @@ function xmldb_theme_nextgen_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026101500, 'theme', 'nextgen');
     }
 
+    if ($oldversion < 2026101501) {
+        theme_nextgen_publish_public_paths();
+        upgrade_plugin_savepoint(true, 2026101501, 'theme', 'nextgen');
+    }
+
     return true;
 }

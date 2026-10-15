@@ -29,7 +29,7 @@ class public_page {
     /**
      * Script name for a public page.
      *
-     * @param string $key about, contact, privacy, terms, or faq
+     * @param string $key about, team, contact, privacy, terms, or faq
      * @return \moodle_url
      */
     public static function url(string $key): \moodle_url {
@@ -45,11 +45,11 @@ class public_page {
      * @return string[]
      */
     public static function keys(): array {
-        return ['about', 'contact', 'privacy', 'terms', 'faq'];
+        return ['about', 'team', 'contact', 'privacy', 'terms', 'faq'];
     }
 
     /**
-     * Header links that every visitor needs: About and Contact.
+     * Header links that every visitor needs: About, Team, and Contact.
      *
      * @param \navigation_node $primary
      */
@@ -84,7 +84,7 @@ class public_page {
     /**
      * Render one public page inside the standard Moodle layout.
      *
-     * @param string $key about, contact, privacy, terms, or faq
+     * @param string $key about, team, contact, privacy, terms, or faq
      */
     public static function render(string $key): void {
         global $OUTPUT, $PAGE;
@@ -100,6 +100,8 @@ class public_page {
             $PAGE->add_body_class('nextgen-contact');
         } else if ($key === 'about') {
             $PAGE->add_body_class('nextgen-about');
+        } else if ($key === 'team') {
+            $PAGE->add_body_class('nextgen-team');
         }
         $PAGE->navbar->add($definition['title']);
 
@@ -121,8 +123,9 @@ class public_page {
             'form' => $formhtml,
             'iscontact' => $key === 'contact',
             'isabout' => $key === 'about',
-            'isdefault' => $key !== 'contact' && $key !== 'about',
-        ], self::contact_context($key), self::about_context($key)));
+            'isteam' => $key === 'team',
+            'isdefault' => $key !== 'contact' && $key !== 'about' && $key !== 'team',
+        ], self::contact_context($key), self::about_context($key), self::team_context($key)));
         echo $OUTPUT->footer();
     }
 
@@ -140,6 +143,20 @@ class public_page {
         return about::context() + [
             'socialblock' => self::social_block('tiles'),
         ];
+    }
+
+    /**
+     * Extra template data for the team page layout.
+     *
+     * @param string $key
+     * @return array
+     */
+    private static function team_context(string $key): array {
+        if ($key !== 'team') {
+            return [];
+        }
+
+        return team::context();
     }
 
     /**
@@ -195,13 +212,14 @@ class public_page {
     }
 
     /**
-     * About and Contact belong in the header.
+     * About, Team, and Contact belong in the header.
      *
      * @return array<string, string>
      */
     private static function header_pages(): array {
         return [
             'about' => get_string('aboutnav', 'theme_nextgen'),
+            'team' => get_string('teamnav', 'theme_nextgen'),
             'contact' => get_string('contactnav', 'theme_nextgen'),
         ];
     }

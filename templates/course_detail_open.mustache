@@ -30,7 +30,6 @@
         "hasrating": false,
         "hasprice": false,
         "hasfacts": false,
-        "hasincludes": false,
         "hassummary": false,
         "hasoutcomes": false,
         "hasrequirements": false,
@@ -152,16 +151,6 @@
         {{/hasprice}}
         <a class="btn btn-primary ng-course-enrol" href="{{enrolurl}}">{{enrollabel}}</a>
         <a class="ng-course-quote" href="{{quoteurl}}">{{#str}}requestquote, theme_nextgen{{/str}}</a>
-        {{#hasincludes}}
-            <div class="ng-course-includes">
-                <h2>{{#str}}courseincludes, theme_nextgen{{/str}}</h2>
-                <ul>
-                    {{#includes}}
-                        <li>{{label}}</li>
-                    {{/includes}}
-                </ul>
-            </div>
-        {{/hasincludes}}
         <div class="ng-course-share">
             <h2>{{#str}}sharecourse, theme_nextgen{{/str}}</h2>
             <button type="button" class="ng-copy-link" data-ng-copy="{{shareurl}}" data-ng-copied="{{#str}}linkcopied, theme_nextgen{{/str}}" data-ng-copy-label="{{#str}}copylink, theme_nextgen{{/str}}">
@@ -216,9 +205,9 @@
                     <div class="ng-certificate-sheet">
                         <div class="ng-certificate-frame" data-sample="{{#str}}certificatesamplemark, theme_nextgen{{/str}}">
                             <div class="ng-certificate-seal" aria-hidden="true">
-                                <svg viewBox="0 0 64 64">
-                                    <circle cx="32" cy="32" r="22"></circle>
-                                    <path d="M22 33.5l6.2 6.2L42 25"></path>
+                                <svg viewBox="0 0 64 64" width="38" height="38">
+                                    <circle cx="32" cy="32" r="22" fill="none" stroke="#FCD116" stroke-width="1.5"></circle>
+                                    <path d="M22 33.5l6.2 6.2L42 25" fill="none" stroke="#FCD116" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
                             </div>
                             <p class="ng-certificate-kicker">{{#str}}certificatesubtitle, theme_nextgen{{/str}}</p>

@@ -1,0 +1,112 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_nextgen/team_page
+
+    Profiles for the public team page.
+
+    Example context (json):
+    {
+        "title": "Our team",
+        "intro": "The people who lead this work.",
+        "members": [{
+            "id": "favour",
+            "name": "Buemembom Favour Wujung",
+            "role": "Marketing and communications expert",
+            "title": "",
+            "hastitle": false,
+            "image": "https://example.com/favour.jpg",
+            "offset": false,
+            "isfounder": false,
+            "highlights": [],
+            "hashighlights": false,
+            "positions": [],
+            "lead": [{"text": "A short biography."}],
+            "more": [],
+            "hasmore": false,
+            "facts": [{"label": "Location", "value": "Bamenda", "url": ""}],
+            "hasfacts": true
+        }]
+    }
+}}
+<article class="ng-public ng-team">
+    <header class="ng-public-hero">
+        <div class="ng-landing-inner ng-team-wrap">
+            {{{navbar}}}
+            <h1 class="ng-public-title">{{title}}</h1>
+            <p class="ng-public-intro">{{intro}}</p>
+        </div>
+    </header>
+    <div class="ng-landing-inner ng-team-wrap ng-public-body">
+        <div class="ng-team-list">
+            {{#members}}
+                <article class="ng-team-person" id="ng-team-{{id}}">
+                    <img class="ng-team-photo{{#offset}} ng-team-photo-offset{{/offset}}" src="{{image}}" alt="" width="176" height="176" loading="lazy">
+                    <div class="ng-team-copy">
+                        {{#role}}<p class="ng-team-role">{{role}}</p>{{/role}}
+                        <h2>{{name}}</h2>
+                        {{#hastitle}}<p class="ng-team-title">{{title}}</p>{{/hastitle}}
+                        {{#hashighlights}}
+                            <ul class="ng-team-list-items">
+                                {{#highlights}}
+                                    <li>{{text}}</li>
+                                {{/highlights}}
+                            </ul>
+                        {{/hashighlights}}
+                        {{#hasfacts}}
+                            <dl class="ng-team-facts">
+                                {{#facts}}
+                                    <div>
+                                        <dt>{{label}}</dt>
+                                        <dd>
+                                            {{#url}}<a href="{{url}}">{{value}}</a>{{/url}}
+                                            {{^url}}{{value}}{{/url}}
+                                        </dd>
+                                    </div>
+                                {{/facts}}
+                            </dl>
+                        {{/hasfacts}}
+                        {{#lead}}
+                            <p>{{text}}</p>
+                        {{/lead}}
+                        {{#hasmore}}
+                            {{< theme_nextgen/showmore }}
+                                {{$content}}
+                                    {{#isfounder}}
+                                        <p>{{#str}}aboutfounderbio1, theme_nextgen{{/str}}</p>
+                                        <p>{{#str}}aboutfounderbio2, theme_nextgen{{/str}}</p>
+                                        <h3>{{#str}}aboutfounderbeyondtitle, theme_nextgen{{/str}}</h3>
+                                        <p>{{#str}}aboutfounderbeyond, theme_nextgen{{/str}}</p>
+                                        <h3>{{#str}}aboutfounderpositionstitle, theme_nextgen{{/str}}</h3>
+                                        <ul class="ng-team-list-items">
+                                            {{#positions}}
+                                                <li>{{text}}</li>
+                                            {{/positions}}
+                                        </ul>
+                                    {{/isfounder}}
+                                    {{#more}}
+                                        <p>{{text}}</p>
+                                    {{/more}}
+                                {{/content}}
+                            {{/ theme_nextgen/showmore }}
+                        {{/hasmore}}
+                    </div>
+                </article>
+            {{/members}}
+        </div>
+    </div>
+</article>

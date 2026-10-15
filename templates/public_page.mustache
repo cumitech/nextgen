@@ -17,7 +17,7 @@
 {{!
     @template theme_nextgen/public_page
 
-    Public information page: about, contact, privacy, terms, or FAQ.
+    Public information page: about, team, contact, privacy, terms, or FAQ.
 }}
 {{#iscontact}}
 <article class="ng-public ng-contact">
@@ -88,6 +88,9 @@
 {{#isabout}}
     {{> theme_nextgen/about_page }}
 {{/isabout}}
+{{#isteam}}
+    {{> theme_nextgen/team_page }}
+{{/isteam}}
 {{#isdefault}}
 <article class="ng-public">
     <header class="ng-public-hero">

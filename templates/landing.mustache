@@ -119,45 +119,6 @@
         {{> theme_nextgen/partners }}
     {{/partnersblock}}
 
-    <section class="ng-section ng-faculty" id="instructors">
-        <div class="ng-landing-inner ng-faculty-grid">
-            <div class="ng-faculty-stage">
-                <span class="ng-faculty-shape ng-faculty-shape-gold" aria-hidden="true"></span>
-                <span class="ng-faculty-shape ng-faculty-shape-green" aria-hidden="true"></span>
-                <span class="ng-faculty-shape ng-faculty-shape-clay" aria-hidden="true"></span>
-                {{#hasinstructors}}
-                    <div class="ng-faculty-ring" data-count="{{instructorcount}}">
-                        {{#instructors}}
-                            <a class="ng-faculty-slide" href="{{url}}">
-                                {{{picture}}}
-                                <span class="visually-hidden">{{name}}</span>
-                            </a>
-                        {{/instructors}}
-                    </div>
-                {{/hasinstructors}}
-            </div>
-            <div class="ng-faculty-copy">
-                <h2>{{#str}}instructorsheading, theme_nextgen{{/str}}</h2>
-                <p>{{#str}}instructorintro, theme_nextgen{{/str}}</p>
-                <ul class="ng-faculty-points">
-                    {{#facultypoints}}
-                        <li><span class="ng-faculty-check" aria-hidden="true"></span>{{title}}</li>
-                    {{/facultypoints}}
-                </ul>
-                {{#hasinstructors}}
-                    <div class="ng-faculty-names" data-count="{{instructorcount}}" aria-live="off">
-                        {{#instructors}}
-                            <p class="ng-faculty-name"><a href="{{url}}"><strong>{{name}}</strong><span>{{role}}</span></a></p>
-                        {{/instructors}}
-                    </div>
-                {{/hasinstructors}}
-                {{^hasinstructors}}
-                    <p class="ng-empty">{{#str}}instructorsempty, theme_nextgen{{/str}}</p>
-                {{/hasinstructors}}
-            </div>
-        </div>
-    </section>
-
     <section class="ng-section ng-stats">
         <div class="ng-landing-inner">
             <ul class="ng-stats-list" aria-label="{{#str}}platformstats, theme_nextgen{{/str}}">

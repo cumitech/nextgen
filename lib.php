@@ -585,6 +585,7 @@ function theme_nextgen_footer_context($theme): array {
     }
     $columns = theme_nextgen_with_faq_link($columns);
     $columns = theme_nextgen_with_blog_link($columns);
+    $columns = theme_nextgen_with_team_link($columns);
 
     return [
         'sitename' => format_string($SITE->fullname, true, ['context' => context_system::instance()]),
@@ -693,6 +694,41 @@ function theme_nextgen_with_blog_link(array $columns): array {
 }
 
 /**
+ * Add the team page to Quick links when that column does not already list it.
+ *
+ * @param array $columns
+ * @return array
+ */
+function theme_nextgen_with_team_link(array $columns): array {
+    $teamurl = \theme_nextgen\local\public_page::url('team')->out(false);
+    foreach ($columns as $column) {
+        foreach ($column['links'] as $link) {
+            if ($link['url'] === $teamurl) {
+                return $columns;
+            }
+        }
+    }
+
+    $teamlink = [
+        'label' => get_string('teamnav', 'theme_nextgen'),
+        'url' => $teamurl,
+        'external' => false,
+    ];
+    $quicktitle = get_string('quicklinks', 'theme_nextgen');
+    foreach ($columns as $index => $column) {
+        if ($column['title'] === $quicktitle) {
+            $columns[$index]['links'][] = $teamlink;
+            return $columns;
+        }
+    }
+    $columns[] = [
+        'title' => $quicktitle,
+        'links' => [$teamlink],
+    ];
+    return $columns;
+}
+
+/**
  * Point shipped navigation at the public pages when a site still has the original defaults.
  */
 function theme_nextgen_upgrade_public_pages(): void {
@@ -741,7 +777,7 @@ function theme_nextgen_publish_public_paths(): void {
     if (during_initial_install() || empty($CFG->dirroot)) {
         return;
     }
-    if (get_config('theme_nextgen', 'publicpathrev') === '2026101407') {
+    if (get_config('theme_nextgen', 'publicpathrev') === '2026101501') {
         return;
     }
 
@@ -750,12 +786,12 @@ function theme_nextgen_publish_public_paths(): void {
     $ready = theme_nextgen_ensure_public_rewrites() && $ready;
     theme_nextgen_rewrite_public_urls();
     if ($ready) {
-        set_config('publicpathrev', '2026101407', 'theme_nextgen');
+        set_config('publicpathrev', '2026101501', 'theme_nextgen');
     }
 }
 
 /**
- * Write the site-root scripts for About, Contact, Privacy, Terms, and FAQ.
+ * Write the site-root scripts for About, Team, Contact, Privacy, Terms, and FAQ.
  *
  * A file that is already there and was not created for this theme is left alone.
  *
@@ -896,7 +932,7 @@ PHP;
  * Map extensionless public addresses onto the site-root scripts.
  *
  * /contact and /contact.php both run the contact page. The same applies to
- * about, privacy, terms, and faq, including a trailing slash and the older
+ * about, team, privacy, terms, and faq, including a trailing slash and the older
  * /theme/nextgen/ addresses. /learn/{course}/{module} runs learn.php.
  * The substitution is an absolute URL path and the flag is END, because a
  * per-directory L flag still lets FallbackResource answer the original
@@ -947,6 +983,7 @@ function theme_nextgen_ensure_public_rewrites(): bool {
 function theme_nextgen_rewrite_public_urls(): void {
     $map = [
         '/theme/nextgen/about.php' => '/about.php',
+        '/theme/nextgen/team.php' => '/team.php',
         '/theme/nextgen/contact.php' => '/contact.php',
         '/theme/nextgen/privacy.php' => '/privacy.php',
         '/theme/nextgen/terms.php' => '/terms.php',
@@ -2691,27 +2728,6 @@ function theme_nextgen_course_detail_context(): ?array {
     $pushfact($facts, 'coursestructure', theme_nextgen_course_format_label((string) $course->format));
     $pushfact($facts, 'coursecategory', $categoryname);
 
-    $includes = [];
-    if ($activitycount === 1) {
-        $includes[] = ['label' => get_string('courseactivity', 'theme_nextgen')];
-    } else if ($activitycount > 1) {
-        $includes[] = ['label' => get_string('courseactivities', 'theme_nextgen', $activitycount)];
-    }
-    if ($sectioncount === 1) {
-        $includes[] = ['label' => get_string('coursesection', 'theme_nextgen')];
-    } else if ($sectioncount > 1) {
-        $includes[] = ['label' => get_string('coursesections', 'theme_nextgen', $sectioncount)];
-    }
-    if ($language !== '') {
-        $includes[] = ['label' => $language];
-    }
-    if ($offered) {
-        $includes[] = ['label' => get_string('certificateincluded', 'theme_nextgen')];
-    }
-    if (!empty($course->enablecompletion)) {
-        $includes[] = ['label' => get_string('completion', 'completion')];
-    }
-
     $enrolled = is_enrolled($context, $USER, '', true);
     if ($enrolled) {
         $enrolurl = (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false);
@@ -2808,8 +2824,6 @@ function theme_nextgen_course_detail_context(): ?array {
         'price' => $price,
         'hasfacts' => !empty($facts),
         'facts' => $facts,
-        'hasincludes' => !empty($includes),
-        'includes' => $includes,
         'hasoutcomes' => !empty($outcomes),
         'outcometitle' => $outcometitle,
         'hasoutcomelead' => $outcomelead !== '',

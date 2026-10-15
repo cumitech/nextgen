@@ -61,7 +61,10 @@ const measure = (root, body, toggle) => {
         return;
     }
     root.classList.add('is-collapsible');
-    const long = body.scrollHeight - body.clientHeight > SLACK;
+    // Compare with the collapsed limit. clientHeight can still report the
+    // full height in the same turn the class is added, which hides the toggle.
+    const limit = parseFloat(window.getComputedStyle(body).maxHeight);
+    const long = Number.isFinite(limit) && body.scrollHeight > limit + SLACK;
     root.classList.toggle('is-collapsible', long);
     toggle.hidden = !long;
 };
@@ -99,8 +102,9 @@ const bind = (root) => {
     } else {
         window.addEventListener('resize', check);
     }
-    check();
-};
+        check();
+        window.addEventListener('load', check);
+    };
 
 /**
  * Bind every block on the page.

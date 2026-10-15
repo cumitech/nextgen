@@ -30,7 +30,7 @@
         "visionpoints": [{"text": "Every young person has access to training."}],
         "commitments": [{"title": "Accessibility", "text": "Training that reaches you."}],
         "impact": [{"challenge": "Youth unemployment", "responses": [{"tag": "Mission", "text": "Skills."}]}],
-        "founder": {"name": "Professor A B", "highlights": [], "positions": []},
+        "founder": {"name": "Professor A B", "image": "https://example.com/founder.jpg", "highlights": [], "positions": []},
         "participants": [{"name": "Dr. C D", "isfounder": false}],
         "hascontact": true,
         "offices": [{"label": "Main office", "address": "Yaoundé", "mapurl": "https://www.google.com/maps"}],
@@ -40,6 +40,7 @@
         "email": "info@example.com",
         "emailurl": "mailto:info@example.com",
         "contacturl": "https://example.com/contact.php",
+        "teamurl": "https://example.com/team.php",
         "coursesurl": "https://example.com/course/index.php",
         "cansignup": true,
         "signupurl": "https://example.com/login/signup.php"
@@ -184,6 +185,9 @@
             <div class="ng-about-aside">
                 <div class="ng-about-head">
                     <h2 id="ng-about-team-title">{{#str}}aboutteamtitle, theme_nextgen{{/str}}</h2>
+                    {{#founder}}
+                        <img class="ng-about-team-photo" src="{{image}}" alt="{{name}}" width="220" height="220" loading="lazy">
+                    {{/founder}}
                 </div>
                 {{#founder}}
                     <div class="ng-about-founder">
@@ -223,6 +227,9 @@
                 {{/participants}}
             </ul>
             <p class="ng-about-text">{{#str}}aboutparticipantsmore, theme_nextgen{{/str}}</p>
+            <p class="ng-about-actions">
+                <a class="btn btn-primary" href="{{teamurl}}">{{#str}}aboutteamlink, theme_nextgen{{/str}}</a>
+            </p>
         </div>
     </section>
 
