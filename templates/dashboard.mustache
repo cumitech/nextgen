@@ -17,33 +17,29 @@
 {{!
     @template theme_nextgen/dashboard
 
-    Signed-in dashboard hero, welcome card, and course counts.
+    Signed-in home. Greeting, last course, and course counts.
+    Course blocks below this stay on Moodle's own overview.
 }}
 <div class="ng-dash">
-    <header class="ng-dash-hero tw:relative tw:overflow-hidden tw:bg-secondary tw:text-white">
-        <div class="ng-dash-hero-copy">
-            <h1 class="tw:m-0 tw:font-bold tw:tracking-tight tw:text-white">{{title}}</h1>
-        </div>
-    </header>
     <div class="ng-dash-grid">
-        <section class="ng-dash-card tw:rounded-2xl tw:border tw:border-border tw:bg-surface tw:shadow-sm">
-            <h2 class="tw:m-0 tw:text-xl tw:font-bold tw:text-text">{{hello}}</h2>
-            <p class="tw:mt-4 tw:mb-0 tw:text-sm tw:leading-6 tw:text-text-muted">{{today}}</p>
+        <section class="ng-dash-card">
+            <h1>{{hello}}</h1>
+            <p>{{today}}</p>
             {{#haslastlogin}}
-                <p class="tw:mt-1 tw:mb-0 tw:text-sm tw:leading-6 tw:text-text-muted">{{lastlogin}}</p>
+                <p>{{lastlogin}}</p>
             {{/haslastlogin}}
             {{#hasrecent}}
-                <p class="tw:mt-1 tw:mb-0 tw:text-sm tw:leading-6 tw:text-text-muted">
+                <p>
                     {{#str}}dashboardrecent, theme_nextgen{{/str}}
-                    <a class="tw:font-semibold tw:text-primary tw:no-underline tw:hover:underline" href="{{recenturl}}">{{recentname}}</a>
+                    <a href="{{recenturl}}">{{recentname}}</a>
                 </p>
             {{/hasrecent}}
-            <p class="tw:mt-5 tw:mb-0">
+            <p class="ng-dash-action">
                 <a class="btn btn-primary" href="{{continueurl}}">{{#str}}dashboardcontinue, theme_nextgen{{/str}}</a>
             </p>
         </section>
-        <section class="ng-dash-card tw:rounded-2xl tw:border tw:border-border tw:bg-surface tw:shadow-sm" aria-label="{{#str}}dashboardmycourses, theme_nextgen{{/str}}">
-            <h2 class="tw:m-0 tw:text-lg tw:font-bold tw:text-text">{{#str}}dashboardmycourses, theme_nextgen{{/str}}</h2>
+        <section class="ng-dash-card" aria-label="{{#str}}dashboardmycourses, theme_nextgen{{/str}}">
+            <h2>{{#str}}dashboardmycourses, theme_nextgen{{/str}}</h2>
             <ul class="ng-dash-counts">
                 <li>
                     <span class="ng-dash-count">{{allcount}}</span>

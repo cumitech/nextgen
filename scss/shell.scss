@@ -6346,7 +6346,7 @@ body.nextgen .ng-dash-grid {
   contain: inline-size;
   display: grid;
   gap: 1rem;
-  margin: -2.5rem auto 1.5rem;
+  margin: 1.25rem auto 1.5rem;
   max-width: min(76rem, 100%);
   min-width: 0;
   padding: 0 1rem;
@@ -6356,6 +6356,8 @@ body.nextgen .ng-dash-grid {
 }
 
 body.nextgen .ng-dash-card {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
   border-radius: 8px;
   box-shadow: none;
   box-sizing: border-box;
@@ -6395,6 +6397,11 @@ body.nextgen .ng-dash-counts li span:last-child {
 body.nextgen .ng-dash-card p,
 body.nextgen .ng-dash-card a {
   overflow-wrap: anywhere;
+}
+
+body.nextgen .ng-dash-card p {
+  color: var(--ng-text-muted);
+  margin: 0.45rem 0 0;
 }
 
 body.nextgen .ng-dash-rings {
@@ -6487,13 +6494,13 @@ body.nextgen .ng-dash-ring-value {
   }
 }
 
-/* Reference column: centered, about 57% of the window, and not wider than 72rem. */
+/* Dashboard column: centered, a bit wider than half the window, and not wider than 76rem. */
 @media (min-width: 992px) {
   body.nextgen.nextgen-dashboard .ng-dash,
   body.nextgen.nextgen-dashboard #page-content {
     margin-left: auto;
     margin-right: auto;
-    max-width: #{"min(72rem, 57%)"};
+    max-width: #{"min(76rem, 78%)"};
     width: 100%;
   }
 }
@@ -7194,7 +7201,7 @@ body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus.pageitem a
     margin-left: auto;
     margin-right: auto;
     margin-top: 0;
-    max-width: #{"min(72rem, 57%)"};
+    max-width: #{"min(80rem, 94%)"};
     padding: 0.35rem 0 1.5rem;
     width: 100%;
   }
@@ -7805,8 +7812,7 @@ body.nextgen.nextgen-blog .ng-blog-comments {
   padding-top: 1.25rem;
 }
 
-body.nextgen.nextgen-blog-visitor .ng-blog-comments .comment-area,
-body.nextgen.nextgen-blog-visitor .ng-blog-signin {
+body.nextgen.nextgen-blog-visitor .ng-blog-comments .comment-area {
   display: none;
 }
 
@@ -7845,5 +7851,139 @@ body.nextgen.nextgen-blog .pagination {
 
   body.nextgen.nextgen-blog .ng-blog-single h1 {
     font-size: 1.4rem;
+  }
+}
+
+/* Learner home: the continue card leads. Course blocks below stay Moodle's. */
+body.nextgen .ng-dash-hero-note {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.95rem;
+  margin: 0.65rem 0 0;
+  max-width: 36rem;
+}
+
+body.nextgen .ng-dash-kicker {
+  color: var(--ng-text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.4rem;
+  text-transform: uppercase;
+}
+
+body.nextgen .ng-dash-card h1,
+body.nextgen .ng-dash-card h2 {
+  color: var(--ng-ink);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin: 0;
+}
+
+body.nextgen .ng-dash-meta {
+  color: var(--ng-text-muted);
+  margin: 0.4rem 0 0;
+}
+
+body.nextgen .ng-dash-action {
+  margin: 1.1rem 0 0;
+}
+
+/* Enrolled course: sections read as a path. Editing keeps Moodle's own controls. */
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 0.35rem 0.35rem 0.55rem;
+}
+
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section .course-section-header {
+  padding: 0.7rem 0.85rem 0.25rem;
+}
+
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section .sectionname,
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section .sectionname a {
+  color: var(--ng-ink);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section .activity-item {
+  border-radius: 8px;
+}
+
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section .activity-item:hover {
+  background: var(--ng-muted);
+}
+
+/* Lesson player: Moodle's previous, next, and jump menu, drawn as one bar. */
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation {
+  border-top: 1px solid var(--ng-border);
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .float-start,
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .float-end,
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .float-sm-start,
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .float-sm-end {
+  float: none;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .float-end,
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .float-sm-end {
+  text-align: end;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .btn-link {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 8px;
+  color: var(--ng-ink);
+  display: inline-flex;
+  font-weight: 600;
+  max-width: 100%;
+  padding: 0.55rem 0.9rem;
+  text-align: start;
+  text-decoration: none;
+  white-space: normal;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .float-end .btn-link,
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .float-sm-end .btn-link {
+  background: var(--ng-yellow);
+  border-color: var(--ng-yellow);
+  color: var(--ng-brand-ink);
+}
+
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .urlselect,
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .custom-select,
+body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation select {
+  max-width: 100%;
+}
+
+body.nextgen.nextgen-lesson:not(.editing) .activity-content,
+body.nextgen.nextgen-lesson:not(.editing) .activity-navigation {
+  max-width: 58rem;
+}
+
+@media (max-width: 767.98px) {
+  body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .row > [class*="col"] {
+    flex: none;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  body.nextgen.pagelayout-incourse:not(.editing) .activity-navigation .btn-link {
+    width: 100%;
   }
 }

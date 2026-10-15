@@ -64,6 +64,10 @@ function theme_nextgen_page_init($page) {
     if ((string) $page->pagetype === 'blog-edit') {
         $page->requires->js_call_amd('theme_nextgen/blogpublish', 'init');
     }
+    $reading = ['mod-page-view', 'mod-book-view', 'mod-resource-view', 'mod-url-view', 'mod-folder-view'];
+    if (in_array((string) $page->pagetype, $reading, true)) {
+        $page->add_body_class('nextgen-lesson');
+    }
 
     // section.php sets its own URL before the header. Put the readable address
     // back so the editing switch and the rest of the page stay on it.
@@ -133,11 +137,17 @@ function theme_nextgen_dashboard_context(): ?array {
 
     $recentname = '';
     $recenturl = '';
+    $continuetitle = '';
+    $continuecontext = '';
     $continueurl = (new moodle_url('/my/courses.php'))->out(false);
     $enrolled = enrol_get_my_courses(['id', 'shortname', 'fullname'], 'sortorder ASC');
     if (!empty($enrolled)) {
         $firstenrolled = reset($enrolled);
         $continueurl = (new moodle_url('/course/view.php', ['id' => (int) $firstenrolled->id]))->out(false);
+        $continuetitle = format_string($firstenrolled->fullname, true, [
+            'context' => context_course::instance($firstenrolled->id),
+            'escape' => false,
+        ]);
     }
     if ($DB->get_manager()->table_exists('block_recentlyaccessedcourses')) {
         $recent = $DB->get_record_sql(
@@ -157,6 +167,37 @@ function theme_nextgen_dashboard_context(): ?array {
             ]);
             $recenturl = (new moodle_url('/course/view.php', ['id' => $recent->id]))->out(false);
             $continueurl = $recenturl;
+            $continuetitle = $recentname;
+        }
+    }
+    if ($DB->get_manager()->table_exists('block_recentlyaccesseditems')) {
+        $item = $DB->get_record_sql(
+            "SELECT r.courseid, r.cmid
+               FROM {block_recentlyaccesseditems} r
+              WHERE r.userid = :userid
+           ORDER BY r.timeaccess DESC",
+            ['userid' => $USER->id],
+            IGNORE_MULTIPLE
+        );
+        if ($item && isset($enrolled[(int) $item->courseid])) {
+            try {
+                [$itemcourse, $cm] = get_course_and_cm_from_cmid((int) $item->cmid, '', (int) $item->courseid);
+                if (!empty($cm->uservisible) && $cm->url instanceof moodle_url) {
+                    $continuetitle = $cm->get_formatted_name();
+                    $continueurl = $cm->url->out(false);
+                    $continuecontext = get_string(
+                        'dashboardlessonin',
+                        'theme_nextgen',
+                        format_string($itemcourse->fullname, true, [
+                            'context' => context_course::instance($itemcourse->id),
+                            'escape' => false,
+                        ])
+                    );
+                }
+            } catch (moodle_exception $e) {
+                // The activity was removed, or this learner can no longer open it.
+                debugging($e->getMessage(), DEBUG_DEVELOPER);
+            }
         }
     }
 
@@ -174,7 +215,11 @@ function theme_nextgen_dashboard_context(): ?array {
         'hasrecent' => $recentname !== '',
         'recentname' => $recentname,
         'recenturl' => $recenturl,
+        'hascontinue' => $continuetitle !== '',
+        'continuetitle' => $continuetitle,
+        'continuecontext' => $continuecontext,
         'continueurl' => $continueurl,
+        'ready' => get_string('dashboardready', 'theme_nextgen'),
         'allcount' => $all,
         'inprogresscount' => $inprogress,
         'pastcount' => $past,
