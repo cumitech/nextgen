@@ -73,4 +73,33 @@ class observer {
         }
         $SESSION->theme_nextgen_enrolsuccess = $courseid;
     }
+
+    /**
+     * Publish a site-wide post so a visitor can read it.
+     *
+     * The blog editor still offers "Anyone on this site" as the default. At world
+     * visibility that choice is hidden from guests, so a saved post of that kind
+     * is stored as public. Drafts are left alone.
+     *
+     * @param \core\event\base $event
+     */
+    public static function blog_entry_saved(\core\event\base $event): void {
+        global $CFG, $DB;
+
+        if ((int) ($CFG->bloglevel ?? 0) < BLOG_GLOBAL_LEVEL) {
+            return;
+        }
+        $id = (int) $event->objectid;
+        if ($id < 1) {
+            return;
+        }
+        $post = $DB->get_record('post', ['id' => $id], 'id, module, publishstate');
+        if (!$post || ($post->module !== 'blog' && $post->module !== 'blog_external')) {
+            return;
+        }
+        if ($post->publishstate !== 'site') {
+            return;
+        }
+        $DB->set_field('post', 'publishstate', 'public', ['id' => $id]);
+    }
 }

@@ -98,5 +98,10 @@ function xmldb_theme_nextgen_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026101404, 'theme', 'nextgen');
     }
 
+    if ($oldversion < 2026101500) {
+        theme_nextgen_open_public_blog();
+        upgrade_plugin_savepoint(true, 2026101500, 'theme', 'nextgen');
+    }
+
     return true;
 }

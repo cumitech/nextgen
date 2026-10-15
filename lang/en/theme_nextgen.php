@@ -501,3 +501,17 @@ $string['dashboardall'] = 'All courses';
 $string['dashboardinprogress'] = 'In progress';
 $string['dashboardpast'] = 'Past';
 $string['dashboardnoprogress'] = 'No completion criteria';
+
+$string['blognav'] = 'Blog';
+$string['blogintro'] = 'Notes and updates from NextGen Academy.';
+$string['blogback'] = 'All posts';
+$string['blogedited'] = 'Updated {$a}';
+$string['blogsignin'] = 'Sign in to comment';
+$string['blogcontinue'] = 'Continue reading';
+$string['blogwatchyoutube'] = 'Watch on YouTube';
+$string['blogsharex'] = 'Share on X';
+$string['blogsharefacebook'] = 'Share on Facebook';
+$string['blogsharelinkedin'] = 'Share on LinkedIn';
+$string['blogshareemail'] = 'Share by email';
+$string['blogcopylink'] = 'Copy link';
+$string['blogcopied'] = 'Link copied';

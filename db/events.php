@@ -33,4 +33,12 @@ $observers = [
         'eventname' => '\core\event\user_enrolment_created',
         'callback' => \theme_nextgen\observer::class . '::user_enrolment_created',
     ],
+    [
+        'eventname' => '\core\event\blog_entry_created',
+        'callback' => \theme_nextgen\observer::class . '::blog_entry_saved',
+    ],
+    [
+        'eventname' => '\core\event\blog_entry_updated',
+        'callback' => \theme_nextgen\observer::class . '::blog_entry_saved',
+    ],
 ];

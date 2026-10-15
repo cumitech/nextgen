@@ -26,6 +26,9 @@ use moodle_url;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class core_renderer extends \theme_boost\output\core_renderer {
+    /** @var bool The blog index heading is replaced once per page. */
+    private static $blogheadingreplaced = false;
+
     /**
      * Site logo. The header and login page both use the shipped NextGen leaf.
      *
@@ -127,6 +130,122 @@ class core_renderer extends \theme_boost\output\core_renderer {
         $context = theme_nextgen_footer_context($this->page->theme);
         $context['logourl'] = $this->nextgen_logo_url()->out(false);
         return $this->render_from_template('theme_nextgen/footer_columns', $context);
+    }
+
+    /**
+     * Blog index and entry pages use their own heading in place of the core one.
+     *
+     * @param string $text
+     * @param int $level
+     * @param string|null $classes
+     * @param string|null $id
+     * @return string
+     */
+    #[\Override]
+    public function heading($text, $level = 2, $classes = null, $id = null) {
+        if ($this->replace_blog_heading($level, $classes, $id)) {
+            self::$blogheadingreplaced = true;
+            return $this->render_from_template('theme_nextgen/blog_masthead', $this->blog_masthead_context($text));
+        }
+        return parent::heading($text, $level, $classes, $id);
+    }
+
+    /**
+     * True for the first plain heading on the blog index.
+     *
+     * @param int $level
+     * @param string|null $classes
+     * @param string|null $id
+     * @return bool
+     */
+    private function replace_blog_heading($level, $classes, $id): bool {
+        if (self::$blogheadingreplaced || (string) $this->page->pagetype !== 'blog-index') {
+            return false;
+        }
+        if ((int) $level !== 2 || $id !== null) {
+            return false;
+        }
+        return $classes === null || $classes === '';
+    }
+
+    /**
+     * The unfiltered site blog, rather than one author, course, tag, or search.
+     *
+     * @return bool
+     */
+    private function blog_is_site_index(): bool {
+        if ((string) $this->page->pagetype !== 'blog-index' || $this->page->url->param('entryid')) {
+            return false;
+        }
+        foreach (['userid', 'courseid', 'modid', 'groupid', 'tagid', 'tag', 'search'] as $name) {
+            if ($this->page->url->param($name)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Banner and breadcrumb for the public blog index and a single post.
+     *
+     * The banner keeps the site blog name on a post. The trail ends on the
+     * article title.
+     *
+     * @param string $text Heading Moodle was about to print
+     * @return array
+     */
+    private function blog_masthead_context(string $text): array {
+        global $DB;
+
+        $entryid = (int) $this->page->url->param('entryid');
+        $blogurl = (new moodle_url('/blog/index.php'))->out(false);
+        $title = $entryid ? get_string('siteblogheading', 'blog') : $text;
+        $crumbs = [
+            [
+                'label' => get_string('home'),
+                'url' => (new moodle_url('/'))->out(false),
+                'home' => true,
+            ],
+        ];
+        if ($entryid) {
+            $crumbs[] = [
+                'label' => $title,
+                'url' => $blogurl,
+                'home' => false,
+            ];
+            $subject = $DB->get_field('post', 'subject', ['id' => $entryid]);
+            $crumbs[] = [
+                'label' => $subject ? format_string($subject) : $text,
+                'url' => '',
+                'home' => false,
+            ];
+        } else {
+            $crumbs[] = [
+                'label' => $title,
+                'url' => '',
+                'home' => false,
+            ];
+        }
+
+        return [
+            'title' => $title,
+            'narrow' => $entryid > 0,
+            'crumbs' => $crumbs,
+            'empty' => !$entryid && $this->blog_is_site_index() && $this->blog_site_is_empty(),
+            'emptytext' => get_string('noentriesyet', 'blog'),
+        ];
+    }
+
+    /**
+     * Whether the current user can see any site blog entries.
+     *
+     * @return bool
+     */
+    private function blog_site_is_empty(): bool {
+        global $CFG;
+        require_once($CFG->dirroot . '/blog/locallib.php');
+        $listing = new \blog_listing([]);
+        return $listing->count_entries() === 0;
     }
 
     /**

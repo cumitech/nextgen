@@ -51,6 +51,19 @@ function theme_nextgen_page_init($page) {
     if ($page->pagelayout === 'mydashboard') {
         $page->add_body_class('nextgen-dashboard');
     }
+    if ((string) $page->pagetype === 'blog-index') {
+        $page->add_body_class('nextgen-blog');
+        if ($page->url->param('entryid')) {
+            $page->add_body_class('nextgen-blog-entry');
+            $page->requires->js_call_amd('theme_nextgen/blogshare', 'init');
+        }
+        if (!isloggedin() || isguestuser()) {
+            $page->add_body_class('nextgen-blog-visitor');
+        }
+    }
+    if ((string) $page->pagetype === 'blog-edit') {
+        $page->requires->js_call_amd('theme_nextgen/blogpublish', 'init');
+    }
 
     // section.php sets its own URL before the header. Put the readable address
     // back so the editing switch and the rest of the page stay on it.
@@ -526,6 +539,7 @@ function theme_nextgen_footer_context($theme): array {
         $terms = \theme_nextgen\local\public_page::url('terms')->out(false);
     }
     $columns = theme_nextgen_with_faq_link($columns);
+    $columns = theme_nextgen_with_blog_link($columns);
 
     return [
         'sitename' => format_string($SITE->fullname, true, ['context' => context_system::instance()]),
@@ -578,6 +592,57 @@ function theme_nextgen_with_faq_link(array $columns): array {
     $columns[] = [
         'title' => $supporttitle,
         'links' => [$faqlink],
+    ];
+    return $columns;
+}
+
+/**
+ * Add the blog to Quick links when blogs are enabled and the column does not already list it.
+ *
+ * @param array $columns
+ * @return array
+ */
+function theme_nextgen_with_blog_link(array $columns): array {
+    global $CFG;
+
+    if (empty($CFG->enableblogs)) {
+        return $columns;
+    }
+
+    $blogurl = (new moodle_url('/blog/index.php'))->out(false);
+    foreach ($columns as $column) {
+        foreach ($column['links'] as $link) {
+            if ($link['url'] === $blogurl) {
+                return $columns;
+            }
+        }
+    }
+
+    $bloglink = [
+        'label' => get_string('blognav', 'theme_nextgen'),
+        'url' => $blogurl,
+        'external' => false,
+    ];
+    $abouturl = (new moodle_url('/about.php'))->out(false);
+    $contacturl = (new moodle_url('/contact.php'))->out(false);
+    foreach ($columns as $index => $column) {
+        foreach ($column['links'] as $linkindex => $link) {
+            if ($link['url'] === $abouturl || $link['url'] === $contacturl) {
+                array_splice($columns[$index]['links'], $linkindex, 0, [$bloglink]);
+                return $columns;
+            }
+        }
+    }
+    $quicktitle = get_string('quicklinks', 'theme_nextgen');
+    foreach ($columns as $index => $column) {
+        if ($column['title'] === $quicktitle) {
+            $columns[$index]['links'][] = $bloglink;
+            return $columns;
+        }
+    }
+    $columns[] = [
+        'title' => $quicktitle,
+        'links' => [$bloglink],
     ];
     return $columns;
 }
@@ -1765,6 +1830,79 @@ function theme_nextgen_course_public_url(int $courseid): moodle_url {
 }
 
 /**
+ * Let visitors read the site blog without an account.
+ *
+ * Moodle's site-level setting still asks for a login, and a new post defaults to
+ * that same audience, which guests cannot see. Opening the blog once raises the
+ * visibility to the world and publishes those posts. Drafts stay private.
+ * An administrator can lower the setting again afterwards.
+ *
+ * @return void
+ */
+function theme_nextgen_open_public_blog(): void {
+    global $CFG, $DB;
+
+    if (get_config('theme_nextgen', 'publicblog')) {
+        return;
+    }
+    if ((int) ($CFG->bloglevel ?? 0) < BLOG_GLOBAL_LEVEL) {
+        set_config('bloglevel', BLOG_GLOBAL_LEVEL);
+        $CFG->bloglevel = BLOG_GLOBAL_LEVEL;
+    }
+    $DB->set_field_select(
+        'post',
+        'publishstate',
+        'public',
+        "publishstate = :site AND (module = :blog OR module = :external)",
+        [
+            'site' => 'site',
+            'blog' => 'blog',
+            'external' => 'blog_external',
+        ]
+    );
+    set_config('publicblog', 1, 'theme_nextgen');
+}
+
+/**
+ * Send visitors to sign in before they add, edit, or delete a post.
+ *
+ * The blog editor looks up the current user before it asks for a login.
+ * A signed-out visitor has no user record, so that page fails instead of
+ * offering the login form.
+ *
+ * @return void
+ */
+function theme_nextgen_guard_blog_actions(): void {
+    if (defined('CLI_SCRIPT') && CLI_SCRIPT) {
+        return;
+    }
+    if (isloggedin() && !isguestuser()) {
+        return;
+    }
+    $script = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+    $guarded = [
+        '/blog/edit.php',
+        '/blog/external_blogs.php',
+        '/blog/external_blog_edit.php',
+        '/blog/preferences.php',
+    ];
+    $matched = false;
+    foreach ($guarded as $path) {
+        if (str_ends_with($script, $path)) {
+            $matched = true;
+            break;
+        }
+    }
+    if (!$matched) {
+        return;
+    }
+    $wants = new moodle_url(qualified_me());
+    redirect(new moodle_url('/login/index.php', [
+        'wantsurl' => $wants->out_as_local_url(false),
+    ]));
+}
+
+/**
  * Serve the public course page before course/view.php requires a login.
  */
 function theme_nextgen_after_config(): void {
@@ -1774,6 +1912,8 @@ function theme_nextgen_after_config(): void {
         return;
     }
     if (($CFG->theme ?? '') === 'nextgen') {
+        theme_nextgen_open_public_blog();
+        theme_nextgen_guard_blog_actions();
         theme_nextgen_serve_unrewritten_module();
         theme_nextgen_publish_public_paths();
         theme_nextgen_redirect_site_support();

@@ -1,0 +1,119 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_nextgen/blog_entry
+
+    One blog post on the index, or the full post on its own page.
+}}
+<article class="ng-blog-post{{#single}} ng-blog-single{{/single}}" id="b{{id}}">
+    {{#single}}
+        <h1>{{subject}}</h1>
+        {{#lead}}<div class="ng-blog-standfirst">{{{lead}}}</div>{{/lead}}
+        {{#hasimage}}
+            <img class="ng-blog-figure" src="{{imageurl}}" alt="{{imagealt}}">
+        {{/hasimage}}
+        <p class="ng-blog-by">
+            <img class="ng-blog-avatar" src="{{avatarurl}}" alt="">
+            <a href="{{authorurl}}">{{author}}</a>
+            <time datetime="{{datetime}}">{{datetimefull}}</time>
+            {{#audience}}<span class="ng-blog-audience">{{audience}}</span>{{/audience}}
+        </p>
+        {{#body}}<div class="ng-blog-body">{{{body}}}</div>{{/body}}
+        {{#hasfiles}}
+            <ul class="ng-blog-files">
+                {{#files}}
+                    <li><a href="{{url}}">{{name}}</a></li>
+                {{/files}}
+            </ul>
+        {{/hasfiles}}
+        {{#external}}<p class="ng-blog-external">{{{external}}}</p>{{/external}}
+        {{#hastags}}
+            <ul class="ng-blog-tags">
+                {{#tags}}
+                    <li><a href="{{url}}">{{name}}</a></li>
+                {{/tags}}
+            </ul>
+        {{/hastags}}
+        {{#hasassocs}}
+            <ul class="ng-blog-assoc">
+                {{#assocs}}
+                    <li><a href="{{url}}">{{name}}</a></li>
+                {{/assocs}}
+            </ul>
+        {{/hasassocs}}
+        {{#notice}}<p class="ng-blog-notice">{{notice}}</p>{{/notice}}
+        <ul class="ng-blog-share">
+            <li>
+                <a href="{{sharex}}" target="_blank" rel="noopener noreferrer" aria-label="{{#str}}blogsharex, theme_nextgen{{/str}}">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.5 3h3.1l-6.8 7.8L22 21h-6.2l-4.8-6.3L6 21H2.8l7.3-8.4L2 3h6.3l4.4 5.8zm-1.1 16.2h1.7L7.7 4.7H5.9z"/></svg>
+                </a>
+            </li>
+            <li>
+                <a href="{{sharefacebook}}" target="_blank" rel="noopener noreferrer" aria-label="{{#str}}blogsharefacebook, theme_nextgen{{/str}}">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path fill="currentColor" d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1z"/></svg>
+                </a>
+            </li>
+            <li>
+                <a href="{{sharelinkedin}}" target="_blank" rel="noopener noreferrer" aria-label="{{#str}}blogsharelinkedin, theme_nextgen{{/str}}">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.5 9H4V20h2.5zM5.2 4A1.6 1.6 0 1 0 5.2 7.2 1.6 1.6 0 0 0 5.2 4zM20 20h-2.5v-5.6c0-1.6-.6-2.6-2-2.6a2.2 2.2 0 0 0-2 1.5 2 2 0 0 0-.1.9V20H11V9h2.4v1.5A3 3 0 0 1 16.2 9c2.2 0 3.8 1.4 3.8 4.5z"/></svg>
+                </a>
+            </li>
+            <li>
+                <a href="{{shareemail}}" aria-label="{{#str}}blogshareemail, theme_nextgen{{/str}}">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M4 6h16v12H4z"/><path fill="none" stroke="currentColor" stroke-width="1.8" d="m4 7 8 6 8-6"/></svg>
+                </a>
+            </li>
+            <li>
+                <button type="button" class="ng-blog-share-copy" data-url="{{url}}" data-copied="{{#str}}blogcopied, theme_nextgen{{/str}}" aria-label="{{#str}}blogcopylink, theme_nextgen{{/str}}">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2"/></svg>
+                </button>
+            </li>
+        </ul>
+        {{#hasactions}}
+            <p class="ng-blog-actions">
+                {{#actions}}
+                    <a href="{{url}}">{{label}}</a>
+                {{/actions}}
+            </p>
+        {{/hasactions}}
+        {{#modified}}<p class="ng-blog-modified">{{modified}}</p>{{/modified}}
+        {{#comments}}<div class="ng-blog-comments">{{{comments}}}</div>{{/comments}}
+        {{#signinurl}}
+            <p class="ng-blog-signin"><a href="{{signinurl}}">{{#str}}blogsignin, theme_nextgen{{/str}}</a></p>
+        {{/signinurl}}
+    {{/single}}
+    {{^single}}
+        <a class="ng-blog-media" href="{{url}}" aria-label="{{subject}}">
+            {{#hasimage}}
+                <img src="{{imageurl}}" alt="">
+            {{/hasimage}}
+            {{^hasimage}}
+                <span class="ng-blog-media-fallback" aria-hidden="true"></span>
+            {{/hasimage}}
+            {{#hasvideo}}
+                <span class="ng-blog-play" aria-hidden="true">
+                    <svg viewBox="0 0 68 48" width="68" height="48"><rect width="68" height="48" rx="12" fill="#ff0033"/><path fill="#fff" d="M27 14.5 47 24 27 33.5z"/></svg>
+                    <span>{{#str}}blogwatchyoutube, theme_nextgen{{/str}}</span>
+                </span>
+            {{/hasvideo}}
+        </a>
+        <time class="ng-blog-date" datetime="{{datetime}}">{{date}}</time>
+        <h2><a href="{{url}}">{{subject}}</a></h2>
+        {{#excerpt}}<p class="ng-blog-excerpt">{{excerpt}}</p>{{/excerpt}}
+        <a class="ng-blog-more" href="{{url}}">{{#str}}blogcontinue, theme_nextgen{{/str}}</a>
+    {{/single}}
+</article>

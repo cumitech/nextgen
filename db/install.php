@@ -30,6 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_theme_nextgen_install() {
     theme_nextgen_install_commercial_fields();
     theme_nextgen_publish_public_paths();
+    theme_nextgen_open_public_blog();
     \theme_nextgen\local\social::install_defaults();
     \theme_nextgen\local\organisation::install_defaults();
 }

@@ -83,8 +83,45 @@ class hook_listener {
             }
         }
         if (!during_initial_install()) {
+            self::extend_blog($primary);
             \theme_nextgen\local\public_page::extend_primary($primary);
             theme_nextgen_add_category_menu($primary);
+        }
+    }
+
+    /**
+     * Blog in the header, before About and Contact, whenever blogs are on.
+     *
+     * @param \navigation_node $primary
+     */
+    private static function extend_blog(\navigation_node $primary): void {
+        global $CFG, $PAGE;
+
+        if (empty($CFG->enableblogs)) {
+            return;
+        }
+        $url = new \moodle_url('/blog/index.php');
+        $node = null;
+        foreach ($primary->children as $child) {
+            if ($child->action instanceof \moodle_url && $child->action->compare($url, URL_MATCH_BASE)) {
+                $node = $child;
+                break;
+            }
+        }
+        if ($node === null) {
+            $node = $primary->add(
+                get_string('blognav', 'theme_nextgen'),
+                $url,
+                \navigation_node::TYPE_CUSTOM,
+                null,
+                'nextgen-blog'
+            );
+        }
+        if ($node) {
+            $node->isactive = false;
+        }
+        if (str_starts_with((string) $PAGE->pagetype, 'blog-')) {
+            $PAGE->set_primary_active_tab('nextgen-blog');
         }
     }
 }
