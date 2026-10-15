@@ -3329,6 +3329,13 @@ body.nextgen.nextgen-catalogue .ng-catalogue-search-row input[type="search"] {
   padding: 0.55rem 0.95rem;
 }
 
+body.nextgen.nextgen-catalogue .ng-catalogue-search-row input[type="search"]:focus,
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced select:focus {
+  border-color: var(--ng-primary);
+  outline: 2px solid var(--ng-primary);
+  outline-offset: 1px;
+}
+
 body.nextgen.nextgen-catalogue .ng-catalogue-search-row .btn {
   border-radius: 999px;
   padding-left: 1.1rem;
@@ -3340,9 +3347,31 @@ body.nextgen.nextgen-catalogue .ng-catalogue-advanced {
 }
 
 body.nextgen.nextgen-catalogue .ng-catalogue-advanced summary {
+  align-items: center;
   cursor: pointer;
+  display: flex;
   font-weight: 600;
+  gap: 0.45rem;
+  list-style: none;
   width: fit-content;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced summary::-webkit-details-marker {
+  display: none;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced summary::before {
+  border-bottom: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  content: "";
+  height: 0.4rem;
+  transform: rotate(45deg);
+  width: 0.4rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-advanced[open] summary::before {
+  transform: rotate(-135deg);
+  margin-top: 0.25rem;
 }
 
 body.nextgen.nextgen-catalogue .ng-catalogue-advanced-grid {
@@ -3378,6 +3407,25 @@ body.nextgen.nextgen-catalogue .ng-catalogue-advanced-actions {
 
 body.nextgen.nextgen-catalogue .ng-catalogue-advanced-actions a {
   font-weight: 600;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-active {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+body.nextgen .ng-chip-filter {
+  background: var(--ng-muted);
+  font-size: 0.8125rem;
+}
+
+body.nextgen.nextgen-catalogue .ng-catalogue-count {
+  color: var(--ng-text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
 }
 
 body.nextgen .ng-chip {
@@ -3554,7 +3602,7 @@ body.nextgen.nextgen-course #page.drawers div[role="main"] {
 }
 
 body.nextgen .ng-course-band {
-  background: #0c2e16;
+  background: #102833;
   color: #fff;
   isolation: isolate;
   overflow: hidden;
@@ -3572,7 +3620,13 @@ body.nextgen .ng-course-band-media {
 }
 
 body.nextgen .ng-course-band::after {
-  background: rgba(8, 28, 18, 0.62);
+  background: linear-gradient(
+    100deg,
+    rgba(16, 40, 51, 0.94) 0%,
+    rgba(16, 40, 51, 0.82) 36%,
+    rgba(16, 40, 51, 0.46) 68%,
+    rgba(16, 40, 51, 0.28) 100%
+  );
   content: "";
   inset: 0;
   pointer-events: none;
@@ -3632,7 +3686,7 @@ body.nextgen .ng-course-crumb {
 }
 
 body.nextgen .ng-course-crumb a {
-  color: #f0b429;
+  color: #fde05a;
   text-decoration: none;
 }
 
@@ -3647,14 +3701,16 @@ body.nextgen .ng-course-band .ng-course-title {
   line-height: 1.2;
   margin: 0 0 0.75rem;
   max-width: 40rem;
+  text-shadow: 0 1px 2px rgba(8, 20, 28, 0.35);
 }
 
-body.nextgen .ng-course-excerpt {
-  color: rgba(255, 255, 255, 0.94);
-  font-size: 0.975rem;
+body.nextgen .ng-course-band .ng-course-excerpt {
+  color: #fff;
+  font-size: 1rem;
   line-height: 1.55;
   margin: 0;
-  max-width: 40rem;
+  max-width: 38rem;
+  text-shadow: 0 1px 2px rgba(8, 20, 28, 0.28);
 }
 
 body.nextgen .ng-course-teacher {
@@ -3695,7 +3751,7 @@ body.nextgen .ng-course-meta {
 }
 
 body.nextgen .ng-course-meta-note {
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 body.nextgen .ng-course-review-count {
@@ -3717,14 +3773,33 @@ body.nextgen .ng-bestseller {
   padding: 0.2rem 0.6rem;
 }
 
-body.nextgen .ng-course-hero-facts {
+body.nextgen .ng-course-hero-card {
   background: #fff;
-  border: 1px solid var(--ng-border);
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(8, 24, 32, 0.28);
   color: var(--ng-text);
-  flex: 0 0 280px;
+  flex: 0 0 300px;
+  max-width: 100%;
+  padding: 0.85rem 1rem 0.2rem;
+}
+
+body.nextgen .ng-course-hero-card-title {
+  color: var(--ng-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   margin: 0;
-  padding: 0.15rem 1rem;
+  text-transform: uppercase;
+}
+
+body.nextgen .ng-course-hero-facts {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: var(--ng-text);
+  flex: none;
+  margin: 0;
+  padding: 0.15rem 0 0;
 }
 
 body.nextgen .ng-course-hero-fact {
@@ -3755,7 +3830,25 @@ body.nextgen .ng-course-hero-fact dd {
   color: var(--ng-ink);
   font-size: 0.875rem;
   font-weight: 600;
+  max-width: 58%;
+  overflow-wrap: anywhere;
   text-align: right;
+}
+
+body.nextgen .ng-course-hero-fact dd.is-yes {
+  color: var(--ng-brand-dark);
+}
+
+body.nextgen .ng-course-band .ng-star-base {
+  fill: rgba(255, 255, 255, 0.38);
+}
+
+body.nextgen .ng-course-band .ng-star-fill {
+  fill: #fcd116;
+}
+
+body.nextgen .ng-course-band .ng-course-teacher-photo {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
 }
 
 body.nextgen .ng-fact-glyph {
@@ -3847,70 +3940,183 @@ body.nextgen .ng-certificate {
 body.nextgen .ng-certificate-sample {
   color: var(--ng-text-muted);
   font-size: 0.8125rem;
-  font-weight: 600;
-  margin: 0 0 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.7rem;
+  text-transform: uppercase;
 }
 
 body.nextgen .ng-certificate-sheet {
-  background: #fff;
-  border: 1px solid var(--ng-border);
+  background:
+    linear-gradient(#fffdf8, #fffdf8) padding-box,
+    linear-gradient(135deg, #c4a35a, #f4e4b8 45%, #c4a35a) border-box;
+  border: 10px solid transparent;
+  border-radius: 2px;
+  box-shadow: 0 18px 40px rgba(16, 40, 51, 0.12);
   color: var(--ng-ink);
-  padding: 1.5rem 1.25rem;
+  margin: 0 auto;
+  max-width: 42rem;
+  padding: 0.45rem;
+}
+
+body.nextgen .ng-certificate-frame {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(252, 209, 22, 0.18), transparent 16rem),
+    #fffdf8;
+  border: 2px solid #116306;
+  overflow: hidden;
+  padding: 1.75rem 1.35rem 1.35rem;
+  position: relative;
   text-align: center;
 }
 
+body.nextgen .ng-certificate-frame::before {
+  align-items: center;
+  color: rgba(196, 163, 90, 0.16);
+  content: attr(data-sample);
+  display: flex;
+  font-size: 4.4rem;
+  font-weight: 800;
+  inset: 0;
+  justify-content: center;
+  letter-spacing: 0.18em;
+  pointer-events: none;
+  position: absolute;
+  text-transform: uppercase;
+  transform: rotate(-18deg);
+}
+
+body.nextgen .ng-certificate-seal {
+  align-items: center;
+  background: radial-gradient(circle at 40% 35%, #1a7a10, #0a3a03);
+  border: 2px solid #c4a35a;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(196, 163, 90, 0.28);
+  display: flex;
+  height: 4.25rem;
+  justify-content: center;
+  margin: 0 auto 0.85rem;
+  position: relative;
+  width: 4.25rem;
+  z-index: 1;
+}
+
+body.nextgen .ng-certificate-seal svg {
+  height: 2.35rem;
+  width: 2.35rem;
+}
+
+body.nextgen .ng-certificate-seal circle {
+  fill: none;
+  stroke: #fcd116;
+  stroke-width: 1.5;
+}
+
+body.nextgen .ng-certificate-seal path {
+  fill: none;
+  stroke: #fcd116;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+body.nextgen .ng-certificate-kicker,
+body.nextgen .ng-certificate-issuer,
 body.nextgen .ng-certificate-title,
-body.nextgen .ng-certificate-subtitle,
 body.nextgen .ng-certificate-lead,
 body.nextgen .ng-certificate-name,
 body.nextgen .ng-certificate-completed,
-body.nextgen .ng-certificate-course {
+body.nextgen .ng-certificate-course,
+body.nextgen .ng-certificate-note {
   margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+body.nextgen .ng-certificate-kicker {
+  color: #8a5410;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+body.nextgen .ng-certificate-issuer {
+  color: #116306;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-top: 0.2rem;
+  text-transform: uppercase;
 }
 
 body.nextgen .ng-certificate-title {
-  font-size: 1.35rem;
+  color: #163a4a;
+  font-family: Georgia, "Palatino Linotype", Palatino, serif;
+  font-size: clamp(1.55rem, 3vw, 2.05rem);
   font-weight: 700;
-  line-height: 1.2;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  margin-top: 0.85rem;
 }
 
-body.nextgen .ng-certificate-subtitle {
-  color: var(--ng-text-muted);
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-top: 0.35rem;
+body.nextgen .ng-certificate-rule {
+  background: linear-gradient(90deg, transparent, #c4a35a, transparent);
+  height: 1px;
+  margin: 0.85rem auto 0;
+  max-width: 12rem;
+  position: relative;
+  z-index: 1;
+}
+
+body.nextgen .ng-certificate-rule::after {
+  background: #116306;
+  border-radius: 50%;
+  content: "";
+  height: 0.4rem;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.4rem;
 }
 
 body.nextgen .ng-certificate-lead,
 body.nextgen .ng-certificate-completed {
-  color: var(--ng-text-muted);
+  color: #5c6770;
   font-size: 0.92rem;
-  font-weight: 500;
   line-height: 1.45;
 }
 
 body.nextgen .ng-certificate-lead {
-  margin-top: 1.35rem;
+  margin-top: 1.15rem;
 }
 
 body.nextgen .ng-certificate-name {
-  color: var(--ng-brand-dark);
-  font-size: clamp(1.45rem, 3vw, 1.9rem);
+  border-bottom: 1px solid #e4d3a8;
+  color: #116306;
+  display: inline-block;
+  font-family: Georgia, "Palatino Linotype", Palatino, serif;
+  font-size: clamp(1.45rem, 3vw, 1.85rem);
+  font-style: italic;
   font-weight: 600;
-  letter-spacing: -0.02em;
   margin-top: 0.35rem;
+  min-width: min(16rem, 100%);
+  padding: 0 0.75rem 0.15rem;
 }
 
 body.nextgen .ng-certificate-completed {
-  margin: 0.7rem auto 0;
-  max-width: 26rem;
+  margin: 0.85rem auto 0;
+  max-width: 24rem;
 }
 
 body.nextgen .ng-certificate-course {
-  font-size: 1.05rem;
+  color: #163a4a;
+  font-family: Georgia, "Palatino Linotype", Palatino, serif;
+  font-size: 1.2rem;
   font-weight: 700;
   line-height: 1.35;
-  margin-top: 0.85rem;
+  margin-top: 0.45rem;
 }
 
 body.nextgen .ng-certificate-signs {
@@ -3918,35 +4124,89 @@ body.nextgen .ng-certificate-signs {
   gap: 1.25rem 2rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 1.8rem auto 0;
-  max-width: 34rem;
+  max-width: 32rem;
+  position: relative;
+  z-index: 1;
 }
 
 body.nextgen .ng-certificate-sign-value {
-  border-bottom: 1px solid var(--ng-primary);
-  color: var(--ng-brand-dark);
+  border-bottom: 1px solid #c4a35a;
+  color: #163a4a;
   display: block;
+  font-family: Georgia, "Palatino Linotype", Palatino, serif;
   font-size: 0.95rem;
-  font-weight: 600;
-  padding-bottom: 0.35rem;
+  font-style: italic;
+  padding-bottom: 0.3rem;
 }
 
 body.nextgen .ng-certificate-sign-label {
-  color: var(--ng-text-muted);
+  color: #8a5410;
   display: block;
   font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   margin-top: 0.4rem;
   text-transform: uppercase;
 }
 
+body.nextgen .ng-certificate-note,
+body.nextgen .ng-certificate-activity {
+  color: var(--ng-text-muted);
+  margin: 0.85rem 0 0;
+}
+
+body.nextgen .ng-certificate-activity a {
+  font-weight: 700;
+}
+
+body.nextgen .ng-certificate-none {
+  align-items: flex-start;
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  display: flex;
+  gap: 0.9rem;
+  padding: 1.15rem 1.2rem;
+}
+
+body.nextgen .ng-certificate-none-mark {
+  background: var(--ng-muted);
+  border: 1px solid var(--ng-border);
+  border-radius: 50%;
+  flex: 0 0 auto;
+  height: 2.25rem;
+  position: relative;
+  width: 2.25rem;
+}
+
+body.nextgen .ng-certificate-none-mark::before {
+  background: var(--ng-text-muted);
+  content: "";
+  height: 2px;
+  left: 0.55rem;
+  position: absolute;
+  right: 0.55rem;
+  top: 50%;
+}
+
+body.nextgen .ng-certificate-none-title {
+  color: var(--ng-ink);
+  font-weight: 700;
+  margin: 0 0 0.3rem;
+}
+
+body.nextgen .ng-certificate-none p:last-child {
+  color: var(--ng-text-muted);
+  margin: 0;
+}
+
 @media (max-width: 575.98px) {
-  body.nextgen .ng-certificate-sheet {
-    padding: 1.5rem 0.9rem 1.2rem;
+  body.nextgen .ng-certificate-frame {
+    padding: 1.35rem 0.75rem 1.1rem;
   }
 
-  body.nextgen .ng-certificate-title {
-    letter-spacing: 0.16em;
+  body.nextgen .ng-certificate-frame::before {
+    font-size: 2.6rem;
   }
 
   body.nextgen .ng-certificate-signs {
@@ -5223,8 +5483,9 @@ body.nextgen .ng-checkout-account-email {
     padding: 2rem 1rem 2.5rem;
   }
 
-  body.nextgen .ng-course-hero-facts {
+  body.nextgen .ng-course-hero-card {
     flex-basis: auto;
+    width: 100%;
   }
 
   body.nextgen .ng-course-hero-actions {
@@ -6268,11 +6529,10 @@ body.nextgen.nextgen-dashboard #page.drawers {
 }
 
 body.nextgen.nextgen-dashboard #page.drawers .main-inner {
-  contain: inline-size;
   flex: 1 1 auto;
   max-width: 100%;
   min-width: 0;
-  overflow-x: clip;
+  overflow: visible;
   width: 100%;
 }
 
@@ -6303,7 +6563,19 @@ body.nextgen .ng-dash {
   box-sizing: border-box;
   max-width: 100%;
   min-width: 0;
-  overflow-x: clip;
+  overflow: visible;
+  width: 100%;
+}
+
+body.nextgen .ng-dash-hero {
+  background: var(--ng-secondary);
+  color: #fff;
+  left: 0;
+  margin-left: 0;
+  margin-right: 0;
+  max-width: none;
+  overflow: hidden;
+  position: relative;
   width: 100%;
 }
 
@@ -6346,7 +6618,7 @@ body.nextgen .ng-dash-grid {
   contain: inline-size;
   display: grid;
   gap: 1rem;
-  margin: 1.25rem auto 1.5rem;
+  margin: -2.5rem auto 1.5rem;
   max-width: min(76rem, 100%);
   min-width: 0;
   padding: 0 1rem;
@@ -6361,9 +6633,9 @@ body.nextgen .ng-dash-card {
   border-radius: 8px;
   box-shadow: none;
   box-sizing: border-box;
-  contain: inline-size;
   max-width: 100%;
   min-width: 0;
+  overflow: visible;
   padding: 1.15rem;
   width: 100%;
 }
@@ -6494,10 +6766,21 @@ body.nextgen .ng-dash-ring-value {
   }
 }
 
-/* Dashboard column: centered, a bit wider than half the window, and not wider than 76rem. */
+/* Greeting cards and course blocks stay in a centered column. The banner is the full page. */
 @media (min-width: 992px) {
-  body.nextgen.nextgen-dashboard .ng-dash,
-  body.nextgen.nextgen-dashboard #page-content {
+  body.nextgen.nextgen-dashboard .ng-dash {
+    max-width: none;
+    width: 100%;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-hero {
+    max-width: none;
+    width: 100%;
+  }
+
+  body.nextgen.nextgen-dashboard #page-content,
+  body.nextgen.nextgen-dashboard .ng-dash-grid,
+  body.nextgen.nextgen-dashboard .ng-dash-hero-copy {
     margin-left: auto;
     margin-right: auto;
     max-width: #{"min(76rem, 78%)"};

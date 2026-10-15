@@ -32,17 +32,19 @@
                 <button class="btn btn-primary" type="submit">{{#str}}cataloguesearchbutton, theme_nextgen{{/str}}</button>
             </div>
             <details class="ng-catalogue-advanced" {{#advancedopen}}open{{/advancedopen}}>
-                <summary>{{#str}}catalogueadvanced, theme_nextgen{{/str}}</summary>
+                <summary>{{advancedsummary}}</summary>
                 <div class="ng-catalogue-advanced-grid">
-                    <div>
-                        <label for="ng-catalogue-level">{{#str}}fieldlevel, theme_nextgen{{/str}}</label>
-                        <select id="ng-catalogue-level" name="level">
-                            <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
-                            {{#levels}}
-                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
-                            {{/levels}}
-                        </select>
-                    </div>
+                    {{#haslevels}}
+                        <div>
+                            <label for="ng-catalogue-level">{{#str}}fieldlevel, theme_nextgen{{/str}}</label>
+                            <select id="ng-catalogue-level" name="level">
+                                <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
+                                {{#levels}}
+                                    <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                                {{/levels}}
+                            </select>
+                        </div>
+                    {{/haslevels}}
                     <div>
                         <label for="ng-catalogue-language">{{#str}}fieldlanguage, theme_nextgen{{/str}}</label>
                         <select id="ng-catalogue-language" name="language">
@@ -67,6 +69,17 @@
                     <a href="{{clearurl}}">{{#str}}catalogueclear, theme_nextgen{{/str}}</a>
                 </div>
             </details>
+            {{#hasactivefilters}}
+                <div class="ng-catalogue-active" aria-label="{{#str}}catalogueclearone, theme_nextgen{{/str}}">
+                    {{#activefilters}}
+                        <a class="ng-chip ng-chip-filter" href="{{url}}">
+                            <span class="visually-hidden">{{#str}}catalogueclearone, theme_nextgen{{/str}}</span>
+                            {{label}}: {{value}}
+                            <span aria-hidden="true">×</span>
+                        </a>
+                    {{/activefilters}}
+                </div>
+            {{/hasactivefilters}}
         </form>
     </div>
 </section>

@@ -23,6 +23,7 @@
             <h2 class="ng-catalogue-heading">{{categoryname}}</h2>
         {{/hascategory}}
         {{#hascourses}}
+            <p class="ng-catalogue-count">{{resultslabel}}</p>
             <div class="ng-card-grid">
                 {{#courses}}
                     {{> theme_nextgen/course_card }}

@@ -156,7 +156,7 @@ class platform_stats {
         }
 
         $modnames = [];
-        foreach (['customcert', 'certificate'] as $name) {
+        foreach (['customcert', 'certificate', 'coursecertificate'] as $name) {
             if ($DB->record_exists('modules', ['name' => $name, 'visible' => 1])) {
                 $modnames[] = $name;
             }
@@ -189,15 +189,7 @@ class platform_stats {
      * @return bool
      */
     private static function certificate_offered(string $value): bool {
-        $value = \core_text::strtolower(trim($value));
-        if ($value === '') {
-            return false;
-        }
-        $declined = ['0', 'no', 'none', 'false', 'n', '-', 'n/a', 'na'];
-        if (in_array($value, $declined, true) || str_starts_with($value, 'no ')) {
-            return false;
-        }
-        return true;
+        return theme_nextgen_certificate_is_offered($value);
     }
 
     /**

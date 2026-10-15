@@ -1203,10 +1203,7 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
             'context' => $context,
             'filter' => false,
         ]);
-        $plain = trim((string) preg_replace('/\s+/', ' ', html_to_text($formatted, 0, false)));
-        if ($plain !== '') {
-            $excerpt = shorten_text($plain, 160, false);
-        }
+        $excerpt = theme_nextgen_text_excerpt(html_to_text($formatted, 0, false), 160);
     }
 
     $enrolled = isloggedin() && !isguestuser() && is_enrolled($context, $USER, '', true);
@@ -1462,6 +1459,183 @@ function theme_nextgen_install_fact_fields(): void {
 }
 
 /**
+ * Collapse a course summary into one readable line for a banner or card.
+ *
+ * List markers left by HTML-to-text conversion are removed so the line reads
+ * as prose.
+ *
+ * @param string $plain
+ * @param int $length
+ * @return string
+ */
+function theme_nextgen_text_excerpt(string $plain, int $length): string {
+    $plain = html_entity_decode($plain, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $plain = str_replace(["\u{00A0}", "\u{200B}"], ' ', $plain);
+    $plain = preg_replace('/(?:^|\s)[*•]\s+/u', ' ', $plain);
+    $plain = preg_replace('/\s+/u', ' ', (string) $plain);
+    $plain = trim((string) $plain);
+    if ($plain === '') {
+        return '';
+    }
+    return shorten_text($plain, $length, false);
+}
+
+/**
+ * Language code and display name for a course.
+ *
+ * A custom field wins. Otherwise the course language is used, then the site
+ * language. The value is stable for filtering. The label is the translated name.
+ *
+ * @param string $custom
+ * @param string $courselang
+ * @return array{value: string, label: string}
+ */
+function theme_nextgen_course_language(string $custom, string $courselang): array {
+    global $CFG;
+
+    static $translations = null;
+    if ($translations === null) {
+        $translations = get_string_manager()->get_list_of_translations();
+    }
+
+    $raw = trim($custom);
+    $code = '';
+    if ($raw === '') {
+        $code = trim($courselang) !== '' ? trim($courselang) : (string) ($CFG->lang ?? '');
+    } else if (isset($translations[$raw])) {
+        $code = $raw;
+    }
+
+    if ($code === '') {
+        return ['value' => $raw, 'label' => $raw];
+    }
+
+    $label = $translations[$code] ?? $code;
+    $label = str_replace("\u{200E}", '', (string) $label);
+    $label = trim((string) preg_replace('/\s*\([a-z]{2}(?:_[A-Za-z0-9]+)?\)\s*$/i', '', $label));
+    if ($label === '') {
+        $label = $code;
+    }
+    return ['value' => $code, 'label' => $label];
+}
+
+/**
+ * Whether a certificate field or activity means the course awards one.
+ *
+ * An empty field does not count. Explicit refusals such as "no" or "n/a" do
+ * not count. Any other text counts, as does a visible certificate activity.
+ *
+ * @param string $value
+ * @param bool $hasactivity
+ * @return bool
+ */
+function theme_nextgen_certificate_is_offered(string $value, bool $hasactivity = false): bool {
+    if ($hasactivity) {
+        return true;
+    }
+    $value = \core_text::strtolower(trim($value));
+    if ($value === '') {
+        return false;
+    }
+    $declined = ['0', 'no', 'none', 'false', 'n', '-', 'n/a', 'na', 'not available', 'not included'];
+    if (in_array($value, $declined, true) || str_starts_with($value, 'no ')) {
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Courses that contain a visible certificate activity.
+ *
+ * Moodle does not store a certificate flag on the course. The certificate,
+ * custom certificate, and course certificate activities are the signal.
+ *
+ * @param int[] $courseids
+ * @return array<int, bool>
+ */
+function theme_nextgen_certificate_activity_ids(array $courseids): array {
+    global $DB;
+
+    $courseids = array_values(array_unique(array_filter(array_map('intval', $courseids))));
+    if (!$courseids) {
+        return [];
+    }
+
+    $names = [];
+    foreach (['customcert', 'certificate', 'coursecertificate'] as $name) {
+        if ($DB->record_exists('modules', ['name' => $name, 'visible' => 1])) {
+            $names[] = $name;
+        }
+    }
+    if (!$names) {
+        return [];
+    }
+
+    [$coursesql, $courseparams] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED, 'ccid');
+    [$modsql, $modparams] = $DB->get_in_or_equal($names, SQL_PARAMS_NAMED, 'mod');
+    $found = $DB->get_fieldset_sql(
+        "SELECT DISTINCT cm.course
+           FROM {course_modules} cm
+           JOIN {modules} m ON m.id = cm.module
+          WHERE cm.course {$coursesql}
+            AND m.name {$modsql}
+            AND cm.visible = 1
+            AND cm.deletioninprogress = 0",
+        $courseparams + $modparams
+    );
+
+    $map = [];
+    foreach ($found as $courseid) {
+        $map[(int) $courseid] = true;
+    }
+    return $map;
+}
+
+/**
+ * Learner-facing name for a course format.
+ *
+ * @param string $format
+ * @return string
+ */
+function theme_nextgen_course_format_label(string $format): string {
+    $format = trim($format);
+    if ($format === '') {
+        return '';
+    }
+    $key = 'courseformat_' . $format;
+    if (get_string_manager()->string_exists($key, 'theme_nextgen')) {
+        return get_string($key, 'theme_nextgen');
+    }
+    $component = 'format_' . $format;
+    if (get_string_manager()->string_exists('pluginname', $component)) {
+        return get_string('pluginname', $component);
+    }
+    return '';
+}
+
+/**
+ * Phrase shown for the certificate fact.
+ *
+ * A plain "yes" becomes the localised Yes. A more specific field value, such
+ * as "Yes, on completion", is kept.
+ *
+ * @param string $value
+ * @param bool $offered
+ * @return string
+ */
+function theme_nextgen_certificate_label(string $value, bool $offered): string {
+    if (!$offered) {
+        return get_string('no');
+    }
+    $raw = trim($value);
+    $generic = ['', 'yes', 'y', '1', 'true', 'included'];
+    if (in_array(\core_text::strtolower($raw), $generic, true)) {
+        return get_string('yes');
+    }
+    return $raw;
+}
+
+/**
  * Context for the course catalogue intro.
  *
  * @return array
@@ -1524,6 +1698,57 @@ function theme_nextgen_catalogue_context(): array {
         $clear['categoryid'] = $categoryid;
     }
 
+    $base = [];
+    if ($categoryid > 0) {
+        $base['categoryid'] = $categoryid;
+    }
+    if ($browse) {
+        $base['browse'] = 'categories';
+    }
+    $filterurl = static function (array $extra) use ($base): string {
+        return (new moodle_url('/course/index.php', $base + $extra))->out(false);
+    };
+    $labelof = static function (array $options, string $value): string {
+        foreach ($options as $option) {
+            if ($option['value'] === $value) {
+                return $option['label'];
+            }
+        }
+        return $value;
+    };
+    $active = [];
+    $choices = [
+        'search' => ['cataloguesearch', $filters['search']],
+        'level' => ['fieldlevel', $labelof($levels, $filters['level'])],
+        'language' => ['fieldlanguage', $labelof($languages, $filters['language'])],
+        'certificate' => ['fieldcertificate', $labelof($certificates, $filters['certificate'])],
+    ];
+    foreach ($choices as $key => $choice) {
+        if ($filters[$key] === '') {
+            continue;
+        }
+        $rest = $kept;
+        unset($rest[$key]);
+        $active[] = [
+            'label' => get_string($choice[0], 'theme_nextgen'),
+            'value' => $choice[1],
+            'url' => $filterurl($rest),
+        ];
+    }
+
+    $advancedcount = 0;
+    foreach (['level', 'language', 'certificate'] as $key) {
+        if ($filters[$key] !== '') {
+            $advancedcount++;
+        }
+    }
+    $count = count($courses);
+    if ($count === 1) {
+        $resultslabel = get_string('catalogueresult', 'theme_nextgen');
+    } else {
+        $resultslabel = get_string('catalogueresults', 'theme_nextgen', $count);
+    }
+
     return [
         'hascourses' => !empty($courses),
         'courses' => $courses,
@@ -1538,10 +1763,17 @@ function theme_nextgen_catalogue_context(): array {
         'browse' => $browse,
         'search' => $filters['search'],
         'searchaction' => (new moodle_url('/course/index.php'))->out(false),
+        'haslevels' => !empty($levels),
         'levels' => $levels,
         'languages' => $languages,
         'certificates' => $certificates,
-        'advancedopen' => ($filters['level'] !== '' || $filters['language'] !== '' || $filters['certificate'] !== ''),
+        'advancedopen' => $advancedcount > 0,
+        'advancedsummary' => $advancedcount
+            ? get_string('catalogueadvancedcount', 'theme_nextgen', $advancedcount)
+            : get_string('catalogueadvanced', 'theme_nextgen'),
+        'hasactivefilters' => !empty($active),
+        'activefilters' => $active,
+        'resultslabel' => $resultslabel,
         'clearurl' => (new moodle_url('/course/index.php', $clear))->out(false),
         'emptytext' => $empty,
     ];
@@ -1557,7 +1789,7 @@ function theme_nextgen_catalogue_request_filters(): array {
         'search' => trim(optional_param('search', '', PARAM_TEXT)),
         'level' => trim(optional_param('level', '', PARAM_TEXT)),
         'language' => trim(optional_param('language', '', PARAM_TEXT)),
-        'certificate' => trim(optional_param('certificate', '', PARAM_TEXT)),
+        'certificate' => \core_text::strtolower(trim(optional_param('certificate', '', PARAM_ALPHA))),
     ];
 }
 
@@ -1576,14 +1808,18 @@ function theme_nextgen_catalogue_filter_options(array $courses, string $key, str
         if ($value === '') {
             continue;
         }
-        $found[$value] = $value;
+        $label = trim((string) ($course[$key . 'label'] ?? ''));
+        if ($label === '') {
+            $label = $value;
+        }
+        $found[$value] = $label;
     }
-    natcasesort($found);
+    uasort($found, 'strnatcasecmp');
     $options = [];
-    foreach ($found as $value) {
+    foreach ($found as $value => $label) {
         $options[] = [
             'value' => $value,
-            'label' => $value,
+            'label' => $label,
             'selected' => ($value === $current),
         ];
     }
@@ -1613,7 +1849,14 @@ function theme_nextgen_catalogue_apply_filters(array $courses, array $filters): 
         if ($filters['certificate'] !== '' && (string) $course['filtercertificate'] !== $filters['certificate']) {
             continue;
         }
-        unset($course['filtersearch'], $course['filterlevel'], $course['filterlanguage'], $course['filtercertificate']);
+        unset(
+            $course['filtersearch'],
+            $course['filterlevel'],
+            $course['filterlanguage'],
+            $course['filterlanguagelabel'],
+            $course['filtercertificate'],
+            $course['filtercertificatelabel']
+        );
         $kept[] = $course;
     }
     return $kept;
@@ -1644,23 +1887,54 @@ function theme_nextgen_catalogue_courses(int $categoryid, bool $shuffle = true):
         shuffle($courses);
     }
 
-    $cards = [];
+    $visible = [];
     foreach ($courses as $course) {
         if ((int) $course->id === SITEID) {
             continue;
         }
+        $visible[] = $course;
+    }
+    $courseids = [];
+    foreach ($visible as $course) {
+        $courseids[] = (int) $course->id;
+    }
+    $certified = theme_nextgen_certificate_activity_ids($courseids);
+
+    $cards = [];
+    foreach ($visible as $course) {
         $card = theme_nextgen_course_card_data($course);
         $extra = theme_nextgen_course_extra_fields((int) $course->id);
-        $language = $extra['nglanguage'];
-        if ($language === '' && !empty($course->lang)) {
-            $language = (string) $course->lang;
-        }
+        $language = theme_nextgen_course_language($extra['nglanguage'], (string) ($course->lang ?? ''));
+        $offered = theme_nextgen_certificate_is_offered(
+            $extra['ngcertificate'],
+            !empty($certified[(int) $course->id])
+        );
         $card['filterlevel'] = $extra['nglevel'];
-        $card['filterlanguage'] = $language;
-        $card['filtercertificate'] = $extra['ngcertificate'];
-        $plain = trim(html_entity_decode(strip_tags(
-            $course->fullname . ' ' . $course->summary
-        ), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $card['filterlanguage'] = $language['value'];
+        $card['filterlanguagelabel'] = $language['label'];
+        $card['filtercertificate'] = $offered ? 'yes' : 'no';
+        $card['filtercertificatelabel'] = get_string($offered ? 'yes' : 'no');
+
+        $categoryname = '';
+        if (!empty($course->category)) {
+            $category = core_course_category::get((int) $course->category, IGNORE_MISSING, true);
+            if ($category) {
+                $categoryname = $category->get_formatted_name();
+            }
+        }
+        $bits = [
+            $course->fullname,
+            $course->shortname,
+            $course->summary,
+            $card['teachers'] ?? '',
+            $categoryname,
+            $extra['nglevel'],
+            $language['label'],
+        ];
+        if ($offered) {
+            $bits[] = get_string('coursecertificate', 'theme_nextgen');
+        }
+        $plain = trim(html_entity_decode(strip_tags(implode(' ', $bits)), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
         $card['filtersearch'] = \core_text::strtolower($plain);
         $cards[] = $card;
     }
@@ -2282,7 +2556,7 @@ function theme_nextgen_enrol_checkout_context(
  * @return array|null
  */
 function theme_nextgen_course_detail_context(): ?array {
-    global $OUTPUT, $PAGE, $SESSION, $USER;
+    global $OUTPUT, $PAGE, $SESSION, $SITE, $USER;
 
     if (!theme_nextgen_is_course_detail_page($PAGE)) {
         return null;
@@ -2294,8 +2568,7 @@ function theme_nextgen_course_detail_context(): ?array {
     $extra = theme_nextgen_course_extra_fields($course->id);
 
     $summary = format_text($course->summary, $course->summaryformat, ['context' => $context]);
-    $plain = trim(html_to_text($summary, 0, false));
-    $excerpt = $plain === '' ? '' : shorten_text($plain, 220);
+    $excerpt = theme_nextgen_text_excerpt(html_to_text($summary, 0, false), 220);
 
     $instructors = [];
     foreach ($course->get_course_contacts() as $contact) {
@@ -2358,49 +2631,65 @@ function theme_nextgen_course_detail_context(): ?array {
         }
     }
 
-    $language = $extra['nglanguage'];
-    if ($language === '' && !empty($course->lang)) {
-        $translations = get_string_manager()->get_list_of_translations();
-        $language = $translations[$course->lang] ?? $course->lang;
-    }
-    if ($language === '') {
-        $translations = get_string_manager()->get_list_of_translations();
-        $current = current_language();
-        $language = $translations[$current] ?? $current;
-    }
-    $language = str_replace("\u{200E}", '', $language);
-    $language = trim((string) preg_replace('/\s*\([a-z]{2}(?:_[A-Za-z]{2})?\)\s*$/', '', $language));
+    $languageinfo = theme_nextgen_course_language($extra['nglanguage'], (string) ($course->lang ?? ''));
+    $language = $languageinfo['label'];
+    $offered = theme_nextgen_certificate_is_offered($extra['ngcertificate'], !empty($certificates));
+    $certificatevalue = theme_nextgen_certificate_label($extra['ngcertificate'], $offered);
+    $certificatenote = ($offered && $certificatevalue !== get_string('yes')) ? $certificatevalue : '';
 
-    $certificatevalue = $extra['ngcertificate'];
-    if ($certificatevalue === '' && $certificates) {
-        $certificatevalue = get_string('yes');
+    $categoryname = '';
+    $category = null;
+    if (!empty($course->category)) {
+        $category = core_course_category::get((int) $course->category, IGNORE_MISSING, true);
+        if ($category) {
+            $categoryname = format_string($category->name, true, [
+                'context' => $category->get_context(),
+                'escape' => false,
+            ]);
+        }
     }
 
     $facts = [];
-    $pushfact = static function (array &$facts, string $icon, string $stringkey, string $value): void {
+    $pushfact = static function (array &$facts, string $stringkey, string $value, string $tone = ''): void {
         if ($value === '') {
             return;
         }
         $facts[] = [
             'label' => get_string($stringkey, 'theme_nextgen'),
             'value' => $value,
-            'level' => $icon === 'level',
-            'length' => $icon === 'length',
-            'effort' => $icon === 'effort',
-            'certificate' => $icon === 'certificate',
-            'language' => $icon === 'language',
-            'starts' => $icon === 'starts',
+            'tone' => $tone,
+            'hastone' => $tone !== '',
         ];
     };
-    $pushfact($facts, 'level', 'courselevel', $extra['nglevel']);
-    $pushfact($facts, 'length', 'courselength', $extra['ngduration']);
-    $pushfact($facts, 'effort', 'courseeffort', $extra['ngeffort']);
-    $pushfact($facts, 'certificate', 'coursecertificate', $certificatevalue);
-    $pushfact($facts, 'language', 'courselanguage', $language);
+    $pushfact($facts, 'courselevel', $extra['nglevel']);
+    $pushfact($facts, 'courselength', $extra['ngduration']);
+    $pushfact($facts, 'courseeffort', $extra['ngeffort']);
+    $pushfact($facts, 'courselanguage', $language);
+    $pushfact($facts, 'coursecertificate', $certificatevalue, $offered ? 'yes' : 'no');
     if (!empty($course->startdate)) {
         $starts = preg_replace('/^0/', '', userdate((int) $course->startdate, '%d %B %Y'));
-        $pushfact($facts, 'starts', 'coursestarts', $starts);
+        $pushfact($facts, 'coursestarts', $starts);
     }
+    if (!empty($course->enddate)) {
+        $ends = preg_replace('/^0/', '', userdate((int) $course->enddate, '%d %B %Y'));
+        $pushfact($facts, 'courseends', $ends);
+    }
+    $sectioncount = count($outline['sections']);
+    if ($sectioncount > 0) {
+        $pushfact($facts, 'coursesectionslabel', (string) $sectioncount);
+    }
+    if ($activitycount > 0) {
+        $pushfact($facts, 'courseactivitieslabel', (string) $activitycount);
+    }
+    $resourcecount = (int) $outline['resources'];
+    if ($resourcecount > 0) {
+        $pushfact($facts, 'courseresourceslabel', (string) $resourcecount);
+    }
+    if (!empty($course->enablecompletion)) {
+        $pushfact($facts, 'coursecompletion', get_string('coursecompletiontracked', 'theme_nextgen'));
+    }
+    $pushfact($facts, 'coursestructure', theme_nextgen_course_format_label((string) $course->format));
+    $pushfact($facts, 'coursecategory', $categoryname);
 
     $includes = [];
     if ($activitycount === 1) {
@@ -2408,7 +2697,6 @@ function theme_nextgen_course_detail_context(): ?array {
     } else if ($activitycount > 1) {
         $includes[] = ['label' => get_string('courseactivities', 'theme_nextgen', $activitycount)];
     }
-    $sectioncount = count($outline['sections']);
     if ($sectioncount === 1) {
         $includes[] = ['label' => get_string('coursesection', 'theme_nextgen')];
     } else if ($sectioncount > 1) {
@@ -2416,6 +2704,9 @@ function theme_nextgen_course_detail_context(): ?array {
     }
     if ($language !== '') {
         $includes[] = ['label' => $language];
+    }
+    if ($offered) {
+        $includes[] = ['label' => get_string('certificateincluded', 'theme_nextgen')];
     }
     if (!empty($course->enablecompletion)) {
         $includes[] = ['label' => get_string('completion', 'completion')];
@@ -2442,23 +2733,22 @@ function theme_nextgen_course_detail_context(): ?array {
             'url' => (new moodle_url('/course/index.php'))->out(false),
         ],
     ];
-    if (!empty($course->category)) {
-        $category = core_course_category::get((int) $course->category, IGNORE_MISSING, true);
-        if ($category) {
-            $breadcrumbs[] = [
-                'label' => format_string($category->name, true, [
-                    'context' => $category->get_context(),
-                    'escape' => false,
-                ]),
-                'url' => (new moodle_url('/course/index.php', ['categoryid' => $category->id]))->out(false),
-            ];
-        }
+    if ($category && $categoryname !== '') {
+        $breadcrumbs[] = [
+            'label' => $categoryname,
+            'url' => (new moodle_url('/course/index.php', ['categoryid' => $category->id]))->out(false),
+        ];
     }
     $breadcrumbs[] = [
         'label' => $card['fullname'],
         'url' => '',
         'current' => true,
     ];
+
+    $updatedon = '';
+    if (!empty($course->timemodified)) {
+        $updatedon = preg_replace('/^0/', '', userdate((int) $course->timemodified, '%d %B %Y'));
+    }
 
     $price = $card['price'];
     $distribution = theme_nextgen_rating_distribution($extra['ngratingdist']);
@@ -2489,8 +2779,9 @@ function theme_nextgen_course_detail_context(): ?array {
         'teacher' => $teacher ?? [],
         'hasinstructors' => !empty($instructors),
         'instructors' => $instructors,
-        'hascertificate' => $extra['ngcertificate'] !== '' || !empty($certificates),
-        'certificatenote' => $extra['ngcertificate'],
+        'sitename' => format_string($SITE->fullname),
+        'hascertificate' => $offered,
+        'certificatenote' => $certificatenote,
         'certificates' => $certificates,
         'hasreviews' => !empty($card['hasreviews']),
         'reviewcount' => $card['reviews'] ?? 0,
@@ -2539,9 +2830,10 @@ function theme_nextgen_course_detail_context(): ?array {
         'bestseller' => !empty($card['bestseller']),
         'hasstudents' => (int) ($card['enrolments'] ?? 0) > 0,
         'students' => get_string('studentcount', 'theme_nextgen', (int) ($card['enrolments'] ?? 0)),
-        'hasupdated' => !empty($card['date']),
-        'updated' => get_string('lastupdated', 'theme_nextgen', $card['date'] ?? ''),
-        'hasmeta' => !empty($card['bestseller']) || $card['hasrating'] || (int) ($card['enrolments'] ?? 0) > 0 || !empty($card['date']),
+        'hasupdated' => $updatedon !== '',
+        'updated' => $updatedon === '' ? '' : get_string('lastupdated', 'theme_nextgen', $updatedon),
+        'hasmeta' => !empty($card['bestseller']) || $card['hasrating']
+            || (int) ($card['enrolments'] ?? 0) > 0 || $updatedon !== '',
         'hasenrolsuccess' => $hasenrolsuccess,
         'enrolsuccessurl' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false),
     ];
@@ -2596,7 +2888,7 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
                 'url' => ($cm->uservisible && $cm->url) ? $cm->url->out(false) : '',
                 'locked' => $islocked,
             ];
-            if (in_array($cm->modname, ['customcert', 'certificate'], true)) {
+            if (in_array($cm->modname, ['customcert', 'certificate', 'coursecertificate'], true)) {
                 $certificates[] = [
                     'name' => $name,
                     'url' => ($cm->uservisible && $cm->url) ? $cm->url->out(false) : '',
