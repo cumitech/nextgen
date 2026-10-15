@@ -7162,7 +7162,7 @@ body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus.pageitem a
 
   body.nextgen.pagelayout-course #page.drawers,
   body.nextgen.pagelayout-incourse #page.drawers {
-    padding: 0.75rem 0.75rem 0;
+    padding: 0.75rem 0.75rem 0 3.25rem;
   }
 
   body.nextgen.pagelayout-course #page.drawers.show-drawer-left,
@@ -7193,5 +7193,97 @@ body.nextgen.pagelayout-incourse .courseindex .courseindex-item:focus.pageitem a
     margin-left: -0.75rem;
     margin-right: -0.75rem;
     width: calc(100% + 1.5rem);
+  }
+}
+
+// Boost centers the lesson title in an 830px column. That leaves a wide empty
+// gap before the breadcrumb on a course page. Keep the title with the lesson text.
+body.nextgen.pagelayout-course .activity-header,
+body.nextgen.pagelayout-incourse .activity-header,
+body.nextgen.pagelayout-course .header-maxwidth,
+body.nextgen.pagelayout-incourse .header-maxwidth {
+  margin-left: 0 !important; /* stylelint-disable-line declaration-no-important */
+  margin-right: 0 !important; /* stylelint-disable-line declaration-no-important */
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.nextgen.pagelayout-course .secondary-navigation .navigation,
+body.nextgen.pagelayout-incourse .secondary-navigation .navigation {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.nextgen.pagelayout-course .secondary-navigation .navigation .nav-tabs,
+body.nextgen.pagelayout-incourse .secondary-navigation .navigation .nav-tabs {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: none;
+}
+
+body.nextgen.pagelayout-course .page-context-header,
+body.nextgen.pagelayout-incourse .page-context-header,
+body.nextgen.pagelayout-course .page-header-headings,
+body.nextgen.pagelayout-incourse .page-header-headings {
+  min-width: 0;
+}
+
+body.nextgen.pagelayout-course h1,
+body.nextgen.pagelayout-incourse h1,
+body.nextgen.pagelayout-course .breadcrumb,
+body.nextgen.pagelayout-incourse .breadcrumb {
+  overflow-wrap: break-word;
+}
+
+body.nextgen.pagelayout-course #region-main img,
+body.nextgen.pagelayout-incourse #region-main img,
+body.nextgen.pagelayout-course #region-main video,
+body.nextgen.pagelayout-incourse #region-main video,
+body.nextgen.pagelayout-course #region-main iframe,
+body.nextgen.pagelayout-incourse #region-main iframe,
+body.nextgen.pagelayout-course #region-main table,
+body.nextgen.pagelayout-incourse #region-main table,
+body.nextgen.pagelayout-course #region-main pre,
+body.nextgen.pagelayout-incourse #region-main pre {
+  max-width: 100%;
+}
+
+@media (max-width: 991.98px) {
+  body.nextgen.pagelayout-course #page.drawers,
+  body.nextgen.pagelayout-incourse #page.drawers {
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  body.nextgen.pagelayout-course #page.drawers .main-inner,
+  body.nextgen.pagelayout-incourse #page.drawers .main-inner {
+    border-radius: 0;
+    box-shadow: none;
+    margin-top: 0;
+    padding: 1rem 1rem 1.5rem;
+  }
+
+  body.nextgen.pagelayout-course #page.drawers div[role="main"],
+  body.nextgen.pagelayout-incourse #page.drawers div[role="main"] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  body.nextgen.pagelayout-course #page-header h1,
+  body.nextgen.pagelayout-incourse #page-header h1,
+  body.nextgen.pagelayout-course .activity-header h1,
+  body.nextgen.pagelayout-incourse .activity-header h1,
+  body.nextgen.single-section-page #page-header h1 {
+    font-size: 1.45rem;
+  }
+
+  body.nextgen.pagelayout-course .secondary-navigation .navigation .nav-tabs,
+  body.nextgen.pagelayout-incourse .secondary-navigation .navigation .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
   }
 }
