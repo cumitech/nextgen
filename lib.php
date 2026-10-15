@@ -1774,11 +1774,66 @@ function theme_nextgen_after_config(): void {
         return;
     }
     if (($CFG->theme ?? '') === 'nextgen') {
+        theme_nextgen_serve_unrewritten_module();
         theme_nextgen_publish_public_paths();
         theme_nextgen_redirect_site_support();
         \theme_nextgen\local\module_page::redirect_plain_section();
     }
     \theme_nextgen\local\course_page::serve_public_course();
+}
+
+/**
+ * Open a module when /learn/{course}/{module} was not rewritten to learn.php.
+ *
+ * Some hosts send that address to Moodle's router, which answers with a 404.
+ * learn.php already knows how to show the section, so use it for the same path.
+ */
+function theme_nextgen_serve_unrewritten_module(): void {
+    global $CFG;
+
+    if (defined('CLI_SCRIPT') && CLI_SCRIPT) {
+        return;
+    }
+    $script = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+    // learn.php already dispatches this address. Other scripts only get here when
+    // the web server handed the path to Moodle's router.
+    if (!str_ends_with($script, '/r.php')) {
+        return;
+    }
+
+    $request = parse_url((string) ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
+    if (!is_string($request) || $request === '') {
+        return;
+    }
+    $base = parse_url($CFG->wwwroot, PHP_URL_PATH);
+    if (is_string($base) && $base !== '' && $base !== '/') {
+        $base = rtrim($base, '/');
+        if (str_starts_with($request, $base)) {
+            $request = substr($request, strlen($base));
+        }
+    }
+    if ($request === '' || $request[0] !== '/') {
+        $request = '/' . $request;
+    }
+    if (!preg_match('#^/learn/([a-z0-9-]+)/([a-z0-9-]+)/?$#', $request, $match)) {
+        return;
+    }
+
+    $_GET['course'] = $match[1];
+    $_GET['module'] = $match[2];
+    $_REQUEST['course'] = $match[1];
+    $_REQUEST['module'] = $match[2];
+
+    $sectionfile = \theme_nextgen\local\module_page::dispatch();
+    if (!is_string($sectionfile)) {
+        return;
+    }
+
+    // This file is included from a function, so Moodle's page globals have to be
+    // brought into scope. course/section.php is written as a top-level script.
+    global $DB, $PAGE, $OUTPUT, $USER, $COURSE, $SITE, $SESSION, $THEME;
+    require($sectionfile);
+    exit(0);
 }
 
 /**
