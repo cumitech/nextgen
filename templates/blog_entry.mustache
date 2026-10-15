@@ -28,7 +28,8 @@
         {{/hasimage}}
         <p class="ng-blog-by">
             <img class="ng-blog-avatar" src="{{avatarurl}}" alt="">
-            <a href="{{authorurl}}">{{author}}</a>
+            {{#authorurl}}<a href="{{authorurl}}">{{author}}</a>{{/authorurl}}
+            {{^authorurl}}<span class="ng-blog-author">{{author}}</span>{{/authorurl}}
             <time datetime="{{datetime}}">{{datetimefull}}</time>
             {{#audience}}<span class="ng-blog-audience">{{audience}}</span>{{/audience}}
         </p>

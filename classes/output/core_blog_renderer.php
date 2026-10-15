@@ -49,7 +49,11 @@ class core_blog_renderer extends \core_blog_renderer {
         $fullname = fullname($user, has_capability('moodle/site:viewfullnames', $syscontext));
         $dateformat = get_string('strftimedate', 'langconfig');
         $url = new \moodle_url('/blog/index.php', ['entryid' => $entry->id]);
-        $authorurl = new \moodle_url('/user/view.php', ['id' => $user->id]);
+        // Profiles send signed-out visitors to the login page. The byline stays text.
+        $authorurl = '';
+        if (isloggedin() && !isguestuser()) {
+            $authorurl = (new \moodle_url('/user/view.php', ['id' => $user->id]))->out(false);
+        }
 
         $plain = trim(content_to_text($entry->summary, $entry->summaryformat));
         $plain = trim(preg_replace('#https?://\S+#', '', $plain));
@@ -97,7 +101,7 @@ class core_blog_renderer extends \core_blog_renderer {
             'datetime' => date('c', (int) $entry->created),
             'datetimefull' => userdate($entry->created, get_string('strftimedatetime', 'langconfig')),
             'author' => $fullname,
-            'authorurl' => $authorurl->out(false),
+            'authorurl' => $authorurl,
             'avatarurl' => $picture->get_url($this->page)->out(false),
             'audience' => $this->audience_label($entry->publishstate),
             'excerpt' => $excerpt,

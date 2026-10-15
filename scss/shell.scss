@@ -7379,16 +7379,39 @@ body.nextgen.nextgen-blog .ng-blog-mast {
 }
 
 body.nextgen.nextgen-blog .ng-blog-banner {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 46%),
-    var(--ng-secondary);
+  align-items: center;
+  background-color: var(--ng-secondary);
+  box-sizing: border-box;
   color: #fff;
+  display: flex;
+  isolation: isolate;
   left: 50%;
+  min-height: 18rem;
   overflow: hidden;
-  padding: 2.6rem 0 3.5rem;
+  padding: 4rem 0 5.5rem;
   position: relative;
   transform: translateX(-50%);
   width: 100vw;
+}
+
+body.nextgen.nextgen-blog .ng-blog-banner::before {
+  background-image: url("[[pix:theme_nextgen|hero-home]]");
+  background-position: center 42%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  content: "";
+  inset: 0;
+  position: absolute;
+  z-index: 0;
+}
+
+body.nextgen.nextgen-blog .ng-blog-banner::after {
+  background: rgba(8, 28, 18, 0.66);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
 }
 
 body.nextgen.nextgen-blog .ng-blog-banner-inner,
@@ -7423,11 +7446,12 @@ body.nextgen.nextgen-blog .ng-blog-banner-title {
 
 body.nextgen.nextgen-blog .ng-blog-wave {
   bottom: 0;
-  height: 3.4rem;
+  height: 4.25rem;
   left: 0;
   pointer-events: none;
   position: absolute;
   width: 100%;
+  z-index: 1;
 }
 
 body.nextgen.nextgen-blog .ng-blog-crumb ol {
@@ -7644,7 +7668,8 @@ body.nextgen.nextgen-blog .ng-blog-avatar {
   width: 2.4rem;
 }
 
-body.nextgen.nextgen-blog .ng-blog-by a {
+body.nextgen.nextgen-blog .ng-blog-by a,
+body.nextgen.nextgen-blog .ng-blog-author {
   color: var(--ng-text);
   font-weight: 700;
   text-decoration: none;
@@ -7811,6 +7836,11 @@ body.nextgen.nextgen-blog .pagination {
 @media (max-width: 767.98px) {
   body.nextgen.nextgen-blog:not(.nextgen-blog-entry) #page.drawers div[role="main"] {
     grid-template-columns: 1fr;
+  }
+
+  body.nextgen.nextgen-blog .ng-blog-banner {
+    min-height: 14rem;
+    padding: 3.25rem 0 4.5rem;
   }
 
   body.nextgen.nextgen-blog .ng-blog-single h1 {

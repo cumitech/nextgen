@@ -1833,34 +1833,59 @@ function theme_nextgen_course_public_url(int $courseid): moodle_url {
  * Let visitors read the site blog without an account.
  *
  * Moodle's site-level setting still asks for a login, and a new post defaults to
- * that same audience, which guests cannot see. Opening the blog once raises the
- * visibility to the world and publishes those posts. Drafts stay private.
- * An administrator can lower the setting again afterwards.
+ * that same audience, which guests cannot see. The site blog is raised to world
+ * visibility, and posts for "anyone on this site" are published. Drafts stay private.
  *
  * @return void
  */
 function theme_nextgen_open_public_blog(): void {
     global $CFG, $DB;
 
-    if (get_config('theme_nextgen', 'publicblog')) {
-        return;
-    }
     if ((int) ($CFG->bloglevel ?? 0) < BLOG_GLOBAL_LEVEL) {
         set_config('bloglevel', BLOG_GLOBAL_LEVEL);
         $CFG->bloglevel = BLOG_GLOBAL_LEVEL;
     }
-    $DB->set_field_select(
-        'post',
-        'publishstate',
-        'public',
-        "publishstate = :site AND (module = :blog OR module = :external)",
-        [
-            'site' => 'site',
-            'blog' => 'blog',
-            'external' => 'blog_external',
-        ]
-    );
-    set_config('publicblog', 1, 'theme_nextgen');
+
+    // "Anyone on this site" is hidden from signed-out visitors. Publish those
+    // posts whenever one is waiting, including posts saved before this ran.
+    // Drafts stay private.
+    $params = [
+        'site' => 'site',
+        'blog' => 'blog',
+        'external' => 'blog_external',
+    ];
+    $waiting = "publishstate = :site AND (module = :blog OR module = :external)";
+    if ($DB->record_exists_select('post', $waiting, $params)) {
+        $DB->set_field_select('post', 'publishstate', 'public', $waiting, $params);
+    }
+    if (!get_config('theme_nextgen', 'publicblog')) {
+        set_config('publicblog', 1, 'theme_nextgen');
+    }
+}
+
+/**
+ * Keep the public blog readable when the rest of the site requires a login.
+ *
+ * Moodle's blog index calls require_login() whenever forcelogin is on, even
+ * at world visibility. Editing, preferences, and external blogs stay guarded.
+ *
+ * @return void
+ */
+function theme_nextgen_allow_public_blog_read(): void {
+    global $CFG;
+
+    if (defined('CLI_SCRIPT') && CLI_SCRIPT) {
+        return;
+    }
+    $script = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+    $uri = str_replace('\\', '/', (string) ($_SERVER['REQUEST_URI'] ?? ''));
+    $reading = str_ends_with($script, '/blog/index.php')
+        || str_ends_with($script, '/blog/rss.php')
+        || preg_match('#/blog/(?:index|rss)\.php(?:\?|$)#', $uri);
+    if (!$reading) {
+        return;
+    }
+    $CFG->forcelogin = false;
 }
 
 /**
@@ -1913,6 +1938,7 @@ function theme_nextgen_after_config(): void {
     }
     if (($CFG->theme ?? '') === 'nextgen') {
         theme_nextgen_open_public_blog();
+        theme_nextgen_allow_public_blog_read();
         theme_nextgen_guard_blog_actions();
         theme_nextgen_serve_unrewritten_module();
         theme_nextgen_publish_public_paths();
