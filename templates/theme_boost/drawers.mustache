@@ -65,7 +65,7 @@
                 {{> theme_boost/courseindexdrawercontrols}}
             {{/drawerheadercontent}}
             {{$drawerheading}}{{> theme_boost/courseindexdrawerheading}}{{/drawerheading}}
-            {{$drawerclasses}}drawer drawer-left {{#courseindexopen}}show{{/courseindexopen}}{{/drawerclasses}}
+            {{$drawerclasses}}drawer drawer-left ng-course-index {{#courseindexopen}}show{{/courseindexopen}}{{/drawerclasses}}
             {{$drawercontent}}
                 {{{courseindex}}}
             {{/drawercontent}}
@@ -161,7 +161,7 @@
                         <div> {{{ regionmainsettingsmenu }}} </div>
                     </div>
                     {{/hasregionmainsettingsmenu}}
-                    <div id="region-main">
+                    <div id="region-main" class="ng-main">
 
                         {{#hasregionmainsettingsmenu}}
                             <div class="region_main_settings_menu_proxy"></div>

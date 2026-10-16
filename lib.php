@@ -322,8 +322,14 @@ function theme_nextgen_get_extra_scss($theme) {
     $css .= "--ng-gold-soft: #F8EBD3;\n";
     $css .= "--ng-clay: #C45C3E;\n";
     $css .= "--ng-ink: #163A4A;\n";
-    $css .= "--ng-background: #F4F6F7;\n";
+    $css .= "--ng-background: #F8F9FA;\n";
     $css .= "--ng-surface: #FFFFFF;\n";
+    $css .= "--bs-body-bg: #F8F9FA;\n";
+    $css .= "--bs-body-bg-rgb: 248, 249, 250;\n";
+    $css .= "--bs-white: #FFFFFF;\n";
+    $css .= "--bs-white-rgb: 255, 255, 255;\n";
+    $css .= "--bs-card-bg: #FFFFFF;\n";
+    $css .= "--bs-card-cap-bg: #FFFFFF;\n";
     $css .= "--ng-muted: #EEF2F4;\n";
     $css .= "--ng-border: #E1E6EA;\n";
     $css .= "--ng-text: #1A2330;\n";

@@ -8259,31 +8259,36 @@ body.nextgen .ng-dash-action {
 }
 
 /* Enrolled course: sections read as a path. Editing keeps Moodle's own controls. */
-body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section {
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section {
   background: var(--ng-surface);
   border: 1px solid var(--ng-border);
-  border-radius: 8px;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(16, 40, 51, 0.05);
   margin-bottom: 1rem;
-  padding: 0.35rem 0.35rem 0.55rem;
+  padding: 0.35rem 0.4rem 0.55rem;
 }
 
-body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section .course-section-header {
-  padding: 0.7rem 0.85rem 0.25rem;
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section-head {
+  padding: 0.85rem 0.9rem 0.25rem;
 }
 
-body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section .sectionname,
-body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section .sectionname a {
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section .sectionname,
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section .sectionname a {
   color: var(--ng-ink);
+  font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   text-decoration: none;
 }
 
-body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section .activity-item {
-  border-radius: 8px;
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section .ng-cm.activity-item {
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: none;
 }
 
-body.nextgen.pagelayout-course:not(.editing):not(.single-section-page) #region-main .course-section .activity-item:hover {
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section .ng-cm.activity-item:hover {
   background: var(--ng-muted);
 }
 
@@ -8683,7 +8688,6 @@ body.nextgen:not(.nextgen-dashboard):not(.nextgen-landing):not(.nextgen-catalogu
     letter-spacing: -0.02em;
   }
 
-  .generalbox,
   &.path-mod-quiz #region-main .que,
   &.path-mod-forum #region-main .forumpost,
   &.path-mod-forum #region-main article.forum-post {
@@ -8710,16 +8714,6 @@ body.nextgen:not(.nextgen-dashboard):not(.nextgen-landing):not(.nextgen-catalogu
   .activityiconcontainer {
     background-color: var(--ng-primary);
     border-radius: 10px;
-  }
-
-  &:not(.editing) .activity-item {
-    background: var(--ng-surface);
-    border: 1px solid var(--ng-border);
-    border-radius: 10px;
-  }
-
-  &:not(.editing) .activity-item:hover {
-    background: var(--ng-muted);
   }
 
   .activity-item .activityname a,
@@ -8750,4 +8744,104 @@ body.nextgen:not(.nextgen-dashboard):not(.nextgen-landing):not(.nextgen-catalogu
   .minicalendar td.today {
     background: var(--ng-brand-soft);
   }
+}
+
+/* Keep the course-index button off the course title while the drawer is closed. */
+@media (min-width: 768px) {
+  body.nextgen.pagelayout-course:not(.nextgen-course) #page.drawers:not(.show-drawer-left) #page-header {
+    padding-left: 4.25rem;
+  }
+}
+
+/* Activity page: title, tabs, completion, and content share one surface. */
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page.drawers .main-inner {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(16, 40, 51, 0.05);
+  margin-bottom: 1.5rem;
+  margin-top: 0.35rem;
+  padding: 0.85rem 1.35rem 1.35rem;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page.drawers:not(.show-drawer-left) .main-inner {
+  padding-left: 4.25rem;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page.drawers #region-main.ng-main,
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page.drawers div[role="main"] {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page-header {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  margin-bottom: 0.35rem;
+  padding-bottom: 0;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page-header h1 {
+  color: var(--ng-ink);
+  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) .secondary-navigation {
+  background: transparent;
+  margin-bottom: 1rem;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) .ng-activity-head {
+  border-bottom: 1px solid var(--ng-border);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) .ng-activity-head-plain {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) .ng-activity-head h2 {
+  color: var(--ng-ink);
+  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.35rem;
+}
+
+/* Course index: the same links, drawn as a curriculum list. */
+body.nextgen .ng-course-index .drawercontent {
+  padding-top: 0.35rem;
+}
+
+body.nextgen .ng-course-index .ng-index-section {
+  margin: 0.15rem 0.45rem 0.35rem;
+}
+
+body.nextgen .ng-course-index .ng-index-section .courseindex-section-title {
+  border-radius: 8px;
+  color: var(--ng-ink);
+  font-weight: 700;
+}
+
+body.nextgen .ng-course-index .ng-index-cm {
+  border-radius: 8px;
+  margin-left: 0.15rem;
+  margin-right: 0.15rem;
+}
+
+body.nextgen .ng-header,
+body.nextgen .card,
+body.nextgen .ng-course-index,
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section,
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page.drawers .main-inner {
+  background-color: #ffffff;
 }
