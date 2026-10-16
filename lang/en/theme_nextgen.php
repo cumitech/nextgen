@@ -554,6 +554,13 @@ $string['dashboardpast'] = 'Past';
 $string['dashboardnoprogress'] = 'No completion criteria';
 
 $string['blognav'] = 'Blog';
+$string['coursesnav'] = 'Courses';
+$string['categoriesnav'] = 'Categories';
+$string['explorecourses'] = 'Explore courses';
+$string['learnmore'] = 'Learn more';
+$string['mylearning'] = 'My learning';
+$string['officemain'] = 'Main office';
+$string['officebranch'] = 'Branch';
 $string['blogintro'] = 'Notes and updates from NextGen Academy.';
 $string['blogback'] = 'All posts';
 $string['blogedited'] = 'Updated {$a}';

@@ -403,6 +403,65 @@ function theme_nextgen_setting($theme, string $name, string $default = ''): stri
 }
 
 /**
+ * Theme copy that should follow the current language.
+ *
+ * A saved value is kept when an administrator has changed it. The English
+ * default is replaced with the string for the language in use.
+ *
+ * @param theme_config $theme
+ * @param string $name
+ * @param string $stringkey
+ * @return string
+ */
+function theme_nextgen_localised_setting($theme, string $name, string $stringkey): string {
+    $stored = trim(theme_nextgen_setting($theme, $name));
+    $english = get_string_manager()->get_string($stringkey, 'theme_nextgen', null, 'en');
+    if ($stored === '' || $stored === $english) {
+        return get_string($stringkey, 'theme_nextgen');
+    }
+    return $stored;
+}
+
+/**
+ * Translate a link or office label when it is still the English default.
+ *
+ * @param string $label
+ * @return string
+ */
+function theme_nextgen_localise_label(string $label): string {
+    $label = trim($label);
+    if ($label === '') {
+        return $label;
+    }
+    $pairs = [
+        ['core', 'home'],
+        ['core', 'myhome'],
+        ['theme_nextgen', 'coursesnav'],
+        ['theme_nextgen', 'categoriesnav'],
+        ['theme_nextgen', 'explorecourses'],
+        ['theme_nextgen', 'learnmore'],
+        ['theme_nextgen', 'mylearning'],
+        ['theme_nextgen', 'aboutnav'],
+        ['theme_nextgen', 'teamnav'],
+        ['theme_nextgen', 'contactnav'],
+        ['theme_nextgen', 'blognav'],
+        ['theme_nextgen', 'faqnav'],
+        ['theme_nextgen', 'browseall'],
+        ['theme_nextgen', 'privacytitle'],
+        ['theme_nextgen', 'termstitle'],
+        ['theme_nextgen', 'officemain'],
+        ['theme_nextgen', 'officebranch'],
+    ];
+    $manager = get_string_manager();
+    foreach ($pairs as [$component, $key]) {
+        if ($label === $manager->get_string($key, $component, null, 'en')) {
+            return get_string($key, $component);
+        }
+    }
+    return $label;
+}
+
+/**
  * Accept only hex colours so settings cannot inject CSS.
  *
  * @param string $value
@@ -444,9 +503,10 @@ function theme_nextgen_darken(string $hex, float $amount): string {
  * Parse "Label|/url" lines into safe link records.
  *
  * @param string $raw
+ * @param bool $localise Replace English default labels with the current language
  * @return array<int, array{label: string, url: string, external: bool}>
  */
-function theme_nextgen_parse_links(string $raw): array {
+function theme_nextgen_parse_links(string $raw, bool $localise = true): array {
     $items = [];
     foreach (preg_split("/\r\n|\n|\r/", $raw) as $line) {
         $line = trim($line);
@@ -460,7 +520,7 @@ function theme_nextgen_parse_links(string $raw): array {
             continue;
         }
         $items[] = [
-            'label' => $label,
+            'label' => $localise ? theme_nextgen_localise_label($label) : $label,
             'url' => $safe,
             'external' => $external,
         ];
@@ -513,10 +573,10 @@ function theme_nextgen_custom_nav_items(): array {
         $raw = $separated;
     }
     $items = [];
-    foreach (theme_nextgen_parse_links($raw) as $link) {
+    foreach (theme_nextgen_parse_links($raw, false) as $link) {
         $slug = preg_replace('/[^a-z0-9]+/', '', strtolower($link['label']));
         $items[] = [
-            'label' => $link['label'],
+            'label' => theme_nextgen_localise_label($link['label']),
             'url' => $link['url'],
             'key' => 'nextgen-' . ($slug !== '' ? $slug : 'link'),
         ];
@@ -533,10 +593,7 @@ function theme_nextgen_custom_nav_items(): array {
 function theme_nextgen_footer_context($theme): array {
     global $SITE;
 
-    $about = theme_nextgen_setting($theme, 'footerabout');
-    if ($about === '') {
-        $about = get_string('footeraboutdefault', 'theme_nextgen');
-    }
+    $about = theme_nextgen_localised_setting($theme, 'footerabout', 'footeraboutdefault');
 
     $columns = [];
     $groups = [
@@ -1062,8 +1119,8 @@ function theme_nextgen_landing_context(): array {
         get_string('herosecondarydefault', 'theme_nextgen')
     ));
 
-    $herotitle = theme_nextgen_setting($theme, 'herotitle', get_string('herotitledefault', 'theme_nextgen'));
-    $herotext = theme_nextgen_setting($theme, 'herotext', get_string('herotextdefault', 'theme_nextgen'));
+    $herotitle = theme_nextgen_localised_setting($theme, 'herotitle', 'herotitledefault');
+    $herotext = theme_nextgen_localised_setting($theme, 'herotext', 'herotextdefault');
 
     $tones = ['primary', 'clay', 'ink', 'gold'];
     $reasons = [];
@@ -2220,6 +2277,43 @@ function theme_nextgen_open_public_blog(): void {
 }
 
 /**
+ * Let visitors open the public site when the rest of Moodle requires a login.
+ *
+ * Force login stays on for dashboards, course work, and administration.
+ * These scripts are the public front: home, catalogue, a course sales page,
+ * the information pages, and the public blog.
+ *
+ * @return void
+ */
+function theme_nextgen_allow_public_entry(): void {
+    global $CFG, $SCRIPT;
+
+    if (defined('CLI_SCRIPT') && CLI_SCRIPT) {
+        return;
+    }
+    if (!is_string($SCRIPT) || $SCRIPT === '') {
+        return;
+    }
+
+    $public = [
+        '/index.php',
+        '/about.php',
+        '/team.php',
+        '/contact.php',
+        '/privacy.php',
+        '/terms.php',
+        '/faq.php',
+        '/course/index.php',
+        '/course/view.php',
+        '/blog/index.php',
+        '/blog/rss.php',
+    ];
+    if (in_array($SCRIPT, $public, true)) {
+        $CFG->forcelogin = false;
+    }
+}
+
+/**
  * Keep the public blog readable when the rest of the site requires a login.
  *
  * Moodle's blog index calls require_login() whenever forcelogin is on, even
@@ -2293,6 +2387,7 @@ function theme_nextgen_after_config(): void {
         return;
     }
     if (($CFG->theme ?? '') === 'nextgen') {
+        theme_nextgen_allow_public_entry();
         theme_nextgen_open_public_blog();
         theme_nextgen_allow_public_blog_read();
         theme_nextgen_guard_blog_actions();
@@ -3630,5 +3725,30 @@ function theme_nextgen_text_lines(string $raw): array {
         }
     }
     return $lines;
+}
+
+/**
+ * Offer English and French through Moodle's language menu.
+ *
+ * The French pack is installed with tool_langimport, the same installer as
+ * Site administration, Language, Language packs. The menu itself is core:
+ * guests see it in the header, and signed-in users see it in the user menu.
+ * Choosing a language uses Moodle's lang parameter and is remembered for the session.
+ */
+function theme_nextgen_enable_languages(): void {
+    if (during_initial_install()) {
+        return;
+    }
+
+    $installed = array_keys(get_string_manager()->get_list_of_translations(true));
+    if (!in_array('fr', $installed, true)) {
+        $controller = new \tool_langimport\controller();
+        $controller->install_languagepacks('fr');
+        get_string_manager()->reset_caches();
+    }
+
+    set_config('langmenu', 1);
+    set_config('langlist', 'en,fr');
+    get_string_manager(true);
 }
 

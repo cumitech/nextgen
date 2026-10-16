@@ -182,6 +182,32 @@ body.nextgen .ng-user-nav {
   gap: 0.25rem;
 }
 
+body.nextgen .ng-user-nav .langmenu .dropdown-toggle {
+  align-items: center;
+  border: 1px solid var(--ng-border);
+  border-radius: 999px;
+  color: var(--ng-ink);
+  display: inline-flex;
+  font-size: 0.875rem;
+  font-weight: 600;
+  gap: 0.15rem;
+  min-height: 40px;
+  padding: 0.25rem 0.75rem;
+  white-space: nowrap;
+}
+
+body.nextgen .ng-user-nav .langmenu .dropdown-menu {
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  min-width: 12rem;
+  padding: 0.35rem;
+}
+
+body.nextgen .ng-user-nav .langmenu .dropdown-item {
+  border-radius: 8px;
+  font-weight: 600;
+}
+
 body.nextgen .ng-header-login {
   align-items: center;
   display: inline-flex;
@@ -194,12 +220,33 @@ body.nextgen .ng-header-search input[type="text"] {
 }
 
 body.nextgen .secondary-navigation {
-  background: var(--ng-surface);
+  background: transparent;
   border-bottom: 1px solid var(--ng-border);
 }
 
+body.nextgen .secondary-navigation .nav-tabs {
+  border-bottom: 0;
+  gap: 0.15rem;
+}
+
+body.nextgen .secondary-navigation .nav-link {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: var(--ng-text-muted);
+  font-weight: 600;
+}
+
+body.nextgen .secondary-navigation .nav-link:hover,
+body.nextgen .secondary-navigation .nav-link:focus-visible {
+  border-bottom-color: var(--ng-border);
+  color: var(--ng-ink);
+}
+
 body.nextgen .secondary-navigation .nav-link.active {
-  border-color: var(--ng-brand);
+  background: transparent;
+  border-bottom-color: var(--ng-brand);
   color: var(--ng-ink);
 }
 
@@ -244,6 +291,20 @@ body.nextgen .btn-primary {
   --bs-btn-hover-bg: var(--ng-primary-hover);
   --bs-btn-hover-border-color: var(--ng-primary-hover);
   --bs-btn-hover-color: #fff;
+  background-image: none;
+  box-shadow: none;
+}
+
+body.nextgen .btn-secondary {
+  --bs-btn-active-bg: var(--ng-muted);
+  --bs-btn-active-border-color: var(--ng-border);
+  --bs-btn-active-color: var(--ng-ink);
+  --bs-btn-bg: var(--ng-surface);
+  --bs-btn-border-color: var(--ng-border);
+  --bs-btn-color: var(--ng-ink);
+  --bs-btn-hover-bg: var(--ng-muted);
+  --bs-btn-hover-border-color: var(--ng-border);
+  --bs-btn-hover-color: var(--ng-ink);
   background-image: none;
   box-shadow: none;
 }
@@ -1460,6 +1521,13 @@ body.nextgen .ng-hero > * {
 body.nextgen-landing .ng-hero {
   min-height: 36rem;
   padding: 5.5rem 0 7rem;
+}
+
+@media (min-width: 768px) {
+  body.nextgen-landing .ng-hero {
+    /* The colour cards overlap this padding. Extra space keeps a long headline above them. */
+    padding-bottom: 11.75rem;
+  }
 }
 
 body.nextgen-landing .ng-hero::before {
@@ -5897,6 +5965,10 @@ body.nextgen.nextgen-about .ng-about-aside {
     position: sticky;
     top: 6rem;
   }
+
+  body.nextgen.nextgen-about .ng-about-team-photo {
+    max-width: 13.75rem;
+  }
 }
 
 body.nextgen.nextgen-about .ng-about-table-wrap {
@@ -5987,7 +6059,7 @@ body.nextgen.nextgen-about .ng-about-team-photo {
   display: block;
   height: auto;
   margin-top: 1.5rem;
-  max-width: 13.75rem;
+  max-width: none;
   object-fit: cover;
   object-position: 70% 40%;
   width: 100%;
@@ -8307,9 +8379,10 @@ body.nextgen.nextgen-team .ng-team-photo {
   border-radius: 12px;
   display: block;
   height: auto;
+  max-width: none;
   object-fit: cover;
   object-position: center 42%;
-  width: 9.5rem;
+  width: 100%;
 }
 
 body.nextgen.nextgen-team .ng-team-photo-offset {
@@ -8390,6 +8463,12 @@ body.nextgen.nextgen-team .ng-team-facts a {
   }
 }
 
+@media (max-width: 767.98px) {
+  body.nextgen.nextgen-team .ng-team-person {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (min-width: 768px) {
   body.nextgen.nextgen-team .ng-team-person {
     grid-template-columns: 11rem minmax(0, 1fr);
@@ -8398,6 +8477,277 @@ body.nextgen.nextgen-team .ng-team-facts a {
   }
 
   body.nextgen.nextgen-team .ng-team-photo {
-    width: 100%;
+    width: 11rem;
+  }
+}
+
+/* Learning pages. Colour, type, and shape only. Controls, icons, and menus stay. */
+body.nextgen:not(.nextgen-dashboard):not(.nextgen-landing):not(.nextgen-catalogue):not(.nextgen-course):not(.nextgen-sales):not(.nextgen-enrol-checkout):not(.nextgen-public):not(.nextgen-blog):not(.nextgen-about):not(.nextgen-team):not(.nextgen-contact):not(.pagelayout-login) {
+  #page-header {
+    background: transparent;
+    border-bottom: 0;
+    box-shadow: none;
+  }
+
+  #page-header h1,
+  .activity-header h2,
+  .page-context-header h1 {
+    color: var(--ng-ink);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  .breadcrumb,
+  .breadcrumb a,
+  .breadcrumb-item.active {
+    color: var(--ng-text-muted);
+  }
+
+  .breadcrumb a:hover,
+  .breadcrumb a:focus-visible {
+    color: var(--ng-ink);
+  }
+
+  #region-main h2,
+  #region-main h3,
+  #region-main h4 {
+    color: var(--ng-ink);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .form-control,
+  .form-select,
+  .custom-select,
+  select.custom-select {
+    background-color: var(--ng-surface);
+    border-color: #d5dee3;
+    border-radius: 10px;
+    color: var(--ng-text);
+  }
+
+  .form-control:focus,
+  .form-select:focus,
+  .custom-select:focus {
+    border-color: var(--ng-primary);
+    box-shadow: 0 0 0 3px rgba(22, 58, 74, 0.14);
+  }
+
+  .ng-header-search .form-control,
+  .ng-header-search input[type="text"] {
+    border-radius: 999px;
+  }
+
+  .col-form-label,
+  .fitem .fitemtitle {
+    color: var(--ng-ink);
+    font-weight: 600;
+  }
+
+  .form-check-input:checked {
+    background-color: var(--ng-brand);
+    border-color: var(--ng-brand);
+  }
+
+  .form-check-input:focus {
+    border-color: var(--ng-primary);
+    box-shadow: 0 0 0 3px rgba(22, 58, 74, 0.14);
+  }
+
+  table.generaltable {
+    --bs-table-bg: var(--ng-surface);
+    --bs-table-border-color: var(--ng-border);
+    --bs-table-striped-bg: #f7fafb;
+    border-color: var(--ng-border);
+    color: var(--ng-text);
+  }
+
+  table.generaltable thead th,
+  table.generaltable thead td {
+    background: var(--ng-muted);
+    border-color: var(--ng-border);
+    color: var(--ng-ink);
+    font-weight: 700;
+  }
+
+  table.generaltable td,
+  table.generaltable th {
+    border-color: var(--ng-border);
+  }
+
+  .alert {
+    border-radius: 12px;
+  }
+
+  .alert-info {
+    background-color: #e7f2f6;
+    border-color: #c5dde6;
+    color: var(--ng-ink);
+  }
+
+  .alert-success {
+    background-color: var(--ng-brand-soft);
+    border-color: #b7e0b0;
+    color: var(--ng-brand-ink);
+  }
+
+  .alert-warning {
+    background-color: var(--ng-yellow-soft);
+    border-color: #f3e2a2;
+    color: var(--ng-gold-text);
+  }
+
+  .alert-danger {
+    background-color: var(--ng-red-soft);
+    border-color: #f3c2c8;
+    color: #8e0c1c;
+  }
+
+  .badge {
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  .progress {
+    background-color: var(--ng-muted);
+    border-radius: 999px;
+  }
+
+  .progress-bar {
+    background-color: var(--ng-brand);
+  }
+
+  .pagination .page-link {
+    background: var(--ng-surface);
+    border-color: var(--ng-border);
+    border-radius: 8px;
+    color: var(--ng-ink);
+    margin: 0 0.12rem;
+  }
+
+  .pagination .page-item.active .page-link {
+    background: var(--ng-primary);
+    border-color: var(--ng-primary);
+    color: #fff;
+  }
+
+  .pagination .page-link:hover {
+    background: var(--ng-muted);
+    border-color: var(--ng-border);
+    color: var(--ng-ink);
+  }
+
+  .list-group-item {
+    border-color: var(--ng-border);
+  }
+
+  .list-group-item.active {
+    background: var(--ng-primary);
+    border-color: var(--ng-primary);
+    color: #fff;
+  }
+
+  .dropdown-menu {
+    border: 1px solid var(--ng-border);
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(22, 32, 22, 0.12);
+  }
+
+  .dropdown-item {
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .dropdown-item:hover,
+  .dropdown-item:focus,
+  .dropdown-item.active {
+    background: var(--ng-primary);
+    color: #fff;
+  }
+
+  .modal-content,
+  .moodle-dialogue-base .moodle-dialogue-wrap {
+    border: 1px solid var(--ng-border);
+    border-radius: 16px;
+    box-shadow: 0 18px 48px rgba(16, 40, 51, 0.16);
+  }
+
+  .modal-header,
+  .modal-footer {
+    border-color: var(--ng-border);
+  }
+
+  .modal-title {
+    color: var(--ng-ink);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .generalbox,
+  &.path-mod-quiz #region-main .que,
+  &.path-mod-forum #region-main .forumpost,
+  &.path-mod-forum #region-main article.forum-post {
+    background: var(--ng-surface);
+    border: 1px solid var(--ng-border);
+    border-radius: 12px;
+    box-shadow: none;
+  }
+
+  .block {
+    background: var(--ng-surface);
+    border: 1px solid var(--ng-border);
+    border-radius: 12px;
+    box-shadow: none;
+  }
+
+  .block .card-title,
+  .block .card-title a {
+    color: var(--ng-ink);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .activityiconcontainer {
+    background-color: var(--ng-primary);
+    border-radius: 10px;
+  }
+
+  &:not(.editing) .activity-item {
+    background: var(--ng-surface);
+    border: 1px solid var(--ng-border);
+    border-radius: 10px;
+  }
+
+  &:not(.editing) .activity-item:hover {
+    background: var(--ng-muted);
+  }
+
+  .activity-item .activityname a,
+  .course-section .sectionname,
+  .course-section .sectionname a {
+    color: var(--ng-ink);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .activity-item .activityname a:hover,
+  .course-section .sectionname a:hover {
+    color: var(--ng-primary);
+  }
+
+  .drawer.drawer-left:not(.drawer-primary),
+  .drawer.drawer-right {
+    background: var(--ng-surface);
+    color: var(--ng-text);
+  }
+
+  .courseindex .courseindex-section-title {
+    color: var(--ng-ink);
+    font-weight: 700;
+  }
+
+  .maincalendar .calendartable td.today,
+  .minicalendar td.today {
+    background: var(--ng-brand-soft);
   }
 }

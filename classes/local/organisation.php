@@ -93,8 +93,9 @@ class organisation {
                 'api' => 1,
                 'query' => $address,
             ]);
+            $label = clean_param($label, PARAM_TEXT);
             $offices[] = [
-                'label' => clean_param($label, PARAM_TEXT),
+                'label' => \theme_nextgen_localise_label($label),
                 'address' => $address,
                 'mapurl' => $map->out(false),
             ];
