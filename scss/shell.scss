@@ -1707,6 +1707,43 @@ body.nextgen .ng-stat span {
   }
 }
 
+body.nextgen .ng-quote-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+body.nextgen .ng-quote {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 8px;
+  margin: 0;
+  padding: 1.25rem 1.25rem 1.1rem;
+}
+
+body.nextgen .ng-quote-text {
+  color: var(--ng-ink);
+  margin: 0.75rem 0 0;
+}
+
+body.nextgen .ng-quote footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 1rem;
+}
+
+body.nextgen .ng-quote cite {
+  color: var(--ng-ink);
+  font-style: normal;
+  font-weight: 600;
+}
+
+body.nextgen .ng-quote footer a {
+  color: var(--ng-text-muted);
+  font-size: 0.92rem;
+}
+
 body.nextgen .ng-section {
   padding: 3.5rem 0;
 }

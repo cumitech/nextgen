@@ -100,6 +100,8 @@ class about {
             'contacturl' => public_page::url('contact')->out(false),
             'teamurl' => public_page::url('team')->out(false),
             'coursesurl' => (new \moodle_url('/course/index.php'))->out(false),
+            'whotext2' => theme_nextgen_about_who_text(),
+            'teachtext' => theme_nextgen_catalogue_lead('aboutteachtext'),
             'cansignup' => $signup,
             'signupurl' => (new \moodle_url('/login/signup.php'))->out(false),
             'partnersblock' => organisation::partners_block('about', true),

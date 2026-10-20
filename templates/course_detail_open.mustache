@@ -261,7 +261,9 @@
                                 <a href="{{url}}">{{{picture}}}</a>
                                 <ul class="ng-instructor-stats">
                                     <li><span>{{courseslabel}}</span></li>
-                                    <li><span>{{studentslabel}}</span></li>
+                                    {{#hasstudents}}
+                                        <li><span>{{studentslabel}}</span></li>
+                                    {{/hasstudents}}
                                 </ul>
                             </div>
                             <div class="ng-instructor-body">

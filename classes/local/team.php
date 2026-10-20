@@ -63,6 +63,47 @@ class team {
             'id' => 'etame',
             'image' => 'team/etame-vivian',
         ],
+        [
+            'id' => 'derick',
+            'image' => 'team/derick-yong',
+        ],
+        [
+            'id' => 'nayah',
+            'image' => 'team/dr-nayah-gazelle',
+        ],
+        [
+            'id' => 'peter',
+            'image' => 'team/dr-peter-abuengmoh',
+            'collapse' => true,
+        ],
+        [
+            'id' => 'forbe',
+            'image' => 'team/dr-forbe-hodu',
+        ],
+        [
+            'id' => 'francine',
+            'image' => 'team/anembom-francine',
+            'collapse' => true,
+        ],
+        [
+            'id' => 'kiambom',
+            'image' => 'team/kiambom-tracey',
+            'collapse' => true,
+        ],
+        [
+            'id' => 'emmanuel',
+            'image' => 'team/emmanuel-mbunwe',
+            'collapse' => true,
+        ],
+        [
+            'id' => 'ndzembanteh',
+            'image' => 'team/dr-ndzembanteh-aboubakary-nulambeh',
+            'collapse' => true,
+        ],
+        [
+            'id' => 'akumbom',
+            'image' => 'team/akumbom-paul',
+        ],
     ];
 
     /**

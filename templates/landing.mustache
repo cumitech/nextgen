@@ -60,7 +60,7 @@
         <div class="ng-landing-inner ng-forward-grid">
             <div>
                 <h2>{{#str}}whyheading, theme_nextgen{{/str}}</h2>
-                <p class="ng-forward-text">{{#str}}forwardtext, theme_nextgen{{/str}}</p>
+                <p class="ng-forward-text">{{forwardtext}}</p>
                 <a class="btn btn-primary" href="{{coursesurl}}">{{#str}}browseall, theme_nextgen{{/str}}</a>
             </div>
             <ol class="ng-forward-list">
@@ -131,6 +131,35 @@
             </ul>
         </div>
     </section>
+
+    {{#hasquotes}}
+        <section class="ng-section" id="learner-reviews">
+            <div class="ng-landing-inner">
+                <div class="ng-section-head">
+                    <h2>{{#str}}quotesheading, theme_nextgen{{/str}}</h2>
+                </div>
+                <div class="ng-quote-grid">
+                    {{#quotes}}
+                        <blockquote class="ng-quote">
+                            <p class="ng-course-stars" aria-hidden="true">
+                                {{#stars}}
+                                    <svg class="ng-star ng-star-{{state}}" viewBox="0 0 20 20">
+                                        <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"/>
+                                        <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"/>
+                                    </svg>
+                                {{/stars}}
+                            </p>
+                            <p class="ng-quote-text">{{text}}</p>
+                            <footer>
+                                <cite>{{name}}</cite>
+                                <a href="{{courseurl}}">{{course}}</a>
+                            </footer>
+                        </blockquote>
+                    {{/quotes}}
+                </div>
+            </div>
+        </section>
+    {{/hasquotes}}
 
     <section class="ng-cta">
         <div class="ng-landing-inner">

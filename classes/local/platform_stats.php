@@ -29,6 +29,15 @@ namespace theme_nextgen\local;
  */
 class platform_stats {
     /**
+     * Published courses the current user is allowed to see.
+     *
+     * @return int
+     */
+    public static function published_count(): int {
+        return count(self::visible_course_ids());
+    }
+
+    /**
      * Four figures for the site home hero.
      *
      * @return array<int, array{value: string, label: string}>

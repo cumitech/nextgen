@@ -649,6 +649,7 @@ function theme_nextgen_footer_context($theme): array {
     $columns = theme_nextgen_with_faq_link($columns);
     $columns = theme_nextgen_with_blog_link($columns);
     $columns = theme_nextgen_with_team_link($columns);
+    $columns = theme_nextgen_with_programmes_link($columns);
 
     return [
         'sitename' => format_string($SITE->fullname, true, ['context' => context_system::instance()]),
@@ -792,6 +793,41 @@ function theme_nextgen_with_team_link(array $columns): array {
 }
 
 /**
+ * Add the organisations page to Support when that column does not already list it.
+ *
+ * @param array $columns
+ * @return array
+ */
+function theme_nextgen_with_programmes_link(array $columns): array {
+    $url = \theme_nextgen\local\public_page::url('programmes')->out(false);
+    foreach ($columns as $column) {
+        foreach ($column['links'] as $link) {
+            if ($link['url'] === $url) {
+                return $columns;
+            }
+        }
+    }
+
+    $link = [
+        'label' => get_string('programmesnav', 'theme_nextgen'),
+        'url' => $url,
+        'external' => false,
+    ];
+    $supporttitle = get_string('supportlinks', 'theme_nextgen');
+    foreach ($columns as $index => $column) {
+        if ($column['title'] === $supporttitle) {
+            $columns[$index]['links'][] = $link;
+            return $columns;
+        }
+    }
+    $columns[] = [
+        'title' => $supporttitle,
+        'links' => [$link],
+    ];
+    return $columns;
+}
+
+/**
  * Point shipped navigation at the public pages when a site still has the original defaults.
  */
 function theme_nextgen_upgrade_public_pages(): void {
@@ -840,7 +876,7 @@ function theme_nextgen_publish_public_paths(): void {
     if (during_initial_install() || empty($CFG->dirroot)) {
         return;
     }
-    if (get_config('theme_nextgen', 'publicpathrev') === '2026101501') {
+    if (get_config('theme_nextgen', 'publicpathrev') === '2026102000') {
         return;
     }
 
@@ -849,7 +885,7 @@ function theme_nextgen_publish_public_paths(): void {
     $ready = theme_nextgen_ensure_public_rewrites() && $ready;
     theme_nextgen_rewrite_public_urls();
     if ($ready) {
-        set_config('publicpathrev', '2026101501', 'theme_nextgen');
+        set_config('publicpathrev', '2026102000', 'theme_nextgen');
     }
 }
 
@@ -1159,6 +1195,8 @@ function theme_nextgen_landing_context(): array {
         ];
     }
 
+    $quotes = theme_nextgen_landing_quotes();
+
     return [
         'herotitle' => $herotitle,
         'herotext' => $herotext,
@@ -1183,7 +1221,126 @@ function theme_nextgen_landing_context(): array {
         'loginurl' => (new moodle_url('/login/index.php'))->out(false),
         'isloggedin' => isloggedin() && !isguestuser(),
         'partnersblock' => \theme_nextgen\local\organisation::partners_block('landing'),
+        'forwardtext' => theme_nextgen_catalogue_lead('forwardtext'),
+        'hasquotes' => !empty($quotes),
+        'quotes' => $quotes,
     ];
+}
+
+/**
+ * Noun phrase for the number of published courses.
+ *
+ * Lower case, so it can sit in the middle of a sentence. Pass $lead when it opens one.
+ *
+ * @param bool $lead
+ * @return string
+ */
+function theme_nextgen_catalogue_size_label(bool $lead = false): string {
+    $count = \theme_nextgen\local\platform_stats::published_count();
+    if ($count === 1) {
+        $label = get_string('cataloguesizeone', 'theme_nextgen');
+    } else if ($count < 1) {
+        $label = get_string('cataloguesizenone', 'theme_nextgen');
+    } else {
+        $label = get_string('cataloguesize', 'theme_nextgen', $count);
+    }
+    if ($lead && $label !== '') {
+        $label = \core_text::strtoupper(\core_text::substr($label, 0, 1)) . \core_text::substr($label, 1);
+    }
+    return $label;
+}
+
+/**
+ * A catalogue sentence whose {$a} is the published course count.
+ *
+ * @param string $stringkey
+ * @return string
+ */
+function theme_nextgen_catalogue_lead(string $stringkey): string {
+    return get_string($stringkey, 'theme_nextgen', theme_nextgen_catalogue_size_label(true));
+}
+
+/**
+ * About paragraph that names the published course count without overstating it.
+ *
+ * @return string
+ */
+function theme_nextgen_about_who_text(): string {
+    $count = \theme_nextgen\local\platform_stats::published_count();
+    if ($count === 1) {
+        return get_string('aboutwhotext2one', 'theme_nextgen');
+    }
+    if ($count < 1) {
+        return get_string('aboutwhotext2none', 'theme_nextgen');
+    }
+    return get_string('aboutwhotext2', 'theme_nextgen', $count);
+}
+
+/**
+ * Recent course reviews for the home page.
+ *
+ * Only reviews with text, on courses the visitor can see. An empty list hides the section.
+ *
+ * @return array
+ */
+function theme_nextgen_landing_quotes(): array {
+    global $DB;
+
+    if (!theme_nextgen_review_table_ready()) {
+        return [];
+    }
+
+    $namefields = \core_user\fields::for_name()->get_sql('u', false, '', '', false)->selects;
+    $records = $DB->get_records_sql(
+        "SELECT r.id, r.rating, r.reviewtext, r.courseid, {$namefields}
+           FROM {theme_nextgen_review} r
+           JOIN {user} u ON u.id = r.userid
+           JOIN {course} c ON c.id = r.courseid
+          WHERE u.deleted = 0
+            AND r.reviewtext <> ''
+            AND c.id <> :siteid
+       ORDER BY r.timemodified DESC",
+        ['siteid' => SITEID],
+        0,
+        12
+    );
+
+    $quotes = [];
+    $visible = [];
+    foreach (\core_course_category::top()->get_courses(['recursive' => true]) as $listed) {
+        $visible[(int) $listed->id] = $listed;
+    }
+    foreach ($records as $record) {
+        $courseid = (int) $record->courseid;
+        if (!isset($visible[$courseid])) {
+            continue;
+        }
+        $course = $visible[$courseid];
+        $context = context_course::instance($courseid);
+        $raw = trim((string) $record->reviewtext);
+        // A word or two is not a testimonial. Keep written reviews only.
+        if (\core_text::strlen($raw) < 20) {
+            continue;
+        }
+        $text = theme_nextgen_text_excerpt($raw, 280);
+        if ($text === '') {
+            continue;
+        }
+        $quotes[] = [
+            'name' => fullname($record),
+            'text' => $text,
+            'course' => format_string($course->fullname, true, [
+                'context' => $context,
+                'escape' => false,
+            ]),
+            'courseurl' => theme_nextgen_course_public_url($courseid)->out(false),
+            'stars' => theme_nextgen_star_states(max(1, min(5, (int) $record->rating))),
+        ];
+        if (count($quotes) >= 3) {
+            break;
+        }
+    }
+    return $quotes;
 }
 
 /**
@@ -1212,7 +1369,7 @@ function theme_nextgen_featured_courses(): array {
  * @return array
  */
 function theme_nextgen_course_card_data(core_course_list_element $course): array {
-    global $CFG, $DB, $OUTPUT, $USER;
+    global $DB, $OUTPUT, $USER;
 
     $context = context_course::instance($course->id);
     $image = '';
@@ -1286,16 +1443,16 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
 
     $studentrole = $DB->get_field('role', 'id', ['shortname' => 'student']);
     $enrolments = $studentrole ? count_role_users($studentrole, $context) : count_enrolled_users($context);
+    $students = '';
+    if ($enrolments === 1) {
+        $students = get_string('studentcountone', 'theme_nextgen');
+    } else if ($enrolments > 1) {
+        $students = get_string('studentcount', 'theme_nextgen', $enrolments);
+    }
     $timestamp = !empty($course->startdate) ? (int) $course->startdate : (int) $course->timecreated;
     $date = preg_replace('/^0/', '', userdate($timestamp, '%d %B %Y'));
 
-    $price = '';
-    if (!empty($CFG->enrol_plugins_enabled) && str_contains($CFG->enrol_plugins_enabled, 'fee')) {
-        $price = theme_nextgen_enrol_fee_price((int) $course->id);
-    }
-    if ($price === '') {
-        $price = $commercial['price'];
-    }
+    $price = theme_nextgen_course_price((int) $course->id, $commercial['price']);
 
     $excerpt = '';
     if ($course->has_summary()) {
@@ -1340,6 +1497,8 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
         'price' => $price,
         'actionurl' => $actionurl,
         'actionlabel' => $actionlabel,
+        'hasenrolments' => $students !== '',
+        'students' => $students,
         'enrolments' => $enrolments,
         'date' => $date,
     ];
@@ -1391,7 +1550,7 @@ function theme_nextgen_course_commercial(int $courseid): array {
         $shortname = $data->get_field()->get('shortname');
         $value = trim((string) $data->get_value());
         if ($shortname === 'ngprice') {
-            $result['price'] = theme_nextgen_format_price($value);
+            $result['price'] = $value;
         } else if ($shortname === 'ngrating' && $value !== '' && is_numeric($value)) {
             $result['rating'] = max(0, min(5, (float) $value));
         } else if ($shortname === 'ngreviews' && $value !== '' && is_numeric($value)) {
@@ -1406,10 +1565,13 @@ function theme_nextgen_course_commercial(int $courseid): array {
 /**
  * Format a stored price for the card.
  *
+ * A bare number uses the site fee currency. Text that already names a currency is kept.
+ *
  * @param string $raw
+ * @param string $currency
  * @return string
  */
-function theme_nextgen_format_price(string $raw): string {
+function theme_nextgen_format_price(string $raw, string $currency = ''): string {
     $raw = trim($raw);
     if ($raw === '') {
         return '';
@@ -1418,28 +1580,90 @@ function theme_nextgen_format_price(string $raw): string {
         return $raw;
     }
     $number = (float) str_replace(',', '', $raw);
+    if ($number <= 0) {
+        return '';
+    }
+    if (preg_match('/^[A-Z]{3}$/', $currency)) {
+        return \core_payment\helper::get_cost_as_string($number, $currency);
+    }
     return number_format($number, 2);
+}
+
+/**
+ * Site fee enrolment defaults from the fee plugin.
+ *
+ * @return array{cost: float, currency: string}
+ */
+function theme_nextgen_fee_defaults(): array {
+    $plugin = enrol_get_plugin('fee');
+    if (!$plugin) {
+        return ['cost' => 0.0, 'currency' => ''];
+    }
+    return [
+        'cost' => (float) $plugin->get_config('cost'),
+        'currency' => strtoupper(trim((string) $plugin->get_config('currency'))),
+    ];
+}
+
+/**
+ * Price shown for a course.
+ *
+ * An enabled fee enrolment wins, including the site default when that instance
+ * has no cost of its own. A price typed on the course is next. Every other
+ * course shows the site default fee when one is configured.
+ *
+ * @param int $courseid
+ * @param string $manual Price typed on the course, without assuming a currency
+ * @return string
+ */
+function theme_nextgen_course_price(int $courseid, string $manual = ''): string {
+    $charged = theme_nextgen_enrol_fee_price($courseid);
+    if ($charged !== '') {
+        return $charged;
+    }
+    $defaults = theme_nextgen_fee_defaults();
+    $typed = theme_nextgen_format_price($manual, $defaults['currency']);
+    if ($typed !== '') {
+        return $typed;
+    }
+    if ($defaults['cost'] > 0 && $defaults['currency'] !== '') {
+        return \core_payment\helper::get_cost_as_string($defaults['cost'], $defaults['currency']);
+    }
+    return '';
 }
 
 /**
  * Localised cost of the first enabled fee enrolment, including XAF.
  *
- * Uses Moodle's payment formatter so the currency's own fraction digits are kept.
- * An empty string means this course has no fee to display.
+ * Uses the same rule as the fee plugin: a teacher-set cost replaces the site
+ * default, and an empty instance cost uses that default. An empty string means
+ * this course has no fee enrolment to display.
  *
  * @param int $courseid
  * @return string
  */
 function theme_nextgen_enrol_fee_price(int $courseid): string {
+    global $CFG;
+
+    if (empty($CFG->enrol_plugins_enabled) || !str_contains($CFG->enrol_plugins_enabled, 'fee')) {
+        return '';
+    }
+    $defaults = theme_nextgen_fee_defaults();
     foreach (enrol_get_instances($courseid, true) as $instance) {
-        if ($instance->enrol !== 'fee' || $instance->cost === null || $instance->cost === '') {
+        if ($instance->enrol !== 'fee') {
             continue;
         }
-        $currency = (string) $instance->currency;
+        $currency = strtoupper(trim((string) $instance->currency));
         if ($currency === '') {
-            continue;
+            $currency = $defaults['currency'];
         }
-        return \core_payment\helper::get_cost_as_string((float) $instance->cost, $currency);
+        $cost = (float) $instance->cost;
+        if ($cost <= 0) {
+            $cost = $defaults['cost'];
+        }
+        if ($cost > 0 && preg_match('/^[A-Z]{3}$/', $currency)) {
+            return \core_payment\helper::get_cost_as_string($cost, $currency);
+        }
     }
     return '';
 }
@@ -2148,6 +2372,9 @@ function theme_nextgen_landing_categories(int $limit = 6): array {
     $items = [];
     foreach (core_course_category::top()->get_children() as $category) {
         $coursecount = (int) $category->get_courses_count(['recursive' => true]);
+        if ($coursecount < 1) {
+            continue;
+        }
         if ($coursecount === 1) {
             $countlabel = get_string('categorycoursecount', 'theme_nextgen', $coursecount);
         } else {
@@ -2309,6 +2536,7 @@ function theme_nextgen_allow_public_entry(): void {
         '/privacy.php',
         '/terms.php',
         '/faq.php',
+        '/programmes.php',
         '/course/index.php',
         '/course/view.php',
         '/blog/index.php',
@@ -2591,10 +2819,7 @@ function theme_nextgen_enrol_checkout_context(
     } else if ($sectioncount > 1) {
         $includes[] = ['label' => get_string('coursesections', 'theme_nextgen', $sectioncount)];
     }
-    $price = theme_nextgen_enrol_fee_price((int) $course->id);
-    if ($price === '') {
-        $price = (string) ($card['price'] ?? '');
-    }
+    $price = (string) ($card['price'] ?? '');
 
     $signedin = isloggedin() && !isguestuser();
     $isguest = isguestuser() || !isloggedin();
@@ -2735,6 +2960,7 @@ function theme_nextgen_course_detail_context(): ?array {
             'hasbio' => $bio !== '',
             'bio' => $bio,
             'courseslabel' => get_string('instructorcourses', 'theme_nextgen', $reach['courses']),
+            'hasstudents' => (int) $reach['students'] > 0,
             'studentslabel' => get_string('instructorstudents', 'theme_nextgen', $reach['students']),
             'picture' => $OUTPUT->user_picture($user, [
                 'size' => 160,

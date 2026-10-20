@@ -55,8 +55,10 @@
             {{#hasprice}}
                 <span class="ng-course-price">{{price}}</span>
             {{/hasprice}}
-            <span class="ng-course-stats">
-                <span class="ng-course-enrols">{{#str}}studentcount, theme_nextgen, {{enrolments}}{{/str}}</span>
+                <span class="ng-course-stats">
+                {{#hasenrolments}}
+                    <span class="ng-course-enrols">{{students}}</span>
+                {{/hasenrolments}}
                 <span class="ng-course-date">{{date}}</span>
             </span>
         </p>
