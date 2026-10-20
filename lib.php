@@ -1356,10 +1356,315 @@ function theme_nextgen_featured_courses(): array {
         'limit' => 4,
         'sort' => ['sortorder' => 1],
     ]);
+    $courseids = [];
+    foreach ($courses as $course) {
+        $courseids[] = (int) $course->id;
+    }
+    theme_nextgen_prepare_card_facts($courseids);
     foreach ($courses as $course) {
         $cards[] = theme_nextgen_course_card_data($course);
     }
     return $cards;
+}
+
+/**
+ * Published courses in each category, including courses in child categories.
+ *
+ * One catalogue read is shared by the header and the home page. Counting each
+ * category on its own repeats that read once per category.
+ *
+ * @return array<int, int>
+ */
+function theme_nextgen_category_course_counts(): array {
+    global $DB;
+
+    static $counts = null;
+    if ($counts !== null) {
+        return $counts;
+    }
+
+    $parents = $DB->get_records_menu('course_categories', null, '', 'id, parent');
+    $direct = [];
+    foreach (core_course_category::top()->get_courses(['recursive' => true]) as $course) {
+        $categoryid = (int) $course->category;
+        $direct[$categoryid] = ($direct[$categoryid] ?? 0) + 1;
+    }
+
+    $counts = [];
+    foreach (array_keys($parents) as $categoryid) {
+        $categoryid = (int) $categoryid;
+        $total = 0;
+        foreach ($direct as $owner => $count) {
+            $current = (int) $owner;
+            $guard = 0;
+            while ($current > 0 && $guard < 12) {
+                if ($current === $categoryid) {
+                    $total += $count;
+                    break;
+                }
+                $current = (int) ($parents[$current] ?? 0);
+                $guard++;
+            }
+        }
+        $counts[$categoryid] = $total;
+    }
+    return $counts;
+}
+
+/**
+ * Facts already loaded for a set of course cards.
+ *
+ * @param int $courseid
+ * @param array|null $store
+ * @return array|null
+ */
+function theme_nextgen_card_facts(int $courseid, ?array $store = null): ?array {
+    static $facts = [];
+    if ($store !== null) {
+        $facts[$courseid] = $store;
+    }
+    return $facts[$courseid] ?? null;
+}
+
+/**
+ * Load prices, reviews, teachers, and pictures for many cards in a few queries.
+ *
+ * @param int[] $courseids
+ */
+function theme_nextgen_prepare_card_facts(array $courseids): void {
+    global $CFG, $DB;
+
+    $missing = [];
+    foreach ($courseids as $courseid) {
+        $courseid = (int) $courseid;
+        if ($courseid > 0 && theme_nextgen_card_facts($courseid) === null) {
+            $missing[$courseid] = $courseid;
+        }
+    }
+    $missing = array_values($missing);
+    if (!$missing) {
+        return;
+    }
+
+    $blankextra = [
+        'ngduration' => '',
+        'nglevel' => '',
+        'ngeffort' => '',
+        'ngcertificate' => '',
+        'nglanguage' => '',
+        'ngrequirements' => '',
+        'ngoutcomes' => '',
+        'ngratingdist' => '',
+        'ngreviewlist' => '',
+    ];
+    foreach ($missing as $courseid) {
+        theme_nextgen_card_facts($courseid, [
+            'price' => '',
+            'rating' => null,
+            'reviews' => null,
+            'bestseller' => false,
+            'extra' => $blankextra,
+            'reviewstats' => null,
+            'enrolments' => 0,
+            'feeprice' => '',
+            'teachers' => [],
+            'image' => '',
+        ]);
+    }
+
+    $handler = \core_course\customfield\course_handler::create();
+    foreach ($handler->get_instances_data($missing, true) as $courseid => $fields) {
+        $fact = theme_nextgen_card_facts((int) $courseid);
+        if ($fact === null) {
+            continue;
+        }
+        foreach ($fields as $data) {
+            $shortname = $data->get_field()->get('shortname');
+            $value = trim((string) $data->get_value());
+            if ($shortname === 'ngprice') {
+                $fact['price'] = $value;
+            } else if ($shortname === 'ngrating' && $value !== '' && is_numeric($value)) {
+                $fact['rating'] = max(0, min(5, (float) $value));
+            } else if ($shortname === 'ngreviews' && $value !== '' && is_numeric($value)) {
+                $fact['reviews'] = max(0, (int) $value);
+            } else if ($shortname === 'ngbestseller') {
+                $fact['bestseller'] = ((int) $value) === 1;
+            } else if (array_key_exists($shortname, $fact['extra'])) {
+                $fact['extra'][$shortname] = $value;
+            }
+        }
+        theme_nextgen_card_facts((int) $courseid, $fact);
+    }
+
+    if (theme_nextgen_review_table_ready()) {
+        [$insql, $params] = $DB->get_in_or_equal($missing, SQL_PARAMS_NAMED);
+        $rows = $DB->get_records_sql(
+            "SELECT r.courseid, COUNT(1) AS reviewcount, AVG(r.rating) AS ratingavg
+               FROM {theme_nextgen_review} r
+               JOIN {user} u ON u.id = r.userid AND u.deleted = 0
+              WHERE r.courseid {$insql}
+           GROUP BY r.courseid",
+            $params
+        );
+        foreach ($rows as $row) {
+            if ((int) $row->reviewcount < 1) {
+                continue;
+            }
+            $fact = theme_nextgen_card_facts((int) $row->courseid);
+            if ($fact === null) {
+                continue;
+            }
+            $fact['reviewstats'] = [
+                'average' => round((float) $row->ratingavg, 1),
+                'count' => (int) $row->reviewcount,
+            ];
+            theme_nextgen_card_facts((int) $row->courseid, $fact);
+        }
+    }
+
+    $studentrole = $DB->get_field('role', 'id', ['shortname' => 'student']);
+    if ($studentrole) {
+        [$insql, $params] = $DB->get_in_or_equal($missing, SQL_PARAMS_NAMED);
+        $params['roleid'] = $studentrole;
+        $params['level'] = CONTEXT_COURSE;
+        $rows = $DB->get_records_sql(
+            "SELECT ctx.instanceid AS courseid, COUNT(DISTINCT ra.userid) AS usercount
+               FROM {role_assignments} ra
+               JOIN {context} ctx ON ctx.id = ra.contextid
+               JOIN {user} u ON u.id = ra.userid AND u.deleted = 0
+              WHERE ra.roleid = :roleid
+                AND ctx.contextlevel = :level
+                AND ctx.instanceid {$insql}
+           GROUP BY ctx.instanceid",
+            $params
+        );
+        foreach ($rows as $row) {
+            $fact = theme_nextgen_card_facts((int) $row->courseid);
+            if ($fact === null) {
+                continue;
+            }
+            $fact['enrolments'] = (int) $row->usercount;
+            theme_nextgen_card_facts((int) $row->courseid, $fact);
+        }
+    }
+
+    if (!empty($CFG->enrol_plugins_enabled) && str_contains($CFG->enrol_plugins_enabled, 'fee')) {
+        [$insql, $params] = $DB->get_in_or_equal($missing, SQL_PARAMS_NAMED);
+        $params['fee'] = 'fee';
+        $params['status'] = ENROL_INSTANCE_ENABLED;
+        $rows = $DB->get_records_sql(
+            "SELECT e.id, e.courseid, e.cost, e.currency
+               FROM {enrol} e
+              WHERE e.enrol = :fee
+                AND e.status = :status
+                AND e.courseid {$insql}
+           ORDER BY e.sortorder ASC, e.id ASC",
+            $params
+        );
+        $defaults = theme_nextgen_fee_defaults();
+        foreach ($rows as $row) {
+            $fact = theme_nextgen_card_facts((int) $row->courseid);
+            if ($fact === null || $fact['feeprice'] !== '') {
+                continue;
+            }
+            $currency = strtoupper(trim((string) $row->currency));
+            if ($currency === '') {
+                $currency = $defaults['currency'];
+            }
+            $cost = (float) $row->cost;
+            if ($cost <= 0) {
+                $cost = $defaults['cost'];
+            }
+            if ($cost > 0 && preg_match('/^[A-Z]{3}$/', $currency)) {
+                $fact['feeprice'] = \core_payment\helper::get_cost_as_string($cost, $currency);
+                theme_nextgen_card_facts((int) $row->courseid, $fact);
+            }
+        }
+    }
+
+    $roleids = array_filter(array_map('intval', explode(',', (string) ($CFG->coursecontact ?? ''))));
+    if ($roleids) {
+        $namefields = \core_user\fields::for_name()->get_sql('u', false, '', '', false)->selects;
+        [$coursesql, $courseparams] = $DB->get_in_or_equal($missing, SQL_PARAMS_NAMED, 'cfid');
+        [$rolesql, $roleparams] = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED, 'cfrid');
+        $params = $courseparams + $roleparams;
+        $params['level'] = CONTEXT_COURSE;
+        $rows = $DB->get_recordset_sql(
+            "SELECT ctx.instanceid AS courseid, ra.roleid, u.id, {$namefields}
+               FROM {role_assignments} ra
+               JOIN {context} ctx ON ctx.id = ra.contextid
+               JOIN {user} u ON u.id = ra.userid AND u.deleted = 0
+              WHERE ctx.contextlevel = :level
+                AND ctx.instanceid {$coursesql}
+                AND ra.roleid {$rolesql}",
+            $params
+        );
+        $bucket = [];
+        foreach ($rows as $row) {
+            $bucket[(int) $row->courseid][] = $row;
+        }
+        $rows->close();
+        $rank = array_flip($roleids);
+        foreach ($bucket as $courseid => $users) {
+            $fact = theme_nextgen_card_facts($courseid);
+            if ($fact === null) {
+                continue;
+            }
+            usort($users, function ($left, $right) use ($rank): int {
+                return ($rank[(int) $left->roleid] ?? 99) <=> ($rank[(int) $right->roleid] ?? 99);
+            });
+            $names = [];
+            $seen = [];
+            foreach ($users as $user) {
+                $userid = (int) $user->id;
+                if (isset($seen[$userid])) {
+                    continue;
+                }
+                $seen[$userid] = true;
+                $names[] = fullname($user);
+            }
+            $fact['teachers'] = $names;
+            theme_nextgen_card_facts($courseid, $fact);
+        }
+    }
+
+    if (!empty($CFG->courseoverviewfileslimit)) {
+        [$insql, $params] = $DB->get_in_or_equal($missing, SQL_PARAMS_NAMED);
+        $params['level'] = CONTEXT_COURSE;
+        $params['component'] = 'course';
+        $params['filearea'] = 'overviewfiles';
+        $rows = $DB->get_records_sql(
+            "SELECT f.id, f.contextid, f.filepath, f.filename, f.mimetype, ctx.instanceid AS courseid
+               FROM {files} f
+               JOIN {context} ctx ON ctx.id = f.contextid
+              WHERE ctx.contextlevel = :level
+                AND ctx.instanceid {$insql}
+                AND f.component = :component
+                AND f.filearea = :filearea
+                AND f.filename <> '.'
+           ORDER BY f.filename ASC",
+            $params
+        );
+        foreach ($rows as $row) {
+            $fact = theme_nextgen_card_facts((int) $row->courseid);
+            if ($fact === null || $fact['image'] !== '') {
+                continue;
+            }
+            $mimetype = (string) $row->mimetype;
+            if ($mimetype !== '' && !str_starts_with($mimetype, 'image/')) {
+                continue;
+            }
+            $fact['image'] = moodle_url::make_pluginfile_url(
+                (int) $row->contextid,
+                'course',
+                'overviewfiles',
+                null,
+                $row->filepath,
+                $row->filename
+            )->out(false);
+            theme_nextgen_card_facts((int) $row->courseid, $fact);
+        }
+    }
 }
 
 /**
@@ -1372,25 +1677,34 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
     global $DB, $OUTPUT, $USER;
 
     $context = context_course::instance($course->id);
+    $fact = theme_nextgen_card_facts((int) $course->id);
     $image = '';
-    foreach ($course->get_course_overviewfiles() as $file) {
-        if ($file->is_valid_image()) {
-            $image = moodle_url::make_pluginfile_url(
-                $file->get_contextid(),
-                $file->get_component(),
-                $file->get_filearea(),
-                null,
-                $file->get_filepath(),
-                $file->get_filename()
-            )->out(false);
-            break;
+    if ($fact !== null) {
+        $image = $fact['image'];
+    } else {
+        foreach ($course->get_course_overviewfiles() as $file) {
+            if ($file->is_valid_image()) {
+                $image = moodle_url::make_pluginfile_url(
+                    $file->get_contextid(),
+                    $file->get_component(),
+                    $file->get_filearea(),
+                    null,
+                    $file->get_filepath(),
+                    $file->get_filename()
+                )->out(false);
+                break;
+            }
         }
     }
     if ($image === '') {
         $image = $OUTPUT->get_generated_image_for_id($course->id);
     }
 
-    $teachers = theme_nextgen_course_teachers($context);
+    if ($fact !== null) {
+        $teachers = $fact['teachers'];
+    } else {
+        $teachers = theme_nextgen_course_teachers($context);
+    }
     $teacherlabel = '';
     if ($teachers) {
         $teacherlabel = $teachers[0];
@@ -1441,8 +1755,12 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
         }
     }
 
-    $studentrole = $DB->get_field('role', 'id', ['shortname' => 'student']);
-    $enrolments = $studentrole ? count_role_users($studentrole, $context) : count_enrolled_users($context);
+    if ($fact !== null) {
+        $enrolments = (int) $fact['enrolments'];
+    } else {
+        $studentrole = $DB->get_field('role', 'id', ['shortname' => 'student']);
+        $enrolments = $studentrole ? count_role_users($studentrole, $context) : count_enrolled_users($context);
+    }
     $students = '';
     if ($enrolments === 1) {
         $students = get_string('studentcountone', 'theme_nextgen');
@@ -1538,6 +1856,16 @@ function theme_nextgen_course_teachers(context_course $context): array {
  * @return array
  */
 function theme_nextgen_course_commercial(int $courseid): array {
+    $fact = theme_nextgen_card_facts($courseid);
+    if ($fact !== null) {
+        return [
+            'price' => $fact['price'],
+            'rating' => $fact['rating'],
+            'reviews' => $fact['reviews'],
+            'bestseller' => $fact['bestseller'],
+        ];
+    }
+
     $result = [
         'price' => '',
         'rating' => null,
@@ -1644,6 +1972,11 @@ function theme_nextgen_course_price(int $courseid, string $manual = ''): string 
  */
 function theme_nextgen_enrol_fee_price(int $courseid): string {
     global $CFG;
+
+    $fact = theme_nextgen_card_facts($courseid);
+    if ($fact !== null) {
+        return $fact['feeprice'];
+    }
 
     if (empty($CFG->enrol_plugins_enabled) || !str_contains($CFG->enrol_plugins_enabled, 'fee')) {
         return '';
@@ -2223,6 +2556,7 @@ function theme_nextgen_catalogue_courses(int $categoryid, bool $shuffle = true):
         $courseids[] = (int) $course->id;
     }
     $certified = theme_nextgen_certificate_activity_ids($courseids);
+    theme_nextgen_prepare_card_facts($courseids);
 
     $cards = [];
     foreach ($visible as $course) {
@@ -2369,9 +2703,10 @@ function theme_nextgen_landing_categories(int $limit = 6): array {
     global $OUTPUT;
 
     $photos = ['category-architecture', 'category-business', 'category-data', 'category-social'];
+    $counts = theme_nextgen_category_course_counts();
     $items = [];
     foreach (core_course_category::top()->get_children() as $category) {
-        $coursecount = (int) $category->get_courses_count(['recursive' => true]);
+        $coursecount = $counts[(int) $category->id] ?? 0;
         if ($coursecount < 1) {
             continue;
         }
@@ -2927,6 +3262,7 @@ function theme_nextgen_course_detail_context(): ?array {
 
     $course = new core_course_list_element($PAGE->course);
     $context = context_course::instance($course->id);
+    theme_nextgen_prepare_card_facts([(int) $course->id]);
     $card = theme_nextgen_course_card_data($course);
     $extra = theme_nextgen_course_extra_fields($course->id);
 
@@ -3429,6 +3765,11 @@ function theme_nextgen_review_count_label(int $count): string {
 function theme_nextgen_submitted_review_stats(int $courseid): ?array {
     global $DB;
 
+    $fact = theme_nextgen_card_facts($courseid);
+    if ($fact !== null) {
+        return $fact['reviewstats'];
+    }
+
     if (!theme_nextgen_review_table_ready()) {
         return null;
     }
@@ -3659,6 +4000,11 @@ function theme_nextgen_initials(string $name): string {
  * @return array
  */
 function theme_nextgen_course_extra_fields(int $courseid): array {
+    $fact = theme_nextgen_card_facts($courseid);
+    if ($fact !== null) {
+        return $fact['extra'];
+    }
+
     $result = [
         'ngduration' => '',
         'nglevel' => '',

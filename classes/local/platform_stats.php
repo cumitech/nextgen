@@ -72,6 +72,10 @@ class platform_stats {
      * @return int[]
      */
     private static function visible_course_ids(): array {
+        static $ids = null;
+        if ($ids !== null) {
+            return $ids;
+        }
         $ids = [];
         $courses = \core_course_category::top()->get_courses(['recursive' => true]);
         foreach ($courses as $course) {
