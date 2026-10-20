@@ -649,7 +649,6 @@ function theme_nextgen_footer_context($theme): array {
     $columns = theme_nextgen_with_faq_link($columns);
     $columns = theme_nextgen_with_blog_link($columns);
     $columns = theme_nextgen_with_team_link($columns);
-    $columns = theme_nextgen_with_programmes_link($columns);
 
     return [
         'sitename' => format_string($SITE->fullname, true, ['context' => context_system::instance()]),
@@ -793,41 +792,6 @@ function theme_nextgen_with_team_link(array $columns): array {
 }
 
 /**
- * Add the organisations page to Support when that column does not already list it.
- *
- * @param array $columns
- * @return array
- */
-function theme_nextgen_with_programmes_link(array $columns): array {
-    $url = \theme_nextgen\local\public_page::url('programmes')->out(false);
-    foreach ($columns as $column) {
-        foreach ($column['links'] as $link) {
-            if ($link['url'] === $url) {
-                return $columns;
-            }
-        }
-    }
-
-    $link = [
-        'label' => get_string('programmesnav', 'theme_nextgen'),
-        'url' => $url,
-        'external' => false,
-    ];
-    $supporttitle = get_string('supportlinks', 'theme_nextgen');
-    foreach ($columns as $index => $column) {
-        if ($column['title'] === $supporttitle) {
-            $columns[$index]['links'][] = $link;
-            return $columns;
-        }
-    }
-    $columns[] = [
-        'title' => $supporttitle,
-        'links' => [$link],
-    ];
-    return $columns;
-}
-
-/**
  * Point shipped navigation at the public pages when a site still has the original defaults.
  */
 function theme_nextgen_upgrade_public_pages(): void {
@@ -876,17 +840,62 @@ function theme_nextgen_publish_public_paths(): void {
     if (during_initial_install() || empty($CFG->dirroot)) {
         return;
     }
-    if (get_config('theme_nextgen', 'publicpathrev') === '2026102000') {
+    if (get_config('theme_nextgen', 'publicpathrev') === '2026102001') {
         return;
     }
 
-    $ready = theme_nextgen_ensure_public_scripts();
+    $ready = theme_nextgen_retire_public_scripts();
+    $ready = theme_nextgen_ensure_public_scripts() && $ready;
     $ready = theme_nextgen_ensure_learn_script() && $ready;
     $ready = theme_nextgen_ensure_public_rewrites() && $ready;
     theme_nextgen_rewrite_public_urls();
     if ($ready) {
-        set_config('publicpathrev', '2026102000', 'theme_nextgen');
+        set_config('publicpathrev', '2026102001', 'theme_nextgen');
     }
+}
+
+/**
+ * Remove a public page this theme used to publish at the site root.
+ *
+ * Only a script that carries the theme marker is deleted. A file the site
+ * created itself is left in place. Stored footer and header lines that still
+ * point at the retired address are dropped.
+ *
+ * @return bool
+ */
+function theme_nextgen_retire_public_scripts(): bool {
+    global $CFG;
+
+    $ready = true;
+    foreach (['programmes'] as $key) {
+        $path = $CFG->dirroot . DIRECTORY_SEPARATOR . $key . '.php';
+        if (!is_file($path)) {
+            continue;
+        }
+        $head = (string) file_get_contents($path, false, null, 0, 900);
+        if (!str_contains($head, 'theme_nextgen public page:')) {
+            continue;
+        }
+        if (!unlink($path)) {
+            $ready = false;
+        }
+    }
+
+    foreach (['customnav', 'quicklinks', 'learninglinks', 'supportlinks'] as $name) {
+        $value = get_config('theme_nextgen', $name);
+        if (!is_string($value) || !str_contains($value, '/programmes.php')) {
+            continue;
+        }
+        $kept = [];
+        foreach (preg_split("/\r\n|\n|\r/", $value) as $line) {
+            if (!str_contains($line, '/programmes.php')) {
+                $kept[] = $line;
+            }
+        }
+        set_config($name, implode("\n", $kept), 'theme_nextgen');
+    }
+
+    return $ready;
 }
 
 /**
@@ -1196,6 +1205,13 @@ function theme_nextgen_landing_context(): array {
     }
 
     $quotes = theme_nextgen_landing_quotes();
+    $offers = [];
+    foreach ([1, 2, 3] as $index) {
+        $offers[] = [
+            'title' => get_string('institution' . $index . 'title', 'theme_nextgen'),
+            'text' => get_string('institution' . $index . 'text', 'theme_nextgen'),
+        ];
+    }
 
     return [
         'herotitle' => $herotitle,
@@ -1218,7 +1234,9 @@ function theme_nextgen_landing_context(): array {
         'benefits' => $benefits,
         'ctaimage' => $theme->image_url('hero-home', 'theme')->out(false),
         'coursesurl' => (new moodle_url('/course/index.php'))->out(false),
+        'contacturl' => \theme_nextgen\local\public_page::url('contact')->out(false),
         'loginurl' => (new moodle_url('/login/index.php'))->out(false),
+        'offers' => $offers,
         'isloggedin' => isloggedin() && !isguestuser(),
         'partnersblock' => \theme_nextgen\local\organisation::partners_block('landing'),
         'forwardtext' => theme_nextgen_catalogue_lead('forwardtext'),
@@ -2871,7 +2889,6 @@ function theme_nextgen_allow_public_entry(): void {
         '/privacy.php',
         '/terms.php',
         '/faq.php',
-        '/programmes.php',
         '/course/index.php',
         '/course/view.php',
         '/blog/index.php',

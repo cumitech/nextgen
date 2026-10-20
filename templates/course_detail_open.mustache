@@ -100,19 +100,6 @@
                 </div>
             </div>
         </div>
-        {{#hasfacts}}
-            <div class="ng-course-hero-card">
-                <p class="ng-course-hero-card-title">{{#str}}coursedetails, theme_nextgen{{/str}}</p>
-                <dl class="ng-course-hero-facts">
-                    {{#facts}}
-                        <div class="ng-course-hero-fact">
-                            <dt>{{label}}</dt>
-                            <dd{{#hastone}} class="is-{{tone}}"{{/hastone}}>{{value}}</dd>
-                        </div>
-                    {{/facts}}
-                </dl>
-            </div>
-        {{/hasfacts}}
     </div>
 </section>
 <div class="ng-course-columns"{{#hasenrolsuccess}} data-ng-enrol-success="1"{{/hasenrolsuccess}}>
@@ -151,6 +138,19 @@
         {{/hasprice}}
         <a class="btn btn-primary ng-course-enrol" href="{{enrolurl}}">{{enrollabel}}</a>
         <a class="ng-course-quote" href="{{quoteurl}}">{{#str}}requestquote, theme_nextgen{{/str}}</a>
+        {{#hasfacts}}
+            <div class="ng-course-hero-card">
+                <p class="ng-course-hero-card-title">{{#str}}coursedetails, theme_nextgen{{/str}}</p>
+                <dl class="ng-course-hero-facts">
+                    {{#facts}}
+                        <div class="ng-course-hero-fact">
+                            <dt>{{label}}</dt>
+                            <dd{{#hastone}} class="is-{{tone}}"{{/hastone}}>{{value}}</dd>
+                        </div>
+                    {{/facts}}
+                </dl>
+            </div>
+        {{/hasfacts}}
         <div class="ng-course-share">
             <h2>{{#str}}sharecourse, theme_nextgen{{/str}}</h2>
             <button type="button" class="ng-copy-link" data-ng-copy="{{shareurl}}" data-ng-copied="{{#str}}linkcopied, theme_nextgen{{/str}}" data-ng-copy-label="{{#str}}copylink, theme_nextgen{{/str}}">

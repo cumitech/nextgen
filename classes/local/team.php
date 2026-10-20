@@ -104,6 +104,10 @@ class team {
             'id' => 'akumbom',
             'image' => 'team/akumbom-paul',
         ],
+        [
+            'id' => 'sigimi',
+            'image' => 'team/dr-sigimi-fidelis',
+        ],
     ];
 
     /**

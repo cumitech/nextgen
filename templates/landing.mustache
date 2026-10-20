@@ -161,6 +161,26 @@
         </section>
     {{/hasquotes}}
 
+    <section class="ng-section ng-section-muted ng-institutions" id="institutional-programmes">
+        <div class="ng-landing-inner">
+            <div class="ng-institutions-layout">
+                <div class="ng-institutions-copy">
+                    <h2>{{#str}}institutionheading, theme_nextgen{{/str}}</h2>
+                    <p>{{#str}}institutionintro, theme_nextgen{{/str}}</p>
+                    <a class="btn btn-primary" href="{{contacturl}}">{{#str}}institutioncta, theme_nextgen{{/str}}</a>
+                </div>
+                <div class="ng-institution-list">
+                    {{#offers}}
+                        <article>
+                            <h3>{{title}}</h3>
+                            <p>{{text}}</p>
+                        </article>
+                    {{/offers}}
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="ng-cta">
         <div class="ng-landing-inner">
             <div class="ng-cta-banner">

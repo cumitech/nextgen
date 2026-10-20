@@ -45,7 +45,7 @@ class public_page {
      * @return string[]
      */
     public static function keys(): array {
-        return ['about', 'team', 'programmes', 'contact', 'privacy', 'terms', 'faq'];
+        return ['about', 'team', 'contact', 'privacy', 'terms', 'faq'];
     }
 
     /**
@@ -220,7 +220,6 @@ class public_page {
         return [
             'about' => get_string('aboutnav', 'theme_nextgen'),
             'team' => get_string('teamnav', 'theme_nextgen'),
-            'programmes' => get_string('programmesnav', 'theme_nextgen'),
             'contact' => get_string('contactnav', 'theme_nextgen'),
         ];
     }
@@ -244,11 +243,6 @@ class public_page {
                 'title' => get_string($key . 'section' . $index . 'title', 'theme_nextgen'),
                 'text' => $text,
             ];
-        }
-        if ($key === 'programmes' && $sections) {
-            $last = count($sections) - 1;
-            $sections[$last]['url'] = self::url('contact')->out(false);
-            $sections[$last]['urllabel'] = get_string('aboutcontactlabel', 'theme_nextgen');
         }
         if ($key === 'faq') {
             $questions = $sections;
