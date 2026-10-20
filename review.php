@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Save a student's review and return to the course reviews tab.
+ * Save a student's review and return to the page that sent it.
  *
  * @package   theme_nextgen
  * @copyright 2026 NextGen LMS
@@ -31,16 +31,18 @@ global $DB, $USER;
 $courseid = required_param('courseid', PARAM_INT);
 $rating = required_param('rating', PARAM_INT);
 $review = required_param('review', PARAM_TEXT);
+$returnkind = optional_param('returnkind', '', PARAM_ALPHA);
+$returnid = optional_param('returnid', 0, PARAM_INT);
 
 require_login();
 require_sesskey();
-
-$return = new moodle_url('/course/view.php', ['id' => $courseid], 'ng-panel-reviews');
 
 $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 if ((int) $course->id === SITEID) {
     throw new moodle_exception('invalidcourseid');
 }
+
+$return = theme_nextgen_review_redirect_url($course, $returnkind, $returnid);
 
 $context = context_course::instance($course->id);
 if (!(int) $course->visible && !has_capability('moodle/course:viewhiddencourses', $context)) {
@@ -49,6 +51,10 @@ if (!(int) $course->visible && !has_capability('moodle/course:viewhiddencourses'
 
 if (!is_enrolled($context, null, '', true)) {
     \core\notification::error(get_string('reviewenrol', 'theme_nextgen'));
+    redirect($return);
+}
+if (!theme_nextgen_course_finished($course, (int) $USER->id)) {
+    \core\notification::error(get_string('reviewincomplete', 'theme_nextgen'));
     redirect($return);
 }
 

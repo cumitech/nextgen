@@ -3905,6 +3905,169 @@ function theme_nextgen_save_review(int $courseid, int $userid, int $rating, stri
 }
 
 /**
+ * Whether this learner has finished every activity that tracks completion.
+ *
+ * @param stdClass $course
+ * @param int $userid
+ * @return bool
+ */
+function theme_nextgen_course_finished(stdClass $course, int $userid): bool {
+    $progress = \core_completion\progress::get_course_progress_percentage($course, $userid);
+    return $progress !== null && (float) $progress >= 100;
+}
+
+/**
+ * Last visible section that contains an activity, and that activity.
+ *
+ * @param stdClass $course
+ * @return array{sectionid: int, sectionnum: int, cmid: int}
+ */
+function theme_nextgen_course_end_point(stdClass $course): array {
+    $modinfo = get_fast_modinfo($course);
+    $sectionid = 0;
+    $sectionnum = 0;
+    $cmid = 0;
+    foreach ($modinfo->get_section_info_all() as $info) {
+        if (!$info->uservisible) {
+            continue;
+        }
+        $cmids = $modinfo->sections[$info->section] ?? [];
+        $lastvisible = 0;
+        foreach ($cmids as $id) {
+            $cm = $modinfo->cms[$id] ?? null;
+            if (!$cm || !$cm->uservisible || !empty($cm->deletioninprogress)) {
+                continue;
+            }
+            $lastvisible = (int) $cm->id;
+        }
+        if ($lastvisible < 1) {
+            continue;
+        }
+        $sectionid = (int) $info->id;
+        $sectionnum = (int) $info->section;
+        $cmid = $lastvisible;
+    }
+    return [
+        'sectionid' => $sectionid,
+        'sectionnum' => $sectionnum,
+        'cmid' => $cmid,
+    ];
+}
+
+/**
+ * Review form for a learner who has finished the course.
+ *
+ * Shown under the course modules, on the last module, and on the last activity.
+ * Hidden until completion reaches 100 percent.
+ *
+ * @return array|null
+ */
+function theme_nextgen_learning_review_context(): ?array {
+    global $PAGE, $USER;
+
+    if ($PAGE->user_is_editing() || !isloggedin() || isguestuser()) {
+        return null;
+    }
+    $course = $PAGE->course;
+    if (empty($course->id) || (int) $course->id === SITEID) {
+        return null;
+    }
+
+    $pagetype = (string) $PAGE->pagetype;
+    $sectionid = \theme_nextgen\local\module_page::$currentsectionid;
+    $sectionpage = str_contains($pagetype, 'course-view-section');
+    if ($sectionpage && $sectionid < 1) {
+        $sectionid = optional_param('id', 0, PARAM_INT);
+    }
+    $coursehome = str_starts_with($pagetype, 'course-view') && !$sectionpage && $sectionid < 1;
+    $cm = $PAGE->cm;
+    $cmid = ($cm && !empty($cm->id)) ? (int) $cm->id : 0;
+    if (!$coursehome && $sectionid < 1 && $cmid < 1) {
+        return null;
+    }
+
+    $context = context_course::instance($course->id);
+    if (!is_enrolled($context, $USER, '', true)) {
+        return null;
+    }
+    if (!theme_nextgen_course_finished($course, (int) $USER->id)) {
+        return null;
+    }
+
+    $returnkind = '';
+    $returnid = 0;
+    if ($coursehome) {
+        $sectionnum = optional_param('section', null, PARAM_INT);
+        $endpoint = $sectionnum === null ? null : theme_nextgen_course_end_point($course);
+        if ($sectionnum === null || ($endpoint && (int) $sectionnum === $endpoint['sectionnum'])) {
+            $returnkind = 'course';
+            $returnid = (int) $course->id;
+        }
+    } else {
+        $endpoint = theme_nextgen_course_end_point($course);
+        if ($sectionid > 0 && $sectionid === $endpoint['sectionid']) {
+            $returnkind = 'section';
+            $returnid = $sectionid;
+        } else if ($cmid > 0 && $cmid === $endpoint['cmid']) {
+            $returnkind = 'activity';
+            $returnid = $cmid;
+        }
+    }
+    if ($returnkind === '') {
+        return null;
+    }
+
+    $form = theme_nextgen_review_form((int) $course->id);
+    if (empty($form['canreview'])) {
+        return null;
+    }
+    $form['returnkind'] = $returnkind;
+    $form['returnid'] = $returnid;
+    $form['reviewcourseid'] = (int) $course->id;
+    return $form;
+}
+
+/**
+ * Where a saved review sends the learner.
+ *
+ * The learning pages return to the form. The public course page returns to its reviews tab.
+ *
+ * @param stdClass $course
+ * @param string $kind course, section, activity, or empty
+ * @param int $id
+ * @return moodle_url
+ */
+function theme_nextgen_review_redirect_url(stdClass $course, string $kind, int $id): moodle_url {
+    global $DB;
+
+    $anchor = 'ng-course-review';
+    if ($kind === 'section' && $id > 0) {
+        $section = $DB->get_record('course_sections', ['id' => $id, 'course' => $course->id]);
+        if ($section) {
+            $url = \theme_nextgen\local\module_page::url($course, $section);
+            $url->set_anchor($anchor);
+            return $url;
+        }
+    }
+    if ($kind === 'activity' && $id > 0) {
+        $cm = null;
+        $cms = get_fast_modinfo($course)->cms;
+        if (isset($cms[$id]) && (int) $cms[$id]->course === (int) $course->id && $cms[$id]->url) {
+            $cm = $cms[$id];
+        }
+        if ($cm) {
+            $url = new moodle_url($cm->url);
+            $url->set_anchor($anchor);
+            return $url;
+        }
+    }
+    if ($kind === 'course' || $kind === 'section' || $kind === 'activity') {
+        return new moodle_url('/course/view.php', ['id' => $course->id], $anchor);
+    }
+    return new moodle_url('/course/view.php', ['id' => $course->id], 'ng-panel-reviews');
+}
+
+/**
  * Review form state for the course page.
  *
  * Signed-in users get the form. Everyone else gets a link through the login page.

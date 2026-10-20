@@ -179,6 +179,9 @@
                         {{/overflow}}
                         {{{ output.main_content }}}
                         {{{ output.activity_navigation }}}
+                        {{#coursereview}}
+                            {{> theme_nextgen/course_review_prompt}}
+                        {{/coursereview}}
                         {{{ output.course_content_footer }}}
 
                     </div>

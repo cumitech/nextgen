@@ -4679,6 +4679,22 @@ body.nextgen .ng-review-login .btn {
   font-weight: 700;
 }
 
+body.nextgen .ng-learn-review {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  margin: 1.5rem 0 0.5rem;
+  padding: 1.15rem 1.2rem 0.35rem;
+}
+
+body.nextgen .ng-learn-review-lead {
+  margin: 0 0 0.9rem;
+}
+
+body.nextgen .ng-learn-review .ng-review-form {
+  margin-bottom: 0.85rem;
+}
+
 body.nextgen .ng-course-panel {
   background: #fff;
   border: 1px solid var(--ng-border);

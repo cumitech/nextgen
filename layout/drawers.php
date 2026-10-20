@@ -131,6 +131,7 @@ $templatecontext = [
     'landing' => theme_nextgen_frontpage_landing(),
     'dashboard' => theme_nextgen_dashboard_context(),
     'coursedetail' => $coursedetail,
+    'coursereview' => theme_nextgen_learning_review_context(),
 ];
 
 echo $OUTPUT->render_from_template('theme_boost/drawers', $templatecontext);

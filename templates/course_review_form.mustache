@@ -1,0 +1,46 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_nextgen/course_review_form
+
+    Star rating and review text. Used on the public course page and,
+    once a learner has finished the course, on the learning page.
+}}
+<form class="ng-review-form" method="post" action="{{reviewaction}}">
+    <h3>{{#str}}reviewwrite, theme_nextgen{{/str}}</h3>
+    <input type="hidden" name="sesskey" value="{{sesskey}}">
+    <input type="hidden" name="courseid" value="{{reviewcourseid}}">
+    {{#returnkind}}
+        <input type="hidden" name="returnkind" value="{{returnkind}}">
+        <input type="hidden" name="returnid" value="{{returnid}}">
+    {{/returnkind}}
+    <fieldset class="ng-review-rate">
+        <legend>{{#str}}reviewrating, theme_nextgen{{/str}}</legend>
+        {{#ratingchoices}}
+            <input type="radio" name="rating" id="{{id}}" value="{{value}}" {{#checked}}checked{{/checked}} required>
+            <label for="{{id}}">
+                <span class="visually-hidden">{{label}}</span>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path></svg>
+            </label>
+        {{/ratingchoices}}
+    </fieldset>
+    <label class="ng-review-text">
+        <span>{{#str}}reviewtext, theme_nextgen{{/str}}</span>
+        <textarea name="review" rows="4" maxlength="1000" required>{{ownreview}}</textarea>
+    </label>
+    <button type="submit" class="btn btn-primary">{{reviewbutton}}</button>
+</form>
