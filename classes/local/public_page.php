@@ -49,7 +49,7 @@ class public_page {
     }
 
     /**
-     * Header links that every visitor needs: About, Team, and Contact.
+     * Header links that every visitor needs, grouped under one About menu.
      *
      * @param \navigation_node $primary
      */
@@ -60,24 +60,60 @@ class public_page {
             return;
         }
 
-        $present = [];
-        foreach (theme_nextgen_custom_nav_items() as $item) {
-            $present[$item['url']] = $item['key'];
+        $pages = [];
+        foreach (self::header_pages() as $key => $label) {
+            $pages[] = [
+                'key' => 'nextgen-' . $key,
+                'label' => $label,
+                'url' => self::url($key),
+            ];
         }
 
-        foreach (self::header_pages() as $key => $label) {
-            $url = self::url($key);
-            $out = $url->out(false);
-            $tab = $present[$out] ?? ('nextgen-' . $key);
-            if (!isset($present[$out])) {
-                $node = $primary->add($label, $url, \navigation_node::TYPE_CUSTOM, null, 'nextgen-' . $key);
-                if ($node) {
-                    $node->isactive = false;
+        $remove = [];
+        foreach ($primary->children as $child) {
+            if (!$child->action instanceof \moodle_url) {
+                continue;
+            }
+            foreach ($pages as $page) {
+                if ($child->action->compare($page['url'], URL_MATCH_BASE)) {
+                    $remove[] = $child->key;
+                    break;
                 }
             }
-            if ($PAGE->url instanceof \moodle_url && $PAGE->url->compare($url, URL_MATCH_BASE)) {
-                $PAGE->set_primary_active_tab($tab);
+        }
+        foreach ($remove as $key) {
+            $existing = $primary->find($key, null);
+            if ($existing) {
+                $existing->remove();
             }
+        }
+
+        $menu = $primary->add(
+            get_string('aboutnav', 'theme_nextgen'),
+            null,
+            \navigation_node::TYPE_CUSTOM,
+            null,
+            'nextgen-about'
+        );
+        if (!$menu) {
+            return;
+        }
+        $menu->showchildreninsubmenu = true;
+        $menu->isactive = false;
+
+        $active = '';
+        foreach ($pages as $page) {
+            $childkey = $page['key'] === 'nextgen-about' ? 'nextgen-about-page' : $page['key'];
+            $child = $menu->add($page['label'], $page['url'], \navigation_node::TYPE_CUSTOM, null, $childkey);
+            if ($child) {
+                $child->isactive = false;
+            }
+            if ($PAGE->url instanceof \moodle_url && $PAGE->url->compare($page['url'], URL_MATCH_BASE)) {
+                $active = $childkey;
+            }
+        }
+        if ($active !== '') {
+            $PAGE->set_primary_active_tab($active);
         }
     }
 

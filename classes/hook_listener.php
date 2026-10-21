@@ -90,7 +90,7 @@ class hook_listener {
     }
 
     /**
-     * Blog in the header, before About and Contact, whenever blogs are on.
+     * Blog in the header, before the About menu, whenever blogs are on.
      *
      * @param \navigation_node $primary
      */

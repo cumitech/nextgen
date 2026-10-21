@@ -1535,7 +1535,15 @@ body.nextgen-landing .ng-hero::before {
 }
 
 body.nextgen-landing .ng-hero::after {
-  background: rgba(8, 28, 18, 0.55);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 28, 18, 0.55) 0%,
+      rgba(8, 28, 18, 0.5) 54%,
+      rgba(8, 28, 18, 0.14) 76%,
+      rgba(248, 249, 250, 0.72) 90%,
+      var(--ng-background) 100%
+    );
 }
 
 body.nextgen.nextgen-landing .ng-hero > .ng-hero-slides {
@@ -2384,6 +2392,33 @@ body.nextgen .ng-partners {
   padding: 2.5rem 0 2.75rem;
 }
 
+body.nextgen.nextgen-landing .ng-partners-landing {
+  background: transparent;
+  background-image: none;
+  isolation: isolate;
+  position: relative;
+}
+
+body.nextgen.nextgen-landing .ng-partners-landing::before {
+  background-color: #f3f5f7;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1440' height='420' viewBox='0 0 1440 420'%3E%3Cpolygon points='0,420 520,90 0,30' fill='%23e6ebf0' fill-opacity='0.9'/%3E%3Cpolygon points='860,0 1440,0 1440,420 1080,230' fill='%23e8eef3' fill-opacity='0.85'/%3E%3Cpolygon points='160,420 760,420 560,150' fill='%23f7f8fa' fill-opacity='0.95'/%3E%3Cpolygon points='40,0 340,210 0,110' fill='%23e9eef2' fill-opacity='0.55'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  content: "";
+  inset: 0;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 20%, #000 80%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 20%, #000 80%, transparent 100%);
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+body.nextgen.nextgen-landing .ng-partners-landing .ng-partners-inner {
+  position: relative;
+  z-index: 1;
+}
+
 body.nextgen .ng-partners-inner {
   margin: 0 auto;
   max-width: 1120px;
@@ -2553,7 +2588,13 @@ body.nextgen .ng-cta .ng-stat {
 }
 
 body.nextgen .ng-section-muted {
-  background: var(--ng-muted);
+  background: linear-gradient(
+    180deg,
+    var(--ng-background) 0,
+    var(--ng-muted) 4.5rem,
+    var(--ng-muted) calc(100% - 4.5rem),
+    var(--ng-background) 100%
+  );
 }
 
 body.nextgen .ng-institutions-layout {
@@ -2809,8 +2850,8 @@ body.nextgen .ng-cta-photo {
   right: 0;
   top: 0;
   width: 58%;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 42%);
-  mask-image: linear-gradient(90deg, transparent 0%, #000 42%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.45) 22%, #000 68%);
+  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.45) 22%, #000 68%);
 }
 
 @media (max-width: 767.98px) {
@@ -2829,8 +2870,8 @@ body.nextgen .ng-cta-photo {
     object-position: center 35%;
     position: static;
     width: 100%;
-    -webkit-mask-image: linear-gradient(180deg, #000 65%, transparent 100%);
-    mask-image: linear-gradient(180deg, #000 65%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, #000 42%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 42%, transparent 100%);
   }
 }
 
@@ -8829,8 +8870,7 @@ body.nextgen:not(.nextgen-dashboard):not(.nextgen-landing):not(.nextgen-catalogu
   }
 
   .activityiconcontainer {
-    background-color: var(--ng-primary);
-    border-radius: 10px;
+    background-color: transparent;
   }
 
   .activity-item .activityname a,
