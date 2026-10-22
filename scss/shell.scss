@@ -182,30 +182,81 @@ body.nextgen .ng-user-nav {
   gap: 0.25rem;
 }
 
-body.nextgen .ng-user-nav .langmenu .dropdown-toggle {
+body.pagelayout-login .gtranslate_wrapper,
+body.pagelayout-login .login-languagemenu {
+  display: none;
+}
+
+body.nextgen .gtranslate_wrapper {
+  position: relative;
+}
+
+body.nextgen .gtranslate_wrapper .gt_switcher {
+  font-family: inherit;
+  line-height: normal;
+  overflow: visible;
+  width: auto;
+}
+
+body.nextgen .gtranslate_wrapper .gt_switcher a img {
+  border-radius: 2px;
+  height: 12px;
+  opacity: 1;
+  width: 17px;
+}
+
+body.nextgen .gtranslate_wrapper .gt_switcher .gt_selected a {
   align-items: center;
+  background: #fff;
   border: 1px solid var(--ng-border);
-  border-radius: 999px;
+  border-radius: var(--ng-radius-md);
   color: var(--ng-ink);
   display: inline-flex;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  gap: 0.15rem;
-  min-height: 40px;
-  padding: 0.25rem 0.75rem;
-  white-space: nowrap;
+  gap: 0.3rem;
+  min-height: 32px;
+  padding: 0.1rem 1.35rem 0.1rem 0.5rem;
+  width: auto;
 }
 
-body.nextgen .ng-user-nav .langmenu .dropdown-menu {
+body.nextgen .gtranslate_wrapper .gt_switcher .gt_option {
+  background: #fff;
   border: 1px solid var(--ng-border);
   border-radius: 12px;
-  min-width: 12rem;
-  padding: 0.35rem;
+  box-shadow: 0 16px 40px rgba(22, 32, 22, 0.12);
+  left: 0;
+  min-width: 11rem;
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  width: max-content;
+  z-index: 30;
 }
 
-body.nextgen .ng-user-nav .langmenu .dropdown-item {
+body.nextgen .gtranslate_wrapper .gt_switcher .gt_option a {
+  align-items: center;
   border-radius: 8px;
+  color: var(--ng-ink);
+  display: flex;
+  font-size: 0.75rem;
   font-weight: 600;
+  gap: 0.35rem;
+  padding: 0.28rem 0.55rem;
+}
+
+body.nextgen .gtranslate_wrapper .gt_switcher .gt_option a:hover,
+body.nextgen .gtranslate_wrapper .gt_switcher .gt_option a:focus-visible {
+  background: var(--ng-primary);
+  color: #fff;
+}
+
+body.nextgen > .skiptranslate,
+body.nextgen iframe.goog-te-banner-frame {
+  display: none !important;
+}
+
+body.nextgen {
+  top: 0 !important;
 }
 
 body.nextgen .ng-header-login {
@@ -250,7 +301,11 @@ body.nextgen .secondary-navigation .nav-link.active {
   color: var(--ng-ink);
 }
 
-body.nextgen .btn {
+body.nextgen .btn,
+body.nextgen .card .btn:not(.btn-icon):not(.btn-link):not(.dropdown-toggle):not(.search-icon),
+body.nextgen .ng-course-card .btn:not(.btn-icon):not(.btn-link):not(.dropdown-toggle),
+body.nextgen article.ng-course-card .ng-course-action .btn,
+body.nextgen .card.course-card .ng-course-cta {
   border-radius: var(--ng-radius-md);
   font-weight: 600;
 }
@@ -276,7 +331,7 @@ body.nextgen .btn.btn-lg:not(.btn-icon):not(.btn-link):not(.dropdown-toggle) {
 }
 
 body.nextgen .ng-header-login-btn {
-  border-radius: 999px;
+  border-radius: var(--ng-radius-md);
   min-height: 44px;
   padding: 0.5rem 1.15rem;
   white-space: nowrap;
@@ -334,10 +389,13 @@ body.nextgen a:not(.btn):not(.nav-link):not(.dropdown-item) {
   text-underline-offset: 0.12em;
 }
 
-body.nextgen .card {
+body.nextgen .card,
+body.nextgen article.ng-course-card,
+body.nextgen .card.ng-course-card,
+body.nextgen .ng-category-tile {
   background-image: none;
   border-color: var(--ng-border);
-  border-radius: 8px;
+  border-radius: var(--ng-radius-md);
   box-shadow: none;
 }
 
@@ -1459,10 +1517,11 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
     animation: none;
     opacity: 0;
     transform: none;
+    transition: none;
   }
 
-  body.nextgen .ng-faculty-slide:first-child,
-  body.nextgen .ng-faculty-name:first-child {
+  body.nextgen .ng-faculty-slide.is-active,
+  body.nextgen .ng-faculty-name.is-active {
     opacity: 1;
   }
 }
@@ -1606,7 +1665,7 @@ body.nextgen-landing .ng-hero-slide:nth-child(4) {
 
 body.nextgen.nextgen-landing .ng-hero-grid {
   align-items: center;
-  grid-template-columns: minmax(0, 40rem);
+  grid-template-columns: minmax(0, 48rem);
 }
 
 body.nextgen .ng-hero-grid {
@@ -1641,14 +1700,14 @@ body.nextgen .ng-hero-title {
   letter-spacing: -0.03em;
   line-height: 1.05;
   margin: 0 0 1rem;
-  max-width: 14ch;
+  max-width: 20ch;
 }
 
 body.nextgen .ng-hero-text {
   font-size: 1.0625rem;
   line-height: 1.6;
   margin: 0 0 1.5rem;
-  max-width: 42ch;
+  max-width: 66ch;
 }
 
 body.nextgen .ng-hero-actions {
@@ -1750,6 +1809,53 @@ body.nextgen .ng-quote cite {
 body.nextgen .ng-quote footer a {
   color: var(--ng-text-muted);
   font-size: 0.92rem;
+}
+
+body.nextgen .ng-quote-person {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+}
+
+body.nextgen .ng-quote-avatar,
+body.nextgen .ng-review-avatar img,
+body.nextgen .ng-review-avatar .userinitials,
+body.nextgen .ng-quote-avatar img,
+body.nextgen .ng-quote-avatar .userinitials {
+  border-radius: 50%;
+}
+
+body.nextgen .ng-quote-avatar {
+  flex: none;
+  height: 2.75rem;
+  overflow: hidden;
+  width: 2.75rem;
+}
+
+body.nextgen .ng-quote-avatar img,
+body.nextgen .ng-quote-avatar .userinitials,
+body.nextgen .ng-review-avatar img,
+body.nextgen .ng-review-avatar .userinitials {
+  display: flex;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+  width: 100%;
+}
+
+body.nextgen .ng-quote-avatar .userinitials,
+body.nextgen .ng-review-avatar .userinitials {
+  align-items: center;
+  background: var(--ng-secondary);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  justify-content: center;
+}
+
+body.nextgen .ng-quote-person cite,
+body.nextgen .ng-quote-person a {
+  display: block;
 }
 
 body.nextgen .ng-section {
@@ -1919,6 +2025,14 @@ body.nextgen .ng-faculty-ring {
 body.nextgen .ng-faculty-slide,
 body.nextgen .ng-faculty-name {
   opacity: 0;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+body.nextgen .ng-faculty-slide.is-active,
+body.nextgen .ng-faculty-name.is-active {
+  opacity: 1;
+  transform: none;
+  z-index: 1;
 }
 
 body.nextgen .ng-faculty-slide {
@@ -1936,6 +2050,7 @@ body.nextgen .ng-faculty-slide .ng-instructor-photo {
   border-radius: 50%;
   display: block;
   height: 100%;
+  margin: 0;
   object-fit: cover;
   width: 100%;
 }
@@ -1948,6 +2063,41 @@ body.nextgen .ng-faculty-slide .userinitials {
   font-size: 2.4rem;
   font-weight: 700;
   justify-content: center;
+}
+
+body.nextgen .ng-faculty-controls {
+  bottom: 0.15rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  z-index: 2;
+}
+
+body.nextgen .ng-faculty-control {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 50%;
+  color: var(--ng-text);
+  display: flex;
+  height: 2.25rem;
+  justify-content: center;
+  padding: 0;
+  width: 2.25rem;
+}
+
+body.nextgen .ng-faculty-control svg {
+  height: 1.15rem;
+  width: 1.15rem;
+}
+
+body.nextgen .ng-faculty-control:hover,
+body.nextgen .ng-faculty-control:focus-visible {
+  border-color: var(--ng-primary);
+  color: var(--ng-primary);
 }
 
 body.nextgen .ng-faculty-copy h2 {
@@ -2028,147 +2178,8 @@ body.nextgen .ng-faculty-name span {
   font-size: 0.875rem;
 }
 
-body.nextgen .ng-faculty-ring[data-count="1"] .ng-faculty-slide,
-body.nextgen .ng-faculty-names[data-count="1"] .ng-faculty-name {
-  opacity: 1;
-  position: absolute;
-  transform: none;
-}
-
-/* Each portrait holds, then slides left to reveal the next. Delays match that handoff. */
-@keyframes ng-faculty-4 {
-  0%, 25% {
-    opacity: 1;
-    transform: translateX(0);
-    z-index: 1;
-  }
-  28.9% {
-    opacity: 0;
-    transform: translateX(-46%);
-    z-index: 2;
-  }
-  29%, 100% {
-    opacity: 0;
-    transform: translateX(46%);
-    z-index: 0;
-  }
-}
-
-@keyframes ng-faculty-name-4 {
-  0%, 25% {
-    opacity: 1;
-  }
-  28.9%, 100% {
-    opacity: 0;
-  }
-}
-
-@keyframes ng-faculty-3 {
-  0%, 33.3% {
-    opacity: 1;
-    transform: translateX(0);
-    z-index: 1;
-  }
-  38.5% {
-    opacity: 0;
-    transform: translateX(-46%);
-    z-index: 2;
-  }
-  39%, 100% {
-    opacity: 0;
-    transform: translateX(46%);
-    z-index: 0;
-  }
-}
-
-@keyframes ng-faculty-name-3 {
-  0%, 33.3% {
-    opacity: 1;
-  }
-  38.5%, 100% {
-    opacity: 0;
-  }
-}
-
-@keyframes ng-faculty-2 {
-  0%, 50% {
-    opacity: 1;
-    transform: translateX(0);
-    z-index: 1;
-  }
-  57.8% {
-    opacity: 0;
-    transform: translateX(-46%);
-    z-index: 2;
-  }
-  58%, 100% {
-    opacity: 0;
-    transform: translateX(46%);
-    z-index: 0;
-  }
-}
-
-@keyframes ng-faculty-name-2 {
-  0%, 50% {
-    opacity: 1;
-  }
-  57.8%, 100% {
-    opacity: 0;
-  }
-}
-
-body.nextgen .ng-faculty-ring[data-count="4"] .ng-faculty-slide {
-  animation: ng-faculty-4 18s linear infinite;
-}
-
-body.nextgen .ng-faculty-names[data-count="4"] .ng-faculty-name {
-  animation: ng-faculty-name-4 18s linear infinite;
-}
-
-body.nextgen .ng-faculty-ring[data-count="4"] .ng-faculty-slide:nth-child(2),
-body.nextgen .ng-faculty-names[data-count="4"] .ng-faculty-name:nth-child(2) {
-  animation-delay: 4.5s;
-}
-
-body.nextgen .ng-faculty-ring[data-count="4"] .ng-faculty-slide:nth-child(3),
-body.nextgen .ng-faculty-names[data-count="4"] .ng-faculty-name:nth-child(3) {
-  animation-delay: 9s;
-}
-
-body.nextgen .ng-faculty-ring[data-count="4"] .ng-faculty-slide:nth-child(4),
-body.nextgen .ng-faculty-names[data-count="4"] .ng-faculty-name:nth-child(4) {
-  animation-delay: 13.5s;
-}
-
-body.nextgen .ng-faculty-ring[data-count="3"] .ng-faculty-slide {
-  animation: ng-faculty-3 13.5s linear infinite;
-}
-
-body.nextgen .ng-faculty-names[data-count="3"] .ng-faculty-name {
-  animation: ng-faculty-name-3 13.5s linear infinite;
-}
-
-body.nextgen .ng-faculty-ring[data-count="3"] .ng-faculty-slide:nth-child(2),
-body.nextgen .ng-faculty-names[data-count="3"] .ng-faculty-name:nth-child(2) {
-  animation-delay: 4.5s;
-}
-
-body.nextgen .ng-faculty-ring[data-count="3"] .ng-faculty-slide:nth-child(3),
-body.nextgen .ng-faculty-names[data-count="3"] .ng-faculty-name:nth-child(3) {
-  animation-delay: 9s;
-}
-
-body.nextgen .ng-faculty-ring[data-count="2"] .ng-faculty-slide {
-  animation: ng-faculty-2 9s linear infinite;
-}
-
-body.nextgen .ng-faculty-names[data-count="2"] .ng-faculty-name {
-  animation: ng-faculty-name-2 9s linear infinite;
-}
-
-body.nextgen .ng-faculty-ring[data-count="2"] .ng-faculty-slide:nth-child(2),
-body.nextgen .ng-faculty-names[data-count="2"] .ng-faculty-name:nth-child(2) {
-  animation-delay: 4.5s;
+body.nextgen .ng-faculty-stage:has(.ng-faculty-controls) {
+  padding-bottom: 2.75rem;
 }
 
 @media (min-width: 768px) {
@@ -2191,11 +2202,12 @@ body.nextgen .ng-faculty-names[data-count="2"] .ng-faculty-name:nth-child(2) {
   body.nextgen .ng-faculty-name {
     animation: none;
     transform: none;
+    transition: none;
     opacity: 0;
   }
 
-  body.nextgen .ng-faculty-slide:first-child,
-  body.nextgen .ng-faculty-name:first-child {
+  body.nextgen .ng-faculty-slide.is-active,
+  body.nextgen .ng-faculty-name.is-active {
     opacity: 1;
   }
 }
@@ -2345,7 +2357,7 @@ body.nextgen .ng-category-tile {
   align-items: center;
   background: var(--ng-surface);
   border: 1px solid var(--ng-border);
-  border-radius: 12px;
+  border-radius: var(--ng-radius-md);
   color: var(--ng-text);
   display: flex;
   gap: 0.8rem;
@@ -2619,10 +2631,35 @@ body.nextgen .ng-institution-list {
 }
 
 body.nextgen .ng-institution-list article {
+  align-items: flex-start;
   background: var(--ng-surface);
   border: 1px solid var(--ng-border);
   border-radius: 12px;
+  display: flex;
+  gap: 0.9rem;
   padding: 1.05rem 1.15rem;
+}
+
+body.nextgen .ng-institution-icon {
+  align-items: center;
+  background: var(--ng-yellow);
+  border-radius: 0.75rem;
+  color: var(--ng-secondary);
+  display: flex;
+  flex: none;
+  height: 2.6rem;
+  justify-content: center;
+  width: 2.6rem;
+}
+
+body.nextgen .ng-institution-icon svg {
+  fill: none;
+  height: 1.35rem;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+  width: 1.35rem;
 }
 
 body.nextgen .ng-institution-list h3 {
@@ -2822,7 +2859,7 @@ body.nextgen .ng-cta-banner p {
 
 body.nextgen .ng-cta-link {
   background: var(--ng-brand-ink);
-  border-radius: 999px;
+  border-radius: var(--ng-radius-md);
   color: #fff;
   display: inline-flex;
   font-size: 0.95rem;
@@ -2879,7 +2916,7 @@ body.nextgen article.ng-course-card,
 body.nextgen .card.ng-course-card {
   background: #fff;
   border: 1px solid var(--ng-border);
-  border-radius: 8px;
+  border-radius: var(--ng-radius-md);
   box-shadow: none;
   display: flex;
   flex-direction: column;
@@ -4120,6 +4157,249 @@ body.nextgen .ng-course-empty {
   margin: 0;
 }
 
+body.nextgen .ng-certificate-facts {
+  margin: 0 0 1.15rem;
+}
+
+body.nextgen .ng-certificate-facts p {
+  margin: 0 0 0.75rem;
+}
+
+body.nextgen .ng-certificate-facts ul,
+body.nextgen .ng-certificate-none .ng-certificate-facts {
+  display: grid;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.nextgen .ng-certificate-facts li {
+  padding-left: 1rem;
+  position: relative;
+}
+
+body.nextgen .ng-certificate-facts li::before {
+  background: var(--ng-brand);
+  border-radius: 50%;
+  content: "";
+  height: 0.4rem;
+  left: 0;
+  position: absolute;
+  top: 0.45em;
+  width: 0.4rem;
+}
+
+body.nextgen .ng-certificate-none .ng-certificate-facts {
+  margin: 0.35rem 0 0;
+}
+
+body.nextgen .ng-secure-pay {
+  border-top: 1px solid var(--ng-border);
+  margin-top: 0.95rem;
+  padding-top: 0.85rem;
+}
+
+body.nextgen .ng-secure-pay h2,
+body.nextgen .ng-checkout-card .ng-secure-pay h2 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0 0 0.45rem;
+  text-transform: none;
+}
+
+body.nextgen .ng-secure-pay ul {
+  display: grid;
+  gap: 0.2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.nextgen .ng-secure-pay li {
+  font-size: 0.875rem;
+}
+
+body.nextgen .ng-secure-pay p {
+  color: var(--ng-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  margin: 0.45rem 0 0;
+}
+
+body.nextgen .ng-pay-band {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  border-top: 3px solid var(--ng-brand);
+  display: grid;
+  gap: 1rem 1.5rem;
+  margin-top: 1.35rem;
+  order: 3;
+  padding: 1.1rem 1.2rem 1.15rem;
+}
+
+body.nextgen .ng-pay-band-intro {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
+body.nextgen .ng-pay-lock,
+body.nextgen .ng-pay-glyph {
+  align-items: center;
+  display: inline-flex;
+  flex: none;
+  justify-content: center;
+}
+
+body.nextgen .ng-pay-lock {
+  background: var(--ng-brand-soft);
+  border-radius: 12px;
+  color: var(--ng-brand-dark);
+  height: 2.75rem;
+  width: 2.75rem;
+}
+
+body.nextgen .ng-pay-band h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0.1rem 0 0.2rem;
+  text-transform: none;
+}
+
+body.nextgen .ng-pay-band-intro p {
+  color: var(--ng-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+body.nextgen .ng-pay-methods {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.nextgen .ng-pay-method {
+  align-items: center;
+  background: var(--ng-background);
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  column-gap: 0.75rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-width: 0;
+  padding: 0.8rem 0.85rem;
+  row-gap: 0.45rem;
+}
+
+body.nextgen .ng-pay-glyph {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 10px;
+  color: var(--ng-ink);
+  grid-row: 1 / span 2;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+body.nextgen .ng-pay-copy {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+body.nextgen .ng-pay-copy strong {
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+body.nextgen .ng-pay-copy span {
+  color: var(--ng-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+body.nextgen .ng-pay-marks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-start;
+}
+
+body.nextgen .ng-pay-chip {
+  align-items: center;
+  border-radius: 6px;
+  display: inline-flex;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  min-height: 1.35rem;
+  padding: 0.22rem 0.38rem;
+}
+
+body.nextgen .ng-pay-chip-mtn {
+  background: #ffcc00;
+  color: #1a1a1a;
+}
+
+body.nextgen .ng-pay-chip-orange {
+  background: #ff7900;
+  color: #fff;
+}
+
+body.nextgen .ng-pay-chip-visa {
+  background: #1a1f71;
+  color: #fff;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  padding-right: 0.45rem;
+}
+
+body.nextgen .ng-pay-chip-mc {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  padding: 0.22rem 0.4rem;
+}
+
+body.nextgen .ng-pay-mc {
+  display: block;
+  height: 0.9rem;
+  position: relative;
+  width: 1.4rem;
+}
+
+body.nextgen .ng-pay-mc::before,
+body.nextgen .ng-pay-mc::after {
+  border-radius: 50%;
+  content: "";
+  height: 0.9rem;
+  position: absolute;
+  top: 0;
+  width: 0.9rem;
+}
+
+body.nextgen .ng-pay-mc::before {
+  background: #eb001b;
+  left: 0;
+}
+
+body.nextgen .ng-pay-mc::after {
+  background: #f79e1b;
+  mix-blend-mode: multiply;
+  right: 0;
+}
+
 body.nextgen .ng-certificate {
   background: transparent;
   margin: 0.35rem 0 0;
@@ -4608,6 +4888,7 @@ body.nextgen .ng-review-avatar {
   font-weight: 700;
   height: 3rem;
   justify-content: center;
+  overflow: hidden;
   width: 3rem;
 }
 
@@ -4859,7 +5140,7 @@ body.nextgen .ng-course-summary p:last-child {
 body.nextgen .ng-course-card {
   background: #fff;
   border: 1px solid var(--ng-border);
-  border-radius: 8px;
+  border-radius: var(--ng-radius-md);
   padding: 1.15rem 1.25rem 1.2rem;
 }
 
@@ -5549,13 +5830,17 @@ body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-course-tabs {
   order: 1;
 }
 
-body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-course-panel {
+body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-course-main,
+body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-course-below {
   order: 2;
 }
 
-body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-course-main,
-body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-course-below {
+body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-pay-band {
   order: 3;
+}
+
+body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-course-panel {
+  order: 4;
 }
 
 body.nextgen .ng-checkout-summary {
@@ -5757,6 +6042,10 @@ body.nextgen .ng-checkout-account-email {
     order: 2;
   }
 
+  body.nextgen .ng-pay-band {
+    order: 3;
+  }
+
   body.nextgen .ng-course-panel {
     background: #fff;
     border: 1px solid var(--ng-border);
@@ -5765,7 +6054,7 @@ body.nextgen .ng-checkout-account-email {
     margin-top: 0.35rem;
     max-width: 100%;
     min-width: 0;
-    order: 3;
+    order: 4;
     overflow: hidden;
     padding: 1rem;
   }
@@ -5815,27 +6104,41 @@ body.nextgen .ng-checkout-account-email {
     padding-top: 0;
   }
 
-  body.nextgen .ng-course-tabs {
+  body.nextgen .ng-course-primary {
     grid-column: 1;
     grid-row: 1;
+    min-width: 0;
   }
 
   body.nextgen .ng-course-panel {
     grid-column: 2;
-    grid-row: 1 / span 2;
+    grid-row: 1;
     margin-top: 2.5rem;
     position: sticky;
     top: 5.5rem;
   }
 
-  body.nextgen .ng-course-main,
-  body.nextgen .ng-course-below {
-    grid-column: 1;
+  body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-enrol-success {
+    grid-row: 1;
+  }
+
+  body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-course-primary,
+  body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-course-panel {
     grid-row: 2;
-    min-width: 0;
   }
 
   body.nextgen .ng-outcomes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1100px) {
+  body.nextgen .ng-pay-band {
+    align-items: center;
+    grid-template-columns: minmax(14rem, 0.75fr) minmax(0, 1.25fr);
+  }
+
+  body.nextgen .ng-pay-methods {
     grid-template-columns: 1fr 1fr;
   }
 }

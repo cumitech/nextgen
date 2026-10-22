@@ -27,6 +27,18 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/theme/boost/lib.php');
 
 /**
+ * Public name of this webapp.
+ *
+ * Headers, footers, titles, and marketing lines use this so the product
+ * is not also called NextGen or NextGen LMS.
+ *
+ * @return string
+ */
+function theme_nextgen_app_name(): string {
+    return get_string('appname', 'theme_nextgen');
+}
+
+/**
  * Add the theme body class used by the shell stylesheet.
  *
  * @param moodle_page $page
@@ -85,8 +97,14 @@ function theme_nextgen_page_init($page) {
         ]);
     }
 
+    if ($page->pagelayout === 'frontpage' && !$page->user_is_editing()) {
+        $page->requires->js_call_amd('theme_nextgen/faculty', 'init');
+    }
     $page->requires->js_call_amd('theme_nextgen/loadline', 'init');
     $page->requires->js_call_amd('theme_nextgen/showmore', 'init');
+    if ($page->pagelayout !== 'maintenance') {
+        $page->requires->js_call_amd('theme_nextgen/gtranslate', 'init');
+    }
 }
 
 /**
@@ -597,8 +615,6 @@ function theme_nextgen_custom_nav_items(): array {
  * @return array
  */
 function theme_nextgen_footer_context($theme): array {
-    global $SITE;
-
     $about = theme_nextgen_localised_setting($theme, 'footerabout', 'footeraboutdefault');
 
     $columns = [];
@@ -631,10 +647,7 @@ function theme_nextgen_footer_context($theme): array {
     if ($copyright === '') {
         $copyright = get_string('copyrightdefault', 'theme_nextgen', (object) [
             'year' => date('Y'),
-            'name' => format_string($SITE->fullname, true, [
-                'context' => context_system::instance(),
-                'escape' => false,
-            ]),
+            'name' => theme_nextgen_app_name(),
         ]);
     }
 
@@ -651,7 +664,7 @@ function theme_nextgen_footer_context($theme): array {
     $columns = theme_nextgen_with_team_link($columns);
 
     return [
-        'sitename' => format_string($SITE->fullname, true, ['context' => context_system::instance()]),
+        'sitename' => theme_nextgen_app_name(),
         'about' => format_text($about, FORMAT_HTML, ['context' => context_system::instance()]),
         'columns' => $columns,
         'hassocial' => !empty($social),
@@ -840,7 +853,7 @@ function theme_nextgen_publish_public_paths(): void {
     if (during_initial_install() || empty($CFG->dirroot)) {
         return;
     }
-    if (get_config('theme_nextgen', 'publicpathrev') === '2026102001') {
+    if (get_config('theme_nextgen', 'publicpathrev') === '2026102201') {
         return;
     }
 
@@ -850,7 +863,7 @@ function theme_nextgen_publish_public_paths(): void {
     $ready = theme_nextgen_ensure_public_rewrites() && $ready;
     theme_nextgen_rewrite_public_urls();
     if ($ready) {
-        set_config('publicpathrev', '2026102001', 'theme_nextgen');
+        set_config('publicpathrev', '2026102201', 'theme_nextgen');
     }
 }
 
@@ -1042,6 +1055,8 @@ PHP;
  * /contact and /contact.php both run the contact page. The same applies to
  * about, team, privacy, terms, and faq, including a trailing slash and the older
  * /theme/nextgen/ addresses. /learn/{course}/{module} runs learn.php.
+ * /en and /fr (and the other switcher languages) stay in the address and are
+ * removed here so Moodle still receives the real script.
  * The substitution is an absolute URL path and the flag is END, because a
  * per-directory L flag still lets FallbackResource answer the original
  * address with a 404.
@@ -1061,9 +1076,17 @@ function theme_nextgen_ensure_public_rewrites(): bool {
     }
     $prefix = rtrim($prefix, '/');
     $base = ($prefix === '') ? '/' : $prefix . '/';
+    $langs = 'en|fr|it|es';
+    $home = ($prefix === '') ? '/index.php' : $prefix . '/index.php';
     $block = $start . "\n" .
         "RewriteEngine On\n" .
         'RewriteBase ' . $base . "\n" .
+        'RewriteRule ^(' . $langs . ')/(' . $keys . ')/?$ ' . $prefix . '/$2.php [END,QSA]' . "\n" .
+        'RewriteRule ^(' . $langs . ')/theme/nextgen/(' . $keys . ')/?$ ' . $prefix . '/$2.php [END,QSA]' . "\n" .
+        'RewriteRule ^(' . $langs . ')/learn/([a-z0-9-]+)/([a-z0-9-]+)/?$ ' . $prefix .
+            '/learn.php?course=$2&module=$3 [END,QSA]' . "\n" .
+        'RewriteRule ^(' . $langs . ')/?$ ' . $home . ' [END,QSA]' . "\n" .
+        'RewriteRule ^(' . $langs . ')/(.+)$ ' . $prefix . '/$2 [END,QSA]' . "\n" .
         'RewriteRule ^(' . $keys . ')/?$ ' . $prefix . '/$1.php [END,QSA]' . "\n" .
         'RewriteRule ^theme/nextgen/(' . $keys . ')/?$ ' . $prefix . '/$1.php [END,QSA]' . "\n" .
         'RewriteRule ^learn/([a-z0-9-]+)/([a-z0-9-]+)/?$ ' . $prefix . '/learn.php?course=$1&module=$2 [END,QSA]' . "\n" .
@@ -1164,11 +1187,12 @@ function theme_nextgen_landing_context(): array {
         'heroprimary',
         get_string('heroprimarydefault', 'theme_nextgen')
     ));
-    $secondary = theme_nextgen_parse_links(theme_nextgen_setting(
-        $theme,
-        'herosecondary',
-        get_string('herosecondarydefault', 'theme_nextgen')
-    ));
+    $signedin = isloggedin() && !isguestuser();
+    $secondary = [[
+        'label' => get_string($signedin ? 'dashboardcontinue' : 'herostartnow', 'theme_nextgen'),
+        'url' => (new moodle_url($signedin ? '/my/' : '/login/index.php'))->out(false),
+        'external' => false,
+    ]];
 
     $herotitle = theme_nextgen_localised_setting($theme, 'herotitle', 'herotitledefault');
     $herotext = theme_nextgen_localised_setting($theme, 'herotext', 'herotextdefault');
@@ -1206,10 +1230,15 @@ function theme_nextgen_landing_context(): array {
 
     $quotes = theme_nextgen_landing_quotes();
     $offers = [];
-    foreach ([1, 2, 3] as $index) {
+    $offericons = ['packages', 'cohorts', 'custom'];
+    foreach ([1, 2, 3] as $offset => $index) {
+        $icon = $offericons[$offset];
         $offers[] = [
             'title' => get_string('institution' . $index . 'title', 'theme_nextgen'),
             'text' => get_string('institution' . $index . 'text', 'theme_nextgen'),
+            'packages' => $icon === 'packages',
+            'cohorts' => $icon === 'cohorts',
+            'custom' => $icon === 'custom',
         ];
     }
 
@@ -1228,6 +1257,7 @@ function theme_nextgen_landing_context(): array {
         'hasinstructors' => !empty($instructors),
         'instructors' => $instructors,
         'instructorcount' => count($instructors),
+        'hasslider' => count($instructors) > 1,
         'facultypoints' => $facultypoints,
         'reasons' => $reasons,
         'steps' => $steps,
@@ -1237,7 +1267,7 @@ function theme_nextgen_landing_context(): array {
         'contacturl' => \theme_nextgen\local\public_page::url('contact')->out(false),
         'loginurl' => (new moodle_url('/login/index.php'))->out(false),
         'offers' => $offers,
-        'isloggedin' => isloggedin() && !isguestuser(),
+        'isloggedin' => $signedin,
         'partnersblock' => \theme_nextgen\local\organisation::partners_block('landing'),
         'forwardtext' => theme_nextgen_catalogue_lead('forwardtext'),
         'hasquotes' => !empty($quotes),
@@ -1297,7 +1327,8 @@ function theme_nextgen_about_who_text(): string {
 /**
  * Recent course reviews for the home page.
  *
- * Only reviews with text, on courses the visitor can see. An empty list hides the section.
+ * At most three written reviews, newest first, on courses the visitor can see.
+ * An empty list hides the section.
  *
  * @return array
  */
@@ -1308,9 +1339,9 @@ function theme_nextgen_landing_quotes(): array {
         return [];
     }
 
-    $namefields = \core_user\fields::for_name()->get_sql('u', false, '', '', false)->selects;
+    $namefields = \core_user\fields::for_name()->with_userpic()->get_sql('u', false, '', '', false)->selects;
     $records = $DB->get_records_sql(
-        "SELECT r.id, r.rating, r.reviewtext, r.courseid, {$namefields}
+        "SELECT r.id AS reviewid, r.rating, r.reviewtext, r.courseid, {$namefields}
            FROM {theme_nextgen_review} r
            JOIN {user} u ON u.id = r.userid
            JOIN {course} c ON c.id = r.courseid
@@ -1320,7 +1351,7 @@ function theme_nextgen_landing_quotes(): array {
        ORDER BY r.timemodified DESC",
         ['siteid' => SITEID],
         0,
-        12
+        30
     );
 
     $quotes = [];
@@ -1346,6 +1377,7 @@ function theme_nextgen_landing_quotes(): array {
         }
         $quotes[] = [
             'name' => fullname($record),
+            'avatar' => theme_nextgen_review_avatar($record),
             'text' => $text,
             'course' => format_string($course->fullname, true, [
                 'context' => $context,
@@ -1358,7 +1390,7 @@ function theme_nextgen_landing_quotes(): array {
             break;
         }
     }
-    return $quotes;
+    return array_slice($quotes, 0, 3);
 }
 
 /**
@@ -2319,17 +2351,10 @@ function theme_nextgen_catalogue_context(): array {
     $categoryid = optional_param('categoryid', 0, PARAM_INT);
     $filters = theme_nextgen_catalogue_request_filters();
     $kept = [];
-    if ($filters['search'] !== '') {
-        $kept['search'] = $filters['search'];
-    }
-    if ($filters['level'] !== '') {
-        $kept['level'] = $filters['level'];
-    }
-    if ($filters['language'] !== '') {
-        $kept['language'] = $filters['language'];
-    }
-    if ($filters['certificate'] !== '') {
-        $kept['certificate'] = $filters['certificate'];
+    foreach (['search', 'cost', 'fee', 'certificate', 'level', 'language', 'length', 'effort'] as $key) {
+        if ($filters[$key] !== '') {
+            $kept[$key] = $filters[$key];
+        }
     }
     $browse = optional_param('browse', '', PARAM_ALPHA) === 'categories';
     $linkparams = $kept;
@@ -2351,9 +2376,19 @@ function theme_nextgen_catalogue_context(): array {
     }
 
     $loaded = theme_nextgen_catalogue_courses($categoryid, $kept === []);
+    $costs = theme_nextgen_catalogue_fixed_options($filters['cost'], [
+        'free' => get_string('cataloguefree', 'theme_nextgen'),
+        'paid' => get_string('cataloguepaid', 'theme_nextgen'),
+    ]);
+    $fees = theme_nextgen_catalogue_filter_options($loaded, 'filterfee', $filters['fee']);
+    $certificates = theme_nextgen_catalogue_fixed_options($filters['certificate'], [
+        'yes' => get_string('yes'),
+        'no' => get_string('no'),
+    ]);
     $levels = theme_nextgen_catalogue_filter_options($loaded, 'filterlevel', $filters['level']);
     $languages = theme_nextgen_catalogue_filter_options($loaded, 'filterlanguage', $filters['language']);
-    $certificates = theme_nextgen_catalogue_filter_options($loaded, 'filtercertificate', $filters['certificate']);
+    $lengths = theme_nextgen_catalogue_filter_options($loaded, 'filterlength', $filters['length']);
+    $efforts = theme_nextgen_catalogue_filter_options($loaded, 'filtereffort', $filters['effort']);
     $courses = theme_nextgen_catalogue_apply_filters($loaded, $filters);
 
     if ($courses) {
@@ -2394,9 +2429,13 @@ function theme_nextgen_catalogue_context(): array {
     $active = [];
     $choices = [
         'search' => ['cataloguesearch', $filters['search']],
+        'cost' => ['catalogueprice', $labelof($costs, $filters['cost'])],
+        'fee' => ['cataloguefee', $labelof($fees, $filters['fee'])],
+        'certificate' => ['fieldcertificate', $labelof($certificates, $filters['certificate'])],
         'level' => ['fieldlevel', $labelof($levels, $filters['level'])],
         'language' => ['fieldlanguage', $labelof($languages, $filters['language'])],
-        'certificate' => ['fieldcertificate', $labelof($certificates, $filters['certificate'])],
+        'length' => ['fieldlength', $labelof($lengths, $filters['length'])],
+        'effort' => ['fieldeffort', $labelof($efforts, $filters['effort'])],
     ];
     foreach ($choices as $key => $choice) {
         if ($filters[$key] === '') {
@@ -2412,7 +2451,7 @@ function theme_nextgen_catalogue_context(): array {
     }
 
     $advancedcount = 0;
-    foreach (['level', 'language', 'certificate'] as $key) {
+    foreach (['cost', 'fee', 'certificate', 'level', 'language', 'length', 'effort'] as $key) {
         if ($filters[$key] !== '') {
             $advancedcount++;
         }
@@ -2438,10 +2477,17 @@ function theme_nextgen_catalogue_context(): array {
         'browse' => $browse,
         'search' => $filters['search'],
         'searchaction' => (new moodle_url('/course/index.php'))->out(false),
+        'costs' => $costs,
+        'hasfees' => !empty($fees),
+        'fees' => $fees,
+        'certificates' => $certificates,
         'haslevels' => !empty($levels),
         'levels' => $levels,
         'languages' => $languages,
-        'certificates' => $certificates,
+        'haslengths' => !empty($lengths),
+        'lengths' => $lengths,
+        'hasefforts' => !empty($efforts),
+        'efforts' => $efforts,
         'advancedopen' => $advancedcount > 0,
         'advancedsummary' => $advancedcount
             ? get_string('catalogueadvancedcount', 'theme_nextgen', $advancedcount)
@@ -2457,15 +2503,58 @@ function theme_nextgen_catalogue_context(): array {
 /**
  * Search and advanced-filter values from the catalogue request.
  *
- * @return array{search: string, level: string, language: string, certificate: string}
+ * @return array
  */
 function theme_nextgen_catalogue_request_filters(): array {
+    $cost = \core_text::strtolower(trim(optional_param('cost', '', PARAM_ALPHA)));
+    if (!in_array($cost, ['free', 'paid'], true)) {
+        $cost = '';
+    }
+    $certificate = \core_text::strtolower(trim(optional_param('certificate', '', PARAM_ALPHA)));
+    if (!in_array($certificate, ['yes', 'no'], true)) {
+        $certificate = '';
+    }
     return [
         'search' => trim(optional_param('search', '', PARAM_TEXT)),
+        'cost' => $cost,
+        'fee' => theme_nextgen_normalise_fee(optional_param('fee', '', PARAM_TEXT)),
+        'certificate' => $certificate,
         'level' => trim(optional_param('level', '', PARAM_TEXT)),
         'language' => trim(optional_param('language', '', PARAM_TEXT)),
-        'certificate' => \core_text::strtolower(trim(optional_param('certificate', '', PARAM_ALPHA))),
+        'length' => trim(optional_param('length', '', PARAM_TEXT)),
+        'effort' => trim(optional_param('effort', '', PARAM_TEXT)),
     ];
+}
+
+/**
+ * Collapse spacing in a displayed fee so the filter value matches the card.
+ *
+ * @param string $fee
+ * @return string
+ */
+function theme_nextgen_normalise_fee(string $fee): string {
+    $fee = str_replace("\u{00A0}", ' ', $fee);
+    $fee = preg_replace('/\s+/u', ' ', trim($fee));
+    return is_string($fee) ? $fee : '';
+}
+
+/**
+ * Filter choices that stay the same whatever the catalogue contains.
+ *
+ * @param string $current
+ * @param array $options value => label
+ * @return array
+ */
+function theme_nextgen_catalogue_fixed_options(string $current, array $options): array {
+    $result = [];
+    foreach ($options as $value => $label) {
+        $result[] = [
+            'value' => (string) $value,
+            'label' => $label,
+            'selected' => ((string) $value === $current),
+        ];
+    }
+    return $result;
 }
 
 /**
@@ -2524,13 +2613,31 @@ function theme_nextgen_catalogue_apply_filters(array $courses, array $filters): 
         if ($filters['certificate'] !== '' && (string) $course['filtercertificate'] !== $filters['certificate']) {
             continue;
         }
+        if ($filters['cost'] !== '' && (string) $course['filtercost'] !== $filters['cost']) {
+            continue;
+        }
+        if ($filters['fee'] !== '' && (string) $course['filterfee'] !== $filters['fee']) {
+            continue;
+        }
+        if ($filters['length'] !== '' && (string) $course['filterlength'] !== $filters['length']) {
+            continue;
+        }
+        if ($filters['effort'] !== '' && (string) $course['filtereffort'] !== $filters['effort']) {
+            continue;
+        }
         unset(
             $course['filtersearch'],
             $course['filterlevel'],
             $course['filterlanguage'],
             $course['filterlanguagelabel'],
             $course['filtercertificate'],
-            $course['filtercertificatelabel']
+            $course['filtercertificatelabel'],
+            $course['filtercost'],
+            $course['filtercostlabel'],
+            $course['filterfee'],
+            $course['filterfeelabel'],
+            $course['filterlength'],
+            $course['filtereffort']
         );
         $kept[] = $course;
     }
@@ -2585,11 +2692,20 @@ function theme_nextgen_catalogue_courses(int $categoryid, bool $shuffle = true):
             $extra['ngcertificate'],
             !empty($certified[(int) $course->id])
         );
+        $price = (string) ($card['price'] ?? '');
+        $feekey = theme_nextgen_normalise_fee($price);
+        $paid = $feekey !== '';
         $card['filterlevel'] = $extra['nglevel'];
         $card['filterlanguage'] = $language['value'];
         $card['filterlanguagelabel'] = $language['label'];
         $card['filtercertificate'] = $offered ? 'yes' : 'no';
         $card['filtercertificatelabel'] = get_string($offered ? 'yes' : 'no');
+        $card['filtercost'] = $paid ? 'paid' : 'free';
+        $card['filtercostlabel'] = get_string($paid ? 'cataloguepaid' : 'cataloguefree', 'theme_nextgen');
+        $card['filterfee'] = $paid ? $feekey : '';
+        $card['filterfeelabel'] = $paid ? $price : '';
+        $card['filterlength'] = $extra['ngduration'];
+        $card['filtereffort'] = $extra['ngeffort'];
 
         $categoryname = '';
         if (!empty($course->category)) {
@@ -2606,6 +2722,11 @@ function theme_nextgen_catalogue_courses(int $categoryid, bool $shuffle = true):
             $categoryname,
             $extra['nglevel'],
             $language['label'],
+            $extra['ngduration'],
+            $extra['ngeffort'],
+            $extra['ngcertificate'],
+            $price,
+            get_string($paid ? 'cataloguepaid' : 'cataloguefree', 'theme_nextgen'),
         ];
         if ($offered) {
             $bits[] = get_string('coursecertificate', 'theme_nextgen');
@@ -2712,6 +2833,35 @@ function theme_nextgen_add_category_menu(navigation_node $primary): void {
 }
 
 /**
+ * Photograph that matches a category name.
+ *
+ * The files live in pix/ and come from Iwaria, chosen for the words in the name.
+ *
+ * @param string $name Category name.
+ * @return string Theme pix name, without an extension.
+ */
+function theme_nextgen_category_photo(string $name): string {
+    $name = core_text::strtolower($name);
+    $photos = [
+        'business' => 'category-business-skills',
+        'innovation' => 'category-innovation',
+        'technolog' => 'category-innovation',
+        'industry' => 'category-industry',
+        'agricultur' => 'category-agriculture',
+        'teach' => 'category-teaching',
+        'mentor' => 'category-teaching',
+        'faith' => 'category-faith',
+        'conflict' => 'category-faith',
+    ];
+    foreach ($photos as $needle => $file) {
+        if (str_contains($name, $needle)) {
+            return $file;
+        }
+    }
+    return 'category-business-skills';
+}
+
+/**
  * Visible top-level categories.
  *
  * @param int $limit Maximum categories to return. Zero returns every visible category.
@@ -2720,7 +2870,6 @@ function theme_nextgen_add_category_menu(navigation_node $primary): void {
 function theme_nextgen_landing_categories(int $limit = 6): array {
     global $OUTPUT;
 
-    $photos = ['category-architecture', 'category-business', 'category-data', 'category-social'];
     $counts = theme_nextgen_category_course_counts();
     $items = [];
     foreach (core_course_category::top()->get_children() as $category) {
@@ -2738,7 +2887,7 @@ function theme_nextgen_landing_categories(int $limit = 6): array {
             'name' => $category->get_formatted_name(['escape' => false]),
             'count' => $coursecount,
             'countlabel' => $countlabel,
-            'image' => $OUTPUT->image_url($photos[count($items) % 4], 'theme')->out(false),
+            'image' => $OUTPUT->image_url(theme_nextgen_category_photo($category->name), 'theme')->out(false),
             'url' => (new moodle_url('/course/index.php', ['categoryid' => $category->id]))->out(false),
         ];
         if ($limit > 0 && count($items) >= $limit) {
@@ -2749,49 +2898,86 @@ function theme_nextgen_landing_categories(int $limit = 6): array {
 }
 
 /**
- * Teachers shown as course contacts, up to four unique people.
+ * Teachers on published courses the visitor can see.
+ *
+ * Names come from teacher role assignments, so a person appears when they teach
+ * a course. More than one person is shown as a slider on the home page.
  *
  * @return array
  */
 function theme_nextgen_landing_instructors(): array {
-    global $OUTPUT;
+    global $DB;
 
-    $courses = core_course_category::top()->get_courses([
-        'recursive' => true,
-        'coursecontacts' => true,
-        'limit' => 12,
-        'sort' => ['sortorder' => 1],
-    ]);
+    $courseids = [];
+    foreach (core_course_category::top()->get_courses(['recursive' => true]) as $listed) {
+        $courseids[] = (int) $listed->id;
+    }
+    if (!$courseids) {
+        return [];
+    }
+
+    $roleids = $DB->get_fieldset_select('role', 'id', 'shortname IN (?, ?)', ['editingteacher', 'teacher']);
+    if (!$roleids) {
+        return [];
+    }
+
+    [$rolesql, $params] = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED, 'role');
+    [$coursesql, $courseparams] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED, 'course');
+    $params += $courseparams;
+    $params['level'] = CONTEXT_COURSE;
+
+    $assignments = $DB->get_records_sql(
+        "SELECT ra.id, ra.userid, ra.roleid, ctx.instanceid AS courseid,
+                r.shortname, r.name, r.sortorder
+           FROM {role_assignments} ra
+           JOIN {context} ctx ON ctx.id = ra.contextid
+           JOIN {role} r ON r.id = ra.roleid
+           JOIN {user} u ON u.id = ra.userid
+          WHERE ra.roleid {$rolesql}
+            AND ctx.contextlevel = :level
+            AND ctx.instanceid {$coursesql}
+            AND u.deleted = 0
+            AND u.suspended = 0
+       ORDER BY r.sortorder ASC, u.lastname ASC, u.firstname ASC",
+        $params
+    );
+
+    $chosen = [];
+    foreach ($assignments as $assignment) {
+        $userid = (int) $assignment->userid;
+        if (!isset($chosen[$userid])) {
+            $chosen[$userid] = $assignment;
+        }
+    }
 
     $people = [];
-    $seen = [];
-    foreach ($courses as $course) {
-        foreach ($course->get_course_contacts() as $contact) {
-            $userid = (int) $contact['user']->id;
-            if (isset($seen[$userid])) {
-                continue;
-            }
-            $seen[$userid] = true;
-            $user = core_user::get_user($userid);
-            if (!$user || !empty($user->deleted)) {
-                continue;
-            }
-            $people[] = [
-                'name' => fullname($user),
-                'role' => $contact['rolename'],
-                'picture' => theme_nextgen_instructor_picture($user),
-                'url' => (new moodle_url('/user/profile.php', ['id' => $user->id]))->out(false),
-            ];
-            if (count($people) >= 4) {
-                return $people;
-            }
+    foreach ($chosen as $assignment) {
+        $user = core_user::get_user((int) $assignment->userid);
+        if (!$user || !empty($user->deleted)) {
+            continue;
         }
+        $role = (object) [
+            'id' => (int) $assignment->roleid,
+            'shortname' => $assignment->shortname,
+            'name' => $assignment->name,
+        ];
+        $context = context_course::instance((int) $assignment->courseid);
+        $people[] = [
+            'name' => fullname($user),
+            'role' => role_get_name($role, $context, ROLENAME_ALIAS),
+            'picture' => theme_nextgen_instructor_picture($user),
+            'url' => (new moodle_url('/user/profile.php', ['id' => $user->id]))->out(false),
+            'active' => count($people) === 0,
+        ];
     }
     return $people;
 }
 
 /**
- * Portrait for a teacher. People without an uploaded photo get the theme default.
+ * Portrait for a teacher.
+ *
+ * An uploaded profile photo is used as it is. Someone without one gets the
+ * initials avatar Moodle draws for that account.
  *
  * @param stdClass $user
  * @return string
@@ -2799,20 +2985,32 @@ function theme_nextgen_landing_instructors(): array {
 function theme_nextgen_instructor_picture(stdClass $user): string {
     global $OUTPUT;
 
-    if (!empty($user->picture)) {
-        return $OUTPUT->user_picture($user, [
-            'size' => 320,
-            'link' => false,
-            'class' => 'ng-instructor-photo',
-        ]);
-    }
-
-    return html_writer::empty_tag('img', [
-        'src' => $OUTPUT->image_url('faculty-default', 'theme')->out(false),
-        'alt' => '',
+    return $OUTPUT->user_picture($user, [
+        'size' => 320,
+        'link' => false,
         'class' => 'ng-instructor-photo',
-        'width' => 320,
-        'height' => 320,
+        'alttext' => false,
+    ]);
+}
+
+/**
+ * Avatar for the person who wrote a review.
+ *
+ * An uploaded profile photo is used as it is. Someone without one gets the
+ * initials avatar Moodle draws for that account.
+ *
+ * @param stdClass $user
+ * @return string
+ */
+function theme_nextgen_review_avatar(stdClass $user): string {
+    global $OUTPUT;
+
+    return $OUTPUT->user_picture($user, [
+        'size' => 64,
+        'link' => false,
+        'class' => 'ng-review-photo',
+        'alttext' => false,
+        'visibletoscreenreaders' => false,
     ]);
 }
 
@@ -3034,7 +3232,7 @@ function theme_nextgen_serve_unrewritten_module(): void {
 
     // This file is included from a function, so Moodle's page globals have to be
     // brought into scope. course/section.php is written as a top-level script.
-    global $DB, $PAGE, $OUTPUT, $USER, $COURSE, $SITE, $SESSION, $THEME;
+    global $DB, $PAGE, $OUTPUT, $USER, $COURSE, $SESSION, $THEME;
     require($sectionfile);
     exit(0);
 }
@@ -3271,7 +3469,7 @@ function theme_nextgen_enrol_checkout_context(
  * @return array|null
  */
 function theme_nextgen_course_detail_context(): ?array {
-    global $OUTPUT, $PAGE, $SESSION, $SITE, $USER;
+    global $OUTPUT, $PAGE, $SESSION, $USER;
 
     if (!theme_nextgen_is_course_detail_page($PAGE)) {
         return null;
@@ -3454,6 +3652,8 @@ function theme_nextgen_course_detail_context(): ?array {
         $reviewlist = array_merge($submitted['items'], $reviewlist);
         $distribution = $submitted['distribution'];
     }
+    // The rating still counts every review. The list itself stays at three.
+    $reviewlist = array_slice($reviewlist, 0, 3);
     $reviewform = theme_nextgen_review_form((int) $course->id);
 
     $hasenrolsuccess = false;
@@ -3475,7 +3675,7 @@ function theme_nextgen_course_detail_context(): ?array {
         'teacher' => $teacher ?? [],
         'hasinstructors' => !empty($instructors),
         'instructors' => $instructors,
-        'sitename' => format_string($SITE->fullname),
+        'sitename' => theme_nextgen_app_name(),
         'hascertificate' => $offered,
         'certificatenote' => $certificatenote,
         'certificates' => $certificates,
@@ -3820,9 +4020,9 @@ function theme_nextgen_submitted_reviews(int $courseid): ?array {
         return null;
     }
 
-    $namefields = \core_user\fields::for_name()->get_sql('u', false, '', '', false)->selects;
+    $namefields = \core_user\fields::for_name()->with_userpic()->get_sql('u', false, '', '', false)->selects;
     $records = $DB->get_records_sql(
-        "SELECT r.id, r.rating, r.reviewtext, r.timemodified, u.id, {$namefields}
+        "SELECT r.id AS reviewid, r.rating, r.reviewtext, r.timemodified, {$namefields}
            FROM {theme_nextgen_review} r
            JOIN {user} u ON u.id = r.userid
           WHERE r.courseid = :courseid AND u.deleted = 0
@@ -3846,6 +4046,7 @@ function theme_nextgen_submitted_reviews(int $courseid): ?array {
             'name' => $name,
             'date' => $date,
             'initials' => theme_nextgen_initials($name),
+            'avatar' => theme_nextgen_review_avatar($record),
             'text' => $record->reviewtext,
             'stars' => theme_nextgen_star_states($score),
         ];

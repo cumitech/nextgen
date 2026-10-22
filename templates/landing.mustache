@@ -132,6 +132,54 @@
         </div>
     </section>
 
+    {{#hasinstructors}}
+        <section class="ng-section ng-faculty" id="instructors" data-ng-faculty>
+            <div class="ng-landing-inner">
+                <div class="ng-faculty-grid">
+                    <div class="ng-faculty-stage">
+                        <span class="ng-faculty-shape ng-faculty-shape-gold" aria-hidden="true"></span>
+                        <span class="ng-faculty-shape ng-faculty-shape-green" aria-hidden="true"></span>
+                        <span class="ng-faculty-shape ng-faculty-shape-clay" aria-hidden="true"></span>
+                        <div class="ng-faculty-ring">
+                            {{#instructors}}
+                                <a class="ng-faculty-slide{{#active}} is-active{{/active}}" href="{{url}}">
+                                    {{{picture}}}
+                                    <span class="visually-hidden">{{name}}</span>
+                                </a>
+                            {{/instructors}}
+                        </div>
+                        {{#hasslider}}
+                            <div class="ng-faculty-controls">
+                                <button type="button" class="ng-faculty-control" data-ng-faculty-prev aria-label="{{#str}}facultyprev, theme_nextgen{{/str}}">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6.5L9 12l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                                <button type="button" class="ng-faculty-control" data-ng-faculty-next aria-label="{{#str}}facultynext, theme_nextgen{{/str}}">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6.5L15 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                            </div>
+                        {{/hasslider}}
+                    </div>
+                    <div class="ng-faculty-copy">
+                        <h2>{{#str}}instructorsheading, theme_nextgen{{/str}}</h2>
+                        <p>{{#str}}instructorintro, theme_nextgen{{/str}}</p>
+                        <ul class="ng-faculty-points">
+                            {{#facultypoints}}
+                                <li><span class="ng-faculty-check" aria-hidden="true"></span>{{title}}</li>
+                            {{/facultypoints}}
+                        </ul>
+                        <div class="ng-faculty-names">
+                            {{#instructors}}
+                                <p class="ng-faculty-name{{#active}} is-active{{/active}}">
+                                    <a href="{{url}}"><strong>{{name}}</strong><span>{{role}}</span></a>
+                                </p>
+                            {{/instructors}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {{/hasinstructors}}
+
     {{#hasquotes}}
         <section class="ng-section" id="learner-reviews">
             <div class="ng-landing-inner">
@@ -151,8 +199,13 @@
                             </p>
                             <p class="ng-quote-text">{{text}}</p>
                             <footer>
-                                <cite>{{name}}</cite>
-                                <a href="{{courseurl}}">{{course}}</a>
+                                <span class="ng-quote-person">
+                                    <span class="ng-quote-avatar" aria-hidden="true">{{{avatar}}}</span>
+                                    <span>
+                                        <cite>{{name}}</cite>
+                                        <a href="{{courseurl}}">{{course}}</a>
+                                    </span>
+                                </span>
                             </footer>
                         </blockquote>
                     {{/quotes}}
@@ -172,8 +225,21 @@
                 <div class="ng-institution-list">
                     {{#offers}}
                         <article>
-                            <h3>{{title}}</h3>
-                            <p>{{text}}</p>
+                            <span class="ng-institution-icon" aria-hidden="true">
+                                {{#packages}}
+                                    <svg viewBox="0 0 24 24"><path d="M12 3.5l8 3.8-8 3.8-8-3.8 8-3.8z"/><path d="M4 12.2l8 3.8 8-3.8"/><path d="M4 16.6l8 3.8 8-3.8"/></svg>
+                                {{/packages}}
+                                {{#cohorts}}
+                                    <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="2.6"/><circle cx="16" cy="9" r="2"/><path d="M3.8 18.5c.5-2.5 2.6-4 5.2-4s4.7 1.5 5.2 4"/><path d="M14.2 14.8c1.5-.4 3 .1 4 1.4.5.7.9 1.5 1.1 2.3"/></svg>
+                                {{/cohorts}}
+                                {{#custom}}
+                                    <svg viewBox="0 0 24 24"><path d="M4 7h9"/><path d="M17 7h3"/><circle cx="15" cy="7" r="1.7"/><path d="M4 12h3"/><path d="M11 12h9"/><circle cx="9" cy="12" r="1.7"/><path d="M4 17h7"/><path d="M15 17h5"/><circle cx="13" cy="17" r="1.7"/></svg>
+                                {{/custom}}
+                            </span>
+                            <div>
+                                <h3>{{title}}</h3>
+                                <p>{{text}}</p>
+                            </div>
                         </article>
                     {{/offers}}
                 </div>

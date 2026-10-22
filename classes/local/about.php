@@ -27,7 +27,7 @@ class about {
     /** @var array<string, string> Section photographs, keyed by section, from the theme pix folder. */
     private const IMAGES = [
         'who' => 'hero-home',
-        'teach' => 'category-business',
+        'teach' => 'category-teaching',
         'gain' => 'hero-slide-3',
         'vision' => 'hero-slide-2',
         'contact' => 'hero-slide-1',

@@ -59,7 +59,14 @@
                     {{#widgets}}
                         <div class="ng-enrol-card">{{{.}}}</div>
                     {{/widgets}}
-                    <p class="ng-checkout-trust">{{#str}}checkouttrust, theme_nextgen{{/str}}</p>
+                    <div class="ng-secure-pay">
+                        <h2>{{#str}}securepayment, theme_nextgen{{/str}}</h2>
+                        <ul>
+                            <li>{{#str}}paymobile, theme_nextgen{{/str}}</li>
+                            <li>{{#str}}paycards, theme_nextgen{{/str}}</li>
+                        </ul>
+                        <p>{{#str}}securepaymentnote, theme_nextgen{{/str}}</p>
+                    </div>
                 </section>
             {{/haswidgets}}
             {{#hasmessage}}

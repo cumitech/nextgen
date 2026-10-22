@@ -249,12 +249,10 @@ if ($ADMIN->fulltree) {
     );
     $page->add($setting);
 
-    $setting = new admin_setting_configtext(
-        'theme_nextgen/herosecondary',
+    $setting = new admin_setting_description(
+        'theme_nextgen/herosecondaryinfo',
         get_string('herosecondary', 'theme_nextgen'),
-        get_string('herobuttondesc', 'theme_nextgen'),
-        get_string('herosecondarydefault', 'theme_nextgen'),
-        PARAM_RAW
+        get_string('herosecondarydesc', 'theme_nextgen')
     );
     $page->add($setting);
 

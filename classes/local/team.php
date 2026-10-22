@@ -29,6 +29,9 @@ class team {
     /**
      * People shown on the team page, in display order.
      *
+     * The founder is first, then Favour, Anembom, Tracey, Akumbom, Peter,
+     * and Forbe. Remaining doctors follow, then the other members.
+     * Ayeah is last.
      * image is a theme pix path without an extension. founder reuses the About biography.
      * collapse keeps the first paragraph visible and tucks the rest behind Show more.
      * offset frames a photograph whose subject is not in the centre.
@@ -47,29 +50,18 @@ class team {
             'image' => 'team/buemembom-favour-wujung',
         ],
         [
-            'id' => 'ponmuma',
-            'image' => 'team/ponmuma-gabin-merveille',
-        ],
-        [
-            'id' => 'mbala',
-            'image' => 'team/mbala-axel',
-        ],
-        [
-            'id' => 'ayeah',
-            'image' => 'team/ayeah-godlove',
+            'id' => 'francine',
+            'image' => 'team/anembom-francine',
             'collapse' => true,
         ],
         [
-            'id' => 'etame',
-            'image' => 'team/etame-vivian',
+            'id' => 'kiambom',
+            'image' => 'team/kiambom-tracey',
+            'collapse' => true,
         ],
         [
-            'id' => 'derick',
-            'image' => 'team/derick-yong',
-        ],
-        [
-            'id' => 'nayah',
-            'image' => 'team/dr-nayah-gazelle',
+            'id' => 'akumbom',
+            'image' => 'team/akumbom-paul',
         ],
         [
             'id' => 'peter',
@@ -81,19 +73,12 @@ class team {
             'image' => 'team/dr-forbe-hodu',
         ],
         [
-            'id' => 'francine',
-            'image' => 'team/anembom-francine',
-            'collapse' => true,
+            'id' => 'derick',
+            'image' => 'team/derick-yong',
         ],
         [
-            'id' => 'kiambom',
-            'image' => 'team/kiambom-tracey',
-            'collapse' => true,
-        ],
-        [
-            'id' => 'emmanuel',
-            'image' => 'team/emmanuel-mbunwe',
-            'collapse' => true,
+            'id' => 'nayah',
+            'image' => 'team/dr-nayah-gazelle',
         ],
         [
             'id' => 'ndzembanteh',
@@ -101,12 +86,35 @@ class team {
             'collapse' => true,
         ],
         [
-            'id' => 'akumbom',
-            'image' => 'team/akumbom-paul',
-        ],
-        [
             'id' => 'sigimi',
             'image' => 'team/dr-sigimi-fidelis',
+        ],
+        [
+            'id' => 'awemu',
+            'image' => 'team/dr-awemu-jonah',
+            'collapse' => true,
+        ],
+        [
+            'id' => 'ponmuma',
+            'image' => 'team/ponmuma-gabin-merveille',
+        ],
+        [
+            'id' => 'mbala',
+            'image' => 'team/mbala-axel',
+        ],
+        [
+            'id' => 'etame',
+            'image' => 'team/etame-vivian',
+        ],
+        [
+            'id' => 'emmanuel',
+            'image' => 'team/emmanuel-mbunwe',
+            'collapse' => true,
+        ],
+        [
+            'id' => 'ayeah',
+            'image' => 'team/ayeah-godlove',
+            'collapse' => true,
         ],
     ];
 

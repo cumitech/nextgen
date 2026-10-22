@@ -20,6 +20,56 @@
     Closes the course sales layout opened by course_detail_open.
 }}
     </div>
+    <section class="ng-pay-band" aria-labelledby="ng-pay-title">
+        <div class="ng-pay-band-intro">
+            <span class="ng-pay-lock" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22">
+                    <path d="M8 11V8.2a4 4 0 0 1 8 0V11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    <rect x="5.2" y="11" width="13.6" height="9.2" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+                    <path d="M12 14.2v2.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                </svg>
+            </span>
+            <div>
+                <h2 id="ng-pay-title">{{#str}}securepayment, theme_nextgen{{/str}}</h2>
+                <p>{{#str}}securepaymentnote, theme_nextgen{{/str}}</p>
+            </div>
+        </div>
+        <ul class="ng-pay-methods">
+            <li class="ng-pay-method">
+                <span class="ng-pay-glyph" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="22" height="22">
+                        <rect x="7" y="3.2" width="10" height="17.6" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+                        <path d="M11 17.4h2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                </span>
+                <span class="ng-pay-copy">
+                    <strong>{{#str}}paymobiletitle, theme_nextgen{{/str}}</strong>
+                    <span>{{#str}}paymobilebrands, theme_nextgen{{/str}}</span>
+                </span>
+                <span class="ng-pay-marks" aria-hidden="true">
+                    <span class="ng-pay-chip ng-pay-chip-mtn">MTN</span>
+                    <span class="ng-pay-chip ng-pay-chip-orange">Orange</span>
+                </span>
+            </li>
+            <li class="ng-pay-method">
+                <span class="ng-pay-glyph" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="22" height="22">
+                        <rect x="3.2" y="6" width="17.6" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+                        <path d="M3.2 10h17.6M7 14.2h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                </span>
+                <span class="ng-pay-copy">
+                    <strong>{{#str}}paycardstitle, theme_nextgen{{/str}}</strong>
+                    <span>{{#str}}paycardsbrands, theme_nextgen{{/str}}</span>
+                </span>
+                <span class="ng-pay-marks" aria-hidden="true">
+                    <span class="ng-pay-chip ng-pay-chip-visa">Visa</span>
+                    <span class="ng-pay-chip ng-pay-chip-mc"><span class="ng-pay-mc"></span></span>
+                </span>
+            </li>
+        </ul>
+    </section>
+    </div>
 </div>
 {{#js}}
 require(['jquery'], function($) {

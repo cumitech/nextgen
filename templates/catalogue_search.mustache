@@ -34,6 +34,35 @@
             <details class="ng-catalogue-advanced" {{#advancedopen}}open{{/advancedopen}}>
                 <summary>{{advancedsummary}}</summary>
                 <div class="ng-catalogue-advanced-grid">
+                    <div>
+                        <label for="ng-catalogue-cost">{{#str}}catalogueprice, theme_nextgen{{/str}}</label>
+                        <select id="ng-catalogue-cost" name="cost">
+                            <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
+                            {{#costs}}
+                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                            {{/costs}}
+                        </select>
+                    </div>
+                    {{#hasfees}}
+                        <div>
+                            <label for="ng-catalogue-fee">{{#str}}cataloguefee, theme_nextgen{{/str}}</label>
+                            <select id="ng-catalogue-fee" name="fee">
+                                <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
+                                {{#fees}}
+                                    <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                                {{/fees}}
+                            </select>
+                        </div>
+                    {{/hasfees}}
+                    <div>
+                        <label for="ng-catalogue-certificate">{{#str}}fieldcertificate, theme_nextgen{{/str}}</label>
+                        <select id="ng-catalogue-certificate" name="certificate">
+                            <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
+                            {{#certificates}}
+                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                            {{/certificates}}
+                        </select>
+                    </div>
                     {{#haslevels}}
                         <div>
                             <label for="ng-catalogue-level">{{#str}}fieldlevel, theme_nextgen{{/str}}</label>
@@ -54,15 +83,28 @@
                             {{/languages}}
                         </select>
                     </div>
-                    <div>
-                        <label for="ng-catalogue-certificate">{{#str}}fieldcertificate, theme_nextgen{{/str}}</label>
-                        <select id="ng-catalogue-certificate" name="certificate">
-                            <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
-                            {{#certificates}}
-                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
-                            {{/certificates}}
-                        </select>
-                    </div>
+                    {{#haslengths}}
+                        <div>
+                            <label for="ng-catalogue-length">{{#str}}fieldlength, theme_nextgen{{/str}}</label>
+                            <select id="ng-catalogue-length" name="length">
+                                <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
+                                {{#lengths}}
+                                    <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                                {{/lengths}}
+                            </select>
+                        </div>
+                    {{/haslengths}}
+                    {{#hasefforts}}
+                        <div>
+                            <label for="ng-catalogue-effort">{{#str}}fieldeffort, theme_nextgen{{/str}}</label>
+                            <select id="ng-catalogue-effort" name="effort">
+                                <option value="">{{#str}}cataloguefilterany, theme_nextgen{{/str}}</option>
+                                {{#efforts}}
+                                    <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                                {{/efforts}}
+                            </select>
+                        </div>
+                    {{/hasefforts}}
                 </div>
                 <div class="ng-catalogue-advanced-actions">
                     <button class="btn btn-primary" type="submit">{{#str}}catalogueapply, theme_nextgen{{/str}}</button>

@@ -112,25 +112,6 @@
             <a class="btn btn-primary ng-course-enrol ng-enrol-success-cta" href="{{enrolsuccessurl}}">{{#str}}enrolsuccesscta, theme_nextgen{{/str}}</a>
         </div>
     {{/hasenrolsuccess}}
-    <div class="ng-course-tabs" role="tablist" aria-label="{{fullname}}">
-        <button type="button" class="is-active" role="tab" id="ng-tab-overview" data-ng-tab="overview" aria-selected="true" aria-controls="ng-panel-overview">{{#str}}taboverview, theme_nextgen{{/str}}</button>
-        <button type="button" role="tab" id="ng-tab-content" data-ng-tab="content" aria-selected="false" aria-controls="ng-course-content">{{#str}}coursecontent, theme_nextgen{{/str}}</button>
-        <button type="button" role="tab" id="ng-tab-certificate" data-ng-tab="certificate" aria-selected="false" aria-controls="ng-panel-certificate">{{#str}}tabcertificate, theme_nextgen{{/str}}</button>
-        <button type="button" role="tab" id="ng-tab-instructors" data-ng-tab="instructors" aria-selected="false" aria-controls="ng-panel-instructors">{{#str}}tabinstructors, theme_nextgen{{/str}}</button>
-        <button type="button" role="tab" id="ng-tab-reviews" data-ng-tab="reviews" aria-selected="false" aria-controls="ng-panel-reviews">
-            {{#str}}tabreviews, theme_nextgen{{/str}}
-            {{#hasrating}}
-                <span class="ng-tab-stars" aria-hidden="true">
-                    {{#stars}}
-                        <svg class="ng-star ng-star-{{state}}" viewBox="0 0 20 20">
-                            <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
-                            <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
-                        </svg>
-                    {{/stars}}
-                </span>
-            {{/hasrating}}
-        </button>
-    </div>
     <aside class="ng-course-panel">
         {{#hasprice}}
             <p class="ng-course-price-label">{{#str}}courseprice, theme_nextgen{{/str}}</p>
@@ -158,6 +139,26 @@
             </button>
         </div>
     </aside>
+    <div class="ng-course-primary">
+    <div class="ng-course-tabs" role="tablist" aria-label="{{fullname}}">
+        <button type="button" class="is-active" role="tab" id="ng-tab-overview" data-ng-tab="overview" aria-selected="true" aria-controls="ng-panel-overview">{{#str}}taboverview, theme_nextgen{{/str}}</button>
+        <button type="button" role="tab" id="ng-tab-content" data-ng-tab="content" aria-selected="false" aria-controls="ng-course-content">{{#str}}coursecontent, theme_nextgen{{/str}}</button>
+        <button type="button" role="tab" id="ng-tab-certificate" data-ng-tab="certificate" aria-selected="false" aria-controls="ng-panel-certificate">{{#str}}tabcertificate, theme_nextgen{{/str}}</button>
+        <button type="button" role="tab" id="ng-tab-instructors" data-ng-tab="instructors" aria-selected="false" aria-controls="ng-panel-instructors">{{#str}}tabinstructors, theme_nextgen{{/str}}</button>
+        <button type="button" role="tab" id="ng-tab-reviews" data-ng-tab="reviews" aria-selected="false" aria-controls="ng-panel-reviews">
+            {{#str}}tabreviews, theme_nextgen{{/str}}
+            {{#hasrating}}
+                <span class="ng-tab-stars" aria-hidden="true">
+                    {{#stars}}
+                        <svg class="ng-star ng-star-{{state}}" viewBox="0 0 20 20">
+                            <path class="ng-star-base" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                            <path class="ng-star-fill" d="M10 1.6l2.2 4.7 5.1.6-3.8 3.5.9 5.1L10 13.2 5.6 15.5l.9-5.1L2.7 6.9l5.1-.6L10 1.6z"></path>
+                        </svg>
+                    {{/stars}}
+                </span>
+            {{/hasrating}}
+        </button>
+    </div>
     <div class="ng-course-main" id="ng-panel-overview" data-ng-panel="overview" role="tabpanel" aria-labelledby="ng-tab-overview">
         {{#hassummary}}
             <section class="ng-course-section">
@@ -200,6 +201,14 @@
         <section class="ng-course-section ng-course-card">
             <h2>{{#str}}tabcertificate, theme_nextgen{{/str}}</h2>
             {{#hascertificate}}
+                <div class="ng-certificate-facts">
+                    <p>{{#str}}certificatelead, theme_nextgen{{/str}}</p>
+                    <ul>
+                        <li>{{#str}}certificatefactname, theme_nextgen{{/str}}</li>
+                        <li>{{#str}}certificatefactfee, theme_nextgen{{/str}}</li>
+                        <li>{{#str}}certificatefactsample, theme_nextgen{{/str}}</li>
+                    </ul>
+                </div>
                 <figure class="ng-certificate">
                     <figcaption class="ng-certificate-sample">{{#str}}certificatesample, theme_nextgen{{/str}}</figcaption>
                     <div class="ng-certificate-sheet">
@@ -244,7 +253,11 @@
                     <span class="ng-certificate-none-mark" aria-hidden="true"></span>
                     <div>
                         <p class="ng-certificate-none-title">{{#str}}certificateempty, theme_nextgen{{/str}}</p>
-                        <p>{{#str}}certificatenone, theme_nextgen{{/str}}</p>
+                        <ul class="ng-certificate-facts">
+                            <li>{{#str}}certificatenone, theme_nextgen{{/str}}</li>
+                            <li>{{#str}}certificatenonefinish, theme_nextgen{{/str}}</li>
+                            <li>{{#str}}certificatenonefee, theme_nextgen{{/str}}</li>
+                        </ul>
                     </div>
                 </div>
             {{/hascertificate}}
@@ -331,7 +344,7 @@
                 <ul class="ng-review-list">
                     {{#reviewlist}}
                         <li class="ng-review-item">
-                            <span class="ng-review-avatar" aria-hidden="true">{{initials}}</span>
+                            <span class="ng-review-avatar" aria-hidden="true">{{#avatar}}{{{avatar}}}{{/avatar}}{{^avatar}}{{initials}}{{/avatar}}</span>
                             <div>
                                 <div class="ng-review-meta">
                                     <span class="ng-course-stars" aria-hidden="true">
