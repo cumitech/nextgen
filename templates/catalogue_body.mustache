@@ -29,6 +29,11 @@
                     {{> theme_nextgen/course_card }}
                 {{/courses}}
             </div>
+            {{#haspaging}}
+                <div class="ng-catalogue-paging">
+                    {{{paging}}}
+                </div>
+            {{/haspaging}}
         {{/hascourses}}
         {{^hascourses}}
             <p class="ng-empty ng-catalogue-empty">{{emptytext}}</p>

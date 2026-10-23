@@ -2348,6 +2348,8 @@ function theme_nextgen_certificate_label(string $value, bool $offered): string {
  * @return array
  */
 function theme_nextgen_catalogue_context(): array {
+    global $OUTPUT;
+
     $categoryid = optional_param('categoryid', 0, PARAM_INT);
     $filters = theme_nextgen_catalogue_request_filters();
     $kept = [];
@@ -2375,25 +2377,42 @@ function theme_nextgen_catalogue_context(): array {
         $categories[] = $category;
     }
 
-    $loaded = theme_nextgen_catalogue_courses($categoryid, $kept === []);
+    $ids = theme_nextgen_catalogue_visible_ids($categoryid);
+    $listed = theme_nextgen_catalogue_filter_rows($ids);
     $costs = theme_nextgen_catalogue_fixed_options($filters['cost'], [
         'free' => get_string('cataloguefree', 'theme_nextgen'),
         'paid' => get_string('cataloguepaid', 'theme_nextgen'),
     ]);
-    $fees = theme_nextgen_catalogue_filter_options($loaded, 'filterfee', $filters['fee']);
+    $fees = theme_nextgen_catalogue_filter_options($listed, 'filterfee', $filters['fee']);
     $certificates = theme_nextgen_catalogue_fixed_options($filters['certificate'], [
         'yes' => get_string('yes'),
         'no' => get_string('no'),
     ]);
-    $levels = theme_nextgen_catalogue_filter_options($loaded, 'filterlevel', $filters['level']);
-    $languages = theme_nextgen_catalogue_filter_options($loaded, 'filterlanguage', $filters['language']);
-    $lengths = theme_nextgen_catalogue_filter_options($loaded, 'filterlength', $filters['length']);
-    $efforts = theme_nextgen_catalogue_filter_options($loaded, 'filtereffort', $filters['effort']);
-    $courses = theme_nextgen_catalogue_apply_filters($loaded, $filters);
+    $levels = theme_nextgen_catalogue_filter_options($listed, 'filterlevel', $filters['level']);
+    $languages = theme_nextgen_catalogue_filter_options($listed, 'filterlanguage', $filters['language']);
+    $lengths = theme_nextgen_catalogue_filter_options($listed, 'filterlength', $filters['length']);
+    $efforts = theme_nextgen_catalogue_filter_options($listed, 'filtereffort', $filters['effort']);
+    $matched = theme_nextgen_catalogue_apply_filters($listed, $filters);
+
+    $perpage = theme_nextgen_catalogue_per_page();
+    $page = optional_param('page', 0, PARAM_INT);
+    if ($page < 0) {
+        $page = 0;
+    }
+    $total = count($matched);
+    $lastpage = $total > 0 ? (int) ceil($total / $perpage) - 1 : 0;
+    if ($page > $lastpage) {
+        $page = $lastpage;
+    }
+    $pageids = [];
+    foreach (array_slice($matched, $page * $perpage, $perpage) as $row) {
+        $pageids[] = (int) $row['id'];
+    }
+    $courses = theme_nextgen_catalogue_cards($pageids);
 
     if ($courses) {
         $empty = '';
-    } else if ($categoryid > 0 && !$loaded) {
+    } else if ($categoryid > 0 && !$ids) {
         $empty = get_string('catalogueemptycategory', 'theme_nextgen');
     } else if ($kept) {
         $empty = get_string('catalogueemptysearch', 'theme_nextgen');
@@ -2456,11 +2475,19 @@ function theme_nextgen_catalogue_context(): array {
             $advancedcount++;
         }
     }
-    $count = count($courses);
-    if ($count === 1) {
+    if ($total === 1) {
         $resultslabel = get_string('catalogueresult', 'theme_nextgen');
     } else {
-        $resultslabel = get_string('catalogueresults', 'theme_nextgen', $count);
+        $resultslabel = get_string('catalogueresults', 'theme_nextgen', $total);
+    }
+    $paging = '';
+    if ($total > $perpage) {
+        $paging = $OUTPUT->paging_bar(
+            $total,
+            $page,
+            $perpage,
+            new moodle_url('/course/index.php', $base + $kept)
+        );
     }
 
     return [
@@ -2495,6 +2522,8 @@ function theme_nextgen_catalogue_context(): array {
         'hasactivefilters' => !empty($active),
         'activefilters' => $active,
         'resultslabel' => $resultslabel,
+        'haspaging' => $paging !== '',
+        'paging' => $paging,
         'clearurl' => (new moodle_url('/course/index.php', $clear))->out(false),
         'emptytext' => $empty,
     ];
@@ -2645,13 +2674,21 @@ function theme_nextgen_catalogue_apply_filters(array $courses, array $filters): 
 }
 
 /**
- * Courses for the catalogue. With no category and no filters, the order is shuffled.
+ * Courses shown on one catalogue page.
+ *
+ * @return int
+ */
+function theme_nextgen_catalogue_per_page(): int {
+    return 10;
+}
+
+/**
+ * Visible course ids in catalogue order.
  *
  * @param int $categoryid
- * @param bool $shuffle
- * @return array
+ * @return int[]
  */
-function theme_nextgen_catalogue_courses(int $categoryid, bool $shuffle = true): array {
+function theme_nextgen_catalogue_visible_ids(int $categoryid): array {
     if ($categoryid > 0) {
         $source = core_course_category::get($categoryid, IGNORE_MISSING, true);
         if (!$source || !$source->is_uservisible()) {
@@ -2661,51 +2698,71 @@ function theme_nextgen_catalogue_courses(int $categoryid, bool $shuffle = true):
         $source = core_course_category::top();
     }
 
-    $courses = array_values($source->get_courses([
-        'recursive' => true,
-        'summary' => true,
-    ]));
-    if ($categoryid === 0 && $shuffle) {
-        shuffle($courses);
+    $ids = [];
+    foreach ($source->get_courses(['recursive' => true, 'idonly' => true]) as $courseid) {
+        $courseid = (int) $courseid;
+        if ($courseid > 0 && $courseid !== SITEID) {
+            $ids[] = $courseid;
+        }
+    }
+    return $ids;
+}
+
+/**
+ * Filter fields for every visible course, without building the cards.
+ *
+ * @param int[] $courseids
+ * @return array
+ */
+function theme_nextgen_catalogue_filter_rows(array $courseids): array {
+    global $DB;
+
+    $courseids = array_values(array_unique(array_filter(array_map('intval', $courseids))));
+    if (!$courseids) {
+        return [];
     }
 
-    $visible = [];
-    foreach ($courses as $course) {
-        if ((int) $course->id === SITEID) {
+    [$sql, $params] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED);
+    $records = $DB->get_records_select(
+        'course',
+        "id {$sql}",
+        $params,
+        '',
+        'id, fullname, shortname, summary, lang, category'
+    );
+    $fields = theme_nextgen_catalogue_custom_fields($courseids);
+    $certified = theme_nextgen_certificate_activity_ids($courseids);
+    $fees = theme_nextgen_catalogue_fee_prices($courseids);
+    $teachers = theme_nextgen_catalogue_teacher_names($courseids);
+    $defaults = theme_nextgen_fee_defaults();
+    $fallback = '';
+    if ($defaults['cost'] > 0 && $defaults['currency'] !== '') {
+        $fallback = \core_payment\helper::get_cost_as_string($defaults['cost'], $defaults['currency']);
+    }
+
+    $rows = [];
+    foreach ($courseids as $courseid) {
+        if (!isset($records[$courseid])) {
             continue;
         }
-        $visible[] = $course;
-    }
-    $courseids = [];
-    foreach ($visible as $course) {
-        $courseids[] = (int) $course->id;
-    }
-    $certified = theme_nextgen_certificate_activity_ids($courseids);
-    theme_nextgen_prepare_card_facts($courseids);
-
-    $cards = [];
-    foreach ($visible as $course) {
-        $card = theme_nextgen_course_card_data($course);
-        $extra = theme_nextgen_course_extra_fields((int) $course->id);
-        $language = theme_nextgen_course_language($extra['nglanguage'], (string) ($course->lang ?? ''));
+        $course = $records[$courseid];
+        $extra = $fields[$courseid] ?? [];
+        $language = theme_nextgen_course_language($extra['nglanguage'] ?? '', (string) $course->lang);
         $offered = theme_nextgen_certificate_is_offered(
-            $extra['ngcertificate'],
-            !empty($certified[(int) $course->id])
+            $extra['ngcertificate'] ?? '',
+            !empty($certified[$courseid])
         );
-        $price = (string) ($card['price'] ?? '');
+        $charged = $fees[$courseid] ?? '';
+        if ($charged !== '') {
+            $price = $charged;
+        } else {
+            $price = theme_nextgen_format_price($extra['ngprice'] ?? '', $defaults['currency']);
+            if ($price === '') {
+                $price = $fallback;
+            }
+        }
         $feekey = theme_nextgen_normalise_fee($price);
         $paid = $feekey !== '';
-        $card['filterlevel'] = $extra['nglevel'];
-        $card['filterlanguage'] = $language['value'];
-        $card['filterlanguagelabel'] = $language['label'];
-        $card['filtercertificate'] = $offered ? 'yes' : 'no';
-        $card['filtercertificatelabel'] = get_string($offered ? 'yes' : 'no');
-        $card['filtercost'] = $paid ? 'paid' : 'free';
-        $card['filtercostlabel'] = get_string($paid ? 'cataloguepaid' : 'cataloguefree', 'theme_nextgen');
-        $card['filterfee'] = $paid ? $feekey : '';
-        $card['filterfeelabel'] = $paid ? $price : '';
-        $card['filterlength'] = $extra['ngduration'];
-        $card['filtereffort'] = $extra['ngeffort'];
 
         $categoryname = '';
         if (!empty($course->category)) {
@@ -2718,13 +2775,13 @@ function theme_nextgen_catalogue_courses(int $categoryid, bool $shuffle = true):
             $course->fullname,
             $course->shortname,
             $course->summary,
-            $card['teachers'] ?? '',
+            implode(' ', $teachers[$courseid] ?? []),
             $categoryname,
-            $extra['nglevel'],
+            $extra['nglevel'] ?? '',
             $language['label'],
-            $extra['ngduration'],
-            $extra['ngeffort'],
-            $extra['ngcertificate'],
+            $extra['ngduration'] ?? '',
+            $extra['ngeffort'] ?? '',
+            $extra['ngcertificate'] ?? '',
             $price,
             get_string($paid ? 'cataloguepaid' : 'cataloguefree', 'theme_nextgen'),
         ];
@@ -2732,8 +2789,183 @@ function theme_nextgen_catalogue_courses(int $categoryid, bool $shuffle = true):
             $bits[] = get_string('coursecertificate', 'theme_nextgen');
         }
         $plain = trim(html_entity_decode(strip_tags(implode(' ', $bits)), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
-        $card['filtersearch'] = \core_text::strtolower($plain);
-        $cards[] = $card;
+
+        $rows[] = [
+            'id' => $courseid,
+            'filterlevel' => $extra['nglevel'] ?? '',
+            'filterlanguage' => $language['value'],
+            'filterlanguagelabel' => $language['label'],
+            'filtercertificate' => $offered ? 'yes' : 'no',
+            'filtercertificatelabel' => get_string($offered ? 'yes' : 'no'),
+            'filtercost' => $paid ? 'paid' : 'free',
+            'filtercostlabel' => get_string($paid ? 'cataloguepaid' : 'cataloguefree', 'theme_nextgen'),
+            'filterfee' => $paid ? $feekey : '',
+            'filterfeelabel' => $paid ? $price : '',
+            'filterlength' => $extra['ngduration'] ?? '',
+            'filtereffort' => $extra['ngeffort'] ?? '',
+            'filtersearch' => \core_text::strtolower($plain),
+        ];
+    }
+    return $rows;
+}
+
+/**
+ * Custom field values used by the catalogue filters.
+ *
+ * @param int[] $courseids
+ * @return array<int, array<string, string>>
+ */
+function theme_nextgen_catalogue_custom_fields(array $courseids): array {
+    $wanted = [
+        'ngprice' => true,
+        'nglevel' => true,
+        'ngeffort' => true,
+        'ngcertificate' => true,
+        'nglanguage' => true,
+        'ngduration' => true,
+    ];
+    $fields = [];
+    $handler = \core_course\customfield\course_handler::create();
+    foreach ($handler->get_instances_data($courseids, true) as $courseid => $datafields) {
+        $values = [];
+        foreach ($datafields as $data) {
+            $shortname = $data->get_field()->get('shortname');
+            if (isset($wanted[$shortname])) {
+                $values[$shortname] = trim((string) $data->get_value());
+            }
+        }
+        $fields[(int) $courseid] = $values;
+    }
+    return $fields;
+}
+
+/**
+ * Localised fee for each course that has an enabled fee enrolment.
+ *
+ * @param int[] $courseids
+ * @return array<int, string>
+ */
+function theme_nextgen_catalogue_fee_prices(array $courseids): array {
+    global $CFG, $DB;
+
+    if (!$courseids || empty($CFG->enrol_plugins_enabled) || !str_contains($CFG->enrol_plugins_enabled, 'fee')) {
+        return [];
+    }
+
+    [$insql, $params] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED);
+    $params['fee'] = 'fee';
+    $params['status'] = ENROL_INSTANCE_ENABLED;
+    $rows = $DB->get_records_sql(
+        "SELECT e.id, e.courseid, e.cost, e.currency
+           FROM {enrol} e
+          WHERE e.enrol = :fee
+            AND e.status = :status
+            AND e.courseid {$insql}
+       ORDER BY e.sortorder ASC, e.id ASC",
+        $params
+    );
+    $defaults = theme_nextgen_fee_defaults();
+    $prices = [];
+    foreach ($rows as $row) {
+        $courseid = (int) $row->courseid;
+        if (isset($prices[$courseid])) {
+            continue;
+        }
+        $currency = strtoupper(trim((string) $row->currency));
+        if ($currency === '') {
+            $currency = $defaults['currency'];
+        }
+        $cost = (float) $row->cost;
+        if ($cost <= 0) {
+            $cost = $defaults['cost'];
+        }
+        if ($cost > 0 && preg_match('/^[A-Z]{3}$/', $currency)) {
+            $prices[$courseid] = \core_payment\helper::get_cost_as_string($cost, $currency);
+        }
+    }
+    return $prices;
+}
+
+/**
+ * Course-contact names, for catalogue search.
+ *
+ * @param int[] $courseids
+ * @return array<int, string[]>
+ */
+function theme_nextgen_catalogue_teacher_names(array $courseids): array {
+    global $CFG, $DB;
+
+    $roleids = array_filter(array_map('intval', explode(',', (string) ($CFG->coursecontact ?? ''))));
+    if (!$courseids || !$roleids) {
+        return [];
+    }
+
+    $namefields = \core_user\fields::for_name()->get_sql('u', false, '', '', false)->selects;
+    [$coursesql, $courseparams] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED, 'cfid');
+    [$rolesql, $roleparams] = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED, 'cfrid');
+    $params = $courseparams + $roleparams;
+    $params['level'] = CONTEXT_COURSE;
+    $rows = $DB->get_recordset_sql(
+        "SELECT ctx.instanceid AS courseid, ra.roleid, u.id, {$namefields}
+           FROM {role_assignments} ra
+           JOIN {context} ctx ON ctx.id = ra.contextid
+           JOIN {user} u ON u.id = ra.userid AND u.deleted = 0
+          WHERE ctx.contextlevel = :level
+            AND ctx.instanceid {$coursesql}
+            AND ra.roleid {$rolesql}",
+        $params
+    );
+    $bucket = [];
+    foreach ($rows as $row) {
+        $bucket[(int) $row->courseid][] = $row;
+    }
+    $rows->close();
+
+    $rank = array_flip($roleids);
+    $names = [];
+    foreach ($bucket as $courseid => $users) {
+        usort($users, function ($left, $right) use ($rank): int {
+            return ($rank[(int) $left->roleid] ?? 99) <=> ($rank[(int) $right->roleid] ?? 99);
+        });
+        $seen = [];
+        $coursenames = [];
+        foreach ($users as $user) {
+            $userid = (int) $user->id;
+            if (isset($seen[$userid])) {
+                continue;
+            }
+            $seen[$userid] = true;
+            $coursenames[] = fullname($user);
+        }
+        $names[$courseid] = $coursenames;
+    }
+    return $names;
+}
+
+/**
+ * Cards for one page of catalogue courses, in the given order.
+ *
+ * @param int[] $courseids
+ * @return array
+ */
+function theme_nextgen_catalogue_cards(array $courseids): array {
+    global $DB;
+
+    $courseids = array_values(array_filter(array_map('intval', $courseids)));
+    if (!$courseids) {
+        return [];
+    }
+
+    [$sql, $params] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED);
+    $records = $DB->get_records_select('course', "id {$sql}", $params);
+    theme_nextgen_prepare_card_facts($courseids);
+
+    $cards = [];
+    foreach ($courseids as $courseid) {
+        if (!isset($records[$courseid])) {
+            continue;
+        }
+        $cards[] = theme_nextgen_course_card_data(new core_course_list_element($records[$courseid]));
     }
     return $cards;
 }
