@@ -55,7 +55,7 @@
         <div class="ng-team-list">
             {{#members}}
                 <article class="ng-team-person" id="ng-team-{{id}}">
-                    <img class="ng-team-photo{{#offset}} ng-team-photo-offset{{/offset}}" src="{{image}}" alt="" width="176" height="176" loading="lazy">
+                    <img class="ng-team-photo{{#offset}} ng-team-photo-offset{{/offset}}{{#face}} ng-team-photo-face{{/face}}" src="{{image}}" alt="" width="176" height="176" loading="lazy">
                     <div class="ng-team-copy">
                         {{#role}}<p class="ng-team-role">{{role}}</p>{{/role}}
                         <h2>{{name}}</h2>

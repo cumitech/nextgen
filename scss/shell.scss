@@ -1454,7 +1454,7 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
   }
 
   body.nextgen .ng-brand-name {
-    max-width: none;
+    display: none;
   }
 
   body.nextgen .ng-user-nav {
@@ -5593,6 +5593,21 @@ body.nextgen.nextgen-enrol-checkout #page-content {
   padding: 0 0 3rem;
 }
 
+body.nextgen.nextgen-enrol-checkout.pagelayout-incourse #page.drawers .main-inner {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  max-width: none;
+  padding: 0 0 2rem;
+  width: 100%;
+}
+
+body.nextgen.nextgen-enrol-checkout .drawer-toggles {
+  display: none;
+}
+
 body.nextgen .ng-checkout {
   color: var(--ng-text);
 }
@@ -5691,11 +5706,19 @@ body.nextgen .ng-checkout-step.is-current .ng-checkout-step-marker {
 
 body.nextgen .ng-checkout-layout {
   display: grid;
-  gap: 1.25rem;
+  gap: 1rem;
   grid-template-columns: minmax(0, 1fr);
-  margin-top: -1.25rem;
+  margin-top: 1rem;
   position: relative;
   z-index: 1;
+}
+
+body.nextgen .ng-checkout-main {
+  order: 1;
+}
+
+body.nextgen .ng-checkout-aside {
+  order: 2;
 }
 
 body.nextgen .ng-checkout-card,
@@ -5929,15 +5952,25 @@ body.nextgen .ng-course-columns[data-ng-enrol-success="1"] .ng-course-panel {
 }
 
 body.nextgen .ng-checkout-summary {
+  align-items: center;
+  column-gap: 0.85rem;
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
   overflow: hidden;
-  padding: 0 0 1.15rem;
+  padding: 0.9rem 1rem 1rem;
 }
 
+body.nextgen.nextgen-enrol-checkout #region-main img.ng-checkout-cover,
 body.nextgen .ng-checkout-cover {
+  border-radius: 10px;
   display: block;
-  height: 10rem;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  height: 4.5rem;
+  margin: 0;
+  max-width: 4.5rem;
   object-fit: cover;
-  width: 100%;
+  width: 4.5rem;
 }
 
 body.nextgen .ng-checkout-summary h2,
@@ -5945,16 +5978,23 @@ body.nextgen .ng-checkout-summary .ng-course-includes,
 body.nextgen .ng-checkout-summary .ng-checkout-price-label,
 body.nextgen .ng-checkout-summary .ng-checkout-price,
 body.nextgen .ng-checkout-account {
-  padding-left: 1.15rem;
-  padding-right: 1.15rem;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 body.nextgen .ng-checkout-summary h2 {
-  margin-top: 1rem;
+  align-self: end;
+  font-size: 1rem;
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 body.nextgen .ng-checkout-price-label {
   color: var(--ng-text-muted);
+  display: none;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -5963,37 +6003,48 @@ body.nextgen .ng-checkout-price-label {
 }
 
 body.nextgen .ng-checkout-price {
-  font-size: 1.75rem;
+  align-self: start;
+  font-size: 1.15rem;
   font-weight: 700;
+  grid-column: 2;
+  grid-row: 2;
   letter-spacing: -0.03em;
-  margin: 0 0 0.35rem;
+  margin: 0.15rem 0 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 body.nextgen .ng-checkout-summary .ng-course-includes {
-  border-top: 1px solid var(--ng-border);
-  margin-top: 0.85rem;
-  padding-top: 0.9rem;
+  border-top: 0;
+  grid-column: 1 / -1;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
 }
 
 body.nextgen .ng-checkout-summary .ng-course-includes h3 {
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  margin: 0 0 0.65rem;
+  margin: 0 0 0.4rem;
 }
 
 body.nextgen .ng-checkout-account {
+  align-items: baseline;
   border-top: 1px solid var(--ng-border);
-  margin-top: 0.95rem;
-  padding-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.45rem;
+  grid-column: 1 / -1;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
 }
 
 body.nextgen .ng-checkout-account-label {
   color: var(--ng-text-muted);
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  margin: 0 0 0.25rem;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  margin: 0;
+  text-transform: none;
 }
 
 body.nextgen .ng-checkout-account-name {
@@ -6038,23 +6089,62 @@ body.nextgen .ng-checkout-account-email {
   }
 
   body.nextgen .ng-checkout-summary {
+    align-items: center;
     border-radius: 16px;
+    column-gap: 0.85rem;
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
     margin-top: 0;
+    padding: 0.9rem 1rem 1rem;
   }
 
+  body.nextgen.nextgen-enrol-checkout #region-main img.ng-checkout-cover,
   body.nextgen .ng-checkout-cover {
-    border-radius: 16px 16px 0 0;
-    height: 11rem;
+    border-radius: 10px;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    height: 4.5rem;
     margin: 0;
-    max-width: 100%;
-    width: 100%;
+    max-width: 4.5rem;
+    width: 4.5rem;
   }
 
-  body.nextgen .ng-checkout-aside {
-    order: 1;
+  body.nextgen .ng-checkout-summary h2 {
+    align-self: end;
+    font-size: 1rem;
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    padding: 0;
+  }
+
+  body.nextgen .ng-checkout-summary .ng-checkout-price-label {
+    display: none;
+  }
+
+  body.nextgen .ng-checkout-summary .ng-checkout-price {
+    align-self: start;
+    font-size: 1.15rem;
+    grid-column: 2;
+    grid-row: 2;
+    margin: 0.1rem 0 0;
+    padding: 0;
+  }
+
+  body.nextgen .ng-checkout-summary .ng-course-includes,
+  body.nextgen .ng-checkout-summary .ng-checkout-account {
+    grid-column: 1 / -1;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   body.nextgen .ng-checkout-main {
+    order: 1;
+  }
+
+  body.nextgen .ng-checkout-aside {
     order: 2;
   }
 
@@ -6087,6 +6177,65 @@ body.nextgen .ng-checkout-account-email {
     order: 2;
     position: sticky;
     top: 5.5rem;
+  }
+
+  body.nextgen .ng-checkout-summary {
+    display: block;
+    padding: 0 0 1.15rem;
+  }
+
+  body.nextgen.nextgen-enrol-checkout #region-main img.ng-checkout-cover,
+  body.nextgen .ng-checkout-cover {
+    border-radius: 0;
+    height: 11rem;
+    max-width: none;
+    width: 100%;
+  }
+
+  body.nextgen .ng-checkout-summary h2,
+  body.nextgen .ng-checkout-summary .ng-course-includes,
+  body.nextgen .ng-checkout-summary .ng-checkout-price-label,
+  body.nextgen .ng-checkout-summary .ng-checkout-price,
+  body.nextgen .ng-checkout-account {
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+  }
+
+  body.nextgen .ng-checkout-summary h2 {
+    font-size: 1.15rem;
+    margin-top: 1rem;
+  }
+
+  body.nextgen .ng-checkout-price-label {
+    display: block;
+  }
+
+  body.nextgen .ng-checkout-price {
+    font-size: 1.75rem;
+    margin: 0 0 0.35rem;
+  }
+
+  body.nextgen .ng-checkout-summary .ng-course-includes {
+    border-top: 1px solid var(--ng-border);
+    margin-top: 0.85rem;
+    padding-top: 0.9rem;
+  }
+
+  body.nextgen .ng-checkout-summary .ng-course-includes h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.65rem;
+  }
+
+  body.nextgen .ng-checkout-account {
+    display: block;
+    margin-top: 0.95rem;
+    padding-top: 0.9rem;
+  }
+
+  body.nextgen .ng-checkout-account-label {
+    letter-spacing: 0.06em;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
   }
 }
 
@@ -6211,8 +6360,8 @@ body.nextgen .ng-checkout-account-email {
     border: 0;
     border-radius: 0;
     border-top: 1px solid var(--ng-border);
-    margin: 0.35rem 1.15rem 0;
-    padding: 0.9rem 0 0;
+    margin: 0.75rem 0 0;
+    padding: 0.85rem 0 0;
   }
 
   body.nextgen.nextgen-enrol-checkout .ng-course-includes ul {
@@ -9013,6 +9162,10 @@ body.nextgen.nextgen-team .ng-team-photo-offset {
   object-position: 70% 40%;
 }
 
+body.nextgen.nextgen-team .ng-team-photo-face {
+  object-position: center top;
+}
+
 body.nextgen.nextgen-team .ng-team-role {
   color: var(--ng-text-muted);
   font-size: 0.875rem;
@@ -9372,7 +9525,7 @@ body.nextgen:not(.nextgen-dashboard):not(.nextgen-landing):not(.nextgen-catalogu
 }
 
 /* Activity page: title, tabs, completion, and content share one surface. */
-body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page.drawers .main-inner {
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen-enrol-checkout) #page.drawers .main-inner {
   background: var(--ng-surface);
   border: 1px solid var(--ng-border);
   border-radius: 16px;
@@ -9382,7 +9535,7 @@ body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page.drawer
   padding: 0.85rem 1.35rem 1.35rem;
 }
 
-body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page.drawers:not(.show-drawer-left) .main-inner {
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen-enrol-checkout) #page.drawers:not(.show-drawer-left) .main-inner {
   padding-left: 4.25rem;
 }
 
@@ -9460,6 +9613,6 @@ body.nextgen .ng-header,
 body.nextgen .card,
 body.nextgen .ng-course-index,
 body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section,
-body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page.drawers .main-inner {
+body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen-enrol-checkout) #page.drawers .main-inner {
   background-color: #ffffff;
 }

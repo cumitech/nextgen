@@ -35,8 +35,9 @@ class team {
      * image is a theme pix path without an extension. founder reuses the About biography.
      * collapse keeps the first paragraph visible and tucks the rest behind Show more.
      * offset frames a photograph whose subject is not in the centre.
+     * face keeps a tall portrait framed on the head.
      *
-     * @var array<int, array{id: string, image: string, founder?: bool, collapse?: bool, offset?: bool}>
+     * @var array<int, array{id: string, image: string, founder?: bool, collapse?: bool, offset?: bool, face?: bool}>
      */
     private const MEMBERS = [
         [
@@ -75,6 +76,7 @@ class team {
         [
             'id' => 'derick',
             'image' => 'team/derick-yong',
+            'face' => true,
         ],
         [
             'id' => 'nayah',
@@ -185,6 +187,7 @@ class team {
             'hastitle' => $title !== '',
             'image' => $output->image_url($spec['image'], 'theme_nextgen')->out(false),
             'offset' => !empty($spec['offset']),
+            'face' => !empty($spec['face']),
             'isfounder' => $founder,
             'highlights' => $highlights,
             'hashighlights' => $highlights !== [],
