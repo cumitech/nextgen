@@ -535,6 +535,9 @@ $string['teammemberawemubio'] = 'Awemu Jonah Wayih (PhD) is an economist, educat
     'Beyond academic research, he possesses strong competencies in teaching and lecturing, creative writing, ICT, logical analysis, and quantitative management. His multidisciplinary abilities reflect a commitment to intellectual development, creativity, and effective knowledge transmission.' . "\n\n" .
     'He is passionate about knowledge acquisition, sharing and practical application, educational games, humour, learning, and sightseeing. He demonstrates advanced proficiency in English and good working knowledge of French.' . "\n\n" .
     'His academic journey, research contributions, and diverse professional skills reflect a sustained commitment to educational excellence, intellectual advancement, creativity, and the application of knowledge to societal development in a sustainable manner.';
+$string['teammemberabetyname'] = 'Dr. Abety Paul';
+$string['teammemberabetyrole'] = 'Development economist and national pedagogic inspector';
+$string['teammemberabetybio'] = 'Dr. Abety Paul is a PhD holder in economics (development economics) obtained from the University of Bamenda (UBa), Cameroon. He holds a Bachelor\'s degree in economics from the University of Dschang, Cameroon, and a Master\'s degree in economics (Labour economics) from UBa. He is a trained teacher of Economic Science and Techniques (EST) with a technical secondary school teacher diploma (DIPET 2). He is presently a national pedagogic inspector in Cameroon\'s Ministry of Secondary Education after serving as North West regional pedagogic inspector for 6 years. He supervises teachers of entrepreneurship, edits and records their lessons for presentation on the Ministry\'s AI Distance Learning Centre (AIDLC). He is also a GCE advanced level examiner in economics since 2009.';
 $string['aboutvisittitle'] = 'Get in touch';
 $string['aboutcalllabel'] = 'Phone';
 $string['aboutemaillabel'] = 'Email';
@@ -663,3 +666,4 @@ $string['blogsharelinkedin'] = 'Share on LinkedIn';
 $string['blogshareemail'] = 'Share by email';
 $string['blogcopylink'] = 'Copy link';
 $string['blogcopied'] = 'Link copied';
+$string['emailfooter'] = 'This message was sent by';

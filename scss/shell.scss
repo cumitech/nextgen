@@ -1444,8 +1444,44 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
 }
 
 @media (max-width: 767.98px) {
+  body.nextgen .ng-header-inner {
+    gap: 0.35rem;
+  }
+
+  body.nextgen .ng-brand {
+    flex: 1 1 auto;
+    min-width: 2.5rem;
+  }
+
   body.nextgen .ng-brand-name {
-    max-width: 8.5rem;
+    max-width: none;
+  }
+
+  body.nextgen .ng-user-nav {
+    flex: 0 0 auto;
+    gap: 0.15rem;
+  }
+
+  body.nextgen .gtranslate_wrapper .gt_switcher .gt_selected a {
+    font-size: 0;
+    gap: 0;
+    height: 36px;
+    justify-content: center;
+    min-height: 36px;
+    min-width: 36px;
+    padding: 0;
+    width: 40px;
+  }
+
+  body.nextgen .gtranslate_wrapper .gt_switcher .gt_selected a::after {
+    content: none;
+    display: none;
+  }
+
+  body.nextgen .gtranslate_wrapper .gt_switcher .gt_selected a img {
+    height: 14px;
+    margin: 0;
+    width: 20px;
   }
 }
 
@@ -5973,6 +6009,47 @@ body.nextgen .ng-checkout-account-email {
 }
 
 @media (max-width: 899.98px) {
+  body.nextgen .ng-checkout-band {
+    padding: 1.35rem 0 1.6rem;
+  }
+
+  body.nextgen .ng-checkout-inner {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  body.nextgen .ng-checkout-title {
+    font-size: 1.7rem;
+  }
+
+  body.nextgen .ng-checkout-steps {
+    gap: 0.4rem 0.85rem;
+    margin-top: 0.95rem;
+  }
+
+  body.nextgen .ng-checkout-band {
+    overflow: hidden;
+    padding-bottom: 1.25rem;
+  }
+
+  body.nextgen .ng-checkout-layout {
+    gap: 1rem;
+    margin-top: 0.85rem;
+  }
+
+  body.nextgen .ng-checkout-summary {
+    border-radius: 16px;
+    margin-top: 0;
+  }
+
+  body.nextgen .ng-checkout-cover {
+    border-radius: 16px 16px 0 0;
+    height: 11rem;
+    margin: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
   body.nextgen .ng-checkout-aside {
     order: 1;
   }
@@ -6129,7 +6206,39 @@ body.nextgen .ng-checkout-account-email {
     padding: 0.85rem 1rem;
   }
 
-  body.nextgen .ng-course-includes ul {
+  body.nextgen.nextgen-enrol-checkout .ng-course-includes {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    border-top: 1px solid var(--ng-border);
+    margin: 0.35rem 1.15rem 0;
+    padding: 0.9rem 0 0;
+  }
+
+  body.nextgen.nextgen-enrol-checkout .ng-course-includes ul {
+    display: grid;
+    gap: 0.45rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  body.nextgen.nextgen-enrol-checkout .ng-course-includes li {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  body.nextgen.nextgen-enrol-checkout .ng-course-includes li::before {
+    background: var(--ng-brand);
+    border-radius: 50%;
+    content: "";
+    flex: none;
+    height: 0.45rem;
+    width: 0.45rem;
+  }
+
+  body.nextgen.nextgen-course .ng-course-includes ul {
     display: flex;
     flex-wrap: wrap;
     gap: 0.55rem 1rem;

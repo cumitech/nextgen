@@ -1,0 +1,31 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_assign/messages/notification_html
+
+    Assignment notification placed inside the NextGen email shell.
+}}
+<p style="font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;margin:0 0 18px;">
+    <a href="{{courseurl}}" style="color:#116306;font-weight:700;text-decoration:none;">{{{courseshortname}}}</a>
+    <span style="color:#C5CED4;">&nbsp;&middot;&nbsp;</span>
+    <a href="{{courseassignsurl}}" style="color:#163A4A;text-decoration:none;">{{#str}}modulename, mod_assign{{/str}}</a>
+    <span style="color:#C5CED4;">&nbsp;&middot;&nbsp;</span>
+    <a href="{{url}}" style="color:#163A4A;font-weight:700;text-decoration:none;">{{{assignment}}}</a>
+</p>
+<div style="font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#1A2330;">
+    {{{messagehtml}}}
+</div>

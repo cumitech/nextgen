@@ -1,0 +1,125 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template message_email/email_digest_html
+
+    Group message digest in the NextGen colours.
+}}
+<head>
+    <style>
+        .table {
+            border: 1px solid #E1E6EA;
+            border-collapse: collapse;
+            border-radius: 12px;
+            color: #1A2330;
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 15px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .table th {
+            background-color: #F8F9FA;
+            border-bottom: 1px solid #E1E6EA;
+            font-weight: 600;
+            padding: 12px;
+            vertical-align: top;
+        }
+        .text-start {
+            text-align: left;
+        }
+        .text-end {
+            text-align: right;
+        }
+        .float-right {
+            float: right;
+        }
+        .table td {
+            padding: 12px;
+            vertical-align: top;
+        }
+        .badge {
+            background-color: #163A4A;
+            border-radius: 999px;
+            color: #ffffff;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 18px;
+            min-width: 18px;
+            padding: 0 6px;
+            text-align: center;
+        }
+        .linkcolor a {
+            color: #116306;
+            font-weight: 700;
+        }
+        .round {
+            border-radius: 50%;
+        }
+        .message p {
+            margin-top: 0;
+            padding-right: 40px;
+        }
+        .nowrap {
+            white-space: nowrap;
+        }
+        .gray-light {
+            color: #5C6770;
+        }
+        .text-small {
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+{{#conversations}}
+    <table class="table">
+        <thead>
+        <tr>
+            <th width="40px">
+                <img src="{{{ grouppictureurl }}}" class="round" width="40" height="40" alt="">
+            </th>
+            <th class="text-start">
+                <strong>{{ groupname }}</strong><br>
+                {{ coursename }}
+            </th>
+            <th class="nowrap text-end">
+                <span class="badge">{{ numberofunreadmessages }}</span> <span class="gray-light">{{#str}} emaildigestunreadmessages, message_email {{/str}}</span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            {{#messages}}
+            <tr>
+                <td width="40px" style="text-align: center;">
+                    <img src="{{{ userpictureurl }}}" class="round" width="30" height="30" alt="">
+                </td>
+                <td colspan="2" class="message">
+                    <strong>{{{ userfullname }}}</strong>
+                    <span class="float-right gray-light text-small">{{ timesent }}</span>
+                    {{{ message }}}
+                </td>
+            </tr>
+            {{/messages}}
+            <tr>
+                <td colspan="3" class="linkcolor">
+                    {{{viewallmessageslink}}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{{/conversations}}

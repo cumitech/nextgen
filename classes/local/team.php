@@ -95,6 +95,10 @@ class team {
             'collapse' => true,
         ],
         [
+            'id' => 'abety',
+            'image' => 'team/abety-paul',
+        ],
+        [
             'id' => 'ponmuma',
             'image' => 'team/ponmuma-gabin-merveille',
         ],

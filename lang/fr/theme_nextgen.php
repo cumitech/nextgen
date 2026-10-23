@@ -535,6 +535,9 @@ $string['teammemberawemubio'] = 'Awemu Jonah Wayih (PhD) est économiste, enseig
     'Au-delà de la recherche, il possède de solides compétences en enseignement, en écriture créative, en TIC, en analyse logique et en gestion quantitative. Ses aptitudes pluridisciplinaires traduisent un engagement pour le développement intellectuel, la créativité et la transmission du savoir.' . "\n\n" .
     'Il est passionné par l\'acquisition, le partage et l\'application pratique des connaissances, les jeux éducatifs, l\'humour, l\'apprentissage et les visites. Il maîtrise l\'anglais et a une bonne connaissance du français.' . "\n\n" .
     'Son parcours universitaire, ses contributions à la recherche et ses compétences professionnelles traduisent un engagement durable pour l\'excellence éducative, le progrès intellectuel, la créativité et l\'application du savoir au développement de la société de manière durable.';
+$string['teammemberabetyname'] = 'Dr. Abety Paul';
+$string['teammemberabetyrole'] = 'Économiste du développement et inspecteur pédagogique national';
+$string['teammemberabetybio'] = 'Le Dr Abety Paul est titulaire d\'un doctorat en économie (économie du développement) obtenu à l\'Université de Bamenda (UBa), au Cameroun. Il est titulaire d\'une licence en économie de l\'Université de Dschang, au Cameroun, et d\'un master en économie (économie du travail) de l\'UBa. Il est enseignant formé en sciences et techniques économiques (EST), titulaire du diplôme de professeur de l\'enseignement secondaire technique (DIPET 2). Il est actuellement inspecteur pédagogique national au ministère des Enseignements secondaires du Cameroun, après six années comme inspecteur pédagogique régional du Nord-Ouest. Il encadre les enseignants d\'entrepreneuriat, révise et enregistre leurs leçons pour diffusion sur le Centre d\'apprentissage à distance par l\'IA du ministère (AIDLC). Il est également examinateur du GCE Advanced Level en économie depuis 2009.';
 $string['aboutvisittitle'] = 'Nous contacter';
 $string['aboutcalllabel'] = 'Téléphone';
 $string['aboutemaillabel'] = 'Courriel';
@@ -663,3 +666,4 @@ $string['blogsharelinkedin'] = 'Partager sur LinkedIn';
 $string['blogshareemail'] = 'Partager par courriel';
 $string['blogcopylink'] = 'Copier le lien';
 $string['blogcopied'] = 'Lien copié';
+$string['emailfooter'] = 'Ce message a été envoyé par';

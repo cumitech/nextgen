@@ -39,6 +39,55 @@ function theme_nextgen_app_name(): string {
 }
 
 /**
+ * Drop the mobile-app download line from outgoing email.
+ *
+ * tool_mobile appends that paragraph when mobile services are enabled.
+ * Themes are registered after other plugin types, so this runs afterwards.
+ *
+ * @param string $procname Processor name.
+ * @param stdClass $data Message data for that processor.
+ */
+function theme_nextgen_pre_processor_message_send($procname, $data) {
+    if ($procname !== 'email' || empty($data->fullmessagehtml)) {
+        return;
+    }
+    $lang = '';
+    if (!empty($data->userto) && is_object($data->userto) && !empty($data->userto->lang)) {
+        $lang = $data->userto->lang;
+    }
+    $data->fullmessagehtml = theme_nextgen_strip_mobile_app_promo($data->fullmessagehtml, $lang);
+}
+
+/**
+ * Remove the mobile-app download paragraph in the recipient's language.
+ *
+ * @param string $html HTML email body.
+ * @param string $lang Recipient language code. Empty uses the current language.
+ * @return string
+ */
+function theme_nextgen_strip_mobile_app_promo($html, $lang = '') {
+    $manager = get_string_manager();
+    if (!$manager->string_exists('readingthisemailgettheapp', 'tool_mobile')) {
+        return $html;
+    }
+    $languages = array_unique(array_filter([$lang, current_language(), 'en', 'fr']));
+    foreach ($languages as $language) {
+        $sample = $manager->get_string('readingthisemailgettheapp', 'tool_mobile', '___URL___', $language);
+        $parts = explode('___URL___', $sample, 2);
+        if (count($parts) !== 2) {
+            continue;
+        }
+        $pattern = '/<p\b[^>]*>\s*' . preg_quote($parts[0], '/') . '[^"\']+' .
+            preg_quote($parts[1], '/') . '\s*<\/p>/u';
+        $stripped = preg_replace($pattern, '', $html, 1);
+        if (is_string($stripped)) {
+            $html = $stripped;
+        }
+    }
+    return $html;
+}
+
+/**
  * Add the theme body class used by the shell stylesheet.
  *
  * @param moodle_page $page

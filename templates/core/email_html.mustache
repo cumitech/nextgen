@@ -1,0 +1,82 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template core/email_html
+
+    NextGen shell for every HTML email. The message body is already formatted.
+}}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{subject}}</title>
+    <style>
+        .ng-mail a { color: #116306; }
+        .ng-mail h1, .ng-mail h2, .ng-mail h3 {
+            color: #163A4A;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin: 22px 0 8px;
+        }
+        .ng-mail p { margin: 0 0 14px; }
+        .ng-mail hr { border: 0; border-top: 1px solid #E1E6EA; margin: 18px 0; }
+        .ng-mail img { border-radius: 8px; height: auto; margin-top: 8px; max-width: 180px; }
+    </style>
+</head>
+<body style="margin:0;padding:0;background:#F4F6F7;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F4F6F7;">
+        <tr>
+            <td align="center" style="padding:28px 12px;">
+                <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border:1px solid #E1E6EA;border-radius:16px;max-width:600px;width:100%;">
+                    <tr>
+                        <td style="background:#163A4A;border-radius:16px 16px 0 0;padding:20px 28px;">
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td style="padding-right:12px;vertical-align:middle;">
+                                        <img src="{{sitewwwroot}}/theme/nextgen/pix/logo.png" width="40" height="40" alt="{{sitefullname}}" style="border:0;border-radius:8px;display:block;height:40px;width:40px;">
+                                    </td>
+                                    <td style="color:#ffffff;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:18px;font-weight:700;line-height:1.2;vertical-align:middle;">
+                                        {{sitefullname}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background:#FCD116;font-size:0;height:4px;line-height:0;">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="ng-mail" style="color:#1A2330;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;padding:28px;">
+                            {{{body}}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background:#F8F9FA;border-radius:0 0 16px 16px;border-top:1px solid #E1E6EA;padding:16px 28px 20px;">
+                            <p style="color:#5C6770;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;margin:0;">
+                                {{#str}}emailfooter, theme_nextgen{{/str}}
+                                <a href="{{sitewwwroot}}" style="color:#116306;font-weight:700;text-decoration:none;">{{sitefullname}}</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
