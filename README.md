@@ -18,7 +18,7 @@ The learner dashboard presents Moodle-awarded badges and the learner's own issue
 
 ## Certificates and achievements
 
-The public course-detail certificate tab previews the PDF generated from the visible Course certificate activity's selected Tool Certificate template. It uses a generic preview learner and does not create an issued certificate. Configure the desired NextGen-branded artwork and fields in the Tool Certificate template itself; the theme does not replace Moodle's issue or verification flow.
+The public course-detail certificate tab displays an SVG sample based on the visible Course certificate activity's selected Tool Certificate template. It embeds the configured artwork and uses generic sample text enlarged for readability; it does not generate a PDF or create an issued certificate. Configure the desired NextGen-branded artwork and fields in the Tool Certificate template itself; the theme does not replace Moodle's issue or verification flow.
 
 For verified, shareable certificates:
 

@@ -4503,11 +4503,11 @@ body.nextgen .ng-certificate-preview {
   overflow: hidden;
 }
 
-body.nextgen .ng-certificate-preview iframe {
-  border: 0;
+body.nextgen .ng-certificate-preview img {
   display: block;
-  height: min(65vh, 38rem);
-  min-height: 24rem;
+  height: auto;
+  max-height: 65vh;
+  object-fit: contain;
   width: 100%;
 }
 
@@ -4567,9 +4567,8 @@ body.nextgen .ng-certificate-none p:last-child {
 }
 
 @media (max-width: 575.98px) {
-  body.nextgen .ng-certificate-preview iframe {
-    height: 60vh;
-    min-height: 20rem;
+  body.nextgen .ng-certificate-preview img {
+    max-height: 60vh;
   }
 }
 
