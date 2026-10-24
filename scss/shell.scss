@@ -4626,7 +4626,7 @@ body.nextgen .ng-dash-trophy {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 1rem 0.8rem;
+  padding: 0.75rem 0.6rem;
   text-align: center;
   text-decoration: none;
   transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
@@ -4646,11 +4646,11 @@ body.nextgen .ng-dash-trophy-art {
   border: 1px solid var(--ng-border);
   border-radius: 50%;
   display: flex;
-  height: 5.25rem;
+  height: 4rem;
   justify-content: center;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.5rem;
   overflow: hidden;
-  width: 5.25rem;
+  width: 4rem;
 }
 
 body.nextgen .ng-dash-trophy-art img {
@@ -8007,7 +8007,10 @@ body.nextgen .ng-dash-ring-value {
   }
 
   body.nextgen.nextgen-dashboard #page-content,
-  body.nextgen.nextgen-dashboard .ng-dash-grid {
+  body.nextgen.nextgen-dashboard .ng-dash-grid,
+  body.nextgen.nextgen-dashboard .ng-dash-achievements,
+  body.nextgen.nextgen-dashboard .ng-dash-certificates {
+    box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
     max-width: #{"min(76rem, 78%)"};
@@ -9906,11 +9909,15 @@ body.nextgen:not(.nextgen-dashboard):not(.nextgen-landing):not(.nextgen-catalogu
 body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen-enrol-checkout) #page.drawers .main-inner {
   background: var(--ng-surface);
   border: 1px solid var(--ng-border);
+  box-sizing: border-box;
   border-radius: 16px;
   box-shadow: 0 10px 28px rgba(16, 40, 51, 0.05);
   margin-bottom: 1.5rem;
   margin-top: 0.35rem;
+  max-width: 100%;
+  min-width: 0;
   padding: 0.85rem 1.35rem 1.35rem;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -9922,6 +9929,13 @@ body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen
 @media (max-width: 767.98px) {
   body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen-enrol-checkout) #page.drawers .main-inner {
     padding: 0.5rem;
+  }
+
+  body.nextgen.path-mod-quiz #region-main .que {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
   }
 }
 
@@ -10151,9 +10165,12 @@ body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.next
 body.nextgen.path-mod-quiz #region-main .que {
   background: var(--ng-surface);
   border: 1px solid var(--ng-border);
+  box-sizing: border-box;
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(16, 40, 51, 0.06);
   gap: 1rem;
+  max-width: 100%;
+  min-width: 0;
   padding: 1rem;
 }
 
