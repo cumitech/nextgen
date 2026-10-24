@@ -7716,6 +7716,17 @@ body.nextgen .ng-dash-hero {
   width: 100%;
 }
 
+body.nextgen .ng-dash-hero::before {
+  background-image:
+    linear-gradient(rgba(8, 28, 18, 0.48), rgba(8, 28, 18, 0.48)),
+    url("[[pix:theme_nextgen|hero-home]]");
+  background-position: center;
+  background-size: cover;
+  content: "";
+  inset: 0;
+  position: absolute;
+}
+
 body.nextgen .ng-dash-hero-hills {
   bottom: 0;
   height: 100%;
