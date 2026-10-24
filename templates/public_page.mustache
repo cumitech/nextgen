@@ -92,18 +92,31 @@
     {{> theme_nextgen/team_page }}
 {{/isteam}}
 {{#isdefault}}
-<article class="ng-public">
+<article class="ng-public{{#islegal}} ng-legal{{/islegal}}{{#isfaq}} ng-faq-page{{/isfaq}}">
     <header class="ng-public-hero">
         <div class="ng-landing-inner ng-public-wrap">
             {{{navbar}}}
+            {{#islegal}}<p class="ng-kicker ng-legal-kicker">{{kicker}}</p>{{/islegal}}
+            {{#isfaq}}<p class="ng-kicker ng-legal-kicker">{{kicker}}</p>{{/isfaq}}
             <h1 class="ng-public-title">{{title}}</h1>
             <p class="ng-public-intro">{{intro}}</p>
         </div>
     </header>
     <div class="ng-landing-inner ng-public-wrap ng-public-body">
-        <div class="ng-public-card">
+        {{#haspagecontents}}
+            <div class="ng-legal-layout{{#isfaq}} ng-faq-layout{{/isfaq}}">
+                <nav class="ng-legal-toc{{#isfaq}} ng-faq-toc{{/isfaq}}" aria-label="{{legalcontentslabel}}">
+                    <h2>{{legalcontentslabel}}</h2>
+                    <ol>
+                        {{#contents}}
+                            <li><a href="#{{id}}">{{title}}</a></li>
+                        {{/contents}}
+                    </ol>
+                </nav>
+        {{/haspagecontents}}
+        <div class="ng-public-card{{#islegal}} ng-legal-card{{/islegal}}{{#isfaq}} ng-faq-card{{/isfaq}}">
             {{#sections}}
-                <section class="ng-public-section">
+                <section class="ng-public-section" id="{{id}}">
                     <h2>{{title}}</h2>
                     <p>{{text}}</p>
                     {{#url}}
@@ -111,10 +124,16 @@
                     {{/url}}
                 </section>
             {{/sections}}
+            {{#hascampayprivacy}}
+                <p class="ng-legal-note">
+                    {{campayprivacytext}}
+                    <a href="{{campayprivacyurl}}" target="_blank" rel="noopener noreferrer">{{campayprivacylabel}}</a>
+                </p>
+            {{/hascampayprivacy}}
             {{#hasquestions}}
                 <div class="ng-public-faqs">
                     {{#questions}}
-                        <details class="ng-public-faq">
+                        <details class="ng-public-faq" id="{{id}}">
                             <summary>{{question}}</summary>
                             <p>{{answer}}</p>
                         </details>
@@ -124,7 +143,20 @@
             {{#hasform}}
                 <div class="ng-public-form">{{{form}}}</div>
             {{/hasform}}
+            {{#haslegalcontact}}
+                <section class="ng-public-section ng-legal-contact">
+                    <h2>{{legalcontacttitle}}</h2>
+                    <p>
+                        {{legalcontacttext}}
+                        {{#haspolicyemail}}<a href="{{policyemailurl}}">{{policyemail}}</a>{{/haspolicyemail}}
+                        {{^haspolicyemail}}<a href="{{contacturl}}">{{contactlabel}}</a>{{/haspolicyemail}}
+                    </p>
+                </section>
+            {{/haslegalcontact}}
         </div>
+        {{#haspagecontents}}
+            </div>
+        {{/haspagecontents}}
     </div>
 </article>
 {{/isdefault}}

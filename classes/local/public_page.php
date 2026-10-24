@@ -29,7 +29,7 @@ class public_page {
     /**
      * Script name for a public page.
      *
-     * @param string $key about, team, contact, privacy, terms, or faq
+     * @param string $key One of the keys returned by keys().
      * @return \moodle_url
      */
     public static function url(string $key): \moodle_url {
@@ -45,7 +45,7 @@ class public_page {
      * @return string[]
      */
     public static function keys(): array {
-        return ['about', 'team', 'contact', 'privacy', 'terms', 'faq'];
+        return ['about', 'team', 'contact', 'privacy', 'terms', 'refund', 'accessibility', 'faq'];
     }
 
     /**
@@ -120,7 +120,7 @@ class public_page {
     /**
      * Render one public page inside the standard Moodle layout.
      *
-     * @param string $key about, team, contact, privacy, terms, or faq
+     * @param string $key One of the keys returned by keys().
      */
     public static function render(string $key): void {
         global $OUTPUT, $PAGE;
@@ -154,6 +154,9 @@ class public_page {
             'sections' => $definition['sections'],
             'hasquestions' => !empty($definition['questions']),
             'questions' => $definition['questions'],
+            'contents' => $definition['contents'],
+            'haspagecontents' => $definition['haspagecontents'],
+            'legalcontentslabel' => $definition['legalcontentslabel'],
             'navbar' => $OUTPUT->navbar(),
             'hasform' => $formhtml !== '',
             'form' => $formhtml,
@@ -161,8 +164,42 @@ class public_page {
             'isabout' => $key === 'about',
             'isteam' => $key === 'team',
             'isdefault' => $key !== 'contact' && $key !== 'about' && $key !== 'team',
-        ], self::contact_context($key), self::about_context($key), self::team_context($key)));
+            'islegal' => in_array($key, ['privacy', 'terms', 'refund', 'accessibility'], true),
+            'isfaq' => $key === 'faq',
+        ], self::contact_context($key), self::about_context($key), self::team_context($key),
+            self::legal_context($key)));
         echo $OUTPUT->footer();
+    }
+
+    /**
+     * Contact details for legal pages.
+     *
+     * @param string $key
+     * @return array
+     */
+    private static function legal_context(string $key): array {
+        if (!in_array($key, ['privacy', 'terms', 'refund', 'accessibility'], true)) {
+            return [];
+        }
+
+        $email = organisation::email();
+        $context = [
+            'haslegalcontact' => true,
+            'legalcontacttitle' => get_string($key . 'contacttitle', 'theme_nextgen'),
+            'legalcontacttext' => get_string($key . 'contacttext', 'theme_nextgen'),
+            'haspolicyemail' => $email !== '',
+            'policyemail' => $email,
+            'policyemailurl' => $email !== '' ? 'mailto:' . $email : '',
+            'contacturl' => self::url('contact')->out(false),
+            'contactlabel' => get_string('legalcontactfallback', 'theme_nextgen'),
+        ];
+        if ($key === 'privacy') {
+            $context['hascampayprivacy'] = true;
+            $context['campayprivacyurl'] = 'https://campay.net/en/';
+            $context['campayprivacytext'] = get_string('campayprivacytext', 'theme_nextgen');
+            $context['campayprivacylabel'] = get_string('campayprivacylabel', 'theme_nextgen');
+        }
+        return $context;
     }
 
     /**
@@ -278,6 +315,7 @@ class public_page {
             $sections[] = [
                 'title' => get_string($key . 'section' . $index . 'title', 'theme_nextgen'),
                 'text' => $text,
+                'id' => 'ng-legal-section-' . $index,
             ];
         }
         if ($key === 'faq') {
@@ -285,17 +323,23 @@ class public_page {
             $sections = [];
             foreach ($questions as $index => $section) {
                 $questions[$index] = [
+                    'title' => $section['title'],
                     'question' => $section['title'],
                     'answer' => $section['text'],
+                    'id' => 'ng-faq-question-' . ($index + 1),
                 ];
             }
         }
+        $contents = $key === 'faq' ? $questions : $sections;
         return [
             'kicker' => get_string($key . 'kicker', 'theme_nextgen'),
             'title' => get_string($key . 'title', 'theme_nextgen'),
             'intro' => get_string($key . 'intro', 'theme_nextgen'),
             'sections' => $sections,
             'questions' => $questions,
+            'contents' => $contents,
+            'haspagecontents' => !empty($contents),
+            'legalcontentslabel' => get_string('legalcontentslabel', 'theme_nextgen'),
         ];
     }
 

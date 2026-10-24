@@ -6014,6 +6014,21 @@ body.nextgen .ng-checkout-price {
   padding-right: 0;
 }
 
+body.nextgen .ng-checkout-xaf-price {
+  color: var(--ng-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  gap: 0.2rem 0.35rem;
+  grid-column: 2;
+  margin: 0.3rem 0 0;
+}
+
+body.nextgen .ng-checkout-xaf-price strong {
+  color: var(--ng-text);
+  font-weight: 700;
+}
+
 body.nextgen .ng-checkout-summary .ng-course-includes {
   border-top: 0;
   grid-column: 1 / -1;
@@ -7059,6 +7074,275 @@ body.nextgen .ng-public-faq p {
   color: var(--ng-text-muted);
   line-height: 1.6;
   margin: 0;
+}
+
+body.nextgen .ng-legal .ng-public-section + .ng-public-section {
+  border-top: 1px solid var(--ng-border);
+  margin-top: 1.4rem;
+  padding-top: 1.4rem;
+}
+
+body.nextgen .ng-legal .ng-legal-contact {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 8px;
+  margin-top: 2rem;
+  padding: 1.2rem;
+}
+
+body.nextgen .ng-legal-note {
+  border-top: 1px solid var(--ng-border);
+  color: var(--ng-text-muted);
+  line-height: 1.6;
+  margin: 1.4rem 0 0;
+  padding-top: 1.4rem;
+}
+
+body.nextgen .ng-legal .ng-public-wrap,
+body.nextgen .ng-faq-page .ng-public-wrap {
+  max-width: 1120px;
+}
+
+body.nextgen .ng-legal .ng-public-hero,
+body.nextgen .ng-faq-page .ng-public-hero {
+  background-color: var(--ng-secondary);
+  isolation: isolate;
+  overflow: hidden;
+  padding: 3rem 0 6rem;
+  position: relative;
+}
+
+body.nextgen .ng-legal .ng-public-hero::before,
+body.nextgen .ng-faq-page .ng-public-hero::before {
+  background-image: url("[[pix:theme_nextgen|hero-home]]");
+  background-position: center 38%;
+  background-size: cover;
+  content: "";
+  inset: 0;
+  position: absolute;
+  z-index: -2;
+}
+
+body.nextgen .ng-legal .ng-public-hero::after,
+body.nextgen .ng-faq-page .ng-public-hero::after {
+  background:
+    linear-gradient(105deg, rgba(12, 34, 44, 0.94) 0%, rgba(12, 34, 44, 0.78) 54%, rgba(12, 34, 44, 0.55) 100%),
+    linear-gradient(0deg, rgba(12, 34, 44, 0.3), rgba(12, 34, 44, 0.3));
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+body.nextgen .ng-legal .ng-public-hero .ng-landing-inner,
+body.nextgen .ng-faq-page .ng-public-hero .ng-landing-inner {
+  position: relative;
+}
+
+body.nextgen .ng-legal .ng-legal-kicker,
+body.nextgen .ng-faq-page .ng-legal-kicker {
+  color: var(--ng-yellow);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin: 1.25rem 0 0.8rem;
+  text-transform: uppercase;
+}
+
+body.nextgen .ng-legal .ng-public-title,
+body.nextgen .ng-faq-page .ng-public-title {
+  font-size: clamp(2.35rem, 5vw, 3.75rem);
+  letter-spacing: -0.045em;
+  margin-bottom: 1rem;
+  max-width: 16ch;
+}
+
+body.nextgen .ng-legal .ng-public-intro,
+body.nextgen .ng-faq-page .ng-public-intro {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  max-width: 44rem;
+}
+
+body.nextgen .ng-legal .ng-public-body,
+body.nextgen .ng-faq-page .ng-public-body {
+  margin-top: -3.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+body.nextgen .ng-legal-layout {
+  align-items: start;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: minmax(13rem, 0.28fr) minmax(0, 1fr);
+}
+
+body.nextgen .ng-faq-layout {
+  align-items: start;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: minmax(13rem, 0.28fr) minmax(0, 1fr);
+}
+
+body.nextgen .ng-legal-toc,
+body.nextgen .ng-faq-toc {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(18, 42, 52, 0.08);
+  padding: 1.2rem;
+  position: sticky;
+  top: 1rem;
+}
+
+body.nextgen .ng-legal-toc h2,
+body.nextgen .ng-faq-toc h2 {
+  color: var(--ng-text);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+}
+
+body.nextgen .ng-legal-toc ol,
+body.nextgen .ng-faq-toc ol {
+  display: grid;
+  gap: 0.2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.nextgen .ng-legal-toc a,
+body.nextgen .ng-faq-toc a {
+  border-radius: 8px;
+  color: var(--ng-text-muted);
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 0.55rem 0.65rem;
+  text-decoration: none;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+body.nextgen .ng-legal-toc a:hover,
+body.nextgen .ng-legal-toc a:focus-visible,
+body.nextgen .ng-faq-toc a:hover,
+body.nextgen .ng-faq-toc a:focus-visible {
+  background: var(--ng-background);
+  color: var(--ng-primary);
+}
+
+body.nextgen .ng-legal-card,
+body.nextgen .ng-faq-card {
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(18, 42, 52, 0.08);
+  padding: clamp(1.35rem, 3vw, 2.5rem);
+}
+
+body.nextgen .ng-legal-card .ng-public-section,
+body.nextgen .ng-faq-card .ng-public-faq {
+  scroll-margin-top: 1.5rem;
+}
+
+body.nextgen .ng-legal .ng-public-section + .ng-public-section {
+  border-color: var(--ng-border);
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+body.nextgen .ng-legal-card .ng-public-section h2 {
+  font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  margin-bottom: 0.65rem;
+}
+
+body.nextgen .ng-legal-card .ng-public-section p,
+body.nextgen .ng-legal-card .ng-legal-note {
+  font-size: 0.98rem;
+  line-height: 1.75;
+  max-width: 74ch;
+}
+
+body.nextgen .ng-legal-card .ng-legal-contact {
+  background: var(--ng-background);
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  margin-top: 2rem;
+  padding: 1.25rem;
+}
+
+body.nextgen .ng-legal-card .ng-legal-contact p {
+  margin: 0;
+}
+
+body.nextgen .ng-faq-card .ng-public-faq {
+  border-top: 1px solid var(--ng-border);
+  padding: 0.15rem 0;
+}
+
+body.nextgen .ng-faq-card .ng-public-faq:last-child {
+  border-bottom: 1px solid var(--ng-border);
+}
+
+body.nextgen .ng-faq-card .ng-public-faq summary {
+  align-items: center;
+  border-radius: 8px;
+  color: var(--ng-text);
+  display: flex;
+  font-size: 1rem;
+  justify-content: space-between;
+  line-height: 1.5;
+  padding: 1rem 0.35rem;
+  scroll-margin-top: 1rem;
+}
+
+body.nextgen .ng-faq-card .ng-public-faq summary::marker {
+  color: var(--ng-primary);
+}
+
+body.nextgen .ng-faq-card .ng-public-faq[open] summary {
+  color: var(--ng-primary);
+}
+
+body.nextgen .ng-faq-card .ng-public-faq p {
+  line-height: 1.75;
+  max-width: 74ch;
+  padding: 0 0.35rem 1rem;
+}
+
+@media (max-width: 767.98px) {
+  body.nextgen .ng-legal .ng-public-hero,
+  body.nextgen .ng-faq-page .ng-public-hero {
+    padding: 2rem 0 5rem;
+  }
+
+  body.nextgen .ng-legal-layout,
+  body.nextgen .ng-faq-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body.nextgen .ng-legal-toc,
+  body.nextgen .ng-faq-toc {
+    position: static;
+  }
+
+  body.nextgen .ng-legal-toc ol,
+  body.nextgen .ng-faq-toc ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  body.nextgen .ng-legal-toc ol,
+  body.nextgen .ng-faq-toc ol {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 body.nextgen .ng-public-action {

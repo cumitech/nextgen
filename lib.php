@@ -708,6 +708,8 @@ function theme_nextgen_footer_context($theme): array {
     if ($terms === null) {
         $terms = \theme_nextgen\local\public_page::url('terms')->out(false);
     }
+    $refund = \theme_nextgen\local\public_page::url('refund')->out(false);
+    $accessibility = \theme_nextgen\local\public_page::url('accessibility')->out(false);
     $columns = theme_nextgen_with_faq_link($columns);
     $columns = theme_nextgen_with_blog_link($columns);
     $columns = theme_nextgen_with_team_link($columns);
@@ -728,6 +730,8 @@ function theme_nextgen_footer_context($theme): array {
         'copyright' => $copyright,
         'privacyurl' => $privacy,
         'termsurl' => $terms,
+        'refundurl' => $refund,
+        'accessibilityurl' => $accessibility,
         'partnersblock' => \theme_nextgen\local\organisation::partners_block('footer'),
     ];
 }
@@ -902,7 +906,7 @@ function theme_nextgen_publish_public_paths(): void {
     if (during_initial_install() || empty($CFG->dirroot)) {
         return;
     }
-    if (get_config('theme_nextgen', 'publicpathrev') === '2026102201') {
+    if (get_config('theme_nextgen', 'publicpathrev') === '2026102401') {
         return;
     }
 
@@ -912,7 +916,7 @@ function theme_nextgen_publish_public_paths(): void {
     $ready = theme_nextgen_ensure_public_rewrites() && $ready;
     theme_nextgen_rewrite_public_urls();
     if ($ready) {
-        set_config('publicpathrev', '2026102201', 'theme_nextgen');
+        set_config('publicpathrev', '2026102401', 'theme_nextgen');
     }
 }
 
@@ -961,7 +965,7 @@ function theme_nextgen_retire_public_scripts(): bool {
 }
 
 /**
- * Write the site-root scripts for About, Team, Contact, Privacy, Terms, and FAQ.
+ * Write the site-root scripts for the theme's public pages.
  *
  * A file that is already there and was not created for this theme is left alone.
  *
@@ -1167,6 +1171,8 @@ function theme_nextgen_rewrite_public_urls(): void {
         '/theme/nextgen/contact.php' => '/contact.php',
         '/theme/nextgen/privacy.php' => '/privacy.php',
         '/theme/nextgen/terms.php' => '/terms.php',
+        '/theme/nextgen/refund.php' => '/refund.php',
+        '/theme/nextgen/accessibility.php' => '/accessibility.php',
         '/theme/nextgen/faq.php' => '/faq.php',
         '/theme/nextgen/course.php' => '/course/view.php',
     ];
@@ -2098,6 +2104,72 @@ function theme_nextgen_enrol_fee_price(int $courseid): string {
         }
     }
     return '';
+}
+
+/**
+ * CFA amount the configured XAF-only payment provider will charge for this course.
+ *
+ * Uses the same payable, gateway surcharge, provider capabilities, and exchange
+ * helper as the payment-start flow so the checkout amount cannot drift.
+ *
+ * @param int $courseid
+ * @return string
+ */
+function theme_nextgen_enrol_fee_xaf_price(int $courseid): string {
+    global $CFG;
+
+    if (empty($CFG->enrol_plugins_enabled) || !str_contains($CFG->enrol_plugins_enabled, 'fee')) {
+        return '';
+    }
+    if (
+        !class_exists(\paygw_moodlepayments\local\provider_factory::class)
+        || !class_exists(\paygw_moodlepayments\local\exchange::class)
+    ) {
+        return '';
+    }
+
+    $instance = null;
+    foreach (enrol_get_instances($courseid, true) as $enrolinstance) {
+        if ($enrolinstance->enrol === 'fee') {
+            $instance = $enrolinstance;
+            break;
+        }
+    }
+    if ($instance === null) {
+        return '';
+    }
+
+    $payable = \core_payment\helper::get_payable('enrol_fee', 'fee', (int) $instance->id);
+    $currency = strtoupper(trim($payable->get_currency()));
+    if ($currency !== 'USD') {
+        return '';
+    }
+
+    $account = new \core_payment\account((int) $payable->get_account_id());
+    if (!$account->is_available() || !array_key_exists('moodlepayments', $account->get_gateways())) {
+        return '';
+    }
+
+    $provider = \paygw_moodlepayments\local\provider_factory::get_active();
+    if ($provider === null || !$provider->is_configured()) {
+        return '';
+    }
+    if (\paygw_moodlepayments\local\exchange::rate() <= 0) {
+        return '';
+    }
+
+    $surcharge = \core_payment\helper::get_gateway_surcharge('moodlepayments');
+    $amount = \core_payment\helper::get_rounded_cost($payable->get_amount(), $currency, $surcharge);
+    $charge = \paygw_moodlepayments\local\exchange::for_provider(
+        $amount,
+        $currency,
+        $provider->get_supported_currencies()
+    );
+    if ($charge['currency'] !== 'XAF' || $charge['amount'] <= 0) {
+        return '';
+    }
+
+    return \core_payment\helper::get_cost_as_string($charge['amount'], 'XAF');
 }
 
 /**
@@ -3367,6 +3439,8 @@ function theme_nextgen_allow_public_entry(): void {
         '/contact.php',
         '/privacy.php',
         '/terms.php',
+        '/refund.php',
+        '/accessibility.php',
         '/faq.php',
         '/course/index.php',
         '/course/view.php',
@@ -3651,6 +3725,7 @@ function theme_nextgen_enrol_checkout_context(
         $includes[] = ['label' => get_string('coursesections', 'theme_nextgen', $sectioncount)];
     }
     $price = (string) ($card['price'] ?? '');
+    $xafprice = theme_nextgen_enrol_fee_xaf_price((int) $course->id);
 
     $signedin = isloggedin() && !isguestuser();
     $isguest = isguestuser() || !isloggedin();
@@ -3725,6 +3800,8 @@ function theme_nextgen_enrol_checkout_context(
         'courseurl' => (new moodle_url('/course/view.php', ['id' => (int) $course->id]))->out(false),
         'hasprice' => $price !== '',
         'price' => $price,
+        'hasxafprice' => $xafprice !== '',
+        'xafprice' => $xafprice,
         'hasincludes' => !empty($includes),
         'includes' => $includes,
         'haswidgets' => $canpay,
@@ -4991,4 +5068,3 @@ function theme_nextgen_enable_languages(): void {
     set_config('langlist', 'en,fr');
     get_string_manager(true);
 }
-

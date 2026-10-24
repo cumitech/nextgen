@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_theme_nextgen_uninstall() {
     global $CFG;
 
-    foreach (['about', 'team', 'programmes', 'contact', 'privacy', 'terms', 'faq'] as $key) {
+    foreach (['about', 'team', 'programmes', 'contact', 'privacy', 'terms', 'refund', 'accessibility', 'faq'] as $key) {
         $path = $CFG->dirroot . DIRECTORY_SEPARATOR . $key . '.php';
         if (!is_file($path)) {
             continue;

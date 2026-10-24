@@ -87,6 +87,12 @@
                     <p class="ng-checkout-price-label">{{#str}}courseprice, theme_nextgen{{/str}}</p>
                     <p class="ng-checkout-price">{{price}}</p>
                 {{/hasprice}}
+                {{#hasxafprice}}
+                    <p class="ng-checkout-xaf-price">
+                        <span>{{#str}}checkoutxafcharge, theme_nextgen{{/str}}</span>
+                        <strong>{{xafprice}}</strong>
+                    </p>
+                {{/hasxafprice}}
                 {{#hasincludes}}
                     <div class="ng-course-includes">
                         <h3>{{#str}}courseincludes, theme_nextgen{{/str}}</h3>
