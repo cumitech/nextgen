@@ -4495,207 +4495,24 @@ body.nextgen .ng-certificate-sample {
   text-transform: uppercase;
 }
 
-body.nextgen .ng-certificate-sheet {
-  background:
-    linear-gradient(#fffdf8, #fffdf8) padding-box,
-    linear-gradient(135deg, #c4a35a, #f4e4b8 45%, #c4a35a) border-box;
-  border: 10px solid transparent;
-  border-radius: 2px;
-  box-shadow: 0 18px 40px rgba(16, 40, 51, 0.12);
-  color: var(--ng-ink);
-  margin: 0 auto;
-  max-width: 42rem;
-  padding: 0.45rem;
-}
-
-body.nextgen .ng-certificate-frame {
-  background:
-    radial-gradient(circle at 50% 0%, rgba(252, 209, 22, 0.18), transparent 16rem),
-    #fffdf8;
-  border: 2px solid #116306;
+body.nextgen .ng-certificate-preview {
+  background: #edf1f3;
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  box-shadow: 0 14px 32px rgba(16, 40, 51, 0.1);
   overflow: hidden;
-  padding: 1.75rem 1.35rem 1.35rem;
-  position: relative;
-  text-align: center;
 }
 
-body.nextgen .ng-certificate-frame::before {
-  align-items: center;
-  color: rgba(196, 163, 90, 0.18);
-  content: attr(data-sample);
-  display: flex;
-  font-size: 3.5rem;
-  font-weight: 800;
-  inset: 28% 0 0;
-  justify-content: center;
-  letter-spacing: 0.18em;
-  pointer-events: none;
-  position: absolute;
-  text-transform: uppercase;
-  transform: rotate(-16deg);
+body.nextgen .ng-certificate-preview iframe {
+  border: 0;
+  display: block;
+  height: min(65vh, 38rem);
+  min-height: 24rem;
+  width: 100%;
 }
 
-body.nextgen .ng-certificate-seal {
-  align-items: center;
-  background: radial-gradient(circle at 40% 35%, #1a7a10, #0a3a03);
-  border: 2px solid #c4a35a;
-  border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(196, 163, 90, 0.28);
-  display: flex;
-  height: 4.25rem;
-  justify-content: center;
-  margin: 0 auto 0.85rem;
-  position: relative;
-  width: 4.25rem;
-  z-index: 1;
-}
-
-body.nextgen .ng-certificate-seal svg {
-  height: 2.35rem;
-  width: 2.35rem;
-}
-
-body.nextgen .ng-certificate-seal circle {
-  fill: none;
-  stroke: #fcd116;
-  stroke-width: 1.5;
-}
-
-body.nextgen .ng-certificate-seal path {
-  fill: none;
-  stroke: #fcd116;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 3;
-}
-
-body.nextgen .ng-certificate-kicker,
-body.nextgen .ng-certificate-issuer,
-body.nextgen .ng-certificate-title,
-body.nextgen .ng-certificate-lead,
-body.nextgen .ng-certificate-name,
-body.nextgen .ng-certificate-completed,
-body.nextgen .ng-certificate-course,
-body.nextgen .ng-certificate-note {
-  margin: 0;
-  position: relative;
-  z-index: 1;
-}
-
-body.nextgen .ng-certificate-kicker {
-  color: #8a5410;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-body.nextgen .ng-certificate-issuer {
-  color: #116306;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  margin-top: 0.2rem;
-  text-transform: uppercase;
-}
-
-body.nextgen .ng-certificate-title {
-  color: #163a4a;
-  font-family: Georgia, "Palatino Linotype", Palatino, serif;
-  font-size: clamp(1.55rem, 3vw, 2.05rem);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  line-height: 1.15;
+body.nextgen .ng-certificate-preview-link {
   margin-top: 0.85rem;
-}
-
-body.nextgen .ng-certificate-rule {
-  background: linear-gradient(90deg, transparent, #c4a35a, transparent);
-  height: 1px;
-  margin: 0.85rem auto 0;
-  max-width: 12rem;
-  position: relative;
-  z-index: 1;
-}
-
-body.nextgen .ng-certificate-rule::after {
-  background: #116306;
-  border-radius: 50%;
-  content: "";
-  height: 0.4rem;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 0.4rem;
-}
-
-body.nextgen .ng-certificate-lead,
-body.nextgen .ng-certificate-completed {
-  color: #5c6770;
-  font-size: 0.92rem;
-  line-height: 1.45;
-}
-
-body.nextgen .ng-certificate-lead {
-  margin-top: 1.15rem;
-}
-
-body.nextgen .ng-certificate-name {
-  border-bottom: 1px solid #e4d3a8;
-  color: #116306;
-  display: inline-block;
-  font-family: Georgia, "Palatino Linotype", Palatino, serif;
-  font-size: clamp(1.45rem, 3vw, 1.85rem);
-  font-style: italic;
-  font-weight: 600;
-  margin-top: 0.35rem;
-  min-width: min(16rem, 100%);
-  padding: 0 0.75rem 0.15rem;
-}
-
-body.nextgen .ng-certificate-completed {
-  margin: 0.85rem auto 0;
-  max-width: 24rem;
-}
-
-body.nextgen .ng-certificate-course {
-  color: #163a4a;
-  font-family: Georgia, "Palatino Linotype", Palatino, serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  line-height: 1.35;
-  margin-top: 0.45rem;
-}
-
-body.nextgen .ng-certificate-signs {
-  display: grid;
-  gap: 1.25rem 2rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 1.8rem auto 0;
-  max-width: 32rem;
-  position: relative;
-  z-index: 1;
-}
-
-body.nextgen .ng-certificate-sign-value {
-  border-bottom: 1px solid #c4a35a;
-  color: #163a4a;
-  display: block;
-  font-family: Georgia, "Palatino Linotype", Palatino, serif;
-  font-size: 0.95rem;
-  font-style: italic;
-  padding-bottom: 0.3rem;
-}
-
-body.nextgen .ng-certificate-sign-label {
-  color: #8a5410;
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  margin-top: 0.4rem;
-  text-transform: uppercase;
 }
 
 body.nextgen .ng-certificate-note,
@@ -4750,16 +4567,188 @@ body.nextgen .ng-certificate-none p:last-child {
 }
 
 @media (max-width: 575.98px) {
-  body.nextgen .ng-certificate-frame {
-    padding: 1.35rem 0.75rem 1.1rem;
+  body.nextgen .ng-certificate-preview iframe {
+    height: 60vh;
+    min-height: 20rem;
+  }
+}
+
+body.nextgen .ng-dash-achievements,
+body.nextgen .ng-dash-certificates {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(16, 40, 51, 0.05);
+  margin-top: 1.25rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+body.nextgen .ng-dash-section-heading {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+body.nextgen .ng-dash-section-heading h2 {
+  color: var(--ng-ink);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+body.nextgen .ng-dash-eyebrow {
+  color: var(--ng-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.2rem;
+  text-transform: uppercase;
+}
+
+body.nextgen .ng-dash-trophies,
+body.nextgen .ng-dash-certificate-list {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.nextgen .ng-dash-trophy {
+  align-items: center;
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  color: var(--ng-ink);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem 0.8rem;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+body.nextgen .ng-dash-trophy:hover,
+body.nextgen .ng-dash-trophy:focus-visible {
+  border-color: var(--ng-primary);
+  box-shadow: 0 10px 22px rgba(16, 40, 51, 0.1);
+  color: var(--ng-ink);
+  transform: translateY(-2px);
+}
+
+body.nextgen .ng-dash-trophy-art {
+  align-items: center;
+  background: var(--ng-muted);
+  border: 1px solid var(--ng-border);
+  border-radius: 50%;
+  display: flex;
+  height: 5.25rem;
+  justify-content: center;
+  margin-bottom: 0.7rem;
+  overflow: hidden;
+  width: 5.25rem;
+}
+
+body.nextgen .ng-dash-trophy-art img {
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+body.nextgen .ng-dash-trophy-name {
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+body.nextgen .ng-dash-trophy-date,
+body.nextgen .ng-dash-achievements-empty {
+  color: var(--ng-text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+
+body.nextgen .ng-dash-certificate-list {
+  grid-template-columns: 1fr;
+}
+
+body.nextgen .ng-dash-certificate {
+  align-items: center;
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+body.nextgen .ng-dash-certificate-info h3 {
+  color: var(--ng-ink);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+body.nextgen .ng-dash-certificate-info p {
+  color: var(--ng-text-muted);
+  margin: 0.25rem 0 0;
+}
+
+body.nextgen .ng-dash-certificate-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+body.nextgen .ng-dash-certificate-share-label {
+  color: var(--ng-text-muted);
+  font-size: 0.85rem;
+  margin-left: 0.35rem;
+}
+
+body.nextgen.path-admin-tool-certificate #region-main .alert-success,
+body.nextgen.path-admin-tool-certificate #region-main .alert-danger {
+  border: 0;
+  border-left: 4px solid;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(16, 40, 51, 0.06);
+  padding: 1rem 1.15rem;
+}
+
+body.nextgen.path-admin-tool-certificate #region-main .alert-success {
+  background: #edf7ef;
+  border-left-color: #218447;
+  color: #174a2a;
+}
+
+body.nextgen.path-admin-tool-certificate #region-main .alert-danger {
+  background: #fff1ef;
+  border-left-color: #c64236;
+  color: #70231d;
+}
+
+body.nextgen.path-admin-tool-certificate #region-main .generaltable {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+@media (max-width: 767.98px) {
+  body.nextgen .ng-dash-section-heading,
+  body.nextgen .ng-dash-certificate {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
-  body.nextgen .ng-certificate-frame::before {
-    font-size: 2.6rem;
-  }
-
-  body.nextgen .ng-certificate-signs {
-    gap: 1rem;
+  body.nextgen .ng-dash-certificate-actions {
+    justify-content: flex-start;
   }
 }
 
@@ -10005,4 +9994,270 @@ body.nextgen .ng-course-index,
 body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section,
 body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen-enrol-checkout) #page.drawers .main-inner {
   background-color: #ffffff;
+}
+
+body.nextgen .alert {
+  border-inline-start: 4px solid currentColor;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+}
+
+body.nextgen .errorbox[data-rel="fatalerror"] {
+  background:
+    radial-gradient(ellipse at 90% 0, rgba(35, 171, 12, 0.07), transparent 38%),
+    var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-inline-start: 4px solid var(--ng-red);
+  border-radius: 20px;
+  box-shadow: var(--ng-shadow-md);
+  margin: clamp(1.5rem, 5vw, 4rem) auto;
+  max-width: 52rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+body.nextgen .errorbox[data-rel="fatalerror"]::before {
+  background: var(--ng-red-soft);
+  border: 1px solid #f3c2c8;
+  border-radius: 999px;
+  color: var(--ng-error);
+  content: "404";
+  display: inline-flex;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin-bottom: 1rem;
+  padding: 0.55rem 0.8rem;
+}
+
+body.nextgen .errorbox[data-rel="fatalerror"] .errormessage {
+  color: var(--ng-text);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+body.nextgen .errorbox[data-rel="fatalerror"] .errorcode {
+  margin: 1.25rem 0 0;
+}
+
+body.nextgen .errorbox[data-rel="fatalerror"] .errorcode a {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 999px;
+  color: var(--ng-brand-dark);
+  display: inline-flex;
+  font-weight: 700;
+  padding: 0.65rem 1rem;
+  text-decoration: none;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+body.nextgen .errorbox[data-rel="fatalerror"] .errorcode a:hover,
+body.nextgen .errorbox[data-rel="fatalerror"] .errorcode a:focus-visible {
+  background: var(--ng-brand-soft);
+  border-color: #b7e0b0;
+  color: var(--ng-brand-ink);
+  text-decoration: none;
+}
+
+body.nextgen .loading-icon .icon {
+  animation: ng-loading-spin 0.9s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes ng-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.nextgen .loading-icon .icon {
+    animation: none;
+  }
+
+  body.nextgen .ng-loadline,
+  body.nextgen .ng-loadline-bar,
+  body.nextgen .errorbox[data-rel="fatalerror"] .errorcode a {
+    transition: none;
+  }
+}
+
+/* Progress and assessment styling uses Moodle's existing state classes. */
+body.nextgen .card.course-card {
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(16, 40, 51, 0.06);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+body.nextgen .card.course-card:hover,
+body.nextgen .card.course-card:focus-within {
+  border-color: #c8d8df;
+  box-shadow: 0 12px 28px rgba(16, 40, 51, 0.11);
+  transform: translateY(-2px);
+}
+
+body.nextgen .card.course-card .ng-course-media,
+body.nextgen .card.course-card .card-img-top {
+  border-radius: 13px 13px 0 0;
+}
+
+body.nextgen .card.course-card .ng-dash-progress-track {
+  background: #e8eef0;
+  height: 0.5rem;
+}
+
+body.nextgen .card.course-card .ng-dash-progress-track > span {
+  background: linear-gradient(90deg, var(--ng-brand-dark), var(--ng-brand));
+  transition: width 0.35s ease;
+}
+
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section .ng-cm.activity-item {
+  border-radius: 12px;
+  margin: 0.15rem 0;
+  padding: 0.85rem 0.9rem;
+  transition: background-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-section .ng-cm.activity-item:hover {
+  background: #f5f8f8;
+  box-shadow: inset 3px 0 0 var(--ng-brand);
+}
+
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-cm .activityiconcontainer {
+  border-radius: 10px;
+}
+
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-cm .activity-completion button,
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-cm .activity-completion a[role="button"] {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-cm .activity-dates,
+body.nextgen.pagelayout-course:not(.editing):not(.single-section-page):not(.nextgen-course) #region-main .ng-cm .activity-description {
+  color: var(--ng-text-muted);
+}
+
+body.nextgen.path-mod-quiz #region-main .que {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(16, 40, 51, 0.06);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+body.nextgen.path-mod-quiz #region-main .que .info {
+  background: #f3f7f6;
+  border: 1px solid #dce8e3;
+  border-radius: 10px;
+  color: var(--ng-ink);
+}
+
+body.nextgen.path-mod-quiz #region-main .que .info span.qno {
+  color: var(--ng-primary);
+}
+
+body.nextgen.path-mod-quiz #region-main .que .formulation {
+  background: #f8faf9;
+  border: 1px solid #e5ece9;
+  border-radius: 12px;
+  color: var(--ng-text);
+}
+
+body.nextgen.path-mod-quiz #region-main .que .outcome,
+body.nextgen.path-mod-quiz #region-main .que .comment {
+  border-radius: 12px;
+}
+
+body.nextgen.path-mod-quiz #region-main .que.correct,
+body.nextgen.path-mod-quiz #region-main .que.answersaved,
+body.nextgen.path-mod-quiz #region-main .que.complete {
+  border-inline-start: 4px solid var(--ng-success);
+}
+
+body.nextgen.path-mod-quiz #region-main .que.partiallycorrect,
+body.nextgen.path-mod-quiz #region-main .que.requiresgrading {
+  border-inline-start: 4px solid var(--ng-warning);
+}
+
+body.nextgen.path-mod-quiz #region-main .que.incorrect,
+body.nextgen.path-mod-quiz #region-main .que.notanswered,
+body.nextgen.path-mod-quiz #region-main .que.invalidanswer {
+  border-inline-start: 4px solid var(--ng-error);
+}
+
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton {
+  border: 1px solid var(--ng-border);
+  border-radius: 9px;
+  color: var(--ng-text);
+  font-weight: 700;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+body.nextgen.path-mod-quiz #mod_quiz_navblock a.qnbutton:focus-visible {
+  outline: 2px solid var(--ng-primary);
+  outline-offset: 2px;
+}
+
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.thispage .thispageholder {
+  border: 2px solid var(--ng-primary);
+  border-radius: 8px;
+}
+
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.correct,
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.correct .trafficlight {
+  background-color: var(--ng-brand-soft);
+}
+
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.answersaved,
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.answersaved .trafficlight,
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.complete,
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.complete .trafficlight {
+  background-color: #e7f2f6;
+}
+
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.partiallycorrect,
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.partiallycorrect .trafficlight {
+  background-color: var(--ng-yellow-soft);
+}
+
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.requiresgrading,
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.requiresgrading .trafficlight {
+  background-color: var(--ng-yellow-soft);
+}
+
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.incorrect,
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.incorrect .trafficlight,
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.notanswered,
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.notanswered .trafficlight {
+  background-color: var(--ng-red-soft);
+}
+
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.notyetanswered,
+body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton.notyetanswered .trafficlight {
+  background-color: var(--ng-surface);
+}
+
+@media (max-width: 767.98px) {
+  body.nextgen.path-mod-quiz #region-main .que {
+    padding: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.nextgen .card.course-card,
+  body.nextgen .card.course-card .ng-dash-progress-track > span,
+  body.nextgen.pagelayout-course #region-main .ng-cm.activity-item,
+  body.nextgen.path-mod-quiz #mod_quiz_navblock .qnbutton {
+    transition: none;
+  }
+
+  body.nextgen .card.course-card:hover,
+  body.nextgen .card.course-card:focus-within {
+    transform: none;
+  }
 }

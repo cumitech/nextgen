@@ -165,7 +165,7 @@ function theme_nextgen_page_init($page) {
  * @return array|null
  */
 function theme_nextgen_dashboard_context(): ?array {
-    global $DB, $PAGE, $USER;
+    global $CFG, $DB, $PAGE, $USER;
 
     if ($PAGE->pagelayout !== 'mydashboard' || !isloggedin() || isguestuser()) {
         return null;
@@ -273,6 +273,74 @@ function theme_nextgen_dashboard_context(): ?array {
         $lastlogin = format_time(max(1, time() - (int) $USER->lastlogin));
     }
 
+    $badges = [];
+    $showbadges = !empty($CFG->enablebadges);
+    if ($showbadges) {
+        require_once($CFG->libdir . '/badgeslib.php');
+        foreach (badges_get_user_badges((int) $USER->id, 0, 0, 6, '', false) as $badge) {
+            $badgecontext = (int) $badge->type === BADGE_TYPE_SITE
+                ? context_system::instance()
+                : context_course::instance((int) $badge->courseid);
+            $badges[] = [
+                'name' => format_string($badge->name, true, [
+                    'context' => $badgecontext,
+                    'escape' => false,
+                ]),
+                'imageurl' => moodle_url::make_pluginfile_url(
+                    $badgecontext->id,
+                    'badges',
+                    'badgeimage',
+                    (int) $badge->id,
+                    '/',
+                    'f1'
+                )->out(false),
+                'issued' => get_string('dashboardbadgeissued', 'theme_nextgen', userdate(
+                    (int) $badge->dateissued,
+                    get_string('strftimedate', 'langconfig')
+                )),
+                'url' => (new moodle_url('/badges/badge.php', ['hash' => $badge->uniquehash]))->out(false),
+            ];
+        }
+    }
+
+    $mycertificates = [];
+    if (class_exists('\tool_certificate\certificate') && class_exists('\tool_certificate\template')) {
+        $issues = \tool_certificate\certificate::get_issues_for_user(
+            (int) $USER->id,
+            0,
+            4,
+            'ci.timecreated DESC, ci.id DESC'
+        );
+        foreach ($issues as $issue) {
+            $verifyurl = \tool_certificate\template::verification_url($issue->code)->out(false);
+            $sharetext = get_string('dashboardcertificatesharetext', 'theme_nextgen', $issue->name);
+            $mycertificates[] = [
+                'name' => format_string($issue->name, true, [
+                    'context' => context::instance_by_id((int) $issue->contextid),
+                    'escape' => false,
+                ]),
+                'coursename' => $issue->coursename ? format_string($issue->coursename) : '',
+                'hascourse' => $issue->coursename !== null && $issue->coursename !== '',
+                'issued' => get_string('dashboardcertificateissued', 'theme_nextgen', userdate(
+                    (int) $issue->timecreated,
+                    get_string('strftimedate', 'langconfig')
+                )),
+                'downloadurl' => \tool_certificate\template::view_url($issue->code)->out(false),
+                'verifyurl' => $verifyurl,
+                'facebookurl' => (new moodle_url('https://www.facebook.com/sharer/sharer.php', [
+                    'u' => $verifyurl,
+                ]))->out(false),
+                'linkedinurl' => (new moodle_url('https://www.linkedin.com/sharing/share-offsite/', [
+                    'url' => $verifyurl,
+                ]))->out(false),
+                'xurl' => (new moodle_url('https://twitter.com/intent/tweet', [
+                    'text' => $sharetext,
+                    'url' => $verifyurl,
+                ]))->out(false),
+            ];
+        }
+    }
+
     return [
         'systemdashboard' => str_ends_with($PAGE->url->get_path(), '/my/indexsys.php'),
         'hello' => get_string('dashboardhello', 'theme_nextgen', $name),
@@ -294,6 +362,13 @@ function theme_nextgen_dashboard_context(): ?array {
         'alloffset' => $offset($all, true),
         'inprogressoffset' => $offset($inprogress),
         'pastoffset' => $offset($past),
+        'showbadges' => $showbadges,
+        'hasbadges' => !empty($badges),
+        'badges' => $badges,
+        'badgesmyurl' => (new moodle_url('/badges/mybadges.php'))->out(false),
+        'hascertificates' => !empty($mycertificates),
+        'mycertificates' => $mycertificates,
+        'allcertificatesurl' => (new moodle_url('/admin/tool/certificate/my.php'))->out(false),
     ];
 }
 
@@ -3909,6 +3984,18 @@ function theme_nextgen_course_detail_context(): ?array {
     $offered = theme_nextgen_certificate_is_offered($extra['ngcertificate'], !empty($certificates));
     $certificatevalue = theme_nextgen_certificate_label($extra['ngcertificate'], $offered);
     $certificatenote = ($offered && $certificatevalue !== get_string('yes')) ? $certificatevalue : '';
+    $certificatepreviewurl = '';
+    if ($offered && class_exists('\tool_certificate\template')) {
+        foreach ($certificates as $certificate) {
+            if (!empty($certificate['templateid'])) {
+                $certificatepreviewurl = (new moodle_url('/theme/nextgen/certificate-preview.php', [
+                    'courseid' => (int) $course->id,
+                    'templateid' => (int) $certificate['templateid'],
+                ]))->out(false);
+                break;
+            }
+        }
+    }
 
     $categoryname = '';
     $category = null;
@@ -4037,6 +4124,9 @@ function theme_nextgen_course_detail_context(): ?array {
         'hascertificate' => $offered,
         'certificatenote' => $certificatenote,
         'certificates' => $certificates,
+        'hascertificatepreview' => $certificatepreviewurl !== '',
+        'certificatepreviewurl' => $certificatepreviewurl,
+        'certificatepreviewtitle' => get_string('certificatepreviewtitle', 'theme_nextgen', $card['fullname']),
         'hasreviews' => !empty($card['hasreviews']),
         'reviewcount' => $card['reviews'] ?? 0,
         'reviewslabel' => $card['reviewslabel'] ?? '',
@@ -4102,7 +4192,7 @@ function theme_nextgen_course_detail_context(): ?array {
  * @return array
  */
 function theme_nextgen_course_outline(core_course_list_element $course, context_course $context): array {
-    global $OUTPUT;
+    global $DB, $OUTPUT;
 
     $sections = [];
     $sectionnames = [];
@@ -4141,10 +4231,21 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
                 'locked' => $islocked,
             ];
             if (in_array($cm->modname, ['customcert', 'certificate', 'coursecertificate'], true)) {
-                $certificates[] = [
+                $certificate = [
                     'name' => $name,
                     'url' => ($cm->uservisible && $cm->url) ? $cm->url->out(false) : '',
                 ];
+                if ($cm->modname === 'coursecertificate'
+                        && $DB->get_manager()->table_exists('coursecertificate')) {
+                    $activity = $DB->get_record('coursecertificate', [
+                        'id' => (int) $cm->instance,
+                        'course' => (int) $course->id,
+                    ], 'template', IGNORE_MISSING);
+                    if ($activity && !empty($activity->template)) {
+                        $certificate['templateid'] = (int) $activity->template;
+                    }
+                }
+                $certificates[] = $certificate;
             }
         }
 

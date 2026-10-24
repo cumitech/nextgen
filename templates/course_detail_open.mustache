@@ -209,38 +209,21 @@
                         <li>{{#str}}certificatefactsample, theme_nextgen{{/str}}</li>
                     </ul>
                 </div>
-                <figure class="ng-certificate">
-                    <figcaption class="ng-certificate-sample">{{#str}}certificatesample, theme_nextgen{{/str}}</figcaption>
-                    <div class="ng-certificate-sheet">
-                        <div class="ng-certificate-frame" data-sample="{{#str}}certificatesamplemark, theme_nextgen{{/str}}">
-                            <div class="ng-certificate-seal" aria-hidden="true">
-                                <svg viewBox="0 0 64 64" width="38" height="38">
-                                    <circle cx="32" cy="32" r="22" fill="none" stroke="#FCD116" stroke-width="1.5"></circle>
-                                    <path d="M22 33.5l6.2 6.2L42 25" fill="none" stroke="#FCD116" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                            </div>
-                            <p class="ng-certificate-kicker">{{#str}}certificatesubtitle, theme_nextgen{{/str}}</p>
-                            <p class="ng-certificate-issuer">{{sitename}}</p>
-                            <p class="ng-certificate-title">{{#str}}certificatetitle, theme_nextgen{{/str}}</p>
-                            <div class="ng-certificate-rule" aria-hidden="true"></div>
-                            <p class="ng-certificate-lead">{{#str}}certificatecertifies, theme_nextgen{{/str}}</p>
-                            <p class="ng-certificate-name">{{#str}}certificatelearner, theme_nextgen{{/str}}</p>
-                            <p class="ng-certificate-completed">{{#str}}certificatecompleted, theme_nextgen{{/str}}</p>
-                            <p class="ng-certificate-course">{{fullname}}</p>
-                            <div class="ng-certificate-signs">
-                                <div class="ng-certificate-sign">
-                                    <span class="ng-certificate-sign-value">{{#str}}certificatesampledate, theme_nextgen{{/str}}</span>
-                                    <span class="ng-certificate-sign-label">{{#str}}certificatedatelabel, theme_nextgen{{/str}}</span>
-                                </div>
-                                <div class="ng-certificate-sign">
-                                    <span class="ng-certificate-sign-value">{{#hasteacher}}{{teacher.name}}{{/hasteacher}}{{^hasteacher}}{{#str}}certificateinstructorname, theme_nextgen{{/str}}{{/hasteacher}}</span>
-                                    <span class="ng-certificate-sign-label">{{#str}}certificateinstructorlabel, theme_nextgen{{/str}}</span>
-                                </div>
-                            </div>
+                {{#hascertificatepreview}}
+                    <figure class="ng-certificate">
+                        <figcaption class="ng-certificate-sample">{{#str}}certificatepreviewlabel, theme_nextgen{{/str}}</figcaption>
+                        <div class="ng-certificate-preview">
+                            <iframe src="{{certificatepreviewurl}}" title="{{certificatepreviewtitle}}" loading="lazy"></iframe>
                         </div>
-                    </div>
-                </figure>
-                <p class="ng-certificate-note">{{#str}}certificatesamplenote, theme_nextgen{{/str}}</p>
+                        <a class="btn btn-outline-primary ng-certificate-preview-link" href="{{certificatepreviewurl}}" target="_blank" rel="noopener">
+                            {{#str}}certificatepreviewopen, theme_nextgen{{/str}}
+                        </a>
+                    </figure>
+                    <p class="ng-certificate-note">{{#str}}certificatepreviewnote, theme_nextgen{{/str}}</p>
+                {{/hascertificatepreview}}
+                {{^hascertificatepreview}}
+                    <p class="ng-certificate-note">{{#str}}certificatepreviewunavailable, theme_nextgen{{/str}}</p>
+                {{/hascertificatepreview}}
                 {{#certificatenote}}
                     <p class="ng-certificate-note">{{certificatenote}}</p>
                 {{/certificatenote}}

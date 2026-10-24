@@ -64,4 +64,63 @@
             </ul>
         </section>
     </div>
+    {{#showbadges}}
+        <section class="ng-dash-achievements" aria-labelledby="ng-dash-achievements-title">
+            <div class="ng-dash-section-heading">
+                <div>
+                    <p class="ng-dash-eyebrow">{{#str}}dashboardachievementeyebrow, theme_nextgen{{/str}}</p>
+                    <h2 id="ng-dash-achievements-title">{{#str}}dashboardachievements, theme_nextgen{{/str}}</h2>
+                </div>
+                <a href="{{badgesmyurl}}">{{#str}}dashboardallbadges, theme_nextgen{{/str}}</a>
+            </div>
+            {{#hasbadges}}
+                <ul class="ng-dash-trophies">
+                    {{#badges}}
+                        <li>
+                            <a class="ng-dash-trophy" href="{{url}}">
+                                <span class="ng-dash-trophy-art">
+                                    <img src="{{imageurl}}" alt="{{name}}" loading="lazy">
+                                </span>
+                                <span class="ng-dash-trophy-name">{{name}}</span>
+                                <span class="ng-dash-trophy-date">{{issued}}</span>
+                            </a>
+                        </li>
+                    {{/badges}}
+                </ul>
+            {{/hasbadges}}
+            {{^hasbadges}}
+                <p class="ng-dash-achievements-empty">{{#str}}dashboardbadgesempty, theme_nextgen{{/str}}</p>
+            {{/hasbadges}}
+        </section>
+    {{/showbadges}}
+    {{#hascertificates}}
+        <section class="ng-dash-certificates" aria-labelledby="ng-dash-certificates-title">
+            <div class="ng-dash-section-heading">
+                <div>
+                    <p class="ng-dash-eyebrow">{{#str}}dashboardcertificateeyebrow, theme_nextgen{{/str}}</p>
+                    <h2 id="ng-dash-certificates-title">{{#str}}dashboardcertificates, theme_nextgen{{/str}}</h2>
+                </div>
+                <a href="{{allcertificatesurl}}">{{#str}}dashboardallcertificates, theme_nextgen{{/str}}</a>
+            </div>
+            <ul class="ng-dash-certificate-list">
+                {{#mycertificates}}
+                    <li class="ng-dash-certificate">
+                        <div class="ng-dash-certificate-info">
+                            <h3>{{name}}</h3>
+                            {{#hascourse}}<p>{{coursename}}</p>{{/hascourse}}
+                            <p class="ng-dash-certificate-issued">{{issued}}</p>
+                        </div>
+                        <div class="ng-dash-certificate-actions">
+                            <a class="btn btn-primary btn-sm" href="{{downloadurl}}" target="_blank" rel="noopener">{{#str}}dashboardcertificatedownload, theme_nextgen{{/str}}</a>
+                            <a class="btn btn-outline-secondary btn-sm" href="{{verifyurl}}" target="_blank" rel="noopener">{{#str}}dashboardcertificateverify, theme_nextgen{{/str}}</a>
+                            <span class="ng-dash-certificate-share-label">{{#str}}dashboardcertificateshare, theme_nextgen{{/str}}</span>
+                            <a href="{{facebookurl}}" target="_blank" rel="noopener noreferrer">{{#str}}dashboardsharefacebook, theme_nextgen{{/str}}</a>
+                            <a href="{{linkedinurl}}" target="_blank" rel="noopener noreferrer">{{#str}}dashboardsharelinkedin, theme_nextgen{{/str}}</a>
+                            <a href="{{xurl}}" target="_blank" rel="noopener noreferrer">{{#str}}dashboardsharex, theme_nextgen{{/str}}</a>
+                        </div>
+                    </li>
+                {{/mycertificates}}
+            </ul>
+        </section>
+    {{/hascertificates}}
 </div>
