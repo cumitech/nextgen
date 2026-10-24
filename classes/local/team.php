@@ -31,7 +31,7 @@ class team {
      *
      * The founder is first, then Favour, Anembom, Tracey, Akumbom, Peter,
      * and Forbe. Remaining doctors follow, then the other members.
-     * Ayeah is last.
+     * Ayeah and Chendjou are last.
      * image is a theme pix path without an extension. founder reuses the About biography.
      * collapse keeps the first paragraph visible and tucks the rest behind Show more.
      * offset frames a photograph whose subject is not in the centre.
@@ -121,6 +121,10 @@ class team {
             'id' => 'ayeah',
             'image' => 'team/ayeah-godlove',
             'collapse' => true,
+        ],
+        [
+            'id' => 'chendjou',
+            'image' => 'team/chendjou-mouafo-ariel-laures',
         ],
     ];
 

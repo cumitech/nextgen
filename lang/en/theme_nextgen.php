@@ -460,7 +460,7 @@ $string['aboutfounderbeyond'] = 'He contributes to entrepreneurship training, ca
 $string['aboutfounderpositionstitle'] = 'Positions held';
 $string['aboutfounderpositions'] = "Technical Adviser to the Rector, University of Bertoua (since August 2025)\nInspector of Services, Ministry of Higher Education (MINESUP)\nDeputy Director, Higher Institute of Commerce and Management\nHead of the Department of Economics and Head of the Accounting Division, University of Bamenda\nLecturer and Researcher, University of Buea";
 $string['aboutparticipantstitle'] = 'Key participants';
-$string['aboutparticipants'] = "Professor Vukenkeng Andrew Wujung\nDr. Akumbom Paul\nDr. Kiambom Tracey\nDr. Forbe Hodu\nApostle Nfor Kilian\nNtsinu Raheal Viwin\nAnembom Francine\nBuemembom Favour Wujung\nAyeah Godlove Akoni\nWulneghewimbom Anguombom Cedrick";
+$string['aboutparticipants'] = "Professor Vukenkeng Andrew Wujung\nDr. Akumbom Paul\nDr. Kiambom Tracey\nDr. Forbe Hodu\nApostle Nfor Kilian\nNtsinu Raheal Viwin\nAnembom Francine\nBuemembom Favour Wujung\nAyeah Godlove Akoni\nWulneghewimbom Anguombom Cedrick\nCHENDJOU MOUAFO ARIEL LAURES";
 $string['aboutparticipantsmore'] = 'And other contributors who support our learners.';
 $string['teamnav'] = 'Team';
 $string['teamkicker'] = 'NextGen Academy';
@@ -485,6 +485,9 @@ $string['teammemberayeahbio'] = 'Mr Ayeah Godlove Akoni is a Cameroonian IT prof
     'His infrastructure-related competencies include Linux and Windows environments, server deployment and maintenance, web server configuration, DNS, SSL/TLS certificates, remote server administration, application hosting, access control, backups and troubleshooting. His academic background in computer networking and systems maintenance further supports his work in connectivity troubleshooting, computer hardware and software maintenance, operating systems, network configuration and user technical support.' . "\n\n" .
     'In addition to his technical implementation experience, Mr Akoni has worked in tutoring and mentoring, helping learners understand web development, backend programming, databases, APIs and software development practices. This experience strengthens his ability to communicate technical concepts, support users, explain solutions and work collaboratively.' . "\n\n" .
     'He is positioned to contribute to organisations that require a versatile IT professional capable of working across software development, IT operations, systems support, networking and digital infrastructure. His combination of academic training and practical software and systems experience is particularly relevant to IT departments, technology service providers, enterprise IT environments and telecommunications organisations.';
+$string['teammemberchendjouname'] = 'CHENDJOU MOUAFO ARIEL LAURES';
+$string['teammemberchendjourole'] = 'Research and information management professional';
+$string['teammemberchendjoubio'] = 'CHENDJOU MOUAFO ARIEL LAURES is a versatile professional with skills in research, data collection and analysis, report writing, and information management. He is proficient in Microsoft Word and Excel, with strong communication, problem-solving, organizational, and teamwork skills. He is committed to continuous learning and professional development.';
 $string['teammemberetamename'] = 'Etame Vivien Millan';
 $string['teammemberetamerole'] = 'Technico-commercial';
 $string['teammemberetamebio'] = 'Technico-commercial spécialisé en assistance commerciale digitale, fort de plus de huit ans d\'expérience dans la vente/closing en ligne, le suivi client (online et offline) et en campagnes publicitaires digitales.' . "\n\n" .
