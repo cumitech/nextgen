@@ -9913,8 +9913,16 @@ body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen
   padding: 0.85rem 1.35rem 1.35rem;
 }
 
-body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen-enrol-checkout) #page.drawers:not(.show-drawer-left) .main-inner {
-  padding-left: 4.25rem;
+@media (min-width: 768px) {
+  body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen-enrol-checkout) #page.drawers:not(.show-drawer-left) .main-inner {
+    padding-left: 4.25rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course):not(.nextgen-enrol-checkout) #page.drawers .main-inner {
+    padding: 0.5rem;
+  }
 }
 
 body.nextgen.pagelayout-incourse:not(.editing):not(.nextgen-course) #page.drawers #region-main.ng-main,
