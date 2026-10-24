@@ -21,15 +21,13 @@
     Course blocks below this stay on Moodle's own overview.
 }}
 <div class="ng-dash">
-    <header class="ng-dash-hero">
+    <header class="ng-dash-hero{{#systemdashboard}} ng-dash-hero-system{{/systemdashboard}}">
+        {{{ output.full_header }}}
         <svg class="ng-dash-hero-hills" viewBox="0 0 960 240" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
             <path class="ng-dash-hill ng-dash-hill-back" d="M520 150c70-48 140-48 220-18 50 18 90 18 140 4 40-12 70-28 80-36v140H520z"/>
             <path class="ng-dash-hill ng-dash-hill-mid" d="M430 176c80-36 150-20 230 8 60 20 120 16 180-8 40-16 80-36 120-40v104H430z"/>
             <path class="ng-dash-hill ng-dash-hill-front" d="M360 198c90-24 160-8 250 16 70 18 140 10 210-12 50-16 90-28 140-24v62H360z"/>
         </svg>
-        <div class="ng-dash-hero-copy">
-            <h1>{{title}}</h1>
-        </div>
     </header>
     <div class="ng-dash-grid">
         <section class="ng-dash-card">

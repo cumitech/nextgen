@@ -274,7 +274,7 @@ function theme_nextgen_dashboard_context(): ?array {
     }
 
     return [
-        'title' => get_string('myhome'),
+        'systemdashboard' => str_ends_with($PAGE->url->get_path(), '/my/indexsys.php'),
         'hello' => get_string('dashboardhello', 'theme_nextgen', $name),
         'today' => get_string('dashboardtoday', 'theme_nextgen', userdate(time(), get_string('strftimedaydate', 'langconfig'))),
         'haslastlogin' => $lastlogin !== '',

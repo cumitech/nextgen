@@ -1388,12 +1388,7 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
 
   body.nextgen.nextgen-dashboard .ng-dash-hero {
     border-radius: 0;
-    min-height: 8.5rem;
-    padding: 1.2rem 1rem 1.5rem;
-  }
-
-  body.nextgen.nextgen-dashboard .ng-dash-hero-copy {
-    max-width: none;
+    padding: 0;
   }
 
   body.nextgen.nextgen-dashboard .ng-dash-rings {
@@ -7730,31 +7725,112 @@ body.nextgen .ng-dash-hero-hills {
   position: absolute;
   right: 0;
   width: min(72%, 54rem);
+  z-index: 0;
 }
 
 body.nextgen .ng-dash-hero-hills path {
   fill: rgba(255, 255, 255, 0.16);
 }
 
-body.nextgen .ng-dash-hero-copy {
-  align-items: flex-end;
+body.nextgen.nextgen-dashboard .ng-dash-hero #page-header {
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   margin: 0 auto;
-  max-width: 76rem;
-  min-height: 12rem;
-  padding: 2.25rem 1rem 3.5rem;
+  max-width: min(76rem, 100%);
+  min-height: 18rem;
+  padding: 1.25rem 1.5rem 3.5rem;
   position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero #page-navbar,
+body.nextgen.nextgen-dashboard .ng-dash-hero .breadcrumb,
+body.nextgen.nextgen-dashboard .ng-dash-hero .breadcrumb a,
+body.nextgen.nextgen-dashboard .ng-dash-hero .breadcrumb-item.active,
+body.nextgen.nextgen-dashboard .ng-dash-hero .breadcrumb-item + .breadcrumb-item::before,
+body.nextgen.nextgen-dashboard .ng-dash-hero .page-context-header,
+body.nextgen.nextgen-dashboard .ng-dash-hero .page-context-header h1 {
+  color: #fff;
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero .breadcrumb a:hover,
+body.nextgen.nextgen-dashboard .ng-dash-hero .breadcrumb a:focus-visible {
+  color: #fff;
+  text-decoration: underline;
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero #page-header .btn-primary {
+  background: #fff;
+  border-color: #fff;
+  color: var(--ng-ink);
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero #page-header .btn-primary:hover,
+body.nextgen.nextgen-dashboard .ng-dash-hero #page-header .btn-primary:focus-visible {
+  background: var(--ng-muted);
+  border-color: var(--ng-muted);
+  color: var(--ng-ink);
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero #page-header .w-100 {
+  box-sizing: border-box;
   width: 100%;
 }
 
-body.nextgen .ng-dash-hero h1 {
+body.nextgen.nextgen-dashboard .ng-dash-hero #page-header > .w-100 > .d-flex.align-items-center {
+  bottom: 3.5rem;
+  left: 1.5rem;
+  margin: 0;
+  position: absolute;
+  right: 1.5rem;
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero #page-header .page-context-header {
+  margin-bottom: 0.5rem !important;
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero #page-header .page-header-headings h1 {
   color: #fff;
-  font-size: clamp(1.75rem, 6vw, 2.4rem);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 700;
   letter-spacing: -0.03em;
+  line-height: 1.15;
   margin: 0;
   overflow-wrap: anywhere;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero-system #page-header > .w-100 > .d-flex.flex-wrap > .ms-auto.d-flex {
+  margin: 0 !important;
+  position: absolute;
+  right: 1.5rem;
+  top: 1.25rem;
+  z-index: 2;
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero-system #page-header > .w-100 > .d-flex.flex-wrap > #page-navbar {
+  max-width: calc(100% - 16rem);
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero-system #page-header .singlebutton form {
+  margin: 0;
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero-system #page-header .singlebutton .btn-secondary {
+  background: #fff;
+  border-color: #fff;
+  color: var(--ng-ink);
+  font-weight: 700;
+  white-space: normal;
+}
+
+body.nextgen.nextgen-dashboard .ng-dash-hero-system #page-header .singlebutton .btn-secondary:hover,
+body.nextgen.nextgen-dashboard .ng-dash-hero-system #page-header .singlebutton .btn-secondary:focus-visible {
+  background: var(--ng-muted);
+  border-color: var(--ng-muted);
+  color: var(--ng-ink);
 }
 
 body.nextgen .ng-dash-grid {
@@ -7872,6 +7948,32 @@ body.nextgen .ng-dash-ring-value {
     width: 100%;
   }
 
+  body.nextgen.nextgen-dashboard .ng-dash-hero #page-header {
+    min-height: 13rem;
+    padding: 1rem 1rem 2.5rem;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-hero #page-header > .w-100 > .d-flex.align-items-center {
+    bottom: 2.5rem;
+    left: 1rem;
+    right: 1rem;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-hero-system #page-header > .w-100 > .d-flex.flex-wrap > .ms-auto.d-flex {
+    right: 1rem;
+    top: 1rem;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-hero-system #page-header > .w-100 > .d-flex.flex-wrap > #page-navbar {
+    max-width: calc(100% - 9rem);
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-hero-system #page-header .singlebutton .btn-secondary {
+    font-size: 0.8rem;
+    max-width: 9rem;
+    padding: 0.45rem 0.6rem;
+  }
+
   body.nextgen .ng-dash-ring-wrap {
     max-width: 100%;
   }
@@ -7879,12 +7981,6 @@ body.nextgen .ng-dash-ring-value {
 
 @media (min-width: 768px) {
   body.nextgen.nextgen-dashboard #page-content {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-
-  body.nextgen .ng-dash-hero-copy {
-    min-height: 14.5rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
@@ -7923,12 +8019,15 @@ body.nextgen .ng-dash-ring-value {
   }
 
   body.nextgen.nextgen-dashboard #page-content,
-  body.nextgen.nextgen-dashboard .ng-dash-grid,
-  body.nextgen.nextgen-dashboard .ng-dash-hero-copy {
+  body.nextgen.nextgen-dashboard .ng-dash-grid {
     margin-left: auto;
     margin-right: auto;
     max-width: #{"min(76rem, 78%)"};
     width: 100%;
+  }
+
+  body.nextgen.nextgen-dashboard .ng-dash-hero #page-header {
+    max-width: #{"min(76rem, 78%)"};
   }
 }
 
