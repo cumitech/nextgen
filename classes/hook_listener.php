@@ -83,9 +83,44 @@ class hook_listener {
             }
         }
         if (!during_initial_install()) {
+            self::extend_transactions($primary);
             self::extend_blog($primary);
             \theme_nextgen\local\public_page::extend_primary($primary);
             theme_nextgen_add_category_menu($primary);
+        }
+    }
+
+    /**
+     * Add the signed-in user's Campay transactions to the primary navigation.
+     *
+     * @param \navigation_node $primary
+     */
+    private static function extend_transactions(\navigation_node $primary): void {
+        global $PAGE;
+
+        if (!isloggedin() || isguestuser()) {
+            return;
+        }
+
+        $url = new \moodle_url('/payment/gateway/campay/history.php');
+        $node = null;
+        foreach ($primary->children as $child) {
+            if ($child->action instanceof \moodle_url && $child->action->compare($url, URL_MATCH_BASE)) {
+                $node = $child;
+                break;
+            }
+        }
+        if ($node === null) {
+            $node = $primary->add(
+                get_string('mytransactions', 'theme_nextgen'),
+                $url,
+                \navigation_node::TYPE_CUSTOM,
+                null,
+                'nextgen-mytransactions'
+            );
+        }
+        if ($node && $node->action instanceof \moodle_url) {
+            $node->isactive = $node->action->compare($PAGE->url, URL_MATCH_BASE);
         }
     }
 

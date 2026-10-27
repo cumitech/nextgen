@@ -118,6 +118,9 @@
                 <div class="ng-events-grid">
                     {{#events}}
                         <article class="ng-event-card{{#iscancelled}} is-cancelled{{/iscancelled}}">
+                            {{#hasimage}}
+                                <img class="ng-event-card-image" src="{{imageurl}}" alt="{{title}}" loading="lazy">
+                            {{/hasimage}}
                             <div class="ng-event-card-top">
                                 <div class="ng-event-date" aria-label="{{startdate}}">
                                     <span>{{month}}</span>

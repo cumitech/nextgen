@@ -97,6 +97,7 @@ class events {
             'eventtype' => $metadata['eventtype'] ?? 'other',
             'delivery' => $metadata['delivery'] ?? 'online',
             'summary' => $metadata['summary'] ?? self::description_summary($event),
+            'imageurl' => $metadata['imageurl'] ?? '',
             'description' => self::description_text($event),
             'timestart' => $start,
             'timeend' => $start + (int) $event->timeduration,
@@ -119,12 +120,14 @@ class events {
 
         require_once($CFG->dirroot . '/calendar/lib.php');
         $registrationurl = self::safe_registration_url((string) $data->registrationurl);
+        $imageurl = self::safe_event_image_url((string) $data->imageurl);
         $description = self::description_with_metadata(
             trim((string) $data->description),
             [
                 'eventtype' => (string) $data->eventtype,
                 'delivery' => (string) $data->delivery,
                 'summary' => trim((string) $data->summary),
+                'imageurl' => $imageurl,
                 'cost' => trim((string) $data->cost),
                 'registrationurl' => $registrationurl,
                 'status' => (int) $data->status,
@@ -500,6 +503,8 @@ class events {
                 'escape' => false,
             ]),
             'summary' => (string) ($metadata['summary'] ?? self::description_summary($event)),
+            'imageurl' => self::safe_event_image_url((string) ($metadata['imageurl'] ?? '')),
+            'hasimage' => self::safe_event_image_url((string) ($metadata['imageurl'] ?? '')) !== '',
             'type' => self::types()[$metadata['eventtype'] ?? 'other'] ?? self::types()['other'],
             'delivery' => self::deliveries()[$metadata['delivery'] ?? 'online'] ?? self::deliveries()['online'],
             'startdate' => userdate($start, get_string('strftimedaydate', 'langconfig')),
@@ -697,6 +702,26 @@ class events {
      * @return string
      */
     public static function safe_registration_url(string $url): string {
+        return self::safe_http_url($url);
+    }
+
+    /**
+     * Only allow web URLs for event images.
+     *
+     * @param string $url
+     * @return string
+     */
+    public static function safe_event_image_url(string $url): string {
+        return self::safe_http_url($url);
+    }
+
+    /**
+     * Only allow HTTP and HTTPS URLs.
+     *
+     * @param string $url
+     * @return string
+     */
+    private static function safe_http_url(string $url): string {
         $url = trim($url);
         if ($url === '') {
             return '';

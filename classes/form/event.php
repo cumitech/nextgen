@@ -54,6 +54,13 @@ class event extends \moodleform {
         $mform->addRule('summary', get_string('required'), 'required', null, 'client');
         $mform->addRule('summary', get_string('maximumchars', '', 280), 'maxlength', 280, 'client');
 
+        $mform->addElement('text', 'imageurl', get_string('eventimage', 'theme_nextgen'), [
+            'size' => 64,
+            'placeholder' => 'https://',
+        ]);
+        $mform->setType('imageurl', PARAM_URL);
+        $mform->addHelpButton('imageurl', 'eventimage', 'theme_nextgen');
+
         $mform->addElement('textarea', 'description', get_string('eventdescription', 'theme_nextgen'), [
             'rows' => 8,
             'cols' => 64,
@@ -106,6 +113,11 @@ class event extends \moodleform {
         $url = trim((string) ($data['registrationurl'] ?? ''));
         if ($url !== '' && \theme_nextgen\local\events::safe_registration_url($url) === '') {
             $errors['registrationurl'] = get_string('eventregistrationinvalid', 'theme_nextgen');
+        }
+
+        $imageurl = trim((string) ($data['imageurl'] ?? ''));
+        if ($imageurl !== '' && \theme_nextgen\local\events::safe_event_image_url($imageurl) === '') {
+            $errors['imageurl'] = get_string('eventimageinvalid', 'theme_nextgen');
         }
 
         return $errors;

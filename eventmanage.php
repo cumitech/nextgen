@@ -64,6 +64,7 @@ $record = $id
         'eventtype' => 'seminar',
         'delivery' => 'online',
         'summary' => '',
+        'imageurl' => '',
         'description' => '',
         'timestart' => time() + DAYSECS,
         'timeend' => time() + DAYSECS + HOURSECS,
