@@ -8017,6 +8017,10 @@ body.nextgen .ng-dash-ring-value {
     width: 100%;
   }
 
+  body.nextgen.nextgen-dashboard .ng-dash-achievements {
+    width: calc(100% - 3rem);
+  }
+
   body.nextgen.nextgen-dashboard .ng-dash-hero #page-header {
     max-width: #{"min(76rem, 78%)"};
   }

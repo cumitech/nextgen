@@ -84,7 +84,105 @@ class core_renderer extends \theme_boost\output\core_renderer {
         $html = parent::standard_head_html();
         $html = preg_replace('/<meta\b[^>]*name=["\']apple-itunes-app["\'][^>]*>/i', '', $html);
         $html = preg_replace('/<link\b[^>]*rel=["\']manifest["\'][^>]*mobile\.webmanifest\.php[^>]*>/i', '', $html);
-        return is_string($html) ? $html : '';
+        if (!is_string($html)) {
+            return '';
+        }
+        return $html . $this->seo_head_html();
+    }
+
+    /**
+     * SEO metadata for public pages and noindex directives for LMS pages.
+     *
+     * @return string
+     */
+    private function seo_head_html(): string {
+        global $PAGE;
+
+        $pagetype = (string) $PAGE->pagetype;
+        $path = $PAGE->url->get_path();
+        $canonical = null;
+        $description = '';
+        $publicpaths = [
+            '/about.php',
+            '/team.php',
+            '/contact.php',
+            '/privacy.php',
+            '/terms.php',
+            '/refund.php',
+            '/accessibility.php',
+            '/faq.php',
+            '/blog/index.php',
+        ];
+        $ispublic = false;
+
+        if ($PAGE->pagelayout === 'frontpage' && !$PAGE->user_is_editing()) {
+            $theme = \theme_config::load('nextgen');
+            $description = \theme_nextgen_localised_setting($theme, 'herotext', 'herotextdefault');
+            $canonical = new moodle_url('/');
+            $ispublic = true;
+        } else if (str_starts_with($pagetype, 'course-index')) {
+            $categoryid = optional_param('categoryid', 0, PARAM_INT);
+            if ($categoryid > 0) {
+                $category = \core_course_category::get($categoryid);
+                $formatted = format_text($category->description, $category->descriptionformat, [
+                    'context' => $category->get_context(),
+                    'filter' => false,
+                ]);
+                $description = theme_nextgen_text_excerpt(html_to_text($formatted, 0, false), 160);
+                if ($description === '') {
+                    $description = get_string(
+                        'seo_category_description',
+                        'theme_nextgen',
+                        $category->get_formatted_name()
+                    );
+                }
+                $canonical = new moodle_url('/course/index.php', ['categoryid' => $categoryid]);
+            } else if (optional_param('browse', '', PARAM_ALPHA) === 'categories') {
+                $description = get_string('seo_categories_description', 'theme_nextgen');
+                $canonical = new moodle_url('/course/index.php', ['browse' => 'categories']);
+            } else {
+                $description = get_string('seo_catalogue_description', 'theme_nextgen');
+                $canonical = new moodle_url('/course/index.php');
+            }
+            $description = theme_nextgen_text_excerpt($description, 160);
+            $ispublic = true;
+        } else if ($pagetype === 'theme-nextgen-course' && !empty($PAGE->course->id)) {
+            $course = $PAGE->course;
+            $context = \context_course::instance((int) $course->id);
+            $formatted = format_text($course->summary, $course->summaryformat, [
+                'context' => $context,
+                'filter' => false,
+            ]);
+            $description = theme_nextgen_text_excerpt(html_to_text($formatted, 0, false), 160);
+            if ($description === '') {
+                $description = get_string('seo_course_description', 'theme_nextgen', $course->fullname);
+            }
+            $canonical = new moodle_url('/course/view.php', ['id' => (int) $course->id]);
+            $ispublic = true;
+        } else if (in_array($path, $publicpaths, true)) {
+            $ispublic = true;
+        }
+
+        if ($PAGE->user_is_editing()) {
+            $ispublic = false;
+        }
+        $html = html_writer::empty_tag('meta', [
+            'name' => 'robots',
+            'content' => $ispublic ? 'index, follow' : 'noindex, follow',
+        ]);
+        if ($description !== '') {
+            $html .= html_writer::empty_tag('meta', [
+                'name' => 'description',
+                'content' => theme_nextgen_text_excerpt($description, 160),
+            ]);
+        }
+        if ($canonical && $ispublic) {
+            $html .= html_writer::empty_tag('link', [
+                'rel' => 'canonical',
+                'href' => $canonical->out(false),
+            ]);
+        }
+        return $html;
     }
 
     /**

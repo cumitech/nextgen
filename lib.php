@@ -96,6 +96,8 @@ function theme_nextgen_page_init($page) {
     $page->add_body_class('nextgen');
     if ($page->pagelayout === 'frontpage' && !$page->user_is_editing()) {
         $page->add_body_class('nextgen-landing');
+        $theme = theme_config::load('nextgen');
+        $page->set_title(theme_nextgen_localised_setting($theme, 'herotitle', 'herotitledefault'));
     }
     if (str_starts_with((string) $page->pagetype, 'course-index')) {
         $page->add_body_class('nextgen-catalogue');
@@ -274,7 +276,25 @@ function theme_nextgen_dashboard_context(): ?array {
     }
 
     $badges = [];
-    $showbadges = !empty($CFG->enablebadges);
+    $showbadges = !empty($CFG->enablebadges) && !is_siteadmin($USER);
+    if ($showbadges) {
+        $hasstudentrole = false;
+        $hasteachingrole = false;
+        foreach ($courses as $course) {
+            $roles = get_user_roles(context_course::instance((int) $course->id), (int) $USER->id);
+            foreach ($roles as $role) {
+                if ($role->archetype === 'student') {
+                    $hasstudentrole = true;
+                } else if (in_array($role->archetype, ['editingteacher', 'teacher', 'manager'], true)) {
+                    $hasteachingrole = true;
+                }
+            }
+            if ($hasteachingrole) {
+                break;
+            }
+        }
+        $showbadges = $hasstudentrole && !$hasteachingrole;
+    }
     if ($showbadges) {
         require_once($CFG->libdir . '/badgeslib.php');
         foreach (badges_get_user_badges((int) $USER->id, 0, 0, 6, '', false) as $badge) {

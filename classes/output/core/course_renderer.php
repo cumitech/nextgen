@@ -33,6 +33,16 @@ class course_renderer extends \core_course_renderer {
     #[\Override]
     public function course_category($category) {
         $context = theme_nextgen_catalogue_context();
+        $categoryid = optional_param('categoryid', 0, PARAM_INT);
+        if ($categoryid > 0) {
+            $category = \core_course_category::get($categoryid);
+            $title = $category->get_formatted_name() . ' ' . get_string('courses');
+        } else if (optional_param('browse', '', PARAM_ALPHA) === 'categories') {
+            $title = get_string('categories');
+        } else {
+            $title = get_string('courses');
+        }
+        $this->page->set_title($title);
         $html = $this->render_from_template('theme_nextgen/catalogue_hero', $context);
         $html .= $this->render_from_template('theme_nextgen/catalogue_search', $context);
         $html .= $this->render_from_template('theme_nextgen/catalogue_body', $context);
