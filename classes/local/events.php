@@ -120,7 +120,7 @@ class events {
 
         require_once($CFG->dirroot . '/calendar/lib.php');
         $registrationurl = self::safe_registration_url((string) $data->registrationurl);
-        $imageurl = self::safe_event_image_url((string) $data->imageurl);
+        $imageurl = self::safe_event_image_url((string) ($data->imageurl ?? ''));
         $description = self::description_with_metadata(
             trim((string) $data->description),
             [
@@ -495,6 +495,7 @@ class events {
         $end = $start + (int) $event->timeduration;
         $status = self::status($event, $metadata);
         $venue = (string) ($event->location ?? '');
+        $imageurl = self::safe_event_image_url((string) ($metadata['imageurl'] ?? ''));
 
         return [
             'id' => (int) $event->id,
@@ -503,8 +504,8 @@ class events {
                 'escape' => false,
             ]),
             'summary' => (string) ($metadata['summary'] ?? self::description_summary($event)),
-            'imageurl' => self::safe_event_image_url((string) ($metadata['imageurl'] ?? '')),
-            'hasimage' => self::safe_event_image_url((string) ($metadata['imageurl'] ?? '')) !== '',
+            'imageurl' => $imageurl,
+            'hasimage' => $imageurl !== '',
             'type' => self::types()[$metadata['eventtype'] ?? 'other'] ?? self::types()['other'],
             'delivery' => self::deliveries()[$metadata['delivery'] ?? 'online'] ?? self::deliveries()['online'],
             'startdate' => userdate($start, get_string('strftimedaydate', 'langconfig')),
