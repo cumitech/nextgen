@@ -88,6 +88,28 @@ function theme_nextgen_strip_mobile_app_promo($html, $lang = '') {
 }
 
 /**
+ * Add payment history to the current user's profile navigation.
+ *
+ * @param \core_user\output\myprofile\tree $tree
+ * @param stdClass $user
+ * @param bool $iscurrentuser
+ * @param stdClass|null $course
+ */
+function theme_nextgen_myprofile_navigation($tree, $user, $iscurrentuser, $course = null) {
+    if (!$iscurrentuser || !isloggedin() || isguestuser()) {
+        return;
+    }
+
+    $tree->add_node(new \core_user\output\myprofile\node(
+        'miscellaneous',
+        'paymenthistory',
+        get_string('paymenthistory', 'theme_nextgen'),
+        null,
+        new moodle_url('/payment/gateway/campay/history.php')
+    ));
+}
+
+/**
  * Add the theme body class used by the shell stylesheet.
  *
  * @param moodle_page $page
@@ -150,6 +172,7 @@ function theme_nextgen_page_init($page) {
 
     if ($page->pagelayout === 'frontpage' && !$page->user_is_editing()) {
         $page->requires->js_call_amd('theme_nextgen/faculty', 'init');
+        $page->requires->js_call_amd('theme_nextgen/eventschedule', 'init');
     }
     $page->requires->js_call_amd('theme_nextgen/loadline', 'init');
     $page->requires->js_call_amd('theme_nextgen/showmore', 'init');
@@ -1001,17 +1024,18 @@ function theme_nextgen_publish_public_paths(): void {
     if (during_initial_install() || empty($CFG->dirroot)) {
         return;
     }
-    if (get_config('theme_nextgen', 'publicpathrev') === '2026102401') {
+    if (get_config('theme_nextgen', 'publicpathrev') === '2026102700') {
         return;
     }
 
     $ready = theme_nextgen_retire_public_scripts();
     $ready = theme_nextgen_ensure_public_scripts() && $ready;
+    $ready = theme_nextgen_ensure_event_scripts() && $ready;
     $ready = theme_nextgen_ensure_learn_script() && $ready;
     $ready = theme_nextgen_ensure_public_rewrites() && $ready;
     theme_nextgen_rewrite_public_urls();
     if ($ready) {
-        set_config('publicpathrev', '2026102401', 'theme_nextgen');
+        set_config('publicpathrev', '2026102700', 'theme_nextgen');
     }
 }
 
@@ -1135,6 +1159,82 @@ PHP;
 }
 
 /**
+ * Publish the events listing, details, and staff editor at the Moodle site root.
+ *
+ * Existing scripts not created by this theme are never overwritten.
+ *
+ * @return bool
+ */
+function theme_nextgen_ensure_event_scripts(): bool {
+    global $CFG;
+
+    $ready = true;
+    foreach (['events', 'event', 'eventmanage'] as $key) {
+        $path = $CFG->dirroot . DIRECTORY_SEPARATOR . $key . '.php';
+        if (is_file($path)) {
+            $head = (string) file_get_contents($path, false, null, 0, 900);
+            if (!str_contains($head, 'theme_nextgen public event:')) {
+                continue;
+            }
+            if (str_contains($head, "theme/nextgen/{$key}.php")) {
+                continue;
+            }
+        }
+
+        $source = theme_nextgen_event_script_source($key);
+        if (file_put_contents($path, $source) === false) {
+            $ready = false;
+        }
+    }
+
+    return $ready;
+}
+
+/**
+ * PHP source for one site-root event script.
+ *
+ * @param string $key
+ * @return string
+ */
+function theme_nextgen_event_script_source(string $key): string {
+    if (!in_array($key, ['events', 'event', 'eventmanage'], true)) {
+        throw new coding_exception('Unknown event script ' . $key);
+    }
+
+    return <<<PHP
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * theme_nextgen public event: {$key}
+ *
+ * @package    core
+ * @copyright  2026 NextGen LMS
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+require(__DIR__ . '/config.php');
+
+defined('MOODLE_INTERNAL') || die();
+
+require(\$CFG->dirroot . '/theme/nextgen/{$key}.php');
+PHP;
+}
+
+/**
  * Write the site-root learn.php that serves readable module addresses.
  *
  * A file that is already there and was not created for this theme is left alone.
@@ -1217,7 +1317,7 @@ function theme_nextgen_ensure_public_rewrites(): bool {
     $path = $CFG->dirroot . DIRECTORY_SEPARATOR . '.htaccess';
     $start = '# theme_nextgen public pages';
     $end = '# end theme_nextgen public pages';
-    $keys = implode('|', \theme_nextgen\local\public_page::keys());
+    $keys = implode('|', array_merge(\theme_nextgen\local\public_page::keys(), ['events']));
     $prefix = parse_url($CFG->wwwroot, PHP_URL_PATH);
     if (!is_string($prefix) || $prefix === '/') {
         $prefix = '';
@@ -1400,6 +1500,7 @@ function theme_nextgen_landing_context(): array {
         'hassecondary' => !empty($secondary),
         'secondary' => $secondary[0] ?? null,
         'stats' => \theme_nextgen\local\platform_stats::for_landing(),
+        'events' => \theme_nextgen\local\events::landing_schedule(),
         'hascourses' => !empty($courses),
         'courses' => $courses,
         'hascategories' => !empty($categories),

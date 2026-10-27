@@ -23,7 +23,7 @@
 <article class="ng-public ng-contact">
     <header class="ng-public-hero ng-contact-hero">
         <div class="ng-landing-inner ng-contact-wrap">
-            {{{navbar}}}
+            {{> theme_nextgen/public_breadcrumbs }}
             <h1 class="ng-public-title">{{title}}</h1>
             <p class="ng-public-intro">{{intro}}</p>
         </div>
@@ -95,9 +95,7 @@
 <article class="ng-public{{#islegal}} ng-legal{{/islegal}}{{#isfaq}} ng-faq-page{{/isfaq}}">
     <header class="ng-public-hero">
         <div class="ng-landing-inner ng-public-wrap">
-            {{{navbar}}}
-            {{#islegal}}<p class="ng-kicker ng-legal-kicker">{{kicker}}</p>{{/islegal}}
-            {{#isfaq}}<p class="ng-kicker ng-legal-kicker">{{kicker}}</p>{{/isfaq}}
+            {{> theme_nextgen/public_breadcrumbs }}
             <h1 class="ng-public-title">{{title}}</h1>
             <p class="ng-public-intro">{{intro}}</p>
         </div>

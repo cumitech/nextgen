@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool
  */
 function xmldb_theme_nextgen_upgrade($oldversion) {
-    global $DB;
+    global $CFG, $DB;
 
     if ($oldversion < 2026100106) {
         theme_nextgen_install_commercial_fields();
@@ -132,6 +132,23 @@ function xmldb_theme_nextgen_upgrade($oldversion) {
         theme_nextgen_publish_public_paths();
         get_string_manager()->reset_caches();
         upgrade_plugin_savepoint(true, 2026102400, 'theme', 'nextgen');
+    }
+
+    if ($oldversion < 2026102700) {
+        upgrade_plugin_savepoint(true, 2026102700, 'theme', 'nextgen');
+    }
+
+    if ($oldversion < 2026102800) {
+        $dbman = $DB->get_manager();
+        $eventtable = new xmldb_table('theme_nextgen_event');
+        if ($dbman->table_exists($eventtable)) {
+            require_once($CFG->dirroot . '/calendar/lib.php');
+            foreach ($DB->get_records('theme_nextgen_event') as $event) {
+                \theme_nextgen\local\events::migrate_legacy_event($event);
+            }
+            $dbman->drop_table($eventtable);
+        }
+        upgrade_plugin_savepoint(true, 2026102800, 'theme', 'nextgen');
     }
 
     return true;

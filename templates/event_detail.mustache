@@ -1,0 +1,76 @@
+{{!
+    Public detail page for one event.
+}}
+<main class="ng-events-page ng-event-detail-page">
+    <header class="ng-public-hero ng-events-hero ng-event-detail-hero">
+        <div class="ng-landing-inner ng-events-wrap">
+            <nav class="ng-public-breadcrumb" aria-label="{{#str}}breadcrumb, access{{/str}}">
+                <ol>
+                    <li><a href="{{homeurl}}">{{#str}}home{{/str}}</a></li>
+                    <li><a href="{{eventsurl}}">{{#str}}eventnav, theme_nextgen{{/str}}</a></li>
+                    <li aria-current="page">{{event.title}}</li>
+                </ol>
+            </nav>
+            <p class="ng-events-kicker">{{event.type}} <span aria-hidden="true">·</span> {{event.delivery}}</p>
+            <h1 class="ng-public-title">{{event.title}}</h1>
+            <p class="ng-public-intro">{{event.summary}}</p>
+        </div>
+    </header>
+
+    <section class="ng-event-detail-content">
+        <div class="ng-landing-inner ng-events-wrap ng-event-detail-grid">
+            <article class="ng-event-description">
+                {{#iscancelled}}
+                    <p class="ng-event-notice is-cancelled">{{#str}}eventcancellednotice, theme_nextgen{{/str}}</p>
+                {{/iscancelled}}
+                {{#ispast}}
+                    {{^iscancelled}}
+                        <p class="ng-event-notice">{{#str}}eventpastnotice, theme_nextgen{{/str}}</p>
+                    {{/iscancelled}}
+                {{/ispast}}
+                <h2>{{#str}}eventabout, theme_nextgen{{/str}}</h2>
+                <div class="ng-event-description-body">{{{description}}}</div>
+                {{#canmanage}}
+                    <a class="btn btn-outline-primary ng-event-edit" href="{{manageurl}}">{{#str}}eventedit, theme_nextgen{{/str}}</a>
+                {{/canmanage}}
+            </article>
+
+            <aside class="ng-event-detail-aside" aria-label="{{#str}}eventdetails, theme_nextgen{{/str}}">
+                <div class="ng-event-detail-card">
+                    <h2>{{#str}}eventdetails, theme_nextgen{{/str}}</h2>
+                    <dl class="ng-event-facts">
+                        <div>
+                            <dt>{{#str}}eventdate, theme_nextgen{{/str}}</dt>
+                            <dd>{{event.startdate}}</dd>
+                        </div>
+                        <div>
+                            <dt>{{#str}}eventtime, theme_nextgen{{/str}}</dt>
+                            <dd>{{event.starttime}} – {{event.endtime}}</dd>
+                        </div>
+                        {{#event.hasvenue}}
+                            <div>
+                                <dt>{{#str}}eventlocation, theme_nextgen{{/str}}</dt>
+                                <dd>{{event.venue}}</dd>
+                            </div>
+                        {{/event.hasvenue}}
+                        {{#event.hascost}}
+                            <div>
+                                <dt>{{#str}}eventcost, theme_nextgen{{/str}}</dt>
+                                <dd>{{event.cost}}</dd>
+                            </div>
+                        {{/event.hascost}}
+                    </dl>
+                    {{#hasregistration}}
+                        <a class="btn btn-primary ng-event-register" href="{{registrationurl}}" target="_blank" rel="noopener noreferrer">
+                            {{#str}}eventregister, theme_nextgen{{/str}}
+                        </a>
+                    {{/hasregistration}}
+                    {{^hasregistration}}
+                        <p class="ng-event-registration-note">{{#str}}eventregistrationunavailable, theme_nextgen{{/str}}</p>
+                    {{/hasregistration}}
+                </div>
+                <a class="ng-event-back" href="{{eventsurl}}">← {{#str}}eventbacktolist, theme_nextgen{{/str}}</a>
+            </aside>
+        </div>
+    </section>
+</main>

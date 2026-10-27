@@ -49,7 +49,7 @@
 <article class="ng-public ng-about">
     <header class="ng-public-hero ng-about-hero">
         <div class="ng-landing-inner ng-about-wrap">
-            {{{navbar}}}
+            {{> theme_nextgen/public_breadcrumbs }}
             <h1 class="ng-public-title">{{title}}</h1>
             <p class="ng-public-intro">{{intro}}</p>
             <div class="ng-about-actions">
@@ -80,7 +80,9 @@
                             <li>{{text}}</li>
                         {{/areas}}
                     </ul>
-                    <p class="ng-about-text">{{#str}}aboutareasmore, theme_nextgen{{/str}}</p>
+                    <div class="ng-about-actions">
+                        <a class="btn btn-primary" href="{{coursesurl}}">{{#str}}aboutareasmore, theme_nextgen{{/str}}</a>
+                    </div>
                 </div>
                 <div class="ng-about-row-media">
                     <img src="{{images.teach}}" alt="" loading="lazy">

@@ -88,6 +88,24 @@ class public_page {
             }
         }
 
+        $eventsurl = new \moodle_url('/events.php');
+        $eventlink = $primary->add(
+            get_string('eventnav', 'theme_nextgen'),
+            $eventsurl,
+            \navigation_node::TYPE_CUSTOM,
+            null,
+            'nextgen-events'
+        );
+        if ($eventlink) {
+            $eventlink->isactive = false;
+        }
+        if ($PAGE->url instanceof \moodle_url && (
+            $PAGE->url->compare($eventsurl, URL_MATCH_BASE)
+            || in_array((string) $PAGE->url->get_path(), ['/event.php', '/eventmanage.php'], true)
+        )) {
+            $PAGE->set_primary_active_tab('nextgen-events');
+        }
+
         $menu = $primary->add(
             get_string('aboutnav', 'theme_nextgen'),
             null,
@@ -139,8 +157,6 @@ class public_page {
         } else if ($key === 'team') {
             $PAGE->add_body_class('nextgen-team');
         }
-        $PAGE->navbar->add($definition['title']);
-
         $formhtml = '';
         if ($key === 'contact') {
             $formhtml = self::contact_form();
@@ -157,7 +173,7 @@ class public_page {
             'contents' => $definition['contents'],
             'haspagecontents' => $definition['haspagecontents'],
             'legalcontentslabel' => $definition['legalcontentslabel'],
-            'navbar' => $OUTPUT->navbar(),
+            'homeurl' => (new \moodle_url('/'))->out(false),
             'hasform' => $formhtml !== '',
             'form' => $formhtml,
             'iscontact' => $key === 'contact',

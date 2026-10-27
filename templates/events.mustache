@@ -1,0 +1,172 @@
+{{!
+    Public NextGen events and workshops listing.
+}}
+<main class="ng-events-page">
+    <header class="ng-public-hero ng-events-hero">
+        <div class="ng-landing-inner ng-events-wrap">
+            {{> theme_nextgen/public_breadcrumbs }}
+            <p class="ng-events-kicker">{{#str}}eventskicker, theme_nextgen{{/str}}</p>
+            <div class="ng-events-hero-row">
+                <div>
+                    <h1 class="ng-public-title">{{#str}}eventspagetitle, theme_nextgen{{/str}}</h1>
+                    <p class="ng-public-intro">{{#str}}eventsintro, theme_nextgen{{/str}}</p>
+                </div>
+                {{#canmanage}}
+                    <a class="btn ng-events-manage-hero" href="{{manageurl}}">
+                        <span aria-hidden="true">+</span> {{#str}}eventmanage, theme_nextgen{{/str}}
+                    </a>
+                {{/canmanage}}
+            </div>
+        </div>
+    </header>
+
+    <section class="ng-events-overview" aria-label="{{#str}}eventsoverview, theme_nextgen{{/str}}">
+        <div class="ng-landing-inner ng-events-overview-inner">
+            <div>
+                <span class="ng-events-overview-label">{{#str}}eventsoverview, theme_nextgen{{/str}}</span>
+                <strong>{{resultcount}}</strong>
+                <span>{{resultlabel}}</span>
+            </div>
+            <p>{{#str}}eventsoverviewtext, theme_nextgen{{/str}}</p>
+        </div>
+    </section>
+
+    <section class="ng-events-content" aria-labelledby="ng-events-list-title">
+        <div class="ng-landing-inner ng-events-wrap">
+            <div class="ng-events-heading">
+                <div>
+                    <p class="ng-events-eyebrow">{{#str}}eventskicker, theme_nextgen{{/str}}</p>
+                    <h2 id="ng-events-list-title">{{#str}}eventlistheading, theme_nextgen{{/str}}</h2>
+                </div>
+            </div>
+
+            {{#hasschedule}}
+                <section class="ng-events-schedule" aria-labelledby="ng-events-schedule-title">
+                    <div class="ng-events-schedule-heading">
+                        <div>
+                            <p class="ng-events-eyebrow">{{#str}}eventsoverview, theme_nextgen{{/str}}</p>
+                            <h3 id="ng-events-schedule-title">{{#str}}eventscheduleheading, theme_nextgen{{/str}}</h3>
+                        </div>
+                        <a href="{{eventsurl}}?when=all">{{#str}}eventscheduleall, theme_nextgen{{/str}}</a>
+                    </div>
+                    <div class="ng-events-schedule-list">
+                        {{#eventdays}}
+                            <section class="ng-events-day" id="event-day-{{dateid}}" aria-labelledby="event-day-title-{{dateid}}">
+                                <header>
+                                    <time datetime="{{dateiso}}">
+                                        <span>{{month}}</span>
+                                        <strong>{{day}}</strong>
+                                    </time>
+                                    <h4 id="event-day-title-{{dateid}}">{{label}}</h4>
+                                </header>
+                                <ol>
+                                    {{#events}}
+                                        <li>
+                                            <time datetime="{{startiso}}">{{time}}</time>
+                                            <div>
+                                                <a href="{{url}}">{{title}}</a>
+                                                <span>{{type}} | {{delivery}}{{#hasvenue}} | {{venue}}{{/hasvenue}}</span>
+                                            </div>
+                                        </li>
+                                    {{/events}}
+                                </ol>
+                            </section>
+                        {{/eventdays}}
+                    </div>
+                </section>
+            {{/hasschedule}}
+
+            <form class="ng-events-filters" method="get" action="{{eventsurl}}">
+                <div class="ng-events-search">
+                    <label for="ng-event-search">{{#str}}eventsearch, theme_nextgen{{/str}}</label>
+                    <input id="ng-event-search" type="search" name="search" value="{{search}}"
+                        placeholder="{{#str}}eventsearchplaceholder, theme_nextgen{{/str}}">
+                </div>
+                <div>
+                    <label for="ng-event-type">{{#str}}eventtype, theme_nextgen{{/str}}</label>
+                    <select id="ng-event-type" name="type">
+                        {{#eventtypes}}
+                            <option value="{{value}}"{{#selected}} selected{{/selected}}>{{label}}</option>
+                        {{/eventtypes}}
+                    </select>
+                </div>
+                <div>
+                    <label for="ng-event-delivery">{{#str}}eventdelivery, theme_nextgen{{/str}}</label>
+                    <select id="ng-event-delivery" name="delivery">
+                        {{#eventdeliveries}}
+                            <option value="{{value}}"{{#selected}} selected{{/selected}}>{{label}}</option>
+                        {{/eventdeliveries}}
+                    </select>
+                </div>
+                <div>
+                    <label for="ng-event-period">{{#str}}eventperiod, theme_nextgen{{/str}}</label>
+                    <select id="ng-event-period" name="when">
+                        {{#periods}}
+                            <option value="{{value}}"{{#selected}} selected{{/selected}}>{{label}}</option>
+                        {{/periods}}
+                    </select>
+                </div>
+                <div class="ng-events-filter-actions">
+                    <button class="btn btn-primary" type="submit">{{#str}}eventapplyfilters, theme_nextgen{{/str}}</button>
+                    {{#hasfilters}}
+                        <a class="ng-events-reset" href="{{reseturl}}">{{#str}}eventclearfilters, theme_nextgen{{/str}}</a>
+                    {{/hasfilters}}
+                </div>
+            </form>
+
+            {{#hasresults}}
+                <div class="ng-events-grid">
+                    {{#events}}
+                        <article class="ng-event-card{{#iscancelled}} is-cancelled{{/iscancelled}}">
+                            <div class="ng-event-card-top">
+                                <div class="ng-event-date" aria-label="{{startdate}}">
+                                    <span>{{month}}</span>
+                                    <strong>{{day}}</strong>
+                                </div>
+                                <div class="ng-event-badges">
+                                    <span class="ng-event-badge">{{type}}</span>
+                                    <span class="ng-event-badge ng-event-badge-muted">{{delivery}}</span>
+                                    {{#iscancelled}}
+                                        <span class="ng-event-badge ng-event-badge-cancelled">{{statuslabel}}</span>
+                                    {{/iscancelled}}
+                                </div>
+                            </div>
+                            <h3><a href="{{url}}">{{title}}</a></h3>
+                            <p class="ng-event-summary">{{summary}}</p>
+                            <dl class="ng-event-meta">
+                                <div>
+                                    <dt>{{#str}}eventdate, theme_nextgen{{/str}}</dt>
+                                    <dd>{{startdate}}</dd>
+                                </div>
+                                {{#hasvenue}}
+                                    <div>
+                                        <dt>{{#str}}eventlocation, theme_nextgen{{/str}}</dt>
+                                        <dd>{{venue}}</dd>
+                                    </div>
+                                {{/hasvenue}}
+                            </dl>
+                            <a class="ng-event-card-link" href="{{url}}">
+                                {{#str}}eventviewdetails, theme_nextgen{{/str}}
+                                <span aria-hidden="true">→</span>
+                            </a>
+                        </article>
+                    {{/events}}
+                </div>
+                {{#paging}}
+                    {{> core/paging_bar }}
+                {{/paging}}
+            {{/hasresults}}
+
+            {{^hasresults}}
+                <div class="ng-events-empty">
+                    <span class="ng-events-empty-mark" aria-hidden="true">✦</span>
+                    <h3>{{#str}}eventsemptytitle, theme_nextgen{{/str}}</h3>
+                    <p>{{#str}}eventsemptytext, theme_nextgen{{/str}}</p>
+                    {{#hasfilters}}
+                        <a class="btn btn-outline-primary" href="{{reseturl}}">{{#str}}eventclearfilters, theme_nextgen{{/str}}</a>
+                    {{/hasfilters}}
+                </div>
+            {{/hasresults}}
+        </div>
+    </section>
+</main>

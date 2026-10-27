@@ -1,0 +1,62 @@
+{{!
+    Staff view of all published, draft, and cancelled events.
+}}
+<main class="ng-events-page ng-event-manage-page">
+    <header class="ng-public-hero ng-events-hero">
+        <div class="ng-landing-inner ng-events-wrap">
+            {{> theme_nextgen/public_breadcrumbs }}
+            <p class="ng-events-kicker">{{#str}}eventmanage, theme_nextgen{{/str}}</p>
+            <div class="ng-events-hero-row">
+                <div>
+                    <h1 class="ng-public-title">{{#str}}eventmanage, theme_nextgen{{/str}}</h1>
+                    <p class="ng-public-intro">{{#str}}eventmanagementintro, theme_nextgen{{/str}}</p>
+                </div>
+                <a class="btn ng-events-manage-hero" href="{{addurl}}">
+                    <span aria-hidden="true">+</span> {{#str}}eventcreate, theme_nextgen{{/str}}
+                </a>
+            </div>
+        </div>
+    </header>
+    <section class="ng-events-content" aria-labelledby="ng-event-manager-list">
+        <div class="ng-landing-inner ng-events-wrap">
+            <div class="ng-events-heading">
+                <div>
+                    <p class="ng-events-eyebrow">{{#str}}eventmanage, theme_nextgen{{/str}}</p>
+                    <h2 id="ng-event-manager-list">{{#str}}eventmanagementheading, theme_nextgen{{/str}}</h2>
+                </div>
+                <a class="ng-event-back" href="{{eventsurl}}">{{#str}}eventpublicview, theme_nextgen{{/str}}</a>
+            </div>
+            {{#hasresults}}
+                <div class="ng-event-manager-list">
+                    {{#events}}
+                        <article class="ng-event-manager-item">
+                            <div>
+                                <span class="ng-event-manager-status is-{{statusclass}}">{{statuslabel}}</span>
+                                <h3>{{title}}</h3>
+                                <p>{{startdate}} · {{type}} · {{delivery}}</p>
+                            </div>
+                            <div class="ng-event-manager-actions">
+                                {{#ispublic}}
+                                    <a class="btn btn-outline-primary" href="{{url}}">{{#str}}eventpreview, theme_nextgen{{/str}}</a>
+                                {{/ispublic}}
+                                {{#editable}}
+                                    <a class="btn btn-primary" href="{{editurl}}">{{#str}}eventedit, theme_nextgen{{/str}}</a>
+                                {{/editable}}
+                            </div>
+                        </article>
+                    {{/events}}
+                </div>
+                {{#paging}}
+                    {{> core/paging_bar }}
+                {{/paging}}
+            {{/hasresults}}
+            {{^hasresults}}
+                <div class="ng-events-empty">
+                    <h3>{{#str}}eventmanageremptytitle, theme_nextgen{{/str}}</h3>
+                    <p>{{#str}}eventmanageremptytext, theme_nextgen{{/str}}</p>
+                    <a class="btn btn-primary" href="{{addurl}}">{{#str}}eventcreate, theme_nextgen{{/str}}</a>
+                </div>
+            {{/hasresults}}
+        </div>
+    </section>
+</main>

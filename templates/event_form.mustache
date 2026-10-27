@@ -1,0 +1,21 @@
+{{!
+    Staff event creation and editing form.
+}}
+<main class="ng-events-page ng-event-manage-page">
+    <header class="ng-public-hero ng-events-hero">
+        <div class="ng-landing-inner ng-events-wrap">
+            {{> theme_nextgen/public_breadcrumbs }}
+            <p class="ng-events-kicker">{{#str}}eventmanage, theme_nextgen{{/str}}</p>
+            <h1 class="ng-public-title">{{title}}</h1>
+            <p class="ng-public-intro">{{#str}}eventformintro, theme_nextgen{{/str}}</p>
+        </div>
+    </header>
+    <section class="ng-event-form-section">
+        <div class="ng-landing-inner ng-events-wrap">
+            <a class="ng-event-back" href="{{eventsurl}}">← {{#str}}eventbacktolist, theme_nextgen{{/str}}</a>
+            <div class="ng-event-form-card">
+                {{{form}}}
+            </div>
+        </div>
+    </section>
+</main>

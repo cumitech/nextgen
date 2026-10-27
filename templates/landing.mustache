@@ -96,6 +96,55 @@
         </div>
     </section>
 
+    {{#events}}
+        <section class="ng-section ng-section-muted ng-events" id="upcoming-events" aria-labelledby="ng-events-title">
+            <div class="ng-landing-inner">
+                <div class="ng-section-head">
+                    <div>
+                        <h2 id="ng-events-title">{{#str}}eventsheading, theme_nextgen{{/str}}</h2>
+                        <p class="ng-events-intro">{{#str}}eventsintro, theme_nextgen{{/str}}</p>
+                    </div>
+                    <a href="{{eventsurl}}">{{#str}}eventsviewall, theme_nextgen{{/str}}</a>
+                </div>
+                {{#hasevents}}
+                    <div class="ng-event-schedule" data-ng-event-schedule>
+                        <div class="ng-event-day-tabs" role="tablist" aria-label="{{#str}}eventdays, theme_nextgen{{/str}}">
+                            {{#eventdays}}
+                                <button class="ng-event-day-tab" type="button" role="tab" id="{{tabid}}"
+                                    aria-controls="{{panelid}}" aria-selected="{{#active}}true{{/active}}{{^active}}false{{/active}}"
+                                    tabindex="{{#active}}0{{/active}}{{^active}}-1{{/active}}">
+                                    <span>{{daytab}}</span>
+                                    <time datetime="{{dateiso}}">{{tabdate}}</time>
+                                </button>
+                            {{/eventdays}}
+                        </div>
+                        {{#eventdays}}
+                            <section class="ng-event-day" id="{{panelid}}" role="tabpanel"
+                                aria-labelledby="{{tabid}}"{{^active}} hidden{{/active}}>
+                                <h3 class="ng-event-day-heading">{{label}}</h3>
+                                <ul class="ng-event-list">
+                                    {{#events}}
+                                        <li class="ng-event-row">
+                                            <div class="ng-event-details">
+                                                <h4><a href="{{url}}">{{title}}</a></h4>
+                                            </div>
+                                            <span class="ng-event-kind">{{type}} · {{delivery}}</span>
+                                            <time class="ng-event-time" datetime="{{startiso}}">{{time}}</time>
+                                            <span class="ng-event-location">{{venue}}</span>
+                                        </li>
+                                    {{/events}}
+                                </ul>
+                            </section>
+                        {{/eventdays}}
+                    </div>
+                {{/hasevents}}
+                {{^hasevents}}
+                    <p class="ng-events-empty">{{#str}}eventlandingempty, theme_nextgen{{/str}}</p>
+                {{/hasevents}}
+            </div>
+        </section>
+    {{/events}}
+
     {{#hascategories}}
         <section class="ng-section ng-category-section" id="categories">
             <div class="ng-landing-inner">
