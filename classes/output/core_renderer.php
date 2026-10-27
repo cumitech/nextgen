@@ -166,18 +166,18 @@ class core_renderer extends \theme_boost\output\core_renderer {
         if ($PAGE->user_is_editing()) {
             $ispublic = false;
         }
-        $html = html_writer::empty_tag('meta', [
+        $html = \html_writer::empty_tag('meta', [
             'name' => 'robots',
             'content' => $ispublic ? 'index, follow' : 'noindex, follow',
         ]);
         if ($description !== '') {
-            $html .= html_writer::empty_tag('meta', [
+            $html .= \html_writer::empty_tag('meta', [
                 'name' => 'description',
                 'content' => theme_nextgen_text_excerpt($description, 160),
             ]);
         }
         if ($canonical && $ispublic) {
-            $html .= html_writer::empty_tag('link', [
+            $html .= \html_writer::empty_tag('link', [
                 'rel' => 'canonical',
                 'href' => $canonical->out(false),
             ]);
