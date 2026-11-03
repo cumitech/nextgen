@@ -9808,18 +9808,24 @@ body.nextgen.nextgen-team .ng-team-wrap {
   max-width: 1080px;
 }
 
+body.nextgen.nextgen-team .ng-public-body {
+  margin-top: 0;
+  padding-top: 2.5rem;
+}
+
 body.nextgen.nextgen-team .ng-team-list {
   display: grid;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 body.nextgen.nextgen-team .ng-team-person {
   background: var(--ng-surface);
   border: 1px solid var(--ng-border);
-  border-radius: 12px;
+  border-radius: 16px;
   display: grid;
   gap: 1.25rem;
   padding: 1.25rem;
+  box-shadow: 0 8px 24px rgba(16, 40, 51, 0.06);
 }
 
 body.nextgen.nextgen-team .ng-team-photo {
