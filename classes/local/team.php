@@ -92,6 +92,10 @@ class team {
             'image' => 'team/dr-sigimi-fidelis',
         ],
         [
+            'id' => 'tani',
+            'image' => 'team/dr-tani-blaise',
+        ],
+        [
             'id' => 'awemu',
             'image' => 'team/dr-awemu-jonah',
             'collapse' => true,
