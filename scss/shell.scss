@@ -8536,6 +8536,58 @@ body.nextgen[id^="page-reportbuilder-"] #region-main .form-select:focus {
   box-shadow: 0 0 0 3px rgba(22, 58, 74, 0.12);
 }
 
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(16, 40, 51, 0.07);
+  margin: 0 auto;
+  max-width: 68rem;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform legend,
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform .col-form-label,
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform label {
+  color: var(--ng-text);
+  font-weight: 600;
+}
+
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform .fitem.row {
+  border-bottom: 1px solid #edf1f3;
+  margin-bottom: 0;
+  padding-bottom: 0.85rem;
+  padding-top: 0.85rem;
+}
+
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform .fdescription,
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform .form-text {
+  color: var(--ng-text-muted);
+  line-height: 1.6;
+}
+
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform .btn-primary {
+  background: var(--ng-primary);
+  border-color: var(--ng-primary);
+  border-radius: 10px;
+  font-weight: 700;
+  min-height: 42px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform .btn-primary:hover,
+body.nextgen[id="page-user-editadvanced"] #region-main form.mform .btn-primary:focus-visible {
+  background: var(--ng-primary-hover);
+  border-color: var(--ng-primary-hover);
+}
+
 body.nextgen.path-user #region-main table.generaltable,
 body.nextgen.path-grade #region-main table.generaltable,
 body.nextgen.path-calendar #region-main table.generaltable,
@@ -8744,6 +8796,11 @@ body.nextgen[id="page-user-preferences"] #region-main .card-text a:hover {
   }
 
   body.nextgen.path-user #region-main .userprofile {
+    border-radius: 14px;
+    padding: 1rem;
+  }
+
+  body.nextgen[id="page-user-editadvanced"] #region-main form.mform {
     border-radius: 14px;
     padding: 1rem;
   }
@@ -10686,51 +10743,6 @@ body.nextgen.nextgen-events .ng-events-manage-hero span {
   line-height: 1;
 }
 
-body.nextgen.nextgen-events .ng-events-overview {
-  background: linear-gradient(105deg, var(--ng-primary), var(--ng-brand, #b31475));
-  color: #fff;
-  margin-top: -1px;
-}
-
-body.nextgen.nextgen-events .ng-events-overview-inner {
-  align-items: center;
-  display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-  min-height: 6rem;
-  padding-bottom: 1rem;
-  padding-top: 1rem;
-}
-
-body.nextgen.nextgen-events .ng-events-overview-inner > div {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-body.nextgen.nextgen-events .ng-events-overview-label {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  width: 100%;
-}
-
-body.nextgen.nextgen-events .ng-events-overview-inner strong {
-  font-size: 2.25rem;
-  letter-spacing: -0.05em;
-  line-height: 1;
-}
-
-body.nextgen.nextgen-events .ng-events-overview-inner p {
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0;
-  max-width: 24rem;
-  text-align: right;
-}
-
 body.nextgen.nextgen-events .ng-events-content {
   background: var(--ng-background);
   padding: 4.25rem 0 5rem;
@@ -10754,149 +10766,6 @@ body.nextgen.nextgen-events .ng-events-heading h2 {
   font-weight: 750;
   letter-spacing: -0.035em;
   margin: 0;
-}
-
-body.nextgen.nextgen-events .ng-events-schedule {
-  margin-bottom: 2rem;
-}
-
-body.nextgen.nextgen-events .ng-events-schedule-heading {
-  align-items: end;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-body.nextgen.nextgen-events .ng-events-schedule-heading h3 {
-  color: var(--ng-text);
-  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
-  font-weight: 750;
-  letter-spacing: -0.03em;
-  margin: 0;
-}
-
-body.nextgen.nextgen-events .ng-events-schedule-heading > a {
-  color: var(--ng-primary);
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-body.nextgen.nextgen-events .ng-events-schedule-heading > a:hover {
-  color: var(--ng-primary-hover);
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-}
-
-body.nextgen.nextgen-events .ng-events-schedule-list {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-body.nextgen.nextgen-events .ng-events-day {
-  background: #fff;
-  border: 1px solid var(--ng-border);
-  border-radius: 14px;
-  min-width: 0;
-  padding: 1.1rem;
-}
-
-body.nextgen.nextgen-events .ng-events-day > header {
-  align-items: center;
-  border-bottom: 1px solid var(--ng-border);
-  display: flex;
-  gap: 0.75rem;
-  margin-bottom: 0.25rem;
-  padding-bottom: 0.85rem;
-}
-
-body.nextgen.nextgen-events .ng-events-day > header time {
-  align-items: center;
-  background: var(--ng-muted);
-  border-radius: 9px;
-  color: var(--ng-primary);
-  display: flex;
-  flex: 0 0 3.25rem;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 3.25rem;
-  padding: 0.25rem;
-}
-
-body.nextgen.nextgen-events .ng-events-day > header time span {
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-body.nextgen.nextgen-events .ng-events-day > header time strong {
-  font-size: 1.25rem;
-  line-height: 1.15;
-}
-
-body.nextgen.nextgen-events .ng-events-day h4 {
-  color: var(--ng-text);
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1.4;
-  margin: 0;
-}
-
-body.nextgen.nextgen-events .ng-events-day ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-body.nextgen.nextgen-events .ng-events-day li {
-  align-items: start;
-  border-bottom: 1px solid var(--ng-border);
-  display: grid;
-  gap: 0.65rem;
-  grid-template-columns: minmax(4.5rem, auto) minmax(0, 1fr);
-  padding: 0.8rem 0;
-}
-
-body.nextgen.nextgen-events .ng-events-day li:last-child {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-
-body.nextgen.nextgen-events .ng-events-day li > time {
-  color: var(--ng-text-muted);
-  font-size: 0.75rem;
-  font-weight: 700;
-  line-height: 1.45;
-}
-
-body.nextgen.nextgen-events .ng-events-day li > div {
-  display: grid;
-  gap: 0.2rem;
-  min-width: 0;
-}
-
-body.nextgen.nextgen-events .ng-events-day li a {
-  color: var(--ng-text);
-  font-size: 0.9rem;
-  font-weight: 700;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
-  text-decoration: none;
-}
-
-body.nextgen.nextgen-events .ng-events-day li a:hover {
-  color: var(--ng-primary);
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-}
-
-body.nextgen.nextgen-events .ng-events-day li span {
-  color: var(--ng-text-muted);
-  font-size: 0.76rem;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
 }
 
 body.nextgen.nextgen-events .ng-events-filters {
@@ -11382,10 +11251,6 @@ body.nextgen.nextgen-events .ng-event-manager-actions .btn {
 }
 
 @media (max-width: 1050px) {
-  body.nextgen.nextgen-events .ng-events-schedule-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   body.nextgen.nextgen-events .ng-events-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -11400,8 +11265,7 @@ body.nextgen.nextgen-events .ng-event-manager-actions .btn {
     padding: 1.5rem 0 3.5rem;
   }
 
-  body.nextgen.nextgen-events .ng-events-hero-row,
-  body.nextgen.nextgen-events .ng-events-overview-inner {
+  body.nextgen.nextgen-events .ng-events-hero-row {
     align-items: start;
     flex-direction: column;
     gap: 1rem;
@@ -11415,24 +11279,13 @@ body.nextgen.nextgen-events .ng-event-manager-actions .btn {
     margin-top: 0.35rem;
   }
 
-  body.nextgen.nextgen-events .ng-events-overview-inner p {
-    text-align: left;
-  }
-
   body.nextgen.nextgen-events .ng-events-content {
     padding: 2.75rem 0 3.5rem;
   }
 
   body.nextgen.nextgen-events .ng-events-filters,
-  body.nextgen.nextgen-events .ng-events-grid,
-  body.nextgen.nextgen-events .ng-events-schedule-list {
+  body.nextgen.nextgen-events .ng-events-grid {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  body.nextgen.nextgen-events .ng-events-schedule-heading {
-    align-items: start;
-    flex-direction: column;
-    gap: 0.6rem;
   }
 
   body.nextgen.nextgen-events .ng-events-filter-actions .btn {

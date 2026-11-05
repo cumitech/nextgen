@@ -5,7 +5,6 @@
     <header class="ng-public-hero ng-events-hero">
         <div class="ng-landing-inner ng-events-wrap">
             {{> theme_nextgen/public_breadcrumbs }}
-            <p class="ng-events-kicker">{{#str}}eventskicker, theme_nextgen{{/str}}</p>
             <div class="ng-events-hero-row">
                 <div>
                     <h1 class="ng-public-title">{{#str}}eventspagetitle, theme_nextgen{{/str}}</h1>
@@ -20,61 +19,13 @@
         </div>
     </header>
 
-    <section class="ng-events-overview" aria-label="{{#str}}eventsoverview, theme_nextgen{{/str}}">
-        <div class="ng-landing-inner ng-events-overview-inner">
-            <div>
-                <span class="ng-events-overview-label">{{#str}}eventsoverview, theme_nextgen{{/str}}</span>
-                <strong>{{resultcount}}</strong>
-                <span>{{resultlabel}}</span>
-            </div>
-            <p>{{#str}}eventsoverviewtext, theme_nextgen{{/str}}</p>
-        </div>
-    </section>
-
     <section class="ng-events-content" aria-labelledby="ng-events-list-title">
         <div class="ng-landing-inner ng-events-wrap">
             <div class="ng-events-heading">
                 <div>
-                    <p class="ng-events-eyebrow">{{#str}}eventskicker, theme_nextgen{{/str}}</p>
                     <h2 id="ng-events-list-title">{{#str}}eventlistheading, theme_nextgen{{/str}}</h2>
                 </div>
             </div>
-
-            {{#hasschedule}}
-                <section class="ng-events-schedule" aria-labelledby="ng-events-schedule-title">
-                    <div class="ng-events-schedule-heading">
-                        <div>
-                            <p class="ng-events-eyebrow">{{#str}}eventsoverview, theme_nextgen{{/str}}</p>
-                            <h3 id="ng-events-schedule-title">{{#str}}eventscheduleheading, theme_nextgen{{/str}}</h3>
-                        </div>
-                        <a href="{{eventsurl}}?when=all">{{#str}}eventscheduleall, theme_nextgen{{/str}}</a>
-                    </div>
-                    <div class="ng-events-schedule-list">
-                        {{#eventdays}}
-                            <section class="ng-events-day" id="event-day-{{dateid}}" aria-labelledby="event-day-title-{{dateid}}">
-                                <header>
-                                    <time datetime="{{dateiso}}">
-                                        <span>{{month}}</span>
-                                        <strong>{{day}}</strong>
-                                    </time>
-                                    <h4 id="event-day-title-{{dateid}}">{{label}}</h4>
-                                </header>
-                                <ol>
-                                    {{#events}}
-                                        <li>
-                                            <time datetime="{{startiso}}">{{time}}</time>
-                                            <div>
-                                                <a href="{{url}}">{{title}}</a>
-                                                <span>{{type}} | {{delivery}}{{#hasvenue}} | {{venue}}{{/hasvenue}}</span>
-                                            </div>
-                                        </li>
-                                    {{/events}}
-                                </ol>
-                            </section>
-                        {{/eventdays}}
-                    </div>
-                </section>
-            {{/hasschedule}}
 
             <form class="ng-events-filters" method="get" action="{{eventsurl}}">
                 <div class="ng-events-search">

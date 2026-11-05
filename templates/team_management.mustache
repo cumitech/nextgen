@@ -1,0 +1,51 @@
+{{!
+    Staff view of custom profiles shown on the public team page.
+}}
+<main class="ng-events-page ng-event-manage-page ng-team-manage-page">
+    <header class="ng-public-hero ng-events-hero">
+        <div class="ng-landing-inner ng-events-wrap">
+            {{> theme_nextgen/public_breadcrumbs }}
+            <div class="ng-events-hero-row">
+                <div>
+                    <p class="ng-events-kicker">{{title}}</p>
+                    <h1 class="ng-public-title">{{title}}</h1>
+                    <p class="ng-public-intro">{{#str}}teammanagementintro, theme_nextgen{{/str}}</p>
+                </div>
+                <a class="btn ng-events-manage-hero" href="{{addurl}}">
+                    <span aria-hidden="true">+</span> {{#str}}teamcreate, theme_nextgen{{/str}}
+                </a>
+            </div>
+        </div>
+    </header>
+    <section class="ng-events-content" aria-labelledby="ng-team-manager-list">
+        <div class="ng-landing-inner ng-events-wrap">
+            <div class="ng-events-heading">
+                <h2 id="ng-team-manager-list">{{#str}}teammanagementheading, theme_nextgen{{/str}}</h2>
+                <a class="ng-event-back" href="{{teamurl}}">{{#str}}teampublicview, theme_nextgen{{/str}}</a>
+            </div>
+            {{#hasmembers}}
+                <div class="ng-event-manager-list">
+                    {{#members}}
+                        <article class="ng-event-manager-item">
+                            <div>
+                                <h3>{{name}}</h3>
+                                <p>{{role}}</p>
+                            </div>
+                            <div class="ng-event-manager-actions">
+                                <a class="btn btn-primary" href="{{editurl}}">{{#str}}teamedit, theme_nextgen{{/str}}</a>
+                                <a class="btn btn-outline-primary" href="{{deleteurl}}">{{#str}}teamdelete, theme_nextgen{{/str}}</a>
+                            </div>
+                        </article>
+                    {{/members}}
+                </div>
+            {{/hasmembers}}
+            {{^hasmembers}}
+                <div class="ng-events-empty">
+                    <h3>{{#str}}teamemptytitle, theme_nextgen{{/str}}</h3>
+                    <p>{{#str}}teamemptytext, theme_nextgen{{/str}}</p>
+                    <a class="btn btn-primary" href="{{addurl}}">{{#str}}teamcreate, theme_nextgen{{/str}}</a>
+                </div>
+            {{/hasmembers}}
+        </div>
+    </section>
+</main>

@@ -1024,18 +1024,19 @@ function theme_nextgen_publish_public_paths(): void {
     if (during_initial_install() || empty($CFG->dirroot)) {
         return;
     }
-    if (get_config('theme_nextgen', 'publicpathrev') === '2026102700') {
+    if (get_config('theme_nextgen', 'publicpathrev') === '2026110500') {
         return;
     }
 
     $ready = theme_nextgen_retire_public_scripts();
     $ready = theme_nextgen_ensure_public_scripts() && $ready;
     $ready = theme_nextgen_ensure_event_scripts() && $ready;
+    $ready = theme_nextgen_ensure_team_management_script() && $ready;
     $ready = theme_nextgen_ensure_learn_script() && $ready;
     $ready = theme_nextgen_ensure_public_rewrites() && $ready;
     theme_nextgen_rewrite_public_urls();
     if ($ready) {
-        set_config('publicpathrev', '2026102700', 'theme_nextgen');
+        set_config('publicpathrev', '2026110500', 'theme_nextgen');
     }
 }
 
@@ -1232,6 +1233,61 @@ defined('MOODLE_INTERNAL') || die();
 
 require(\$CFG->dirroot . '/theme/nextgen/{$key}.php');
 PHP;
+}
+
+/**
+ * Publish the site-root team-management script.
+ *
+ * A file that is already there and was not created by this theme is left alone.
+ *
+ * @return bool
+ */
+function theme_nextgen_ensure_team_management_script(): bool {
+    global $CFG;
+
+    $path = $CFG->dirroot . DIRECTORY_SEPARATOR . 'teammanage.php';
+    if (is_file($path)) {
+        $head = (string) file_get_contents($path, false, null, 0, 900);
+        if (!str_contains($head, 'theme_nextgen team management page:')) {
+            return true;
+        }
+        if (str_contains($head, '/theme/nextgen/teammanage.php')) {
+            return true;
+        }
+    }
+
+    $source = <<<'PHP'
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * theme_nextgen team management page
+ *
+ * @package    core
+ * @copyright  2026 NextGen LMS
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+require(__DIR__ . '/config.php');
+
+defined('MOODLE_INTERNAL') || die();
+
+require($CFG->dirroot . '/theme/nextgen/teammanage.php');
+PHP;
+    return file_put_contents($path, $source) !== false;
 }
 
 /**

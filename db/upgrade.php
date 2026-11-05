@@ -151,5 +151,13 @@ function xmldb_theme_nextgen_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026102800, 'theme', 'nextgen');
     }
 
+    if ($oldversion < 2026110500) {
+        $dbman = $DB->get_manager();
+        if (!$dbman->table_exists('theme_nextgen_team')) {
+            $dbman->install_one_table_from_xmldb_file(__DIR__ . '/install.xml', 'theme_nextgen_team');
+        }
+        upgrade_plugin_savepoint(true, 2026110500, 'theme', 'nextgen');
+    }
+
     return true;
 }

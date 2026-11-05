@@ -369,16 +369,10 @@ class events {
             'delivery' => $delivery,
             'when' => $when,
         ]);
-        $schedule = [];
-        if ($search === '' && $type === '' && $delivery === '' && $when === 'upcoming' && $page === 0) {
-            $schedule = self::landing_schedule();
-        }
-
         return [
             'events' => $items,
             'hasresults' => !empty($items),
             'title' => get_string('eventspagetitle', 'theme_nextgen'),
-            'resultlabel' => get_string('eventresults', 'theme_nextgen', $total),
             'search' => $search,
             'type' => $type,
             'delivery' => $delivery,
@@ -388,7 +382,6 @@ class events {
                 'all' => get_string('eventperiodall', 'theme_nextgen'),
                 'past' => get_string('eventperiodpast', 'theme_nextgen'),
             ], $when),
-            'resultcount' => $total,
             'hasfilters' => $search !== '' || $type !== '' || $delivery !== '' || $when !== 'upcoming',
             'reseturl' => (new \moodle_url('/events.php'))->out(false),
             'eventsurl' => (new \moodle_url('/events.php'))->out(false),
@@ -407,8 +400,6 @@ class events {
             'canmanage' => self::can_manage(),
             'manageurl' => (new \moodle_url('/eventmanage.php'))->out(false),
             'homeurl' => (new \moodle_url('/'))->out(false),
-            'hasschedule' => !empty($schedule['hasevents']),
-            'eventdays' => $schedule['eventdays'] ?? [],
         ];
     }
 
@@ -496,6 +487,9 @@ class events {
         $status = self::status($event, $metadata);
         $venue = (string) ($event->location ?? '');
         $imageurl = self::safe_event_image_url((string) ($metadata['imageurl'] ?? ''));
+        if ($imageurl === '') {
+            $imageurl = self::default_event_image_url((string) $event->name);
+        }
 
         return [
             'id' => (int) $event->id,
@@ -714,6 +708,29 @@ class events {
      */
     public static function safe_event_image_url(string $url): string {
         return self::safe_http_url($url);
+    }
+
+    /**
+     * Choose an on-brand image for events without a custom image.
+     *
+     * @param string $title Event title.
+     * @return string
+     */
+    private static function default_event_image_url(string $title): string {
+        $title = \core_text::strtolower($title);
+        $image = 'pix/category-business-skills.jpg';
+
+        if (preg_match('/\b(agri|agripreneurship|agriculture|farm|field)\b/u', $title)) {
+            $image = 'pix/category-agriculture.jpg';
+        } else if (preg_match('/\bwomen\b/u', $title)) {
+            $image = 'assets/images/Photo by Iwaria via Iwaria (2).jpg';
+        } else if (preg_match('/\b(digital|marketing|customer|discovery)\b/u', $title)) {
+            $image = 'assets/images/Photo by Iwaria via Iwaria.jpg';
+        } else if (preg_match('/\b(ai|artificial intelligence)\b/u', $title)) {
+            $image = 'pix/hero-slide-3.jpg';
+        }
+
+        return (new \moodle_url('/theme/nextgen/' . $image))->out(false);
     }
 
     /**

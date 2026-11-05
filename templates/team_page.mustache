@@ -49,6 +49,9 @@
             {{> theme_nextgen/public_breadcrumbs }}
             <h1 class="ng-public-title">{{title}}</h1>
             <p class="ng-public-intro">{{intro}}</p>
+            {{#canmanage}}
+                <p><a class="btn btn-outline-primary" href="{{manageurl}}">{{#str}}teammanage, theme_nextgen{{/str}}</a></p>
+            {{/canmanage}}
         </div>
     </header>
     <div class="ng-landing-inner ng-team-wrap ng-public-body">

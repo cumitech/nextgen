@@ -29,6 +29,10 @@ For verified, shareable certificates:
 
 Moodle's badge criteria and award process remain unchanged; NextGen only displays badges already awarded to the signed-in learner.
 
+## Team profiles
+
+The public team page keeps its curated profiles and appends additional profiles saved in Moodle. After upgrading the theme, users with the system capability `theme/nextgen:manageteam` can use **Manage team** on the team page to add, edit, or delete those profiles. The manager role receives this capability by default; the authenticated-user and student roles do not. Grant it to other approved staff roles in Moodle's role permissions. The form accepts plain-text biographies and optional HTTP(S) image URLs; profiles without an image use the theme's default team image.
+
 Tailwind utilities use the `tw:` prefix, for example `tw:bg-primary`. Semantic components use `ng-` classes. Brand tokens are `--ng-primary` and the related variables. The prefix keeps Tailwind away from Bootstrap class names such as `collapse`.
 
 Brand colours are CSS variables (`--ng-primary` and the rest). Change them in Site administration → Appearance → Themes → NextGen. A Tailwind rebuild is not required for those settings.

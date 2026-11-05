@@ -133,6 +133,19 @@ class team {
     ];
 
     /**
+     * Whether the current user can add, edit, or remove team members.
+     *
+     * @return bool
+     */
+    public static function can_manage(): bool {
+        if (!isloggedin() || isguestuser()) {
+            return false;
+        }
+
+        return has_capability('theme/nextgen:manageteam', \context_system::instance());
+    }
+
+    /**
      * Everything the team_page template needs.
      *
      * @return array
@@ -144,10 +157,168 @@ class team {
         foreach (self::MEMBERS as $spec) {
             $members[] = self::member($spec, $OUTPUT);
         }
+        foreach (self::custom_members() as $member) {
+            $members[] = $member;
+        }
 
         return [
             'members' => $members,
+            'canmanage' => self::can_manage(),
+            'manageurl' => (new \moodle_url('/teammanage.php'))->out(false),
         ];
+    }
+
+    /**
+     * All custom team members, ordered after the curated profiles.
+     *
+     * @return array<int, array>
+     */
+    public static function management_context(): array {
+        global $DB;
+
+        $members = [];
+        foreach ($DB->get_records('theme_nextgen_team', [], 'sortorder ASC, id ASC') as $record) {
+            $members[] = [
+                'id' => (int) $record->id,
+                'name' => (string) $record->name,
+                'role' => (string) $record->role,
+                'editurl' => (new \moodle_url('/teammanage.php', ['id' => (int) $record->id]))->out(false),
+                'deleteurl' => (new \moodle_url('/teammanage.php', ['delete' => (int) $record->id]))->out(false),
+            ];
+        }
+
+        return [
+            'title' => get_string('teammanage', 'theme_nextgen'),
+            'members' => $members,
+            'hasmembers' => !empty($members),
+            'addurl' => (new \moodle_url('/teammanage.php', ['create' => 1]))->out(false),
+            'teamurl' => (new \moodle_url('/team.php'))->out(false),
+        ];
+    }
+
+    /**
+     * Load one custom team member for editing.
+     *
+     * @param int $id
+     * @return \stdClass
+     */
+    public static function get_member(int $id): \stdClass {
+        global $DB;
+
+        return $DB->get_record('theme_nextgen_team', ['id' => $id], '*', MUST_EXIST);
+    }
+
+    /**
+     * Save a custom team member.
+     *
+     * @param int $id Existing id, or 0 to create.
+     * @param \stdClass $data Validated form data.
+     * @return int
+     */
+    public static function save_member(int $id, \stdClass $data): int {
+        global $DB, $USER;
+
+        $imageurl = self::safe_image_url((string) ($data->imageurl ?? ''));
+        if ((string) ($data->imageurl ?? '') !== '' && $imageurl === '') {
+            throw new \moodle_exception('teamimageinvalid', 'theme_nextgen');
+        }
+
+        $record = (object) [
+            'name' => trim((string) $data->name),
+            'role' => trim((string) $data->role),
+            'title' => trim((string) $data->title),
+            'bio' => trim((string) $data->bio),
+            'imageurl' => $imageurl,
+            'timemodified' => time(),
+        ];
+
+        if ($id > 0) {
+            self::get_member($id);
+            $record->id = $id;
+            $DB->update_record('theme_nextgen_team', $record);
+            return $id;
+        }
+
+        $latest = $DB->get_records('theme_nextgen_team', [], 'sortorder DESC, id DESC', 'id, sortorder', 0, 1);
+        $last = $latest ? reset($latest) : null;
+        $record->sortorder = $last ? (int) $last->sortorder + 1 : 0;
+        $record->timecreated = time();
+        $record->createdby = (int) $USER->id;
+
+        return (int) $DB->insert_record('theme_nextgen_team', $record);
+    }
+
+    /**
+     * Delete a custom team member.
+     *
+     * @param int $id
+     */
+    public static function delete_member(int $id): void {
+        global $DB;
+
+        self::get_member($id);
+        $DB->delete_records('theme_nextgen_team', ['id' => $id]);
+    }
+
+    /**
+     * New custom profiles appended to the curated profiles.
+     *
+     * @return array<int, array>
+     */
+    private static function custom_members(): array {
+        global $DB, $OUTPUT;
+
+        $members = [];
+        foreach ($DB->get_records('theme_nextgen_team', [], 'sortorder ASC, id ASC') as $record) {
+            $lead = [];
+            foreach (preg_split("/\R\R+/", trim((string) $record->bio)) as $paragraph) {
+                $paragraph = trim($paragraph);
+                if ($paragraph !== '') {
+                    $lead[] = ['text' => $paragraph];
+                }
+            }
+
+            $members[] = [
+                'id' => 'custom-' . (int) $record->id,
+                'name' => (string) $record->name,
+                'role' => (string) $record->role,
+                'title' => (string) $record->title,
+                'hastitle' => (string) $record->title !== '',
+                'image' => (string) $record->imageurl !== ''
+                    ? (string) $record->imageurl
+                    : $OUTPUT->image_url('faculty-default', 'theme_nextgen')->out(false),
+                'offset' => false,
+                'face' => false,
+                'isfounder' => false,
+                'highlights' => [],
+                'hashighlights' => false,
+                'positions' => [],
+                'lead' => $lead,
+                'more' => [],
+                'hasmore' => false,
+                'facts' => [],
+                'hasfacts' => false,
+            ];
+        }
+
+        return $members;
+    }
+
+    /**
+     * Only accept absolute HTTP or HTTPS image URLs.
+     *
+     * @param string $url
+     * @return string
+     */
+    public static function safe_image_url(string $url): string {
+        $url = trim($url);
+        if ($url === '') {
+            return '';
+        }
+
+        $clean = clean_param($url, PARAM_URL);
+        $scheme = strtolower((string) parse_url($clean, PHP_URL_SCHEME));
+        return in_array($scheme, ['http', 'https'], true) ? $clean : '';
     }
 
     /**
