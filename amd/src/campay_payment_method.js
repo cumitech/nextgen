@@ -40,6 +40,8 @@ const updateSelection = (event) => {
         return;
     }
 
+    selectGateway(methods);
+
     const label = methods.querySelector(`label[for="${input.id}"] .ng-campay-method-label`);
     const selected = methods.querySelector('[data-region="selected-method"]');
     if (label && selected) {
@@ -48,8 +50,41 @@ const updateSelection = (event) => {
 };
 
 /**
+ * Select the Campay gateway when a payment method is chosen.
+ *
+ * @param {Element} methods
+ */
+const selectGateway = (methods) => {
+    const container = methods.closest('.form-check');
+    const gateway = container && container.querySelector('input[name="payby"]');
+    if (gateway && !gateway.checked) {
+        gateway.checked = true;
+        gateway.dispatchEvent(new Event('change', {bubbles: true}));
+    }
+};
+
+/**
+ * Select the gateway even when the learner clicks the already-checked option.
+ *
+ * @param {MouseEvent} event
+ */
+const handleMethodClick = (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+        return;
+    }
+
+    const option = target.closest('.ng-campay-method-input, .ng-campay-method-card');
+    const methods = option && option.closest('[data-region="campay-payment-methods"]');
+    if (methods) {
+        selectGateway(methods);
+    }
+};
+
+/**
  * Register the selection listener.
  */
 export const init = () => {
     document.addEventListener('change', updateSelection);
+    document.addEventListener('click', handleMethodClick);
 };

@@ -39,8 +39,40 @@ body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .ng-payment-gat
   display: none;
 }
 
+body.nextgen-enrol-checkout .core_payment_gateways_modal .campay > .form-check-input {
+  display: none;
+}
+
 body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .ng-campay-method-heading {
   display: block;
+  margin: 0 0 0.5rem;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .form-check-label {
+  align-items: center;
+  border-radius: 0.9rem;
+  column-gap: 1.25rem;
+  display: grid;
+  grid-template-areas:
+    "description illustration";
+  grid-template-columns: minmax(0, 1fr) 7rem;
+  margin-bottom: 0.75rem;
+  row-gap: 0.35rem;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .form-check-label .content {
+  grid-area: description;
+  margin: 0;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .form-check-label img {
+  grid-area: illustration;
+  height: 7rem !important;
+  justify-self: end;
+  margin: 0;
+  max-width: 100%;
+  object-fit: contain;
+  width: 7rem !important;
 }
 
 body.nextgen-enrol-checkout .core_payment_gateways_modal .form-check:not(.campay) .ng-campay-method-heading,
@@ -75,16 +107,9 @@ body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-input
 }
 
 body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-card {
-  align-items: center;
-  background: #fff;
-  border: 1px solid var(--ng-border);
-  border-radius: 0.75rem;
-  color: var(--ng-text);
   cursor: pointer;
-  display: flex;
-  gap: 0.7rem;
   margin: 0;
-  min-height: 4.25rem;
+  min-height: 5.75rem;
   padding: 0.75rem;
   transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -102,7 +127,6 @@ body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-input
 
 body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-icon {
   color: var(--ng-primary);
-  flex: 0 0 1.5rem;
   height: 1.5rem;
   width: 1.5rem;
 }
@@ -137,6 +161,16 @@ body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-selec
 }
 
 @media (max-width: 420px) {
+  body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .form-check-label {
+    column-gap: 0.75rem;
+    grid-template-columns: minmax(0, 1fr) 5rem;
+  }
+
+  body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .form-check-label img {
+    height: 5rem !important;
+    width: 5rem !important;
+  }
+
   body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-options {
     grid-template-columns: 1fr;
   }
@@ -4638,11 +4672,27 @@ body.nextgen .ng-secure-pay li {
   font-size: 0.875rem;
 }
 
+body.nextgen .ng-secure-pay .ng-secure-pay-methods {
+  gap: 0.55rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.nextgen .ng-secure-pay .ng-secure-pay-methods .ng-pay-method {
+  column-gap: 0.6rem;
+  padding: 0.65rem;
+}
+
 body.nextgen .ng-secure-pay p {
   color: var(--ng-text-muted);
   font-size: 0.8125rem;
   line-height: 1.45;
   margin: 0.45rem 0 0;
+}
+
+@media (max-width: 520px) {
+  body.nextgen .ng-secure-pay .ng-secure-pay-methods {
+    grid-template-columns: 1fr;
+  }
 }
 
 body.nextgen .ng-pay-band {

@@ -9,27 +9,39 @@
         <div class="ng-campay-method-options">
             <input class="ng-campay-method-input" type="radio" name="campay-method-{{uniqid}}-{{shortname}}"
                 id="campay-payment-momo-{{uniqid}}-{{shortname}}" value="MOMO" checked="checked">
-            <label class="ng-campay-method-card" for="campay-payment-momo-{{uniqid}}-{{shortname}}">
-                <svg class="ng-campay-method-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <rect x="7" y="2.75" width="10" height="18.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
-                    <path d="M10 5.75h4M11 18.25h2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
-                </svg>
-                <span class="ng-campay-method-copy">
-                    <span class="ng-campay-method-label">{{#str}} paymobiletitle, theme_nextgen {{/str}}</span>
+            <label class="ng-pay-method ng-campay-method-card" for="campay-payment-momo-{{uniqid}}-{{shortname}}">
+                <span class="ng-pay-glyph" aria-hidden="true">
+                    <svg class="ng-campay-method-icon" viewBox="0 0 24 24" focusable="false">
+                        <rect x="7" y="3.2" width="10" height="17.6" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+                        <path d="M11 17.4h2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                </span>
+                <span class="ng-pay-copy ng-campay-method-copy">
+                    <strong class="ng-campay-method-label">{{#str}} paymobiletitle, theme_nextgen {{/str}}</strong>
                     <span class="ng-campay-method-brands">{{#str}} paymobilebrands, theme_nextgen {{/str}}</span>
+                </span>
+                <span class="ng-pay-marks" aria-hidden="true">
+                    <span class="ng-pay-chip ng-pay-chip-mtn">MTN</span>
+                    <span class="ng-pay-chip ng-pay-chip-orange">Orange</span>
                 </span>
             </label>
 
             <input class="ng-campay-method-input" type="radio" name="campay-method-{{uniqid}}-{{shortname}}"
                 id="campay-payment-card-{{uniqid}}-{{shortname}}" value="CARD">
-            <label class="ng-campay-method-card" for="campay-payment-card-{{uniqid}}-{{shortname}}">
-                <svg class="ng-campay-method-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <rect x="2.75" y="5.25" width="18.5" height="13.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
-                    <path d="M3 9.5h18M6.5 14.25h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
-                </svg>
-                <span class="ng-campay-method-copy">
-                    <span class="ng-campay-method-label">{{#str}} paycardstitle, theme_nextgen {{/str}}</span>
+            <label class="ng-pay-method ng-campay-method-card" for="campay-payment-card-{{uniqid}}-{{shortname}}">
+                <span class="ng-pay-glyph" aria-hidden="true">
+                    <svg class="ng-campay-method-icon" viewBox="0 0 24 24" focusable="false">
+                        <rect x="3.2" y="6" width="17.6" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+                        <path d="M3.2 10h17.6M7 14.2h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                </span>
+                <span class="ng-pay-copy ng-campay-method-copy">
+                    <strong class="ng-campay-method-label">{{#str}} paycardstitle, theme_nextgen {{/str}}</strong>
                     <span class="ng-campay-method-brands">{{#str}} paycardsbrands, theme_nextgen {{/str}}</span>
+                </span>
+                <span class="ng-pay-marks" aria-hidden="true">
+                    <span class="ng-pay-chip ng-pay-chip-visa">Visa</span>
+                    <span class="ng-pay-chip ng-pay-chip-mc"><span class="ng-pay-mc"></span></span>
                 </span>
             </label>
         </div>
