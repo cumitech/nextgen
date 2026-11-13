@@ -1,0 +1,41 @@
+{{!
+    @template theme_nextgen/campay_payment_methods
+
+    Payment methods shown in the Campay gateway card.
+}}
+<div class="ng-campay-methods" data-region="campay-payment-methods">
+    <fieldset>
+        <legend class="visually-hidden">{{#str}} campaymethodheading, theme_nextgen {{/str}}</legend>
+        <div class="ng-campay-method-options">
+            <input class="ng-campay-method-input" type="radio" name="campay-method-{{uniqid}}-{{shortname}}"
+                id="campay-payment-momo-{{uniqid}}-{{shortname}}" value="MOMO" checked="checked">
+            <label class="ng-campay-method-card" for="campay-payment-momo-{{uniqid}}-{{shortname}}">
+                <svg class="ng-campay-method-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <rect x="7" y="2.75" width="10" height="18.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+                    <path d="M10 5.75h4M11 18.25h2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                </svg>
+                <span class="ng-campay-method-copy">
+                    <span class="ng-campay-method-label">{{#str}} paymobiletitle, theme_nextgen {{/str}}</span>
+                    <span class="ng-campay-method-brands">{{#str}} paymobilebrands, theme_nextgen {{/str}}</span>
+                </span>
+            </label>
+
+            <input class="ng-campay-method-input" type="radio" name="campay-method-{{uniqid}}-{{shortname}}"
+                id="campay-payment-card-{{uniqid}}-{{shortname}}" value="CARD">
+            <label class="ng-campay-method-card" for="campay-payment-card-{{uniqid}}-{{shortname}}">
+                <svg class="ng-campay-method-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <rect x="2.75" y="5.25" width="18.5" height="13.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+                    <path d="M3 9.5h18M6.5 14.25h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                </svg>
+                <span class="ng-campay-method-copy">
+                    <span class="ng-campay-method-label">{{#str}} paycardstitle, theme_nextgen {{/str}}</span>
+                    <span class="ng-campay-method-brands">{{#str}} paycardsbrands, theme_nextgen {{/str}}</span>
+                </span>
+            </label>
+        </div>
+        <p class="ng-campay-method-selected" role="status" aria-live="polite" aria-atomic="true">
+            <span>{{#str}} campayselectedmethod, theme_nextgen {{/str}}</span>
+            <strong data-region="selected-method">{{#str}} paymobiletitle, theme_nextgen {{/str}}</strong>
+        </p>
+    </fieldset>
+</div>

@@ -30,6 +30,118 @@ body.nextgen :focus-visible {
   outline-offset: 2px;
 }
 
+body.nextgen .core_payment_gateways_modal .ng-campay-method-heading,
+body.nextgen .core_payment_gateways_modal .ng-campay-methods {
+  display: none;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .ng-payment-gateway-name {
+  display: none;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .ng-campay-method-heading {
+  display: block;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .form-check:not(.campay) .ng-campay-method-heading,
+body.nextgen-enrol-checkout .core_payment_gateways_modal .form-check:not(.campay) .ng-campay-methods {
+  display: none;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .ng-campay-methods {
+  display: block;
+  margin: 0.75rem 0 0;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-methods fieldset {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-options {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-input {
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-card {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: 0.75rem;
+  color: var(--ng-text);
+  cursor: pointer;
+  display: flex;
+  gap: 0.7rem;
+  margin: 0;
+  min-height: 4.25rem;
+  padding: 0.75rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-input:checked + .ng-campay-method-card {
+  background: var(--ng-muted);
+  border-color: var(--ng-primary);
+  box-shadow: 0 0 0 1px var(--ng-primary);
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-input:focus-visible + .ng-campay-method-card {
+  outline: 2px solid var(--ng-primary);
+  outline-offset: 2px;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-icon {
+  color: var(--ng-primary);
+  flex: 0 0 1.5rem;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-copy {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-brands {
+  color: var(--ng-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.25;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-selected {
+  color: var(--ng-text-muted);
+  font-size: 0.875rem;
+  margin: 0.75rem 0 0;
+}
+
+body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-selected strong {
+  color: var(--ng-text);
+  margin-inline-start: 0.25rem;
+}
+
+@media (max-width: 420px) {
+  body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-method-options {
+    grid-template-columns: 1fr;
+  }
+}
+
 body.nextgen .ng-loadline {
   height: 3px;
   left: 0;

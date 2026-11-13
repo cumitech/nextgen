@@ -132,6 +132,7 @@ function theme_nextgen_page_init($page) {
     }
     if ((string) $page->pagetype === 'enrol-index') {
         $page->add_body_class('nextgen-enrol-checkout');
+        $page->requires->js_call_amd('theme_nextgen/campay_payment_method', 'init');
     }
     if ($page->pagelayout === 'mydashboard') {
         $page->add_body_class('nextgen-dashboard');
