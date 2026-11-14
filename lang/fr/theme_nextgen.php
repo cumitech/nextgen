@@ -290,6 +290,7 @@ $string['checkoutsteppayment'] = 'Paiement';
 $string['checkoutguesttext'] = 'Connectez-vous pour continuer l\'inscription et le paiement de ce cours.';
 $string['checkoutguestcta'] = 'Se connecter pour s\'inscrire';
 $string['checkoutclosedtext'] = 'L\'inscription n\'est pas disponible pour ce cours pour le moment.';
+$string['checkoutpaymentaccountmissing'] = 'La configuration du paiement de ce cours est incomplète. Contactez le support du site pour associer un compte de paiement avec Campay activé.';
 $string['checkoutemptytitle'] = 'Étape suivante';
 $string['enrolsuccesstitle'] = 'Vous êtes inscrit';
 $string['enrolsuccesstext'] = 'Le paiement est terminé. Ouvrez le contenu du cours pour commencer.';

@@ -89,7 +89,30 @@ class course_renderer extends \core_course_renderer {
 
         $message = '';
         $continuebutton = '';
-        if (!$widgets && !isguestuser() && isloggedin()) {
+        foreach (enrol_get_instances((int) $course->id, true) as $instance) {
+            if ($instance->enrol !== 'fee' || !empty($instance->customint1)) {
+                continue;
+            }
+
+            $itemid = (int) $instance->id;
+            $before = count($widgets);
+            $widgets = array_values(array_filter($widgets, static function(string $widget) use ($itemid): bool {
+                return !(
+                    str_contains($widget, 'data-action="core_payment/triggerPayment"') &&
+                    str_contains($widget, 'data-itemid="' . $itemid . '"')
+                );
+            }));
+
+            if (count($widgets) < $before) {
+                $message = get_string('checkoutpaymentaccountmissing', 'theme_nextgen');
+                $continuebutton = $this->output->continue_button(
+                    $returnurl ?? new \moodle_url('/course/view.php', ['id' => (int) $course->id])
+                );
+            }
+            break;
+        }
+
+        if (!$widgets && !isguestuser() && isloggedin() && $message === '') {
             if ($returnurl) {
                 $message = get_string('checkoutclosedtext', 'theme_nextgen');
                 $continuebutton = $this->output->continue_button($returnurl);

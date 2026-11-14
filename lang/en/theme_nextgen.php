@@ -290,6 +290,7 @@ $string['checkoutsteppayment'] = 'Payment';
 $string['checkoutguesttext'] = 'Sign in to continue enrolment and payment for this course.';
 $string['checkoutguestcta'] = 'Sign in to enrol';
 $string['checkoutclosedtext'] = 'Enrolment is not available for this course right now.';
+$string['checkoutpaymentaccountmissing'] = 'Payment setup for this course is incomplete. Please contact site support to assign a payment account with Campay enabled.';
 $string['checkoutemptytitle'] = 'Next step';
 $string['enrolsuccesstitle'] = 'You are enrolled';
 $string['enrolsuccesstext'] = 'Payment is complete. Open the course content to begin.';
