@@ -2360,10 +2360,9 @@ function theme_nextgen_enrol_fee_price(int $courseid): string {
 }
 
 /**
- * CFA amount the configured XAF-only payment provider will charge for this course.
+ * CFA amount Campay will charge for this course.
  *
- * Uses the same payable, gateway surcharge, provider capabilities, and exchange
- * helper as the payment-start flow so the checkout amount cannot drift.
+ * Uses the enrolment fee instance and conversion helper used by Campay checkout.
  *
  * @param int $courseid
  * @return string
@@ -2374,10 +2373,7 @@ function theme_nextgen_enrol_fee_xaf_price(int $courseid): string {
     if (empty($CFG->enrol_plugins_enabled) || !str_contains($CFG->enrol_plugins_enabled, 'fee')) {
         return '';
     }
-    if (
-        !class_exists(\paygw_moodlepayments\local\provider_factory::class)
-        || !class_exists(\paygw_moodlepayments\local\exchange::class)
-    ) {
+    if (!class_exists(\paygw_campay\currency_converter::class)) {
         return '';
     }
 
@@ -2392,37 +2388,37 @@ function theme_nextgen_enrol_fee_xaf_price(int $courseid): string {
         return '';
     }
 
-    $payable = \core_payment\helper::get_payable('enrol_fee', 'fee', (int) $instance->id);
-    $currency = strtoupper(trim($payable->get_currency()));
+    $accountid = (int) ($instance->customint1 ?? 0);
+    if ($accountid < 1) {
+        return '';
+    }
+
+    $currency = strtoupper(trim((string) $instance->currency));
     if (!in_array($currency, ['USD', 'EUR'], true)) {
         return '';
     }
 
-    $account = new \core_payment\account((int) $payable->get_account_id());
-    if (!$account->is_available() || !array_key_exists('moodlepayments', $account->get_gateways())) {
+    $account = new \core_payment\account($accountid);
+    if (!$account->is_available() || !array_key_exists('campay', $account->get_gateways())) {
         return '';
     }
 
-    $provider = \paygw_moodlepayments\local\provider_factory::get_active();
-    if ($provider === null || !$provider->is_configured()) {
+    try {
+        $conversion = \paygw_campay\currency_converter::get_xaf_rate($currency);
+        $amount = \paygw_campay\currency_converter::calculate_xaf_amount(
+            (float) $instance->cost,
+            $conversion['rate'],
+            (float) \core_payment\helper::get_gateway_surcharge('campay')
+        );
+    } catch (\moodle_exception $e) {
+        debugging('Unable to calculate the Campay XAF display price: ' . $e->getMessage(), DEBUG_DEVELOPER);
         return '';
     }
-    if ($currency === 'USD' && \paygw_moodlepayments\local\exchange::rate() <= 0) {
-        return '';
-    }
-
-    $surcharge = \core_payment\helper::get_gateway_surcharge('moodlepayments');
-    $amount = \core_payment\helper::get_rounded_cost($payable->get_amount(), $currency, $surcharge);
-    $charge = \paygw_moodlepayments\local\exchange::for_provider(
-        $amount,
-        $currency,
-        $provider->get_supported_currencies()
-    );
-    if ($charge['currency'] !== 'XAF' || $charge['amount'] <= 0) {
+    if ($amount <= 0) {
         return '';
     }
 
-    return \core_payment\helper::get_cost_as_string($charge['amount'], 'XAF');
+    return \core_payment\helper::get_cost_as_string((float) $amount, 'XAF');
 }
 
 /**
@@ -3988,6 +3984,7 @@ function theme_nextgen_enrol_checkout_context(
         empty($USER->firstname) || empty($USER->lastname) || empty($USER->email)
     );
     $needscustom = $needsprofile && !$needsbasic;
+
     $profileform = '';
     $profileurl = '';
     if ($needsbasic) {
