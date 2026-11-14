@@ -35,6 +35,10 @@ body.nextgen .core_payment_gateways_modal .ng-campay-methods {
   display: none;
 }
 
+body.nextgen .core_payment_gateways_modal .core_payment_fee_breakdown {
+  text-align: right;
+}
+
 body.nextgen-enrol-checkout .core_payment_gateways_modal .campay .ng-payment-gateway-name {
   display: none;
 }
