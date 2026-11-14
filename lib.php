@@ -2394,7 +2394,7 @@ function theme_nextgen_enrol_fee_xaf_price(int $courseid): string {
 
     $payable = \core_payment\helper::get_payable('enrol_fee', 'fee', (int) $instance->id);
     $currency = strtoupper(trim($payable->get_currency()));
-    if ($currency !== 'USD') {
+    if (!in_array($currency, ['USD', 'EUR'], true)) {
         return '';
     }
 
@@ -2407,7 +2407,7 @@ function theme_nextgen_enrol_fee_xaf_price(int $courseid): string {
     if ($provider === null || !$provider->is_configured()) {
         return '';
     }
-    if (\paygw_moodlepayments\local\exchange::rate() <= 0) {
+    if ($currency === 'USD' && \paygw_moodlepayments\local\exchange::rate() <= 0) {
         return '';
     }
 

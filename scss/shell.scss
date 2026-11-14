@@ -5961,6 +5961,7 @@ body.nextgen.nextgen-enrol-checkout #page.drawers div[role="main"] {
 }
 
 body.nextgen.nextgen-enrol-checkout #page-content {
+  margin-top: -0.75rem;
   padding: 0 0 3rem;
 }
 
@@ -6479,7 +6480,7 @@ body.nextgen .ng-checkout-account-email {
 @media (max-width: 899.98px) {
   body.nextgen .ng-checkout-band {
     min-height: 12rem;
-    padding: 1.6rem 0 2.8rem;
+    padding: 1.35rem 0 2.6rem;
   }
 
   body.nextgen .ng-checkout-inner {
@@ -6494,10 +6495,6 @@ body.nextgen .ng-checkout-account-email {
   body.nextgen .ng-checkout-steps {
     gap: 0.4rem 0.85rem;
     margin-top: 0.95rem;
-  }
-
-  body.nextgen .ng-checkout-band {
-    padding-bottom: 2.6rem;
   }
 
   body.nextgen .ng-checkout-layout {
@@ -6558,11 +6555,11 @@ body.nextgen .ng-checkout-account-email {
   }
 
   body.nextgen .ng-checkout-main {
-    order: 1;
+    order: 2;
   }
 
   body.nextgen .ng-checkout-aside {
-    order: 2;
+    order: 1;
   }
 
   body.nextgen .ng-enrol-success {
@@ -6571,6 +6568,49 @@ body.nextgen .ng-checkout-account-email {
 
   body.nextgen .ng-enrol-success-cta {
     width: 100%;
+  }
+}
+
+@media (max-width: 575.98px) {
+  body.nextgen .ng-checkout-band {
+    min-height: 0;
+    padding: 1.2rem 0 2.25rem;
+  }
+
+  body.nextgen .ng-checkout-band-image {
+    object-position: center;
+  }
+
+  body.nextgen .ng-checkout-title {
+    font-size: clamp(1.35rem, 6vw, 1.65rem);
+    overflow-wrap: anywhere;
+  }
+
+  body.nextgen .ng-checkout-steps {
+    column-gap: 0.65rem;
+    row-gap: 0.45rem;
+  }
+
+  body.nextgen .ng-checkout-step {
+    font-size: 0.78rem;
+  }
+
+  body.nextgen .ng-checkout-layout {
+    gap: 0.75rem;
+    margin-top: -1rem;
+  }
+
+  body.nextgen .ng-checkout-card {
+    border-radius: 14px;
+    padding: 1rem;
+  }
+
+  body.nextgen .ng-checkout-pay .ng-enrol-card {
+    padding: 0.9rem;
+  }
+
+  body.nextgen .ng-checkout-summary {
+    padding: 0.85rem;
   }
 }
 
