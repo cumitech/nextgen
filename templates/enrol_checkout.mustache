@@ -21,6 +21,9 @@
 }}
 <article class="ng-checkout">
     <header class="ng-checkout-band">
+        {{#hasimage}}
+            <img class="ng-checkout-band-image" src="{{image}}" alt="" aria-hidden="true">
+        {{/hasimage}}
         <div class="ng-checkout-inner">
             <a class="ng-checkout-back" href="{{courseurl}}">{{#str}}checkoutback, theme_nextgen{{/str}}</a>
             <p class="ng-checkout-kicker">{{#str}}checkouttitle, theme_nextgen{{/str}}</p>
