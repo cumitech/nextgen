@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+let modalObserver = null;
+
 /**
  * Update the visible and announced selection when the learner changes method.
  *
@@ -55,12 +57,109 @@ const updateSelection = (event) => {
  * @param {Element} methods
  */
 const selectGateway = (methods) => {
+    let selectedMethod = methods.querySelector('.ng-campay-method-input:checked');
+    if (!selectedMethod) {
+        selectedMethod = methods.querySelector('.ng-campay-method-input[value="MOMO"]');
+        if (selectedMethod) {
+            selectedMethod.checked = true;
+            selectedMethod.dispatchEvent(new Event('change', {bubbles: true}));
+        }
+    }
+
     const container = methods.closest('.form-check');
     const gateway = container && container.querySelector('input[name="payby"]');
     if (gateway && !gateway.checked) {
         gateway.checked = true;
         gateway.dispatchEvent(new Event('change', {bubbles: true}));
     }
+};
+
+/**
+ * Replace Moodle's broken interpolated fee label with the XAF charge shown on checkout.
+ *
+ * @param {Element} methods
+ * @returns {boolean} Whether the modal cost was updated.
+ */
+const updateModalCost = (methods) => {
+    const modal = methods.closest('[data-region="modal-container"]');
+    const fee = modal && modal.querySelector('.core_payment_fee_breakdown');
+    const pageCharge = document.querySelector('.ng-checkout-xaf-price strong');
+    const gatewayContainer = methods.closest('.form-check');
+    const gateway = gatewayContainer && gatewayContainer.querySelector('input[name="payby"]');
+    const fallbackCost = gateway && gateway.dataset.cost ? gateway.dataset.cost.trim() : '';
+    const amount = (pageCharge && pageCharge.textContent.trim()) ||
+        (fallbackCost && /\b(?:XAF|CFA|FCFA)\b/i.test(fallbackCost) ? fallbackCost : '');
+    if (!fee || !amount) {
+        return false;
+    }
+    if (fee.dataset.ngXafAmount === amount) {
+        return true;
+    }
+
+    const labelText = fee.textContent.trim().split(':', 1)[0].trim();
+    if (!labelText) {
+        return false;
+    }
+
+    const label = document.createElement('span');
+    label.className = 'ng-campay-modal-cost-label';
+    label.textContent = labelText;
+
+    const value = document.createElement('strong');
+    value.className = 'ng-campay-modal-cost-value';
+    value.textContent = amount;
+
+    fee.classList.add('ng-campay-modal-cost');
+    fee.replaceChildren(label, value);
+    fee.dataset.ngXafAmount = amount;
+    return true;
+};
+
+/**
+ * Select Campay as the core gateway and show its XAF cost when the modal content loads.
+ *
+ * @returns {boolean} Whether the modal has been fully updated.
+ */
+const enhancePaymentModal = () => {
+    const methods = document.querySelector(
+        '.core_payment_gateways_modal .campay [data-region="campay-payment-methods"]'
+    );
+    if (!methods) {
+        return false;
+    }
+
+    selectGateway(methods);
+    return updateModalCost(methods);
+};
+
+/**
+ * Watch the payment modal while Moodle loads its gateway and fee regions.
+ */
+const watchPaymentModal = () => {
+    if (modalObserver) {
+        modalObserver.disconnect();
+    }
+    const observer = new MutationObserver(() => {
+        if (enhancePaymentModal()) {
+            observer.disconnect();
+            if (modalObserver === observer) {
+                modalObserver = null;
+            }
+        }
+    });
+    modalObserver = observer;
+    observer.observe(document.body, {childList: true, subtree: true});
+
+    if (enhancePaymentModal()) {
+        observer.disconnect();
+        modalObserver = null;
+    }
+    setTimeout(() => {
+        observer.disconnect();
+        if (modalObserver === observer) {
+            modalObserver = null;
+        }
+    }, 15000);
 };
 
 /**
@@ -87,4 +186,13 @@ const handleMethodClick = (event) => {
 export const init = () => {
     document.addEventListener('change', updateSelection);
     document.addEventListener('click', handleMethodClick);
+    document.addEventListener('click', (event) => {
+        if (
+            document.body.classList.contains('nextgen-enrol-checkout') &&
+            event.target instanceof Element &&
+            event.target.closest('[data-action="core_payment/triggerPayment"]')
+        ) {
+            watchPaymentModal();
+        }
+    });
 };
