@@ -165,7 +165,7 @@ body.nextgen-enrol-checkout .core_payment_gateways_modal .ng-campay-modal-cost {
   border-top: 1px solid var(--ng-border);
   display: flex;
   gap: 1rem;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin: 0.9rem 0 0;
   padding: 0.85rem 0 0;
 }
@@ -6814,8 +6814,6 @@ body.nextgen .ng-checkout-account-email {
     padding: 1rem;
   }
 
-  body.nextgen .ng-course-panel > .ng-course-price-label,
-  body.nextgen .ng-course-panel > .ng-course-price,
   body.nextgen .ng-course-panel > .ng-course-quote {
     display: none;
   }
