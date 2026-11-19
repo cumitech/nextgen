@@ -97,6 +97,7 @@ $regionmainsettingsmenu = $buildregionmainsettings ? $OUTPUT->region_main_settin
 
 $header = $PAGE->activityheader;
 $headercontent = $header->export_for_template($renderer);
+$currencyrate = $PAGE->pagelayout === 'login' ? null : theme_nextgen_usd_xaf_rate();
 
 $coursefullname = ($PAGE->course?->fullname) ? format_string(
     $PAGE->course->fullname,
@@ -122,6 +123,8 @@ $templatecontext = [
     'mobileprimarynav' => $primarymenu['mobileprimarynav'],
     'usermenu' => $primarymenu['user'],
     'langmenu' => $primarymenu['lang'],
+    'currencyrate' => $currencyrate ?? '',
+    'hascurrencyrate' => $currencyrate !== null,
     'forceblockdraweropen' => $forceblockdraweropen,
     'regionmainsettingsmenu' => $regionmainsettingsmenu,
     'hasregionmainsettingsmenu' => !empty($regionmainsettingsmenu),

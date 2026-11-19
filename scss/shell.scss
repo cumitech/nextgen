@@ -356,12 +356,42 @@ body.nextgen .ng-user-nav {
 }
 
 body.pagelayout-login .gtranslate_wrapper,
+body.pagelayout-login .ng-currency-switch,
 body.pagelayout-login .login-languagemenu {
   display: none;
 }
 
 body.nextgen .gtranslate_wrapper {
   position: relative;
+}
+
+body.nextgen .ng-currency-switch {
+  display: inline-flex;
+  margin: 0;
+}
+
+body.nextgen .ng-currency-select {
+  background: #fff;
+  border: 1px solid var(--ng-border);
+  border-radius: var(--ng-radius-md);
+  color: var(--ng-ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.2;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+}
+
+body.nextgen .ng-currency-select:focus-visible {
+  outline: 2px solid var(--ng-primary);
+  outline-offset: 2px;
+}
+
+body.nextgen .ng-currency-note {
+  color: var(--ng-muted-ink);
+  font-size: 0.875rem;
 }
 
 body.nextgen .gtranslate_wrapper .gt_switcher {
@@ -1628,6 +1658,12 @@ body.nextgen.pagelayout-login .ng-auth-footer a {
   body.nextgen .ng-user-nav {
     flex: 0 0 auto;
     gap: 0.15rem;
+  }
+
+  body.nextgen .ng-currency-select {
+    font-size: 0.75rem;
+    min-height: 36px;
+    padding: 0.25rem;
   }
 
   body.nextgen .gtranslate_wrapper .gt_switcher .gt_selected a {

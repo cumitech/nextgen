@@ -179,6 +179,7 @@ function theme_nextgen_page_init($page) {
     $page->requires->js_call_amd('theme_nextgen/showmore', 'init');
     if ($page->pagelayout !== 'maintenance') {
         $page->requires->js_call_amd('theme_nextgen/gtranslate', 'init');
+        $page->requires->js_call_amd('theme_nextgen/currency', 'init');
     }
 }
 
@@ -1825,6 +1826,8 @@ function theme_nextgen_prepare_card_facts(array $courseids): void {
             'reviewstats' => null,
             'enrolments' => 0,
             'feeprice' => '',
+            'feeamount' => 0.0,
+            'feecurrency' => '',
             'teachers' => [],
             'image' => '',
         ]);
@@ -1935,6 +1938,8 @@ function theme_nextgen_prepare_card_facts(array $courseids): void {
             }
             if ($cost > 0 && preg_match('/^[A-Z]{3}$/', $currency)) {
                 $fact['feeprice'] = \core_payment\helper::get_cost_as_string($cost, $currency);
+                $fact['feeamount'] = $cost;
+                $fact['feecurrency'] = $currency;
                 theme_nextgen_card_facts((int) $row->courseid, $fact);
             }
         }
@@ -2128,7 +2133,8 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
     $timestamp = !empty($course->startdate) ? (int) $course->startdate : (int) $course->timecreated;
     $date = preg_replace('/^0/', '', userdate($timestamp, '%d %B %Y'));
 
-    $price = theme_nextgen_course_price((int) $course->id, $commercial['price']);
+    $pricedetails = theme_nextgen_course_price_details((int) $course->id, $commercial['price']);
+    $price = $pricedetails['price'];
 
     $excerpt = '';
     if ($course->has_summary()) {
@@ -2171,6 +2177,12 @@ function theme_nextgen_course_card_data(core_course_list_element $course): array
         'reviewslabel' => $reviewslabel,
         'hasprice' => $price !== '',
         'price' => $price,
+        'priceamount' => in_array($pricedetails['currency'], ['XAF', 'USD'], true)
+            ? $pricedetails['amount']
+            : '',
+        'pricecurrency' => in_array($pricedetails['currency'], ['XAF', 'USD'], true)
+            ? $pricedetails['currency']
+            : '',
         'actionurl' => $actionurl,
         'actionlabel' => $actionlabel,
         'hasenrolments' => $students !== '',
@@ -2292,7 +2304,7 @@ function theme_nextgen_fee_defaults(): array {
 }
 
 /**
- * Price shown for a course.
+ * Price and numeric source amount shown for a course.
  *
  * An enabled fee enrolment wins, including the site default when that instance
  * has no cost of its own. A price typed on the course is next. Every other
@@ -2300,44 +2312,70 @@ function theme_nextgen_fee_defaults(): array {
  *
  * @param int $courseid
  * @param string $manual Price typed on the course, without assuming a currency
- * @return string
+ * @return array{price: string, amount: float, currency: string}
  */
-function theme_nextgen_course_price(int $courseid, string $manual = ''): string {
-    $charged = theme_nextgen_enrol_fee_price($courseid);
-    if ($charged !== '') {
-        return $charged;
+function theme_nextgen_course_price_details(int $courseid, string $manual = ''): array {
+    $fee = theme_nextgen_enrol_fee_amount($courseid);
+    if ($fee['amount'] > 0 && preg_match('/^[A-Z]{3}$/', $fee['currency'])) {
+        return [
+            'price' => \core_payment\helper::get_cost_as_string($fee['amount'], $fee['currency']),
+            'amount' => $fee['amount'],
+            'currency' => $fee['currency'],
+        ];
     }
+
     $defaults = theme_nextgen_fee_defaults();
     $typed = theme_nextgen_format_price($manual, $defaults['currency']);
     if ($typed !== '') {
-        return $typed;
+        $amount = preg_match('/^[0-9.,\s]+$/', trim($manual))
+            ? (float) str_replace(',', '', trim($manual))
+            : 0.0;
+        return [
+            'price' => $typed,
+            'amount' => $amount,
+            'currency' => $amount > 0 ? $defaults['currency'] : '',
+        ];
     }
     if ($defaults['cost'] > 0 && $defaults['currency'] !== '') {
-        return \core_payment\helper::get_cost_as_string($defaults['cost'], $defaults['currency']);
+        return [
+            'price' => \core_payment\helper::get_cost_as_string($defaults['cost'], $defaults['currency']),
+            'amount' => $defaults['cost'],
+            'currency' => $defaults['currency'],
+        ];
     }
-    return '';
+    return ['price' => '', 'amount' => 0.0, 'currency' => ''];
 }
 
 /**
- * Localised cost of the first enabled fee enrolment, including XAF.
- *
- * Uses the same rule as the fee plugin: a teacher-set cost replaces the site
- * default, and an empty instance cost uses that default. An empty string means
- * this course has no fee enrolment to display.
+ * Price shown for a course.
  *
  * @param int $courseid
+ * @param string $manual
  * @return string
  */
-function theme_nextgen_enrol_fee_price(int $courseid): string {
+function theme_nextgen_course_price(int $courseid, string $manual = ''): string {
+    return theme_nextgen_course_price_details($courseid, $manual)['price'];
+}
+
+/**
+ * Cost and currency of the first enabled fee enrolment, including site defaults.
+ *
+ * @param int $courseid
+ * @return array{amount: float, currency: string}
+ */
+function theme_nextgen_enrol_fee_amount(int $courseid): array {
     global $CFG;
 
     $fact = theme_nextgen_card_facts($courseid);
-    if ($fact !== null) {
-        return $fact['feeprice'];
+    if ($fact !== null && (float) ($fact['feeamount'] ?? 0) > 0) {
+        return [
+            'amount' => (float) $fact['feeamount'],
+            'currency' => strtoupper(trim((string) $fact['feecurrency'])),
+        ];
     }
 
     if (empty($CFG->enrol_plugins_enabled) || !str_contains($CFG->enrol_plugins_enabled, 'fee')) {
-        return '';
+        return ['amount' => 0.0, 'currency' => ''];
     }
     $defaults = theme_nextgen_fee_defaults();
     foreach (enrol_get_instances($courseid, true) as $instance) {
@@ -2353,10 +2391,124 @@ function theme_nextgen_enrol_fee_price(int $courseid): string {
             $cost = $defaults['cost'];
         }
         if ($cost > 0 && preg_match('/^[A-Z]{3}$/', $currency)) {
-            return \core_payment\helper::get_cost_as_string($cost, $currency);
+            return ['amount' => $cost, 'currency' => $currency];
         }
     }
-    return '';
+    return ['amount' => 0.0, 'currency' => ''];
+}
+
+/**
+ * Localised cost of the first enabled fee enrolment, including XAF.
+ *
+ * Uses the same rule as the fee plugin: a teacher-set cost replaces the site
+ * default, and an empty instance cost uses that default. An empty string means
+ * this course has no fee enrolment to display.
+ *
+ * @param int $courseid
+ * @return string
+ */
+function theme_nextgen_enrol_fee_price(int $courseid): string {
+    $fee = theme_nextgen_enrol_fee_amount($courseid);
+    return $fee['amount'] > 0 && preg_match('/^[A-Z]{3}$/', $fee['currency'])
+        ? \core_payment\helper::get_cost_as_string($fee['amount'], $fee['currency'])
+        : '';
+}
+
+/**
+ * XAF per USD rate used for display-only price conversion.
+ *
+ * @return float|null
+ */
+function theme_nextgen_usd_xaf_rate(): ?float {
+    static $loaded = false;
+    static $rate = null;
+    if ($loaded) {
+        return $rate;
+    }
+    $loaded = true;
+
+    $cache = \cache::make('theme_nextgen', 'currencyrates');
+    $cached = $cache->get('usd_xaf');
+    if (is_numeric($cached) && (float) $cached > 0) {
+        $rate = (float) $cached;
+        return $rate;
+    }
+
+    if (class_exists(\paygw_campay\currency_converter::class)) {
+        try {
+            $conversion = \paygw_campay\currency_converter::get_xaf_rate('USD');
+        } catch (\moodle_exception $e) {
+            debugging('Unable to load the USD/XAF display rate: ' . $e->getMessage(), DEBUG_DEVELOPER);
+            return null;
+        }
+        $rate = $conversion['rate'] ?? null;
+    } else {
+        $rate = theme_nextgen_fetch_usd_xaf_rate();
+    }
+    if (!is_numeric($rate) || (float) $rate <= 0) {
+        return null;
+    }
+
+    $rate = (float) $rate;
+    $cache->set('usd_xaf', $rate);
+    return $rate;
+}
+
+/**
+ * ECB-based USD/XAF rate for installations without the Campay gateway plugin.
+ *
+ * @return float|null
+ */
+function theme_nextgen_fetch_usd_xaf_rate(): ?float {
+    $client = new \curl();
+    try {
+        $xml = $client->get('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml', [], [
+            'CURLOPT_CONNECTTIMEOUT' => 5,
+            'CURLOPT_TIMEOUT' => 10,
+            'CURLOPT_SSL_VERIFYPEER' => true,
+            'CURLOPT_SSL_VERIFYHOST' => 2,
+            'CURLOPT_SSL_OPTIONS' => defined('CURLSSLOPT_NATIVE_CA') ? constant('CURLSSLOPT_NATIVE_CA') : 0,
+        ]);
+    } catch (\moodle_exception $e) {
+        debugging('Unable to request the ECB USD/XAF display rate: ' . $e->getMessage(), DEBUG_DEVELOPER);
+        return null;
+    }
+
+    $info = $client->get_info();
+    if (!is_string($xml) || (int) ($info['http_code'] ?? 0) !== 200
+            || stripos($xml, '<!DOCTYPE') !== false || stripos($xml, '<!ENTITY') !== false) {
+        debugging('The ECB USD/XAF display rate response was invalid.', DEBUG_DEVELOPER);
+        return null;
+    }
+
+    $previoussetting = libxml_use_internal_errors(true);
+    try {
+        $document = simplexml_load_string($xml, \SimpleXMLElement::class, LIBXML_NONET | LIBXML_NOBLANKS);
+    } finally {
+        libxml_clear_errors();
+        libxml_use_internal_errors($previoussetting);
+    }
+    if (!$document) {
+        debugging('Unable to parse the ECB USD/XAF display rate response.', DEBUG_DEVELOPER);
+        return null;
+    }
+
+    $datedcubes = $document->xpath("//*[local-name()='Cube'][@time]");
+    if (!$datedcubes || count($datedcubes) !== 1) {
+        debugging('The ECB USD/XAF display rate date was missing.', DEBUG_DEVELOPER);
+        return null;
+    }
+    $usdcubes = $datedcubes[0]->xpath("./*[local-name()='Cube'][@currency='USD']");
+    $date = (string) $datedcubes[0]['time'];
+    $eurusd = $usdcubes ? (string) $usdcubes[0]['rate'] : '';
+    if (!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $date, $matches)
+            || !checkdate((int) $matches[2], (int) $matches[3], (int) $matches[1])
+            || !is_numeric($eurusd) || (float) $eurusd <= 0) {
+        debugging('The ECB USD/XAF display rate values were invalid.', DEBUG_DEVELOPER);
+        return null;
+    }
+
+    return 655.957 / (float) $eurusd;
 }
 
 /**
@@ -4050,6 +4202,8 @@ function theme_nextgen_enrol_checkout_context(
         'courseurl' => (new moodle_url('/course/view.php', ['id' => (int) $course->id]))->out(false),
         'hasprice' => $price !== '',
         'price' => $price,
+        'priceamount' => $card['priceamount'] ?? '',
+        'pricecurrency' => $card['pricecurrency'] ?? '',
         'hasxafprice' => $xafprice !== '',
         'xafprice' => $xafprice,
         'hasincludes' => !empty($includes),
@@ -4325,6 +4479,8 @@ function theme_nextgen_course_detail_context(): ?array {
         'reviewbutton' => $reviewform['reviewbutton'],
         'hasprice' => $price !== '',
         'price' => $price,
+        'priceamount' => $card['priceamount'] ?? '',
+        'pricecurrency' => $card['pricecurrency'] ?? '',
         'hasfacts' => !empty($facts),
         'facts' => $facts,
         'hasoutcomes' => !empty($outcomes),

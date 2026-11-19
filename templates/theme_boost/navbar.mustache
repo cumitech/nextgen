@@ -51,6 +51,15 @@
                 </div>
             {{/output.search_box}}
             <div class="gtranslate_wrapper"></div>
+            {{#hascurrencyrate}}
+                <label class="ng-currency-switch" data-ng-xaf-per-usd="{{currencyrate}}">
+                    <span class="visually-hidden">{{#str}}currencydisplaylabel, theme_nextgen{{/str}}</span>
+                    <select class="ng-currency-select" aria-label="{{#str}}currencydisplaylabel, theme_nextgen{{/str}}">
+                        <option value="XAF">{{#str}}currencyxaf, theme_nextgen{{/str}}</option>
+                        <option value="USD">{{#str}}currencyusd, theme_nextgen{{/str}}</option>
+                    </select>
+                </label>
+            {{/hascurrencyrate}}
             {{{ output.edit_switch }}}
             {{# output.navbar_plugin_output }}
                 {{{ . }}}

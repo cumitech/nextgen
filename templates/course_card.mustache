@@ -53,7 +53,7 @@
         {{/hasrating}}
         <p class="ng-course-commerce">
             {{#hasprice}}
-                <span class="ng-course-price">{{price}}</span>
+                <span class="ng-course-price"{{#pricecurrency}} data-ng-price-amount="{{priceamount}}" data-ng-price-currency="{{pricecurrency}}"{{/pricecurrency}}>{{price}}</span>
             {{/hasprice}}
                 <span class="ng-course-stats">
                 {{#hasenrolments}}
