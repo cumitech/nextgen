@@ -32,10 +32,14 @@ const PRICE = '[data-ng-price-amount][data-ng-price-currency]';
  * @param {string} currency
  * @returns {string}
  */
-const formatPrice = (amount, currency) => new Intl.NumberFormat(
-    document.documentElement.lang || 'en',
-    {style: 'currency', currency: currency, currencyDisplay: 'code'}
-).format(amount);
+const formatPrice = (amount, currency) => {
+    const options = {style: 'currency', currency: currency, currencyDisplay: 'code'};
+    if (currency === 'USD') {
+        options.minimumFractionDigits = 0;
+        options.maximumFractionDigits = 0;
+    }
+    return new Intl.NumberFormat(document.documentElement.lang || 'en', options).format(amount);
+};
 
 /**
  * Apply the display currency without changing any payment data.
@@ -54,7 +58,7 @@ const updatePrices = (select, xafPerUsd) => {
         const converted = source === target
             ? amount
             : (source === 'XAF' ? amount / xafPerUsd : amount * xafPerUsd);
-        node.textContent = formatPrice(converted, target);
+        node.textContent = formatPrice(target === 'USD' ? Math.round(converted) : converted, target);
     });
 };
 

@@ -243,7 +243,6 @@ $string['catalogueadvancedcount'] = 'Advanced search ({$a})';
 $string['cataloguefilterany'] = 'Any';
 $string['catalogueprice'] = 'Price';
 $string['currencydisplaylabel'] = 'Display currency (payments remain in CFA francs)';
-$string['currencydisplaynote'] = 'USD prices are approximate conversions. Payment is always charged in CFA francs.';
 $string['currencyxaf'] = 'XAF';
 $string['currencyusd'] = 'USD';
 $string['cataloguefee'] = 'Fee';
