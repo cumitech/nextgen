@@ -8989,6 +8989,144 @@ body.nextgen.path-user #region-main .filepicker {
   box-shadow: 0 4px 18px rgba(16, 40, 51, 0.05);
 }
 
+body.nextgen.path-user .filepicker .moodle-dialogue-wrap {
+  border: 1px solid var(--ng-border);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+body.nextgen.path-user .filepicker .moodle-dialogue-hd {
+  background: var(--ng-surface);
+  border-bottom: 1px solid var(--ng-border);
+  padding: 1rem 1.25rem;
+}
+
+body.nextgen.path-user .filepicker .moodle-dialogue-hd h3 {
+  color: var(--ng-ink);
+  font-size: 1.2rem;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+}
+
+body.nextgen.path-user .filepicker .moodle-dialogue-bd {
+  background: var(--ng-surface);
+  padding: 0.75rem;
+}
+
+body.nextgen.path-user .file-picker .fp-navbar {
+  background: var(--ng-surface);
+  border: 0;
+  border-bottom: 1px solid var(--ng-border);
+  padding: 0.4rem 0.5rem;
+}
+
+body.nextgen.path-user .file-picker .fp-list {
+  padding: 0.5rem;
+}
+
+body.nextgen.path-user .file-picker .fp-list .fp-repo {
+  border-radius: 0.65rem;
+  margin-bottom: 0.2rem;
+}
+
+body.nextgen.path-user .file-picker .fp-list .fp-repo a {
+  border-radius: inherit;
+  color: var(--ng-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.65rem 0.75rem;
+  text-decoration: none;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+body.nextgen.path-user .file-picker .fp-list .fp-repo a:hover,
+body.nextgen.path-user .file-picker .fp-list .fp-repo a:focus-visible {
+  background: var(--ng-muted);
+  color: var(--ng-primary);
+}
+
+body.nextgen.path-user .file-picker .fp-list .fp-repo.active {
+  background: rgba(22, 58, 74, 0.09);
+}
+
+body.nextgen.path-user .file-picker .fp-list .fp-repo.active a {
+  color: var(--ng-primary);
+  font-weight: 700;
+}
+
+body.nextgen.path-user .file-picker .fp-content {
+  background: var(--ng-background);
+  border: 0;
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+
+body.nextgen.path-user .file-picker .fp-viewbar a,
+body.nextgen.path-user .file-picker .fp-toolbar a {
+  border-color: var(--ng-border);
+  border-radius: 0.55rem;
+  color: var(--ng-text-muted);
+}
+
+body.nextgen.path-user .file-picker .fp-viewbar a:hover,
+body.nextgen.path-user .file-picker .fp-toolbar a:hover {
+  background: var(--ng-muted);
+  color: var(--ng-primary);
+}
+
+body.nextgen.path-user .file-picker .fp-viewbar a.checked {
+  background: var(--ng-primary);
+  border-color: var(--ng-primary);
+  color: #fff;
+}
+
+body.nextgen.path-user .file-picker .fp-iconview .fp-file {
+  margin: 0.75rem;
+}
+
+body.nextgen.path-user .file-picker .fp-iconview .fp-thumbnail {
+  background: var(--ng-surface);
+  border: 1px solid var(--ng-border);
+  border-radius: 0.75rem;
+}
+
+body.nextgen.path-user .file-picker .fp-iconview .fp-thumbnail:hover {
+  background: var(--ng-surface);
+  border-color: var(--ng-primary);
+  box-shadow: none;
+}
+
+body.nextgen.path-user .file-picker .fp-iconview .fp-thumbnail img {
+  border: 0;
+  box-shadow: none;
+}
+
+body.nextgen.path-user .file-picker .fp-iconview .fp-filename-field .fp-filename {
+  color: var(--ng-text);
+  font-size: 0.8rem;
+}
+
+body.nextgen.path-user .file-picker .fp-tableview .yui3-datatable table {
+  border-color: var(--ng-border);
+}
+
+body.nextgen.path-user .file-picker .fp-tableview .yui3-datatable tr:hover td {
+  background: var(--ng-muted);
+}
+
+@media (max-width: 575.98px) {
+  body.nextgen.path-user .filepicker .moodle-dialogue-bd {
+    padding: 0.5rem;
+  }
+
+  body.nextgen.path-user .file-picker .fp-list {
+    padding: 0.35rem;
+  }
+
+  body.nextgen.path-user .file-picker .fp-list .fp-repo a {
+    padding: 0.55rem;
+  }
+}
+
 body.nextgen.path-calendar #region-main .maincalendar,
 body.nextgen[id^="page-calendar-"] #region-main .maincalendar {
   background: #fff;
