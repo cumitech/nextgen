@@ -104,7 +104,7 @@ class organisation {
     }
 
     /**
-     * Partner organisations shown on the landing page, About, and Contact.
+     * Reference organisations shown on the landing page, About, and Contact.
      *
      * @return array<int, array{
      *     key: string,

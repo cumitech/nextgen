@@ -2719,13 +2719,16 @@ body.nextgen .ng-partners-lead {
 
 body.nextgen .ng-partner-row {
   align-items: stretch;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 1rem 1.25rem;
-  justify-content: center;
   list-style: none;
   margin: 1.25rem 0 0;
   padding: 0;
+}
+
+body.nextgen .ng-partner-row > li {
+  min-width: 0;
 }
 
 body.nextgen .ng-partner-link {
@@ -2737,10 +2740,11 @@ body.nextgen .ng-partner-link {
   display: flex;
   justify-content: center;
   min-height: 5.25rem;
-  min-width: 8.5rem;
+  min-width: 0;
   padding: 0.65rem 0.9rem;
   text-decoration: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
 }
 
 body.nextgen .ng-partner-link:hover,
@@ -2818,8 +2822,8 @@ body.nextgen .ng-footer .ng-partners-footer h2 {
 }
 
 body.nextgen .ng-footer .ng-partner-row {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0.75rem;
-  justify-content: flex-start;
   margin-top: 0;
 }
 
@@ -2848,6 +2852,20 @@ body.nextgen .ng-footer .ng-partner-wordmark-main {
 body.nextgen .ng-footer .ng-partner-wordmark-sub {
   font-size: 0.55rem;
   max-width: 7.5rem;
+}
+
+@media (max-width: 991px) {
+  body.nextgen .ng-partner-row,
+  body.nextgen .ng-footer .ng-partner-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575px) {
+  body.nextgen .ng-partner-row,
+  body.nextgen .ng-footer .ng-partner-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 body.nextgen .ng-cta-panel {

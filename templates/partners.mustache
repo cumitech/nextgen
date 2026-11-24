@@ -32,13 +32,11 @@
 <section class="ng-partners ng-partners-{{variant}}" aria-labelledby="ng-partners-heading-{{variant}}">
     <div class="ng-partners-inner">
         <h2 id="ng-partners-heading-{{variant}}">{{#str}}partnersheading, theme_nextgen{{/str}}</h2>
-        {{#showlead}}
-            <p class="ng-partners-lead">{{#str}}partnerslead, theme_nextgen{{/str}}</p>
-        {{/showlead}}
+        <p class="ng-partners-lead">{{#str}}partnerslead, theme_nextgen{{/str}}</p>
         <ul class="ng-partner-row">
             {{#partners}}
                 <li>
-                    <a class="ng-partner-link ng-partner-{{key}}" href="{{url}}" target="_blank" rel="noopener noreferrer"
+                    <a class="ng-partner-link ng-partner-{{key}}" href="{{url}}" target="_blank" rel="noopener noreferrer nofollow"
                         {{#iswordmark}}aria-label="{{name}}"{{/iswordmark}}>
                         {{#hasimage}}
                             <img class="ng-partner-logo" src="{{image}}" alt="{{name}}">
