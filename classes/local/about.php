@@ -104,7 +104,7 @@ class about {
             'teachtext' => theme_nextgen_catalogue_lead('aboutteachtext'),
             'cansignup' => $signup,
             'signupurl' => (new \moodle_url('/login/signup.php'))->out(false),
-            'partnersblock' => organisation::partners_block('about'),
+            'partnersblock' => organisation::partners_block('about', true),
         ];
     }
 

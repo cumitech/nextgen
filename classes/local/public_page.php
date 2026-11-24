@@ -278,7 +278,7 @@ class public_page {
             'hasoffices' => !empty($offices),
             'offices' => $offices,
             'socialblock' => self::social_block('card'),
-            'partnersblock' => organisation::partners_block('contact'),
+            'partnersblock' => organisation::partners_block('contact', true),
         ];
     }
 

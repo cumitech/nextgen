@@ -8991,14 +8991,15 @@ body.nextgen.path-user #region-main .filepicker {
 
 body.nextgen.path-user .filepicker .moodle-dialogue-wrap {
   border: 1px solid var(--ng-border);
-  border-radius: 18px;
+  border-radius: 20px;
   overflow: hidden;
+  box-shadow: 0 24px 64px rgba(16, 40, 51, 0.18);
 }
 
 body.nextgen.path-user .filepicker .moodle-dialogue-hd {
-  background: var(--ng-surface);
+  background: linear-gradient(135deg, #fff 0%, #f6f9fa 100%);
   border-bottom: 1px solid var(--ng-border);
-  padding: 1rem 1.25rem;
+  padding: 1.1rem 1.4rem;
 }
 
 body.nextgen.path-user .filepicker .moodle-dialogue-hd h3 {
@@ -9021,12 +9022,15 @@ body.nextgen.path-user .file-picker .fp-navbar {
 }
 
 body.nextgen.path-user .file-picker .fp-list {
-  padding: 0.5rem;
+  min-width: 205px;
+  padding: 0.75rem;
+  border-right: 1px solid var(--ng-border);
+  background: var(--ng-surface);
 }
 
 body.nextgen.path-user .file-picker .fp-list .fp-repo {
-  border-radius: 0.65rem;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.3rem;
+  border-radius: 0.75rem;
 }
 
 body.nextgen.path-user .file-picker .fp-list .fp-repo a {
@@ -9034,15 +9038,16 @@ body.nextgen.path-user .file-picker .fp-list .fp-repo a {
   color: var(--ng-text);
   font-size: 0.875rem;
   font-weight: 600;
-  padding: 0.65rem 0.75rem;
+  padding: 0.7rem 0.8rem;
   text-decoration: none;
-  transition: background-color 120ms ease, color 120ms ease;
+  transition: background-color 140ms ease, color 140ms ease, transform 140ms ease;
 }
 
 body.nextgen.path-user .file-picker .fp-list .fp-repo a:hover,
 body.nextgen.path-user .file-picker .fp-list .fp-repo a:focus-visible {
   background: var(--ng-muted);
   color: var(--ng-primary);
+  transform: translateX(2px);
 }
 
 body.nextgen.path-user .file-picker .fp-list .fp-repo.active {
@@ -9050,14 +9055,24 @@ body.nextgen.path-user .file-picker .fp-list .fp-repo.active {
 }
 
 body.nextgen.path-user .file-picker .fp-list .fp-repo.active a {
+  background: #eaf1f4;
   color: var(--ng-primary);
   font-weight: 700;
+}
+
+body.nextgen.path-user .file-picker .fp-list .fp-repo img[src*="repository_contentbank"],
+body.nextgen.path-user .file-picker .fp-list .fp-repo img[src*="repository_server"],
+body.nextgen.path-user .file-picker .fp-list .fp-repo img[src*="repository_files"],
+body.nextgen.path-user .file-picker .fp-list .fp-repo img[src*="repository_recent"],
+body.nextgen.path-user .file-picker .fp-list .fp-repo img[src*="repository_private"],
+body.nextgen.path-user .file-picker .fp-list .fp-repo img[src*="repository_user"] {
+  display: none;
 }
 
 body.nextgen.path-user .file-picker .fp-content {
   background: var(--ng-background);
   border: 0;
-  border-radius: 0 0 0.75rem 0.75rem;
+  border-radius: 0 0 0.9rem 0.9rem;
 }
 
 body.nextgen.path-user .file-picker .fp-viewbar a,
@@ -9077,6 +9092,68 @@ body.nextgen.path-user .file-picker .fp-viewbar a.checked {
   background: var(--ng-primary);
   border-color: var(--ng-primary);
   color: #fff;
+}
+
+body.nextgen.path-user .file-picker .fp-content label {
+  color: var(--ng-ink);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+body.nextgen.path-user .file-picker .fp-content input[type="text"],
+body.nextgen.path-user .file-picker .fp-content input[type="url"],
+body.nextgen.path-user .file-picker .fp-content input[type="file"],
+body.nextgen.path-user .file-picker .fp-content select,
+body.nextgen.path-user .file-picker .fp-content textarea {
+  min-height: 2.75rem;
+  border: 1px solid var(--ng-border);
+  border-radius: 0.75rem;
+  background-color: var(--ng-surface);
+  color: var(--ng-text);
+  box-shadow: none;
+}
+
+body.nextgen.path-user .file-picker .fp-content input[type="text"],
+body.nextgen.path-user .file-picker .fp-content input[type="url"],
+body.nextgen.path-user .file-picker .fp-content select,
+body.nextgen.path-user .file-picker .fp-content textarea {
+  padding: 0.65rem 0.8rem;
+}
+
+body.nextgen.path-user .file-picker .fp-content input[type="file"] {
+  padding: 0.45rem;
+}
+
+body.nextgen.path-user .file-picker .fp-content input[type="text"]:focus,
+body.nextgen.path-user .file-picker .fp-content input[type="url"]:focus,
+body.nextgen.path-user .file-picker .fp-content input[type="file"]:focus,
+body.nextgen.path-user .file-picker .fp-content select:focus,
+body.nextgen.path-user .file-picker .fp-content textarea:focus {
+  border-color: var(--ng-primary);
+  box-shadow: 0 0 0 3px rgba(22, 58, 74, 0.12);
+  outline: 0;
+}
+
+body.nextgen.path-user .file-picker .fp-content button,
+body.nextgen.path-user .file-picker .fp-content input[type="submit"],
+body.nextgen.path-user .file-picker .fp-content .btn-primary {
+  min-height: 2.7rem;
+  padding: 0.65rem 1.1rem;
+  border: 1px solid var(--ng-primary);
+  border-radius: 0.75rem;
+  background: var(--ng-primary);
+  color: #fff;
+  font-weight: 650;
+  box-shadow: 0 4px 10px rgba(22, 58, 74, 0.14);
+  transition: background-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+body.nextgen.path-user .file-picker .fp-content button:hover,
+body.nextgen.path-user .file-picker .fp-content input[type="submit"]:hover,
+body.nextgen.path-user .file-picker .fp-content .btn-primary:hover {
+  background: var(--ng-primary-hover);
+  box-shadow: 0 6px 14px rgba(22, 58, 74, 0.2);
+  transform: translateY(-1px);
 }
 
 body.nextgen.path-user .file-picker .fp-iconview .fp-file {
@@ -9119,6 +9196,7 @@ body.nextgen.path-user .file-picker .fp-tableview .yui3-datatable tr:hover td {
   }
 
   body.nextgen.path-user .file-picker .fp-list {
+    min-width: 0;
     padding: 0.35rem;
   }
 
