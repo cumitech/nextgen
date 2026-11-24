@@ -609,7 +609,32 @@ function theme_nextgen_setting($theme, string $name, string $default = ''): stri
 function theme_nextgen_localised_setting($theme, string $name, string $stringkey): string {
     $stored = trim(theme_nextgen_setting($theme, $name));
     $english = get_string_manager()->get_string($stringkey, 'theme_nextgen', null, 'en');
-    if ($stored === '' || $stored === $english) {
+    $normalise = static function(string $value): string {
+        $text = html_entity_decode(strip_tags($value), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $normalised = preg_replace('/\s+/u', ' ', trim($text));
+        return $normalised === null ? trim($text) : $normalised;
+    };
+    $knowndefaults = [
+        'herotitle' => [
+            'Learn skills. Build your future.',
+            'Développez vos compétences. Construisez votre avenir.',
+        ],
+        'herotext' => [
+            'Practical online courses designed to help you learn, practise, and reach the next step in your work.',
+        ],
+        'footerabout' => [
+            'Practical online courses for people who want to learn, practise, and move their work forward.',
+            'Des cours en ligne pratiques pour celles et ceux qui veulent apprendre, s\'exercer et faire avancer leur activité.',
+        ],
+    ];
+    $storedcopy = $normalise($stored);
+    $defaults = array_merge([$english], $knowndefaults[$name] ?? []);
+    foreach ($defaults as $default) {
+        if ($storedcopy === $normalise($default)) {
+            return get_string($stringkey, 'theme_nextgen');
+        }
+    }
+    if ($stored === '') {
         return get_string($stringkey, 'theme_nextgen');
     }
     return $stored;
@@ -852,7 +877,6 @@ function theme_nextgen_footer_context($theme): array {
         'termsurl' => $terms,
         'refundurl' => $refund,
         'accessibilityurl' => $accessibility,
-        'partnersblock' => \theme_nextgen\local\organisation::partners_block('footer'),
     ];
 }
 

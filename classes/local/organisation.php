@@ -17,7 +17,7 @@
 namespace theme_nextgen\local;
 
 /**
- * Shared organisation details: contact, offices, and partner logos.
+ * Shared organisation details: contact, offices, and related organisations.
  *
  * @package   theme_nextgen
  * @copyright 2026 NextGen LMS
@@ -104,93 +104,60 @@ class organisation {
     }
 
     /**
-     * Partner organisations shown on the landing page, About, Contact, and footer.
+     * Organisations linked for information on the landing page, About, and Contact.
      *
      * @return array<int, array{
      *     key: string,
      *     name: string,
-     *     shortname: string,
-     *     url: string,
-     *     image: string,
-     *     hasimage: bool,
-     *     iswordmark: bool
+     *     url: string
      * }>
      */
     public static function partners(): array {
-        global $OUTPUT;
-
         $items = [
             [
                 'key' => 'minefop',
                 'name' => get_string('partnerminefop', 'theme_nextgen'),
-                'shortname' => get_string('partnerminefop', 'theme_nextgen'),
                 'url' => 'https://minefop.gov.cm/en/',
-                'pix' => 'partner-minefop',
             ],
             [
                 'key' => 'minpmeesa',
                 'name' => get_string('partnerminpmeesa', 'theme_nextgen'),
-                'shortname' => get_string('partnerminpmeesa', 'theme_nextgen'),
                 'url' => 'https://www.minpmeesa.cm/',
-                'pix' => 'partner-minpmeesa',
             ],
             [
                 'key' => 'apme',
                 'name' => get_string('partnerapme', 'theme_nextgen'),
-                'shortname' => get_string('partnerapme', 'theme_nextgen'),
                 'url' => 'https://apme.cm/accueil/',
-                'pix' => 'partner-apme',
             ],
             [
                 'key' => 'esrc',
                 'name' => get_string('partneresrc', 'theme_nextgen'),
-                'shortname' => get_string('partneresrc', 'theme_nextgen'),
                 'url' => 'https://esrccameroon.org/',
-                'pix' => 'partner-esrc',
             ],
             [
                 'key' => 'cga',
                 'name' => get_string('partnercga', 'theme_nextgen'),
-                'shortname' => get_string('partnercga', 'theme_nextgen'),
                 'url' => 'https://ccima.cm/',
-                'pix' => 'partner-cga',
             ],
             [
                 'key' => 'istp',
                 'name' => get_string('partneristp', 'theme_nextgen'),
-                'shortname' => get_string('partneristpshort', 'theme_nextgen'),
                 'url' => 'https://istpcam.wordpress.com/',
-                'pix' => '',
             ],
         ];
 
-        $partners = [];
-        foreach ($items as $item) {
-            $hasimage = $item['pix'] !== '';
-            $partners[] = [
-                'key' => $item['key'],
-                'name' => $item['name'],
-                'shortname' => $item['shortname'],
-                'url' => $item['url'],
-                'image' => $hasimage ? $OUTPUT->image_url($item['pix'], 'theme_nextgen')->out(false) : '',
-                'hasimage' => $hasimage,
-                'iswordmark' => !$hasimage,
-            ];
-        }
-        return $partners;
+        return $items;
     }
 
     /**
      * Template data for the partners strip.
      *
-     * @param string $variant landing, about, contact, or footer
-     * @param bool $showlead
+     * @param string $variant landing, about, or contact
      * @return array
      */
-    public static function partners_block(string $variant = 'landing', bool $showlead = false): array {
+    public static function partners_block(string $variant = 'landing'): array {
         return [
             'variant' => $variant,
-            'showlead' => $showlead,
             'partners' => self::partners(),
         ];
     }

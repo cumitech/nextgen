@@ -278,7 +278,7 @@ class public_page {
             'hasoffices' => !empty($offices),
             'offices' => $offices,
             'socialblock' => self::social_block('card'),
-            'partnersblock' => organisation::partners_block('contact', true),
+            'partnersblock' => organisation::partners_block('contact'),
         ];
     }
 
@@ -325,9 +325,6 @@ class public_page {
         $count = (int) get_string($key . 'sectioncount', 'theme_nextgen');
         for ($index = 1; $index <= $count; $index++) {
             $text = get_string($key . 'section' . $index . 'text', 'theme_nextgen');
-            if ($key === 'faq' && $index === 3) {
-                $text = theme_nextgen_catalogue_lead('faqsection3text');
-            }
             $sections[] = [
                 'title' => get_string($key . 'section' . $index . 'title', 'theme_nextgen'),
                 'text' => $text,

@@ -17,38 +17,25 @@
 {{!
     @template theme_nextgen/partners
 
-    Partner logos and links.
+    Informational links to related organisations.
 
     Example context (json):
     {
         "variant": "landing",
-        "showlead": false,
         "partners": [
-            {"key": "apme", "name": "APME", "shortname": "APME", "url": "https://apme.cm/accueil/",
-             "image": "https://example.com/apme.jpg", "hasimage": true, "iswordmark": false}
+            {"key": "apme", "name": "APME", "url": "https://apme.cm/accueil/"}
         ]
     }
 }}
 <section class="ng-partners ng-partners-{{variant}}" aria-labelledby="ng-partners-heading-{{variant}}">
     <div class="ng-partners-inner">
         <h2 id="ng-partners-heading-{{variant}}">{{#str}}partnersheading, theme_nextgen{{/str}}</h2>
-        {{#showlead}}
-            <p class="ng-partners-lead">{{#str}}partnerslead, theme_nextgen{{/str}}</p>
-        {{/showlead}}
+        <p class="ng-partners-lead">{{#str}}partnerslead, theme_nextgen{{/str}}</p>
         <ul class="ng-partner-row">
             {{#partners}}
                 <li>
-                    <a class="ng-partner-link ng-partner-{{key}}" href="{{url}}" target="_blank" rel="noopener noreferrer"
-                        {{#iswordmark}}aria-label="{{name}}"{{/iswordmark}}>
-                        {{#hasimage}}
-                            <img class="ng-partner-logo" src="{{image}}" alt="{{name}}">
-                        {{/hasimage}}
-                        {{#iswordmark}}
-                            <span class="ng-partner-wordmark" aria-hidden="true">
-                                <span class="ng-partner-wordmark-main">{{shortname}}</span>
-                                <span class="ng-partner-wordmark-sub">{{#str}}partneristpsub, theme_nextgen{{/str}}</span>
-                            </span>
-                        {{/iswordmark}}
+                    <a class="ng-partner-link ng-partner-{{key}}" href="{{url}}" target="_blank" rel="noopener noreferrer">
+                        {{name}}
                     </a>
                 </li>
             {{/partners}}
