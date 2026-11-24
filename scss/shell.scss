@@ -4671,43 +4671,6 @@ body.nextgen .ng-course-empty {
   margin: 0;
 }
 
-body.nextgen .ng-certificate-facts {
-  margin: 0 0 1.15rem;
-}
-
-body.nextgen .ng-certificate-facts p {
-  margin: 0 0 0.75rem;
-}
-
-body.nextgen .ng-certificate-facts ul,
-body.nextgen .ng-certificate-none .ng-certificate-facts {
-  display: grid;
-  gap: 0.4rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-body.nextgen .ng-certificate-facts li {
-  padding-left: 1rem;
-  position: relative;
-}
-
-body.nextgen .ng-certificate-facts li::before {
-  background: var(--ng-brand);
-  border-radius: 50%;
-  content: "";
-  height: 0.4rem;
-  left: 0;
-  position: absolute;
-  top: 0.45em;
-  width: 0.4rem;
-}
-
-body.nextgen .ng-certificate-none .ng-certificate-facts {
-  margin: 0.35rem 0 0;
-}
-
 body.nextgen .ng-secure-pay {
   border-top: 1px solid var(--ng-border);
   margin-top: 0.95rem;

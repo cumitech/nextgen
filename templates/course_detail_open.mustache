@@ -198,14 +198,21 @@
         <section class="ng-course-section ng-course-card">
             <h2>{{#str}}tabcertificate, theme_nextgen{{/str}}</h2>
             {{#hascertificate}}
-                <div class="ng-certificate-facts">
-                    <p>{{#str}}certificatelead, theme_nextgen{{/str}}</p>
-                    <ul>
-                        <li>{{#str}}certificatefactname, theme_nextgen{{/str}}</li>
-                        <li>{{#str}}certificatefactfee, theme_nextgen{{/str}}</li>
-                        <li>{{#str}}certificatefactsample, theme_nextgen{{/str}}</li>
-                    </ul>
-                </div>
+                {{#certificatependingactivity}}
+                    <p class="ng-certificate-note">{{certificatependingactivity}}</p>
+                {{/certificatependingactivity}}
+                {{#certificates}}
+                    <p class="ng-certificate-activity">{{#url}}<a href="{{url}}">{{name}}</a>{{/url}}{{^url}}{{name}}{{/url}}</p>
+                    {{#hastemplatename}}
+                        <p class="ng-certificate-note">{{templatelabel}}</p>
+                    {{/hastemplatename}}
+                    {{#hasintro}}
+                        <div class="ng-certificate-note">{{{intro}}}</div>
+                    {{/hasintro}}
+                    {{#issuancemessage}}
+                        <p class="ng-certificate-note">{{issuancemessage}}</p>
+                    {{/issuancemessage}}
+                {{/certificates}}
                 {{#hascertificatepreview}}
                     <figure class="ng-certificate">
                         <figcaption class="ng-certificate-sample">{{#str}}certificatepreviewlabel, theme_nextgen{{/str}}</figcaption>
@@ -216,28 +223,22 @@
                             {{#str}}certificatepreviewopen, theme_nextgen{{/str}}
                         </a>
                     </figure>
-                    <p class="ng-certificate-note">{{#str}}certificatepreviewnote, theme_nextgen{{/str}}</p>
+                    <p class="ng-certificate-note">{{certificatepreviewnote}}</p>
                 {{/hascertificatepreview}}
                 {{^hascertificatepreview}}
-                    <p class="ng-certificate-note">{{#str}}certificatepreviewunavailable, theme_nextgen{{/str}}</p>
+                    {{^certificatependingactivity}}
+                        <p class="ng-certificate-note">{{#str}}certificatepreviewunavailable, theme_nextgen{{/str}}</p>
+                    {{/certificatependingactivity}}
                 {{/hascertificatepreview}}
                 {{#certificatenote}}
                     <p class="ng-certificate-note">{{certificatenote}}</p>
                 {{/certificatenote}}
-                {{#certificates}}
-                    <p class="ng-certificate-activity">{{#url}}<a href="{{url}}">{{name}}</a>{{/url}}{{^url}}{{name}}{{/url}}</p>
-                {{/certificates}}
             {{/hascertificate}}
             {{^hascertificate}}
                 <div class="ng-certificate-none">
                     <span class="ng-certificate-none-mark" aria-hidden="true"></span>
                     <div>
                         <p class="ng-certificate-none-title">{{#str}}certificateempty, theme_nextgen{{/str}}</p>
-                        <ul class="ng-certificate-facts">
-                            <li>{{#str}}certificatenone, theme_nextgen{{/str}}</li>
-                            <li>{{#str}}certificatenonefinish, theme_nextgen{{/str}}</li>
-                            <li>{{#str}}certificatenonefee, theme_nextgen{{/str}}</li>
-                        </ul>
                     </div>
                 </div>
             {{/hascertificate}}

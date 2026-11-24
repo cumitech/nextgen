@@ -4290,7 +4290,6 @@ function theme_nextgen_course_detail_context(): ?array {
     $outcometitle = $outcomes ? $customoutcomes['title'] : '';
     $outcomelead = $outcomes ? $customoutcomes['lead'] : '';
     $outline = theme_nextgen_course_outline($course, $context);
-    $sectionnames = $outline['sectionnames'];
     $summaryoutcomes = $outline['summaryoutcomes'];
     $activitycount = $outline['activities'];
     $certificates = $outline['certificates'];
@@ -4301,11 +4300,6 @@ function theme_nextgen_course_detail_context(): ?array {
     }
     if ($outcometitle === '') {
         $outcometitle = get_string('courseoutcomes', 'theme_nextgen');
-    }
-    if (!$outcomes) {
-        foreach ($sectionnames as $name) {
-            $outcomes[] = ['text' => $name];
-        }
     }
 
     $languageinfo = theme_nextgen_course_language($extra['nglanguage'], (string) ($course->lang ?? ''));
@@ -4452,10 +4446,18 @@ function theme_nextgen_course_detail_context(): ?array {
         'sitename' => theme_nextgen_app_name(),
         'hascertificate' => $offered,
         'certificatenote' => $certificatenote,
+        'certificatependingactivity' => $offered && !$certificates
+            ? get_string('certificatependingactivity', 'theme_nextgen')
+            : '',
         'certificates' => $certificates,
         'hascertificatepreview' => $certificatepreviewurl !== '',
         'certificatepreviewurl' => $certificatepreviewurl,
         'certificatepreviewtitle' => get_string('certificatepreviewtitle', 'theme_nextgen', $card['fullname']),
+        'certificatepreviewnote' => get_string(
+            'certificatepreviewnote',
+            'theme_nextgen',
+            $card['fullname']
+        ),
         'hasreviews' => !empty($card['hasreviews']),
         'reviewcount' => $card['reviews'] ?? 0,
         'reviewslabel' => $card['reviewslabel'] ?? '',
@@ -4526,7 +4528,6 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
     global $DB, $OUTPUT;
 
     $sections = [];
-    $sectionnames = [];
     $objectiveblocks = [];
     $certificates = [];
     $activities = 0;
@@ -4571,9 +4572,28 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
                     $activity = $DB->get_record('coursecertificate', [
                         'id' => (int) $cm->instance,
                         'course' => (int) $course->id,
-                    ], 'template', IGNORE_MISSING);
-                    if ($activity && !empty($activity->template)) {
-                        $certificate['templateid'] = (int) $activity->template;
+                    ], 'template, automaticsend, intro, introformat', IGNORE_MISSING);
+                    if ($activity) {
+                        $certificate['issuancemessage'] = get_string(
+                            !empty($activity->automaticsend) ? 'certificateautomatic' : 'certificatemanual',
+                            'theme_nextgen'
+                        );
+                        $intro = format_module_intro('coursecertificate', $activity, (int) $cm->id);
+                        $certificate['hasintro'] = $intro !== '';
+                        $certificate['intro'] = $intro;
+
+                        if (!empty($activity->template)) {
+                            $certificate['templateid'] = (int) $activity->template;
+                            if (class_exists('\tool_certificate\template')) {
+                                $template = \tool_certificate\template::instance((int) $activity->template);
+                                $certificate['hastemplatename'] = true;
+                                $certificate['templatelabel'] = get_string(
+                                    'certificatetemplate',
+                                    'theme_nextgen',
+                                    $template->get_formatted_name()
+                                );
+                            }
+                        }
                     }
                 }
                 $certificates[] = $certificate;
@@ -4598,7 +4618,6 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
             'activities' => $items,
         ];
         if ((int) $section->sectionnum !== 0 && $named) {
-            $sectionnames[] = $name;
             $block = theme_nextgen_learning_block(
                 (string) $section->summary,
                 (int) $section->summaryformat,
@@ -4620,7 +4639,6 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
 
     return [
         'sections' => $sections,
-        'sectionnames' => $sectionnames,
         'summaryoutcomes' => $objectives['points'],
         'outcometitle' => $objectives['title'],
         'outcomelead' => $objectives['lead'],
