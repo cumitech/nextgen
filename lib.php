@@ -4566,33 +4566,17 @@ function theme_nextgen_course_outline(core_course_list_element $course, context_
                 $certificate = [
                     'name' => $name,
                     'url' => ($cm->uservisible && $cm->url) ? $cm->url->out(false) : '',
+                    'iscoursecertificate' => $cm->modname === 'coursecertificate',
                 ];
                 if ($cm->modname === 'coursecertificate'
                         && $DB->get_manager()->table_exists('coursecertificate')) {
                     $activity = $DB->get_record('coursecertificate', [
                         'id' => (int) $cm->instance,
                         'course' => (int) $course->id,
-                    ], 'template, automaticsend, intro, introformat', IGNORE_MISSING);
+                    ], 'template', IGNORE_MISSING);
                     if ($activity) {
-                        $certificate['issuancemessage'] = get_string(
-                            !empty($activity->automaticsend) ? 'certificateautomatic' : 'certificatemanual',
-                            'theme_nextgen'
-                        );
-                        $intro = format_module_intro('coursecertificate', $activity, (int) $cm->id);
-                        $certificate['hasintro'] = $intro !== '';
-                        $certificate['intro'] = $intro;
-
                         if (!empty($activity->template)) {
                             $certificate['templateid'] = (int) $activity->template;
-                            if (class_exists('\tool_certificate\template')) {
-                                $template = \tool_certificate\template::instance((int) $activity->template);
-                                $certificate['hastemplatename'] = true;
-                                $certificate['templatelabel'] = get_string(
-                                    'certificatetemplate',
-                                    'theme_nextgen',
-                                    $template->get_formatted_name()
-                                );
-                            }
                         }
                     }
                 }
