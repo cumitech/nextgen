@@ -85,6 +85,7 @@ require(['jquery'], function($) {
             var on = tab.getAttribute('data-ng-tab') === name;
             tab.classList.toggle('is-active', on);
             tab.setAttribute('aria-selected', on ? 'true' : 'false');
+            tab.tabIndex = on ? 0 : -1;
         });
         panels.forEach(function(panel) {
             if (panel.getAttribute('data-ng-panel') === name) {
@@ -99,6 +100,24 @@ require(['jquery'], function($) {
     tabs.forEach(function(tab) {
         tab.addEventListener('click', function() {
             show(tab.getAttribute('data-ng-tab'));
+        });
+        tab.addEventListener('keydown', function(event) {
+            var index = Array.prototype.indexOf.call(tabs, tab);
+            var nextIndex;
+            if (event.key === 'ArrowRight') {
+                nextIndex = (index + 1) % tabs.length;
+            } else if (event.key === 'ArrowLeft') {
+                nextIndex = (index - 1 + tabs.length) % tabs.length;
+            } else if (event.key === 'Home') {
+                nextIndex = 0;
+            } else if (event.key === 'End') {
+                nextIndex = tabs.length - 1;
+            } else {
+                return;
+            }
+            event.preventDefault();
+            tabs[nextIndex].focus();
+            show(tabs[nextIndex].getAttribute('data-ng-tab'));
         });
     });
 

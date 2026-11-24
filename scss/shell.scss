@@ -8675,9 +8675,12 @@ body.nextgen.path-user #page-content,
 body.nextgen.path-grade #page-content,
 body.nextgen.path-calendar #page-content,
 body.nextgen.path-reportbuilder #page-content,
+body.nextgen.path-admin-reportbuilder #page-content,
+body.nextgen#page-payment-gateway-campay-history #page-content,
 body.nextgen[id^="page-grade-"] #page-content,
 body.nextgen[id^="page-calendar-"] #page-content,
-body.nextgen[id^="page-reportbuilder-"] #page-content {
+body.nextgen[id^="page-reportbuilder-"] #page-content,
+body.nextgen[id^="page-admin-reportbuilder-"] #page-content {
   box-sizing: border-box;
   margin-left: auto;
   margin-right: auto;
@@ -8690,9 +8693,12 @@ body.nextgen.path-user #region-main,
 body.nextgen.path-grade #region-main,
 body.nextgen.path-calendar #region-main,
 body.nextgen.path-reportbuilder #region-main,
+body.nextgen.path-admin-reportbuilder #region-main,
+body.nextgen#page-payment-gateway-campay-history #region-main,
 body.nextgen[id^="page-grade-"] #region-main,
 body.nextgen[id^="page-calendar-"] #region-main,
-body.nextgen[id^="page-reportbuilder-"] #region-main {
+body.nextgen[id^="page-reportbuilder-"] #region-main,
+body.nextgen[id^="page-admin-reportbuilder-"] #region-main {
   background: transparent;
   border: 0;
   min-width: 0;
@@ -8702,15 +8708,54 @@ body.nextgen.path-user #page-header h1,
 body.nextgen.path-grade #page-header h1,
 body.nextgen.path-calendar #page-header h1,
 body.nextgen.path-reportbuilder #page-header h1,
+body.nextgen.path-admin-reportbuilder #page-header h1,
+body.nextgen#page-payment-gateway-campay-history #page-header h1,
 body.nextgen[id^="page-grade-"] #page-header h1,
 body.nextgen[id^="page-calendar-"] #page-header h1,
-body.nextgen[id^="page-reportbuilder-"] #page-header h1 {
+body.nextgen[id^="page-reportbuilder-"] #page-header h1,
+body.nextgen[id^="page-admin-reportbuilder-"] #page-header h1 {
   color: var(--ng-text);
   font-size: clamp(1.65rem, 4vw, 2.15rem);
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1.15;
   overflow-wrap: anywhere;
+}
+
+body.nextgen.path-user #page-header {
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 68rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+body.nextgen#page-user-files #page-header,
+body.nextgen#page-user-preferences #page-header,
+body.nextgen#page-payment-gateway-campay-history #page-header {
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 78rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+body.nextgen.path-grade #page-header,
+body.nextgen.path-calendar #page-header,
+body.nextgen.path-reportbuilder #page-header,
+body.nextgen.path-admin-reportbuilder #page-header,
+body.nextgen[id^="page-grade-"] #page-header,
+body.nextgen[id^="page-calendar-"] #page-header,
+body.nextgen[id^="page-reportbuilder-"] #page-header,
+body.nextgen[id^="page-admin-reportbuilder-"] #page-header {
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 78rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 body.nextgen.path-user #region-main > .card,
@@ -9074,10 +9119,40 @@ body.nextgen[id="page-user-preferences"] #region-main .card-text a:hover {
   body.nextgen.path-grade #page-content,
   body.nextgen.path-calendar #page-content,
   body.nextgen.path-reportbuilder #page-content,
+  body.nextgen.path-admin-reportbuilder #page-content,
+  body.nextgen#page-payment-gateway-campay-history #page-content,
   body.nextgen[id^="page-grade-"] #page-content,
   body.nextgen[id^="page-calendar-"] #page-content,
-  body.nextgen[id^="page-reportbuilder-"] #page-content {
+  body.nextgen[id^="page-reportbuilder-"] #page-content,
+  body.nextgen[id^="page-admin-reportbuilder-"] #page-content {
     padding: 1rem 0.75rem 2rem;
+  }
+
+  body.nextgen.path-user #page-header {
+    max-width: calc(100% - 1.5rem);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  body.nextgen#page-user-files #page-header,
+  body.nextgen#page-user-preferences #page-header,
+  body.nextgen#page-payment-gateway-campay-history #page-header {
+    max-width: calc(100% - 1.5rem);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  body.nextgen.path-grade #page-header,
+  body.nextgen.path-calendar #page-header,
+  body.nextgen.path-reportbuilder #page-header,
+  body.nextgen.path-admin-reportbuilder #page-header,
+  body.nextgen[id^="page-grade-"] #page-header,
+  body.nextgen[id^="page-calendar-"] #page-header,
+  body.nextgen[id^="page-reportbuilder-"] #page-header,
+  body.nextgen[id^="page-admin-reportbuilder-"] #page-header {
+    max-width: calc(100% - 1.5rem);
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   body.nextgen.path-user #region-main > .card,

@@ -83,10 +83,10 @@ class hook_listener {
             }
         }
         if (!during_initial_install()) {
-            self::extend_transactions($primary);
             self::extend_blog($primary);
             \theme_nextgen\local\public_page::extend_primary($primary);
             theme_nextgen_add_category_menu($primary);
+            self::extend_transactions($primary);
         }
     }
 
@@ -118,6 +118,9 @@ class hook_listener {
                 null,
                 'nextgen-mytransactions'
             );
+        } else {
+            $node->remove();
+            $primary->add_node($node);
         }
         if ($node && $node->action instanceof \moodle_url) {
             $node->isactive = $node->action->compare($PAGE->url, URL_MATCH_BASE);
